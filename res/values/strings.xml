@@ -8,20 +8,19 @@
     <string name="title_activity_main">Main</string>
     <string name="title_activity_character_selection">Select character</string>
     <string name="action_settings">Settings</string>
-	<!-- Characters -->
-	<string name="ch_warrior">Válečník</string>
-	<string name="ch_defender">Obránce</string>
-	<string name="ch_assassin">Vrah</string>
-	
-	<!-- Characters description -->
-	<string name="dsc_default">Some description </string>
-	<string name="dsc_warrior">Valečník se pyšní svojí mohutnou silou a odvážností.... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... Valečník se pyšní svojí mohutnou silou... </string>
-	
-	<!-- characters attributes -->
-	<string name="attr_value_zero">0</string>
-	<string name="attr_health">Zdraví</string>
-	<string name="attr_attack">Útok</string>
-	<string name="attr_defense">Obrana</string>
-	<string name="attr_skill">Dovednost</string>
-	
+
+    <!-- characters attributes -->
+    <string name="attr_value_zero">0</string>
+    <string name="attr_health">Zdraví</string>
+    <string name="attr_attack">Útok</string>
+    <string name="attr_defense">Obrana</string>
+    <string name="attr_skill">Dovednost</string>
+    <string name="dsc_default">Some description </string>
+    <string name="title_activity_story_selection">StorySelectionActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_playground">PlaygroundActivity</string>
+    <string name="character">Postava</string>
+    <string name="story">Příběh</string>
+    
+    
 </resources>

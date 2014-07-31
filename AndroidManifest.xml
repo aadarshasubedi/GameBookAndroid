@@ -11,7 +11,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name" >
         <activity
             android:name=".MainScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -24,8 +24,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.nex.gamebook.character.CharacterSelectionActivity"
+            android:name=".CharacterSelectionActivity"
             android:label="@string/title_activity_character_selection" >
+        </activity>
+        <activity
+            android:name=".StorySelectionActivity"
+            android:label="@string/title_activity_story_selection" >
+        </activity>
+        <activity
+            android:name=".PlaygroundActivity"
+            android:label="@string/title_activity_playground" >
         </activity>
     </application>
 

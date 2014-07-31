@@ -1,31 +1,21 @@
-package com.nex.gamebook.character.definition;
+package com.nex.gamebook.entity.character;
 
-
-public abstract class Character {
-	private int name;
-	private int id;
+public class Stats {
 	private int health;
 	private int attack;
 	private int defense;
 	private int skill;
-	public Character(int marker) {
-		super();
-		this.name = marker;
-	}
-	
-	public int getId() {
-		return id;
-	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getName() {
-		return name;
+	public Stats() {
+		// TODO Auto-generated constructor stub
 	}
 	
-	
+	public Stats(Stats stats) {
+		this.health = stats.health;
+		this.attack = stats.attack;
+		this.defense = stats.defense;
+		this.skill = stats.skill;
+	}
 	
 	public int getHealth() {
 		return health;
@@ -59,5 +49,4 @@ public abstract class Character {
 		this.skill = skill;
 	}
 
-	public abstract int getDescription();
 }

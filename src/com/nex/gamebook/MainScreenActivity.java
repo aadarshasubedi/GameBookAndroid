@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.nex.gamebook.character.CharacterSelectionActivity;
 import com.nex.gamebook.util.SystemUiHider;
 
 /**
@@ -27,7 +26,7 @@ public class MainScreenActivity extends Activity {
 	}
 
 	public void newGame(View view) {
-		Intent intent = new Intent(this, CharacterSelectionActivity.class);
+		Intent intent = new Intent(this, StorySelectionActivity.class);
 		startActivity(intent);
 	}
 }

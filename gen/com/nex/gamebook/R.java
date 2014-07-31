@@ -37,53 +37,67 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int button1=0x7f080001;
-        public static final int button2=0x7f080002;
-        public static final int fragment_container=0x7f080000;
-        public static final int scrollView2=0x7f08000f;
-        public static final int sel_attr_attack=0x7f080008;
-        public static final int sel_attr_defense=0x7f08000b;
-        public static final int sel_attr_health=0x7f080006;
-        public static final int sel_attr_skill=0x7f08000d;
-        public static final int sel_char_description=0x7f080010;
-        public static final int sel_l_attack=0x7f080007;
-        public static final int sel_l_defense=0x7f08000a;
-        public static final int sel_l_health=0x7f080005;
-        public static final int sel_l_skill=0x7f08000c;
-        public static final int tableLayout1=0x7f080003;
-        public static final int tableRow0=0x7f080004;
-        public static final int tableRow3=0x7f080009;
-        public static final int tableRow4=0x7f08000e;
+        public static final int action_settings=0x7f090013;
+        public static final int button1=0x7f090001;
+        public static final int button2=0x7f090002;
+        public static final int fragment_container=0x7f090000;
+        public static final int scrollView2=0x7f090010;
+        public static final int sel_attr_attack=0x7f090009;
+        public static final int sel_attr_defense=0x7f09000c;
+        public static final int sel_attr_health=0x7f090007;
+        public static final int sel_attr_skill=0x7f09000e;
+        public static final int sel_char_description=0x7f090011;
+        public static final int sel_l_attack=0x7f090008;
+        public static final int sel_l_defense=0x7f09000b;
+        public static final int sel_l_health=0x7f090006;
+        public static final int sel_l_skill=0x7f09000d;
+        public static final int stories=0x7f090003;
+        public static final int story_view=0x7f090012;
+        public static final int tableLayout1=0x7f090004;
+        public static final int tableRow0=0x7f090005;
+        public static final int tableRow3=0x7f09000a;
+        public static final int tableRow4=0x7f09000f;
     }
     public static final class layout {
         public static final int activity_character_selection=0x7f030000;
         public static final int activity_main_screen=0x7f030001;
-        public static final int fragment_character_selection=0x7f030002;
+        public static final int activity_playground=0x7f030002;
+        public static final int activity_story_selection=0x7f030003;
+        public static final int fragment_character_description=0x7f030004;
+        public static final int fragment_playground_story=0x7f030005;
+    }
+    public static final class menu {
+        public static final int playground=0x7f080000;
+        public static final int story_selection=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f060006;
         public static final int app_name=0x7f060000;
-        public static final int attr_attack=0x7f06000e;
-        public static final int attr_defense=0x7f06000f;
-        public static final int attr_health=0x7f06000d;
-        public static final int attr_skill=0x7f060010;
+        public static final int attr_attack=0x7f060009;
+        public static final int attr_defense=0x7f06000a;
+        public static final int attr_health=0x7f060008;
+        public static final int attr_skill=0x7f06000b;
         /**  characters attributes 
          */
-        public static final int attr_value_zero=0x7f06000c;
+        public static final int attr_value_zero=0x7f060007;
         public static final int button_load=0x7f060002;
         public static final int button_new=0x7f060001;
         public static final int button_play=0x7f060003;
-        public static final int ch_assassin=0x7f060009;
-        public static final int ch_defender=0x7f060008;
+        public static final int ch_homeless=0x7f060015;
         /**  Characters 
          */
-        public static final int ch_warrior=0x7f060007;
-        /**  Characters description 
-         */
-        public static final int dsc_default=0x7f06000a;
-        public static final int dsc_warrior=0x7f06000b;
+        public static final int ch_soldier=0x7f060013;
+        public static final int character=0x7f060010;
+        public static final int dsc_default=0x7f06000c;
+        public static final int dsc_homeless=0x7f060016;
+        public static final int dsc_soldier=0x7f060014;
+        public static final int hello_world=0x7f06000e;
+        public static final int story=0x7f060011;
+        public static final int story_zombie_apocalypse=0x7f060012;
         public static final int title_activity_character_selection=0x7f060005;
         public static final int title_activity_main=0x7f060004;
+        public static final int title_activity_playground=0x7f06000f;
+        public static final int title_activity_story_selection=0x7f06000d;
     }
     public static final class style {
         /** 
