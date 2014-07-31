@@ -1,0 +1,33 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context="com.nex.gamebook.MainScreenActivity">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="192dp"
+            android:layout_width="150dp"
+  			android:layout_height="50dp"
+  			android:onClick="newGame"
+            android:text="@string/button_new" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_alignBottom="@+id/button1"
+            android:layout_alignLeft="@+id/button1"
+            android:layout_marginBottom="48dp"
+            android:layout_width="150dp"
+    		android:layout_height="50dp"
+            android:text="@string/button_load" />
+
+    </RelativeLayout>
+
+</FrameLayout>
