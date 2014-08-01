@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<story>
+	
+	<section position="1">
+	    <text name="@string/section_test"/>
+	    <options>
+	        <option></option>
+	        <option></option>
+	    </options>
+	</section>
+	
+	
+</story>

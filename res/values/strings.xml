@@ -19,6 +19,8 @@
     <string name="title_activity_story_selection">StorySelectionActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_playground">PlaygroundActivity</string>
+    
+    <!-- Playground tab -->
     <string name="character">Postava</string>
     <string name="story">Příběh</string>
     
