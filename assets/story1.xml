@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="file:/E:/develop/git/GameBook/assets/story.xsd"
+	name="@string/story_zombie_apocalypse">
+
+   	<characters>
+   	    <character position="3" id="1" name="@string/s1_ch_soldier" description="@string/s1_dsc_soldier">
+   	        <health>3</health>
+   	        <defense>4</defense>
+   	        <skill>2</skill>
+   	        <luck>2</luck>
+   	    </character>
+   	    <character position="4" id="2" name="@string/s1_ch_homeless" description="@string/s1_dsc_homeless">
+   	        <health>20</health>
+   	        <defense>2</defense>
+   	        <skill>4</skill>
+   	        <luck>2</luck>
+   	    </character>
+   	</characters>
+   	
+	<sections>
+	    <section position="1" text="@string/s1_section1">
+	        <options>
+	            <option section="2" text="@string/s1_section1_option1" skill="2" />
+	            <option section="2" text="@string/s1_section1_option2" />
+	        </options>
+	    </section>
+	
+	    <section position="2" text="@string/s1_section2_endGame" endgame="true" />
+	    
+	    <section position="3" text="@string/s1_section3" enemiesDefeatedText="@string/s1_section3_cleared" luckText="@string/fight_luck_section">
+	        <bonuses>
+	            <bonus type="defense" value="1" debuff="true" state="before_fight" />
+	            <bonus type="luck" value="3" overflowed="true" state="after_fight" />
+	        </bonuses>
+	        <enemies>
+	            <enemy attack="4" skill="5" name="@string/s1_enemy_zombie" />
+	            <enemy attack="2" skill="4" name="@string/s1_enemy_zombie" />
+	            <enemy attack="6" skill="2" name="@string/s1_enemy_zombie" />
+	            <enemy attack="6" skill="2" name="@string/s1_enemy_zombie" />
+	        </enemies>
+	        <options>
+	            <option section="2" text="@string/sg_continue"/>
+	        </options>
+	    </section>
+	    
+	    <section position="4" text="@string/s1_section2">
+	        <bonuses>
+	            <bonus type="health" value="20" debuff="true" overflowed="true" />
+	            <bonus type="luck" value="1" debuff="true"/>
+	        </bonuses>
+	        <options>
+	            <option section="1" text="@string/sg_continue"/>
+	        </options>
+	    </section>
+    </sections>
+</story>

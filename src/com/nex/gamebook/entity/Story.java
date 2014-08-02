@@ -1,23 +1,18 @@
 package com.nex.gamebook.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import com.nex.gamebook.entity.character.Character;
+import com.nex.gamebook.story.section.StorySection;
 
-import com.nex.gamebook.story.StorySection;
-
-public abstract class Story implements Entity {
-
+public class Story implements Entity {
+	private String xml;
+	private int name;
 	private long id;
-	private int position = 1;
-	protected Map<Integer, StorySection> sections = new HashMap<>();
-	
-	public int getPosition() {
-		return position;
-	}
-
-	public void setPosition(int position) {
-		this.position = position;
-	}
+	private Map<Integer, StorySection> sections = new HashMap<>();
+	private List<Character> characters = new ArrayList<Character>();
 
 	public long getId() {
 		return id;
@@ -27,10 +22,44 @@ public abstract class Story implements Entity {
 		this.id = id;
 	}
 
-	public StorySection getSection() {
-		return this.sections.get(this.position);
+	public StorySection getSection(int position) {
+		StorySection section = this.sections.get(position);
+		section.reset();
+		return section;
 	}
 
-	public abstract int getName();
+	public Boolean canStart() {
+		return sections.size() > 0;
+	}
 
+	public String getXml() {
+		return xml;
+	}
+
+	public void setXml(String xml) {
+		this.xml = xml;
+	}
+
+	public Map<Integer, StorySection> getSections() {
+		return sections;
+	}
+
+	public int getName() {
+		return name;
+	}
+
+	public void setName(int name) {
+		this.name = name;
+	}
+	public List<Character> getCharacters() {
+		return characters;
+	}
+	
+	public Character getCharacter(int id) {
+		for(Character ch: characters) {
+			if(ch.getId() == id) return ch;
+		}
+		return null;
+	}
+	
 }

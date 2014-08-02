@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@color/background_color" android:id="@+id/character_layout">
+		
+        <TableLayout
+            android:id="@+id/tableLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+			<TextView
+		        android:id="@+id/textView2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp" android:layout_marginTop="10dp"
+		        style="@style/textview_anchor"
+		        android:text="@string/attributes" />
+            <View style="@style/line"/>
+            <TableRow
+                android:id="@+id/tableRow0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip" android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/plaground_name_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dip"
+                    android:text="@string/attr_health"
+                    style="@style/textview_attrName" />
+                <TextView
+                    android:id="@+id/playground_curr_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dip"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_neutral_attribute" />
+				<TextView
+                    android:id="@+id/plaground_separator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/separator"
+                    style="@style/textview_anchor" />
+                <TextView
+                    android:id="@+id/playground_def_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_default_attribute" />
+            </TableRow>
+			<TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip" android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/plaground_name_luck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dip"
+                    android:text="@string/attr_luck"
+                    style="@style/textview_attrName" />
+                <TextView
+                    android:id="@+id/playground_curr_luck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dip"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_neutral_attribute" />
+				<TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/separator"
+                    style="@style/textview_anchor" />
+                <TextView
+                    android:id="@+id/playground_def_luck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_default_attribute" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip" android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/plaground_name_defense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dip"
+                    android:text="@string/attr_defense"
+                    style="@style/textview_attrName" />
+                <TextView
+                    android:id="@+id/playground_curr_defense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dip"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_neutral_attribute" />
+				<TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/separator"
+                    style="@style/textview_anchor" />
+                <TextView
+                    android:id="@+id/playground_def_defense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_default_attribute" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip" android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/plaground_name_skill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dip"
+                    android:text="@string/attr_skill"
+                    style="@style/textview_attrName" />
+                <TextView
+                    android:id="@+id/playground_curr_skill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dip"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_neutral_attribute" />
+				<TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/separator"
+                    style="@style/textview_anchor" />
+                <TextView
+                    android:id="@+id/playground_def_skill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_default_attribute" />
+            </TableRow>
+            <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp" android:layout_marginTop="10dp"
+		        style="@style/textview_anchor"
+		        android:text="@string/battle_log" />
+            <View style="@style/line" android:id="@+id/underline"/>
+            
+        </TableLayout>
+
+
+
+	<Button
+        android:id="@+id/result_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/sg_continue" />
+
+	<ListView
+	    android:id="@+id/battle_log"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/result_button"
+	    android:layout_below="@+id/tableLayout1"
+	    android:layout_centerHorizontal="true">
+	</ListView>
+
+</RelativeLayout>

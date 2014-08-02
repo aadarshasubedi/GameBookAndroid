@@ -8,6 +8,12 @@
 package com.nex.gamebook;
 
 public final class R {
+    public static final class anim {
+        public static final int trans_left_in=0x7f040000;
+        public static final int trans_left_out=0x7f040001;
+        public static final int trans_right_in=0x7f040002;
+        public static final int trans_right_out=0x7f040003;
+    }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -19,8 +25,19 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int metaButtonBarStyle=0x7f010000;
     }
     public static final class color {
-        public static final int background_color=0x7f050001;
+        public static final int anchor_color=0x7f050004;
+        public static final int attrName_color=0x7f05000b;
+        public static final int attr_color=0x7f050008;
+        public static final int background_color=0x7f05000c;
+        public static final int black=0x7f050007;
         public static final int black_overlay=0x7f050000;
+        public static final int bonus_color=0x7f050009;
+        public static final int debuf_color=0x7f05000a;
+        public static final int gameover_color=0x7f050002;
+        public static final int line_color=0x7f050005;
+        public static final int line_light_color=0x7f050006;
+        public static final int options_color=0x7f050003;
+        public static final int text_color=0x7f050001;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -37,70 +54,144 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0013;
+        public static final int action_settings=0x7f0a0034;
+        public static final int attack=0x7f0a0007;
+        public static final int attack_name=0x7f0a0006;
+        public static final int battle_log=0x7f0a002e;
         public static final int button1=0x7f0a0001;
         public static final int button2=0x7f0a0002;
+        public static final int character_layout=0x7f0a000b;
+        public static final int endGame_button=0x7f0a0033;
+        public static final int enemy=0x7f0a0004;
+        public static final int fight=0x7f0a0008;
+        public static final int fight_result_as_text=0x7f0a0009;
         public static final int fragment_container=0x7f0a0000;
-        public static final int scrollView2=0x7f0a0010;
-        public static final int sel_attr_attack=0x7f0a0009;
-        public static final int sel_attr_defense=0x7f0a000c;
-        public static final int sel_attr_health=0x7f0a0007;
-        public static final int sel_attr_skill=0x7f0a000e;
-        public static final int sel_char_description=0x7f0a0011;
-        public static final int sel_l_attack=0x7f0a0008;
-        public static final int sel_l_defense=0x7f0a000b;
-        public static final int sel_l_health=0x7f0a0006;
-        public static final int sel_l_skill=0x7f0a000d;
+        public static final int gameOver_view=0x7f0a0032;
+        public static final int noBattleText=0x7f0a000a;
+        public static final int plaground_name_defense=0x7f0a0026;
+        public static final int plaground_name_health=0x7f0a001e;
+        public static final int plaground_name_luck=0x7f0a0022;
+        public static final int plaground_name_skill=0x7f0a0029;
+        public static final int plaground_separator=0x7f0a0020;
+        public static final int play_button=0x7f0a001c;
+        public static final int playground_curr_defense=0x7f0a0027;
+        public static final int playground_curr_health=0x7f0a001f;
+        public static final int playground_curr_luck=0x7f0a0023;
+        public static final int playground_curr_skill=0x7f0a002a;
+        public static final int playground_def_defense=0x7f0a0028;
+        public static final int playground_def_health=0x7f0a0021;
+        public static final int playground_def_luck=0x7f0a0024;
+        public static final int playground_def_skill=0x7f0a002b;
+        public static final int playground_story=0x7f0a002f;
+        public static final int result_button=0x7f0a002d;
+        public static final int scrollView2=0x7f0a001b;
+        public static final int section_story=0x7f0a0030;
+        public static final int sel_attr_defense=0x7f0a0016;
+        public static final int sel_attr_health=0x7f0a0010;
+        public static final int sel_attr_luck=0x7f0a0013;
+        public static final int sel_attr_skill=0x7f0a0019;
+        public static final int sel_char_description=0x7f0a001d;
+        public static final int sel_l_defense=0x7f0a0015;
+        public static final int sel_l_health=0x7f0a000f;
+        public static final int sel_l_luck=0x7f0a0012;
+        public static final int sel_l_skill=0x7f0a0018;
         public static final int stories=0x7f0a0003;
-        public static final int story_view=0x7f0a0012;
-        public static final int tableLayout1=0x7f0a0004;
-        public static final int tableRow0=0x7f0a0005;
-        public static final int tableRow3=0x7f0a000a;
-        public static final int tableRow4=0x7f0a000f;
+        public static final int story_view=0x7f0a0031;
+        public static final int tableLayout1=0x7f0a000c;
+        public static final int tableRow0=0x7f0a000e;
+        public static final int tableRow1=0x7f0a0005;
+        public static final int tableRow2=0x7f0a0025;
+        public static final int tableRow3=0x7f0a0014;
+        public static final int tableRow5=0x7f0a0011;
+        public static final int tableRow6=0x7f0a0017;
+        public static final int textView1=0x7f0a001a;
+        public static final int textView2=0x7f0a000d;
+        public static final int underline=0x7f0a002c;
     }
     public static final class layout {
         public static final int activity_character_selection=0x7f030000;
         public static final int activity_main_screen=0x7f030001;
         public static final int activity_playground=0x7f030002;
         public static final int activity_story_selection=0x7f030003;
-        public static final int fragment_character_description=0x7f030004;
-        public static final int fragment_playground_story=0x7f030005;
+        public static final int battle_log_layout=0x7f030004;
+        public static final int battle_log_layout_nobattle=0x7f030005;
+        public static final int fragment_character_description=0x7f030006;
+        public static final int fragment_playground_character=0x7f030007;
+        public static final int fragment_playground_story=0x7f030008;
     }
     public static final class menu {
         public static final int playground=0x7f090000;
         public static final int story_selection=0x7f090001;
     }
     public static final class string {
-        public static final int action_settings=0x7f070006;
+        public static final int action_settings=0x7f070009;
         public static final int app_name=0x7f070000;
-        public static final int attr_attack=0x7f070009;
-        public static final int attr_defense=0x7f07000a;
-        public static final int attr_health=0x7f070008;
-        public static final int attr_skill=0x7f07000b;
+        public static final int attr_attack=0x7f070014;
+        public static final int attr_defense=0x7f070015;
+        public static final int attr_health=0x7f070012;
+        public static final int attr_luck=0x7f070013;
+        public static final int attr_skill=0x7f070016;
         /**  characters attributes 
          */
-        public static final int attr_value_zero=0x7f070007;
+        public static final int attr_value_zero=0x7f070011;
+        public static final int attributes=0x7f070010;
+        public static final int battle_log=0x7f07000d;
+        public static final int begin_fight=0x7f07000a;
+        public static final int button_endGame_lose=0x7f070004;
+        public static final int button_endGame_win=0x7f070005;
+        public static final int button_fight=0x7f070006;
         public static final int button_load=0x7f070002;
         public static final int button_new=0x7f070001;
         public static final int button_play=0x7f070003;
-        public static final int ch_homeless=0x7f070015;
-        /**  Characters 
-         */
-        public static final int ch_soldier=0x7f070013;
         /**  Playground tab 
          */
-        public static final int character=0x7f070010;
-        public static final int dsc_default=0x7f07000c;
-        public static final int dsc_homeless=0x7f070016;
-        public static final int dsc_soldier=0x7f070014;
-        public static final int hello_world=0x7f07000e;
-        public static final int section_test=0x7f070017;
-        public static final int story=0x7f070011;
-        public static final int story_zombie_apocalypse=0x7f070012;
-        public static final int title_activity_character_selection=0x7f070005;
-        public static final int title_activity_main=0x7f070004;
-        public static final int title_activity_playground=0x7f07000f;
-        public static final int title_activity_story_selection=0x7f07000d;
+        public static final int character=0x7f07001a;
+        public static final int description=0x7f07000c;
+        public static final int dsc_default=0x7f070017;
+        public static final int fight=0x7f07001b;
+        public static final int fight_aspect_defense=0x7f070028;
+        public static final int fight_aspect_health=0x7f070027;
+        public static final int fight_aspect_luck=0x7f07002a;
+        public static final int fight_aspect_skill=0x7f070029;
+        public static final int fight_error=0x7f070025;
+        public static final int fight_error_attr=0x7f070026;
+        public static final int fight_lose=0x7f070020;
+        public static final int fight_luck=0x7f070022;
+        public static final int fight_luck_section=0x7f070023;
+        public static final int fight_skill=0x7f070021;
+        /**  default fighting messages 
+         */
+        public static final int fight_withdamage=0x7f07001e;
+        public static final int fight_withoutdamage=0x7f07001f;
+        public static final int game_over_section=0x7f070024;
+        public static final int options=0x7f07000e;
+        public static final int s1_ch_homeless=0x7f07002e;
+        /**  Characters 
+         */
+        public static final int s1_ch_soldier=0x7f07002c;
+        public static final int s1_dsc_homeless=0x7f07002f;
+        public static final int s1_dsc_soldier=0x7f07002d;
+        /**  nepřátelé 
+         */
+        public static final int s1_enemy_zombie=0x7f070037;
+        /**  Section  strings
+         */
+        public static final int s1_section1=0x7f070030;
+        public static final int s1_section1_option1=0x7f070031;
+        public static final int s1_section1_option2=0x7f070032;
+        public static final int s1_section2=0x7f070033;
+        public static final int s1_section2_endGame=0x7f070034;
+        public static final int s1_section3=0x7f070035;
+        public static final int s1_section3_cleared=0x7f070036;
+        public static final int separator=0x7f07000f;
+        public static final int sg_continue=0x7f07001d;
+        public static final int story=0x7f07001c;
+        public static final int story_zombie_apocalypse=0x7f07002b;
+        public static final int title_activity_character_selection=0x7f070008;
+        public static final int title_activity_main=0x7f070007;
+        public static final int title_activity_playground=0x7f070019;
+        public static final int title_activity_story_selection=0x7f070018;
+        public static final int you_obtain=0x7f07000b;
     }
     public static final class style {
         /** 
@@ -134,11 +225,25 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int AppTheme=0x7f080001;
         public static final int ButtonBar=0x7f080003;
         public static final int ButtonBarButton=0x7f080004;
-        public static final int FullscreenActionBarStyle=0x7f080005;
+        public static final int FullscreenActionBarStyle=0x7f080012;
         public static final int FullscreenTheme=0x7f080002;
-    }
-    public static final class xml {
-        public static final int story_line1=0x7f040000;
+        public static final int line=0x7f080007;
+        public static final int line_light=0x7f080008;
+        public static final int textview_anchor=0x7f08000a;
+        public static final int textview_attrName=0x7f08000e;
+        public static final int textview_attrValue=0x7f08000f;
+        public static final int textview_battlenumber=0x7f08000d;
+        public static final int textview_bonus=0x7f08000b;
+        public static final int textview_debuff=0x7f08000c;
+        /**  atrributes changing by game 
+         */
+        public static final int textview_default_attribute=0x7f080010;
+        public static final int textview_gameover=0x7f080006;
+        public static final int textview_neutral_attribute=0x7f080011;
+        public static final int textview_options=0x7f080009;
+        /**  style texts 
+         */
+        public static final int textview_story=0x7f080005;
     }
     public static final class styleable {
         /** 

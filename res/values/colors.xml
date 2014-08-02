@@ -1,6 +1,16 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
-    
-	<color name="background_color">#0099cc</color>
+    <color name="text_color">#7b7b7b</color>
+    <color name="gameover_color">#ac2222</color>
+    <color name="options_color">#aaaaaa</color>
+    <color name="anchor_color">#000000</color>
+    <color name="line_color">#000000</color>
+    <color name="line_light_color">#aaaaaa</color>
+    <color name="black">#000000</color>
+    <color name="attr_color">#078f00</color>
+    <color name="bonus_color">#078f00</color>
+    <color name="debuf_color">#ac2222</color>
+    <color name="attrName_color">#7b7b7b</color>
+	<color name="background_color">#ffffff</color>
 </resources>

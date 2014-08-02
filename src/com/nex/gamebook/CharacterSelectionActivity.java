@@ -1,5 +1,7 @@
 package com.nex.gamebook;
 
+import java.io.IOException;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -7,6 +9,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +17,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.nex.gamebook.R;
-import com.nex.gamebook.db.CharactersDatasource;
-import com.nex.gamebook.db.StoryDatasource;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.character.Character;
+import com.nex.gamebook.playground.PlaygroundActivity;
+import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class CharacterSelectionActivity extends Activity {
 	public Character selectedCharacter;
@@ -29,34 +31,42 @@ public class CharacterSelectionActivity extends Activity {
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		StoryDatasource sds = new StoryDatasource(this);
-		sds.open();
-		Story story = sds.findById(getIntent().getExtras().getLong("storyId"));
-		setTitle(story.getName());
-		setContentView(R.layout.activity_character_selection);
-		CharactersDatasource ds = new CharactersDatasource(this);
-
-		ds.open();
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		for (Character c : ds.findByStory(story)) {
-			ActionBar.Tab tab = actionBar.newTab().setText(c.getName());
-			FragmentTab fragmentTab = new FragmentTab(c);
-			tab.setTabListener(new MyTabListener(fragmentTab));
-			actionBar.addTab(tab);
-		}
-		sds.close();
-		ds.close();
-	}
-
-	public void play(View view) {
 		
-		Intent intent = new Intent(this, PlaygroundActivity.class);
-		Bundle bundle = new Bundle();
-		bundle.putLong("characterId", selectedCharacter.getId());
-		intent.putExtras(bundle);
-		startActivity(intent);
+		try {
+			StoryXmlParser parser = new StoryXmlParser(this);
+			Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
+			setTitle(story.getName());
+			setContentView(R.layout.activity_character_selection);
+			overridePendingTransition(R.anim.trans_left_in, R.anim.trans_right_out);
+			ActionBar actionBar = getActionBar();
+			actionBar.setDisplayShowTitleEnabled(false);
+			actionBar.setDisplayShowHomeEnabled(false);
+			
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			for (Character c : story.getCharacters()) {
+				ActionBar.Tab tab = actionBar.newTab().setText(c.getName());
+				FragmentTab fragmentTab = new FragmentTab(c);
+				tab.setTabListener(new MyTabListener(fragmentTab));
+				actionBar.addTab(tab);
+			}
+		} catch (IOException e) {
+			Log.e("Gamebook", "", e);
+		}
+		
 	}
+	@Override
+	public void onBackPressed() {
+	    super.onBackPressed();
+	    overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+	}
+		public void play(View view) {
+			Intent intent = new Intent(view.getContext(), PlaygroundActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putInt("character", selectedCharacter.getId());
+			bundle.putString("story", selectedCharacter.getStory().getXml());
+			intent.putExtras(bundle);
+			startActivity(intent);
+		}
 
 	public class FragmentTab extends Fragment {
 
@@ -73,15 +83,15 @@ public class CharacterSelectionActivity extends Activity {
 			TextView attr = (TextView) view.findViewById(R.id.sel_attr_health);
 			attr.setText(String.valueOf(_character.getStats().getHealth()));
 
-			attr = (TextView) view.findViewById(R.id.sel_attr_attack);
-			attr.setText(String.valueOf(_character.getStats().getAttack()));
+			attr = (TextView) view.findViewById(R.id.sel_attr_luck);
+			attr.setText(String.valueOf(_character.getStats().getLuck()));
 
 			attr = (TextView) view.findViewById(R.id.sel_attr_defense);
 			attr.setText(String.valueOf(_character.getStats().getDefense()));
 
 			attr = (TextView) view.findViewById(R.id.sel_attr_skill);
 			attr.setText(String.valueOf(_character.getStats().getSkill()));
-
+			
 			TextView textview = (TextView) view
 					.findViewById(R.id.sel_char_description);
 			textview.setText(_character.getDescription());

@@ -5,24 +5,59 @@
     <string name="button_new">Nová hra</string>
     <string name="button_load">Nahrát hru</string>
     <string name="button_play">Hrát</string>
+    <string name="button_endGame_lose">Prohra</string>
+    <string name="button_endGame_win">Vítězství</string>
+    
+    <string name="button_fight">Bojovat</string>
+    
     <string name="title_activity_main">Main</string>
     <string name="title_activity_character_selection">Select character</string>
     <string name="action_settings">Settings</string>
 
+    <string name="begin_fight">Začít boj</string>
+    <string name="you_obtain">Získáváš:</string>
+    <string name="description">Popis:</string>
+    <string name="battle_log">Battle log:</string>
+    <string name="options">Možnosti:</string>
+    <string name="separator">/</string>
+    
+    <string name="attributes">Atributy:</string>
+   
     <!-- characters attributes -->
     <string name="attr_value_zero">0</string>
     <string name="attr_health">Zdraví</string>
+    <string name="attr_luck">Štěstí</string>
     <string name="attr_attack">Útok</string>
     <string name="attr_defense">Obrana</string>
     <string name="attr_skill">Dovednost</string>
-    <string name="dsc_default">Some description </string>
+    <string name="dsc_default">Default</string>
     <string name="title_activity_story_selection">StorySelectionActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_playground">PlaygroundActivity</string>
     
     <!-- Playground tab -->
     <string name="character">Postava</string>
+    <string name="fight">Boj</string>
     <string name="story">Příběh</string>
+    <string name="sg_continue">Pokračovat</string>
     
+    <!-- default fighting messages -->
+    <string name="fight_withdamage">Nepřítel tě zranil, ale úspěšně jsi ho zdolal.</string>
+    <string name="fight_withoutdamage">Nepřítel nedokázal projít přes tvoji úžasnou obranu.</string>
+    <string name="fight_lose">Nepřítel tě zabil, tvůj příběh zde končí v kaluži tvé vlastní krve.</string>
+    <string name="fight_skill">Nepřítele jsi zrušil ještě dřív, než zjistil co se vlastně děje.</string>
+    <string name="fight_luck">Nepřítel z ničeho nic upadl na zem a rozbil si hlavu.</string>
+    
+    
+    <string name="fight_luck_section">Naprosto nenápadně jsi se proplížil mezi nepřátely a vyhnul jsi se tak boji.</string>
+    <string name="game_over_section">Zničeho nic padáš na zem, v hlavě ti probíhají poslední myšlenky a .... umíráš.</string>
+    
+    
+    <string name="fight_error">No message founded</string>
+    <string name="fight_error_attr">(A)</string>
+    
+    <string name="fight_aspect_health">(Zdraví)</string>
+    <string name="fight_aspect_defense">(Obrana)</string>
+    <string name="fight_aspect_skill">(Dovednost)</string>
+    <string name="fight_aspect_luck">(Štěstí)</string>
     
 </resources>

@@ -4,11 +4,24 @@
     <string name="story_zombie_apocalypse">Zombie apocalypsa</string>
 
     <!-- Characters -->
-    <string name="ch_soldier">Voják</string>
-	<string name="dsc_soldier">Voják je .....</string>
+    <string name="s1_ch_soldier">Voják</string>
+	<string name="s1_dsc_soldier">Voják je .....</string>
 	
-	<string name="ch_homeless">Bezdomovec</string>
-	<string name="dsc_homeless">Bezdomovec je .....</string>
+	<string name="s1_ch_homeless">Bezdomovec</string>
+	<string name="s1_dsc_homeless">Bezdomovec je .....</string>
 	
-	<string name="section_test">Část příběhu</string>
+	<!-- Section  strings-->
+	<string name="s1_section1">Část příběhu</string>
+	<string name="s1_section1_option1">Doleva</string>
+	<string name="s1_section1_option2">Doprava</string>
+	
+	<string name="s1_section2">Druhá Část příběhu</string>
+	<string name="s1_section2_endGame">Jupíííííí vzhrál jsi.</string>
+	
+	<string name="s1_section3">No tak to tohle bude tuhej boj.</string>
+	<string name="s1_section3_cleared">Koukas jak jsi to tu pekne vykosil.</string>
+	
+	<!-- nepřátelé -->
+	<string name="s1_enemy_zombie">Zombík</string>
+	
 </resources>
