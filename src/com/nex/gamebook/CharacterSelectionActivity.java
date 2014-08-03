@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.character.Character;
+import com.nex.gamebook.entity.character.Stats;
 import com.nex.gamebook.playground.PlaygroundActivity;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
@@ -84,7 +85,7 @@ public class CharacterSelectionActivity extends Activity {
 			attr.setText(String.valueOf(_character.getStats().getHealth()));
 
 			attr = (TextView) view.findViewById(R.id.sel_attr_luck);
-			attr.setText(String.valueOf(_character.getStats().getLuck()));
+			attr.setText(String.valueOf(_character.getStats().getLuck()) + " ("+_character.getStats().getLuckPercentage() + "%)");
 
 			attr = (TextView) view.findViewById(R.id.sel_attr_defense);
 			attr.setText(String.valueOf(_character.getStats().getDefense()));

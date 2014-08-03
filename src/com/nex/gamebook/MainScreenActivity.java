@@ -29,4 +29,9 @@ public class MainScreenActivity extends Activity {
 		Intent intent = new Intent(this, StorySelectionActivity.class);
 		startActivity(intent);
 	}
+	
+	public void loadGame(View view) {
+		Intent intent = new Intent(this, LoadGameActivity.class);
+		startActivity(intent);
+	}
 }

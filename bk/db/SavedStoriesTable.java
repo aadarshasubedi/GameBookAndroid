@@ -3,12 +3,12 @@ package com.nex.gamebook.db;
 import com.nex.gamebook.entity.character.story1.Homeless;
 import com.nex.gamebook.entity.character.story1.Soldier;
 
-public interface CharacterTable extends TableDataSource<com.nex.gamebook.entity.character.Character>{
-	String TABLE = "characters";
+public interface SavedStoriesTable {
+	String TABLE = "saved_stories";
 	String ID = "id";
-	String CLASS = "class";
-	String HEALTH = "health";
-	String ATTACK = "damage";
+	String CLASS = "story_xml";
+	String HEALTH = "character_id";
+	String ATTACK = "health";
 	String DEFENSE = "defense";
 	String SKILL = "skill";
 	String STORY_ID = "story_id";

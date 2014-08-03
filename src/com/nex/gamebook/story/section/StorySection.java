@@ -1,5 +1,6 @@
 package com.nex.gamebook.story.section;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,17 +12,21 @@ import com.nex.gamebook.story.Bonus.BonusState;
 import com.nex.gamebook.story.Enemy;
 import com.nex.gamebook.story.StorySectionOption;
 
-public class StorySection {
-
-	private int text;
-	private int enemiesDefeatedText;
+public class StorySection implements Serializable {
 	
+	private int text;
+	private int alreadyVisitedText;
+	private int enemiesDefeatedText;
+
+	private int unreturnableSection = -1;
+
 	private boolean bonusesAlreadyGained;
 	private boolean enemiesAlreadyKilled;
 	private boolean endGame;
 	private boolean completed;
 	private boolean visited;
-	private boolean hasLuck = false;
+	private boolean hasLuck;
+	private boolean luckDefeatEnemies;
 	private int luckText = R.string.fight_luck_section;
 	private int gameOverText = R.string.game_over_section;
 
@@ -150,6 +155,30 @@ public class StorySection {
 
 	public void setGameOverText(int gameOverText) {
 		this.gameOverText = gameOverText;
+	}
+
+	public boolean isLuckDefeatEnemies() {
+		return luckDefeatEnemies;
+	}
+
+	public void setLuckDefeatEnemies(boolean luckDefeatEnemies) {
+		this.luckDefeatEnemies = luckDefeatEnemies;
+	}
+
+	public int getAlreadyVisitedText() {
+		return alreadyVisitedText;
+	}
+
+	public void setAlreadyVisitedText(int alreadyVisitedText) {
+		this.alreadyVisitedText = alreadyVisitedText;
+	}
+
+	public int getUnreturnableSection() {
+		return unreturnableSection;
+	}
+
+	public void setUnreturnableSection(int unreturnableSection) {
+		this.unreturnableSection = unreturnableSection;
 	}
 
 }

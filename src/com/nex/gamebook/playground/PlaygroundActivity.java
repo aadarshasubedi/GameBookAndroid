@@ -1,7 +1,5 @@
 package com.nex.gamebook.playground;
 
-import java.io.IOException;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -18,6 +16,7 @@ import com.nex.gamebook.R;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.character.Character;
 import com.nex.gamebook.entity.character.Stats;
+import com.nex.gamebook.entity.io.IOGameOperation;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.story.section.StorySection;
 
@@ -33,16 +32,12 @@ public class PlaygroundActivity extends Activity {
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		StoryXmlParser parser = new StoryXmlParser(this);
+		
 
 		try {
-			Story story = parser.loadStory(
-					getIntent().getExtras().getString("story"), true);
-			Character character = story.getCharacter(getIntent().getExtras()
-					.getInt("character"));
-			load(character);
+			Character character = load();
 
-			setTitle(story.getName());
+			setTitle(character.getStory().getName());
 			setContentView(R.layout.activity_character_selection);
 
 			characterFragment = new PlaygroundBattleLogCharacterTab(character, this);
@@ -61,19 +56,23 @@ public class PlaygroundActivity extends Activity {
 			actionBar.addTab(storyTab);
 			storyTab.select();
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Log.e("GameBook", "", e);
 		}
 
 	}
 
-	private void load(Character character) {
-		Long saveId = getIntent().getExtras().getLong("saveId");
-		character.setCurrentStats(new Stats(character.getStats()));
-		// load game state from dabase
-		if (saveId > 0) {
-
+	private Character load() throws Exception {
+		
+		String loadedGame = getIntent().getExtras().getString("load_game");
+		if(loadedGame!=null && !"".equals(loadedGame)) {
+			return IOGameOperation.loadCharacter(this, loadedGame);
 		}
+		StoryXmlParser parser = new StoryXmlParser(this);
+		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
+		Character character = story.getCharacter(getIntent().getExtras().getInt("character"));
+		character.setCurrentStats(new Stats(character.getStats()));
+		return character;
 	}
 
 	@Override

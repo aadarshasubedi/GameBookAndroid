@@ -1,6 +1,8 @@
 package com.nex.gamebook.entity.character;
 
-public class Stats {
+import java.io.Serializable;
+
+public class Stats implements Serializable {
 	private int health;
 	private int defense;
 	private int skill;
@@ -45,7 +47,14 @@ public class Stats {
 	}
 
 	public void setLuck(int luck) {
+		if(luck > Character.MAX_LUCK_OF_CHARACTER) luck = Character.MAX_LUCK_OF_CHARACTER;
 		this.luck = luck;
 	}
-
+	public int getLuckPercentage() {
+		return Stats.getLuckPercentage(luck);
+	}
+	public static int getLuckPercentage(int luck) {
+		float res = ((float)luck/(float)Character.TOTAL_LUCK_FOR_CALC);
+		return (int) (res * 100);
+	}
 }

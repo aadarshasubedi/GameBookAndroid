@@ -4,6 +4,7 @@
     <color name="text_color">#7b7b7b</color>
     <color name="gameover_color">#ac2222</color>
     <color name="options_color">#aaaaaa</color>
+    <color name="options_color_disabled">#bababa</color>
     <color name="anchor_color">#000000</color>
     <color name="line_color">#000000</color>
     <color name="line_light_color">#aaaaaa</color>

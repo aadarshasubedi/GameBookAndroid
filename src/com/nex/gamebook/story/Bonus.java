@@ -1,9 +1,11 @@
 package com.nex.gamebook.story;
 
+import java.io.Serializable;
+
 import com.nex.gamebook.R;
 
-public class Bonus {
-	public enum BonusState {
+public class Bonus implements Serializable {
+	public enum BonusState implements Serializable {
 		BEFORE_FIGHT, AFTER_FIGHT, NORMAL;
 
 		public static BonusState getStateByString(String s) {
@@ -14,7 +16,7 @@ public class Bonus {
 		}
 	}
 
-	public enum BonusType {
+	public enum BonusType implements Serializable {
 		HEALTH(R.string.attr_health), LUCK(R.string.attr_luck), SKILL(
 				R.string.attr_skill), DEFENSE(R.string.attr_defense);
 		public int text;

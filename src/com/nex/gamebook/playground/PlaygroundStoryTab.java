@@ -6,19 +6,20 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.character.Character;
+import com.nex.gamebook.entity.io.IOGameOperation;
 import com.nex.gamebook.story.Bonus;
 import com.nex.gamebook.story.Bonus.BonusState;
 import com.nex.gamebook.story.StorySectionOption;
@@ -26,7 +27,9 @@ import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundStoryTab extends AbstractFragment {
 	private Character _character;
+	private boolean tabClick;
 	private boolean showOptions = true;
+	private boolean alertUnreturnableOptions = false;
 	private PlaygroundActivity activity;
 	public PlaygroundStoryTab(Character ch, PlaygroundActivity activity) {
 		this._character = ch;
@@ -48,7 +51,9 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		if(currentSection.isEnemiesAlreadyKilled()) {
 			tw.setText(currentSection.getEnemiesDefeatedText());
 		} else if(currentSection.isHasLuck()){
-			tw.setText(currentSection.getLuckText());	
+			tw.setText(currentSection.getLuckText());
+		} else if(currentSection.isVisited()){
+			tw.setText(currentSection.getAlreadyVisitedText());	
 		} else {
 			tw.setText(currentSection.getText());	
 		}
@@ -59,11 +64,12 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		}
 		if(_character.isDefeated()) {
 			showGameOver(view.getContext(), view.findViewById(R.id.playground_story), currentSection);
-		} else if(currentSection.isEndGame()){
+		} else if(currentSection.isEndGame()) {
 			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.button_endGame_win);
 		} else if(showOptions) {
 			prepareChooseSection(view.getContext(), layout, currentSection);
 		}
+		tabClick = true;
 	}
 	
 	private void prepareBonusSection(Context context, LinearLayout layout, StorySection section, List<Bonus> bonuses) {
@@ -126,11 +132,33 @@ public class PlaygroundStoryTab extends AbstractFragment {
 	
 	private void prepareChooseSection(Context context, LinearLayout layout, StorySection section) {
 		for(StorySectionOption option: section.getOptions()) {
-			if(!_character.canShowOption(option)) continue;
+			String text = context.getResources().getString(option.getText());
+			if(!this.tabClick) {
+				_character.setCanShowOption(option);
+			}
+			if(!option.isDisplayed()) {
+				continue;
+			}
+			if(option.getSection() == section.getUnreturnableSection() && alertUnreturnableOptions) {
+				text += " " + context.getResources().getString(R.string.option_cant_return);
+			}
+			if(option.isBothAspects()) {
+				text += " " + context.getResources().getString(R.string.fight_aspect_luck) + "" + context.getResources().getString(R.string.fight_aspect_skill);
+			} else if(option.isLuckAspect()) {
+				text += " " + context.getResources().getString(R.string.fight_aspect_luck);
+			} else if(option.getSkill() > 0) {
+				text += " " + context.getResources().getString(R.string.fight_aspect_skill);
+			}
 			TextView opt = new TextView(context);
-			decoreClickableTextView(context, opt, option.getText());
-			opt.setOnClickListener(new OptionClickListener(option, section));
+			
+			if(option.isDisabled()) {
+				decoreClickableDisabledTextView(context, opt, text + " " + context.getResources().getString(R.string.option_disabled));
+			} else {
+				decoreClickableTextView(context, opt, text);
+				opt.setOnClickListener(new OptionClickListener(option, section));
+			}
 			layout.addView(opt);
+			option.setAlreadyDisplayed(true);
 		}
 	}
 	private void showGameOver(Context context, View parent, StorySection section) {
@@ -164,11 +192,23 @@ public class PlaygroundStoryTab extends AbstractFragment {
 
 		@Override
 		public void onClick(View v) {
+			tabClick = false;
 			this.section.setCompleted(true);
 			this.section.setVisited(true);
 			this.section.setHasLuck(false);
+			option.setDisabled(option.isDisableWhenSelected());
+			int sectionId = _character.getPosition();
 			PlaygroundStoryTab.this._character.setPosition(option.getSection());
 			PlaygroundStoryTab.this.refresh();
+			StorySection nextSection = _character.getStory().getSection(_character.getPosition());
+			if(option.isDisabled()) {
+				nextSection.setUnreturnableSection(sectionId);
+			}
+			try {
+				IOGameOperation.saveCharacter(v.getContext(), PlaygroundStoryTab.this._character);
+			} catch (Exception e) {
+				Log.e("GameBookSaver", "", e);
+			}
 		}
 		
 	}

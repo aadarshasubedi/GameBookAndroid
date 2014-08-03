@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.character.Character;
-public class CharactersDatasource implements CharacterTable {
+public class CharactersDatasource implements SavedStoriesTable {
 //	  // Database fields
 //	  private SQLiteDatabase database;
 //	  private GameBookSqlHelper dbHelper;

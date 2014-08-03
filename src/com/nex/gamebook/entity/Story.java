@@ -1,5 +1,6 @@
 package com.nex.gamebook.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Map;
 import com.nex.gamebook.entity.character.Character;
 import com.nex.gamebook.story.section.StorySection;
 
-public class Story implements Entity {
+public class Story implements Serializable {
 	private String xml;
 	private int name;
 	private long id;

@@ -33,6 +33,9 @@ public class StoryXmlParser {
 	private final String CHARACTER = "character";
 	private final String SECTION = "section";
 	private final String TEXT = "text";
+	private final String ALREADY_VISITED_TEXT = "alreadyVisitedText";
+	private final String INCLUDE = "include";
+	
 	private final String STORY = "story";
 	
 	private final String OPTIONS = "options";
@@ -40,6 +43,8 @@ public class StoryXmlParser {
 	private final String BONUSES = "bonuses";
 	private final String FIGHT_LUCK_TEXT_SECTION = "luckText";
 	private final String GAMEOVER_SECTION = "gameOverText";
+	private final String LUCK_DEFEAT_ENEMIES = "luckDefeatEnemies";
+	private final String DISABLE_WHEN_SELECTED = "disableWhenSelected";
 	
 	private final String POSITION = "position";
 	
@@ -48,6 +53,8 @@ public class StoryXmlParser {
 	private final String DEFENSE = "defense";
 	private final String SKILL = "skill";
 	private final String LUCK = "luck";
+	
+	private final String LUCK_ASPECT = "luckAspect";
 	
 	private final String NAME = "name";
 	private final String DESCRIPTION = "description";
@@ -96,8 +103,16 @@ public class StoryXmlParser {
 		}
 		return stories;
 	}
-	
 	public Story loadStory(String xml, boolean fully) throws IOException {
+		return loadStory(xml, fully, fully);
+	}
+	public Story loadStory(String xml, boolean sections, boolean characters) throws IOException {
+		Story story = new Story();
+		story.setXml(xml);
+		loadStory(story, xml, sections, characters);
+		return story;
+	}
+	private void loadStory(Story story, String xml, boolean sections, boolean characters) throws IOException {
 		InputStream stream = null;
 		try {
 			stream = context.getAssets().open(xml);
@@ -107,13 +122,11 @@ public class StoryXmlParser {
 				Node node = nList.item(temp);
 				if(node instanceof Element) {
 					Element el = (Element) node;
-					Story story = new Story();
-					story.setXml(xml);
-					story.setName(getIdentifier(el.getAttribute(NAME)));
-					if(fully) {
-						initializeStory(story);
-					}
-					return story;
+					include(story, el, sections, characters);
+					NodeList nameElement = el.getElementsByTagName(NAME);
+					if(nameElement.getLength() > 0)
+					story.setName(getIdentifier(nameElement.item(0).getTextContent()));
+					initializeStory(story, xml, sections, characters);
 				}
 			}			
 		} catch (Exception e) {
@@ -123,31 +136,28 @@ public class StoryXmlParser {
 				stream.close();
 			}
 		}
-		return null;
 	}
-	
-	public void initializeStory(Story story) throws IOException {
-
+	private void include(Story story, Element el, boolean sections, boolean characters) throws IOException {
+		NodeList includes = el.getElementsByTagName(INCLUDE);
+		for(int i=0; i < includes.getLength(); i++) {
+			Node node = includes.item(i);
+			if(node instanceof Element) {
+				String includeXml = ((Element)node).getAttribute(NAME);
+				loadStory(story, includeXml, sections, characters);
+			}
+			
+		}
+	}
+	public void initializeStory(Story story, String xml, boolean sections, boolean characters) throws IOException {
+		if(!sections && !characters) return;
 		InputStream stream = null;
 		try {
-			stream = context.getAssets().open(story.getXml());
+			stream = context.getAssets().open(xml);
 			Document document = getDocument(stream);
-			NodeList nList = document.getElementsByTagName(SECTION);
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node node = nList.item(temp);
-				if(node instanceof Element) {
-					Element el = (Element) node;
-					loadSection(story, el);
-				}
-			}
-			nList = document.getElementsByTagName(CHARACTER);
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node node = nList.item(temp);
-				if(node instanceof Element) {
-					Element el = (Element) node;
-					loadCharacter(story, el);
-				}
-			}			
+			if(sections)
+			loadSections(document, story);
+			if(characters)
+			loadCharacters(document, story);
 		} catch (Exception e) {
 			Log.e("GameBookStoryParser", e.getMessage(), e);
 		} finally {
@@ -156,7 +166,30 @@ public class StoryXmlParser {
 			}
 		}
 	}
-
+	
+	private void loadSections(Document document, Story story) throws Exception {
+		
+		NodeList nList = document.getElementsByTagName(SECTION);
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node node = nList.item(temp);
+			if(node instanceof Element) {
+				Element el = (Element) node;
+				loadSection(story, el);
+			}
+		}
+	}
+	
+	private void loadCharacters(Document document, Story story) throws Exception {
+		NodeList nList = document.getElementsByTagName(CHARACTER);
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node node = nList.item(temp);
+			if(node instanceof Element) {
+				Element el = (Element) node;
+				loadCharacter(story, el);
+			}
+		}			
+	}
+	
 	// Returns the entire XML document
 	public Document getDocument(InputStream inputStream) {
 		Document document = null;
@@ -212,6 +245,9 @@ public class StoryXmlParser {
 		section.setEndGame(getBoolean(element.getAttribute("endgame")));
 		int text = getIdentifier(element.getAttribute(TEXT));
 		section.setText(text);
+		section.setAlreadyVisitedText(text);
+		int alreadyVisitedText = getIdentifier(element.getAttribute(ALREADY_VISITED_TEXT));
+		if(alreadyVisitedText > 0) section.setAlreadyVisitedText(alreadyVisitedText);
 		
 		int enemiesDefeatedText = getIdentifier(element.getAttribute("enemiesDefeatedText"));
 		int luckText = getIdentifier(element.getAttribute(FIGHT_LUCK_TEXT_SECTION));
@@ -219,7 +255,7 @@ public class StoryXmlParser {
 		
 		int gameOverText = getIdentifier(element.getAttribute(GAMEOVER_SECTION));
 		if(gameOverText > 0) section.setGameOverText(gameOverText);
-		
+		section.setLuckDefeatEnemies(getBoolean(element.getAttribute(LUCK_DEFEAT_ENEMIES)));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
@@ -299,8 +335,10 @@ public class StoryXmlParser {
 				Element optionNode = (Element) n;
 				StorySectionOption option = new StorySectionOption();
 				option.setSection(getInteger(optionNode.getAttribute(SECTION)));
+				option.setDisableWhenSelected(getBoolean(optionNode.getAttribute(DISABLE_WHEN_SELECTED)));
 				option.setText(getIdentifier(optionNode.getAttribute(TEXT)));
 				option.setSkill(getInteger(optionNode.getAttribute(SKILL)));
+				option.setLuckAspect(getBoolean(optionNode.getAttribute(LUCK_ASPECT)));
 				section.getOptions().add(option);
 			}
 		}

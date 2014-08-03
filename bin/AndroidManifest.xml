@@ -32,8 +32,12 @@
             android:label="@string/title_activity_story_selection" >
         </activity>
         <activity
-            android:name="com.nex.gamebook.playground.PlaygroundActivity"
+            android:name=".playground.PlaygroundActivity"
             android:label="@string/title_activity_playground" >
+        </activity>
+        <activity
+            android:name=".LoadGameActivity"
+            android:label="@string/title_activity_load_game" >
         </activity>
     </application>
 

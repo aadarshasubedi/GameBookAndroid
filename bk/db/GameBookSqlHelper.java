@@ -28,8 +28,8 @@ public class GameBookSqlHelper extends SQLiteOpenHelper {
 	}
 	
 	private void createCharacters(SQLiteDatabase database) {
-		database.execSQL(CharacterTable.CREATE_SQL);
-		for (String sql : CharacterTable.data) {
+		database.execSQL(SavedStoriesTable.CREATE_SQL);
+		for (String sql : SavedStoriesTable.data) {
 			database.execSQL(sql);
 		}
 	}
@@ -39,7 +39,7 @@ public class GameBookSqlHelper extends SQLiteOpenHelper {
 		Log.w(GameBookSqlHelper.class.getName(),
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
-		db.execSQL("DROP TABLE IF EXISTS "+CharacterTable.TABLE);
+		db.execSQL("DROP TABLE IF EXISTS "+SavedStoriesTable.TABLE);
 		db.execSQL("DROP TABLE IF EXISTS "+StoryTable.TABLE);
 		onCreate(db);
 	}

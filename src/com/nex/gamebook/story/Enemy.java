@@ -1,9 +1,11 @@
 package com.nex.gamebook.story;
 
+import java.io.Serializable;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.entity.character.Character;
 
-public class Enemy {
+public class Enemy implements Serializable {
 
 	private int attack;
 	private int skill;
