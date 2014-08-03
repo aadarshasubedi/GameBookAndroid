@@ -78,7 +78,7 @@ public class LoadGameActivity extends Activity {
 				Character character = story.getCharacter(Integer.valueOf(charId));
 				storyName.setText(story.getName());
 				characterName.setText(character.getName());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				Log.e("GameBookLoadActivity", "", e);
 			}
 			rowView.setOnClickListener(new View.OnClickListener() {

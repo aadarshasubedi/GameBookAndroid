@@ -79,7 +79,7 @@
         <!-- SECTION 11 -->
         <section position="11" text="@string/story1_section11_text">
             <bonuses>
-                <bonus type="defense" value="1  " overflowed="true" />
+                <bonus type="defense" value="1" overflowed="true" />
             </bonuses>
             <options>
                 <option section="10" text="@string/story1_section11_option1_text" />

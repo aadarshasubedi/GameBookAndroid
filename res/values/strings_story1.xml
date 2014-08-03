@@ -175,12 +175,12 @@
     <string name="story1_section12_option1_text">Vydáš se vstříc nebezpečí a třeba dojdeš do nějaké poslední lidské bašty.</string>
     
     <!-- homeless story sections -->
-    <string name="">
+    <string name="aa">
         Vystupuješ z luxusní limuzíny, na sobě máš náhrdelník ze zlata a diamantů a všichni kolem tebe padají úžasem.
         Najednou se s tebou začne třást zem a ty padáš na zem a tvůj osobní strážce běží rychle za tebou a ptá se tě &#8221;Pane jste v pořádku?&#8221;.
         Poté se probudíš ze sna a vidíš nad sebou vojáka. Naštvaně mu odpovíš &#8221;Cože? Nech mě spát!&#8221; a snažíš se zase usnout, ale voják na tebe stále mluví a říká něco o nebezpečí a o pozoru.
         Po chvilce ticha si říkáš co to mělo znamenat, tak vstáváš ze země, ale vojáka už nikde nevidíš.
         Rozhlídneš se kolem a vidíš temnou ulici do které zřejmě šel ten voják, ale tam ty se neodvážíš a radši půjdeš jinudy. Skrz svoji tajnou díru v plotě.
     </string>
-    <string name="">Projít tajnou dírou v plotě.</string>
+    <string name="aaa">Projít tajnou dírou v plotě.</string>
 </resources>

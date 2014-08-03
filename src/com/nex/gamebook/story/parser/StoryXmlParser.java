@@ -103,16 +103,16 @@ public class StoryXmlParser {
 		}
 		return stories;
 	}
-	public Story loadStory(String xml, boolean fully) throws IOException {
+	public Story loadStory(String xml, boolean fully) throws Exception {
 		return loadStory(xml, fully, fully);
 	}
-	public Story loadStory(String xml, boolean sections, boolean characters) throws IOException {
+	public Story loadStory(String xml, boolean sections, boolean characters) throws Exception {
 		Story story = new Story();
 		story.setXml(xml);
 		loadStory(story, xml, sections, characters);
 		return story;
 	}
-	private void loadStory(Story story, String xml, boolean sections, boolean characters) throws IOException {
+	private void loadStory(Story story, String xml, boolean sections, boolean characters) throws Exception {
 		InputStream stream = null;
 		try {
 			stream = context.getAssets().open(xml);
@@ -130,14 +130,14 @@ public class StoryXmlParser {
 				}
 			}			
 		} catch (Exception e) {
-			Log.e("GameBookStoryParser", e.getMessage(), e);
+			throw e;
 		} finally {
 			if (stream != null) {
 				stream.close();
 			}
 		}
 	}
-	private void include(Story story, Element el, boolean sections, boolean characters) throws IOException {
+	private void include(Story story, Element el, boolean sections, boolean characters) throws Exception {
 		NodeList includes = el.getElementsByTagName(INCLUDE);
 		for(int i=0; i < includes.getLength(); i++) {
 			Node node = includes.item(i);

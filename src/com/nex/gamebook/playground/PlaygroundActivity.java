@@ -149,6 +149,7 @@ public class PlaygroundActivity extends Activity {
 		getActionBar().addTab(getStoryTab());
 		getCharacterTab().setText(R.string.character);
 		getStoryTab().select();
+		getStoryFragment().setTabClick(false);
 	}
 
 }

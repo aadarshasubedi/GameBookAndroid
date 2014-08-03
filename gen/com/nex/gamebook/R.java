@@ -131,6 +131,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int story_selection=0x7f090002;
     }
     public static final class string {
+        /**  homeless story sections 
+         */
+        public static final int aa=0x7f070061;
+        public static final int aaa=0x7f070062;
         public static final int action_settings=0x7f070009;
         public static final int app_name=0x7f070000;
         public static final int attr_attack=0x7f070015;
@@ -193,6 +197,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int story1_e_livingdead=0x7f070039;
         public static final int story1_e_nohander=0x7f07003a;
+        public static final int story1_section10_option1_text=0x7f07005b;
+        public static final int story1_section10_option2_text=0x7f07005c;
+        /**  section 10
+         */
+        public static final int story1_section10_text=0x7f070059;
+        public static final int story1_section10_visited_text=0x7f07005a;
+        public static final int story1_section11_option1_text=0x7f07005e;
+        /**  section 11 
+         */
+        public static final int story1_section11_text=0x7f07005d;
+        public static final int story1_section12_option1_text=0x7f070060;
+        /**  section 12 
+         */
+        public static final int story1_section12_text=0x7f07005f;
         public static final int story1_section1_option1_text=0x7f07003d;
         public static final int story1_section1_option2_text=0x7f07003e;
         public static final int story1_section1_option3_text=0x7f07003f;
@@ -233,9 +251,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         /**  section 7 
          */
         public static final int story1_section7_text=0x7f070053;
+        public static final int story1_section8_option1_text=0x7f070055;
+        public static final int story1_section8_option2_text=0x7f070056;
         /**  section 8 
          */
         public static final int story1_section8_text=0x7f070054;
+        public static final int story1_section9_option1_text=0x7f070058;
+        /**  section 9 
+         */
+        public static final int story1_section9_text=0x7f070057;
         public static final int story_zombie_apocalypse=0x7f070030;
         public static final int title_activity_character_selection=0x7f070008;
         public static final int title_activity_load_game=0x7f07002e;

@@ -219,4 +219,8 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		ft.attach(this);
 		ft.commit();
 	}
+	
+	public void setTabClick(boolean tabClick) {
+		this.tabClick = tabClick;
+	}
 }

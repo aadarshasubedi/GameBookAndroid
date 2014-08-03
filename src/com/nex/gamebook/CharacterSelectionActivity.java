@@ -50,7 +50,7 @@ public class CharacterSelectionActivity extends Activity {
 				tab.setTabListener(new MyTabListener(fragmentTab));
 				actionBar.addTab(tab);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Log.e("Gamebook", "", e);
 		}
 		
