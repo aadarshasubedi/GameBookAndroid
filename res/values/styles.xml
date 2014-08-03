@@ -37,7 +37,7 @@
 
     <!-- style texts -->
     <style name="textview_story">
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/text_color</item>
     </style>
     <style name="textview_gameover">
@@ -61,7 +61,7 @@
 	</style>
     <style name="textview_options">
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/options_color</item>
     </style>
 

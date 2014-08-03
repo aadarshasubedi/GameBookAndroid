@@ -15,7 +15,7 @@ public class StorySection {
 
 	private int text;
 	private int enemiesDefeatedText;
-
+	
 	private boolean bonusesAlreadyGained;
 	private boolean enemiesAlreadyKilled;
 	private boolean endGame;

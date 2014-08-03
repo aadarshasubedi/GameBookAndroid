@@ -47,6 +47,8 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		StorySection currentSection = story.getSection(_character.getPosition());
 		if(currentSection.isEnemiesAlreadyKilled()) {
 			tw.setText(currentSection.getEnemiesDefeatedText());
+		} else if(currentSection.isHasLuck()){
+			tw.setText(currentSection.getLuckText());	
 		} else {
 			tw.setText(currentSection.getText());	
 		}

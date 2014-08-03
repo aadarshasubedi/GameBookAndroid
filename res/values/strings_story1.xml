@@ -1,27 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-
+    
     <string name="story_zombie_apocalypse">Zombie apocalypsa</string>
-
+    
     <!-- Characters -->
-    <string name="s1_ch_soldier">Voják</string>
-	<string name="s1_dsc_soldier">Voják je .....</string>
-	
-	<string name="s1_ch_homeless">Bezdomovec</string>
-	<string name="s1_dsc_homeless">Bezdomovec je .....</string>
-	
-	<!-- Section  strings-->
-	<string name="s1_section1">Část příběhu</string>
-	<string name="s1_section1_option1">Doleva</string>
-	<string name="s1_section1_option2">Doprava</string>
-	
-	<string name="s1_section2">Druhá Část příběhu</string>
-	<string name="s1_section2_endGame">Jupíííííí vzhrál jsi.</string>
-	
-	<string name="s1_section3">No tak to tohle bude tuhej boj.</string>
-	<string name="s1_section3_cleared">Koukas jak jsi to tu pekne vykosil.</string>
-	
-	<!-- nepřátelé -->
-	<string name="s1_enemy_zombie">Zombík</string>
-	
+    <string name="story1_ch_soldier">Voják</string>
+    <string name="story1_dsc_soldier">
+        Voják, ten který nikdy nespí, nejí, nekoupe se.
+        Má totiž pořád co napráci a jeho generál mu stále něco přikazuje. Avšak v den, kdy po něm generál chtěl jeho mozek, zjistil, že se něco změnilo. 
+        No ano, jeho generál je mrtvý a sápe se na něj řvouce &#8221;mozkyyyy&#8221;. 
+        Vojákovi nezbyde nic jiného než si navléct svoji nabušenou výstroj a vyrazit tam, kam slunce nesvítí.
+    </string>
+    
+    <string name="story1_ch_doctor">Doktor</string>
+    <string name="story1_dsc_doctor">
+        Doktor, to je ten pán co občas nechá oživit mrtvolu. 
+        No teď má kolem sebe mrtvol dostatek a to lačných po jeho mozku a mase. 
+        Vyzbrojen hromadou obvazů a různých doktorských serepetiček vyráží vstříc svému osudu.
+    </string>
+    
+    <string name="story1_ch_policeman">Policista</string>
+    <string name="story1_dsc_policeman">
+        Policista, to je strážce zákona, takže ztrestá každého kdo jej poruší.
+        No vlastně už není moc koho trestat, takže ztrestá každého zombíka, který bude pojídat mozek nějakého člověka, 
+        protože to je stále zločin. A to svojí naprosto dokonalou dovedností v zacházení s jeho mocným pendrekem.
+    </string>
+    
+    <string name="story1_ch_homeless">Bezdomovec</string>
+    <string name="story1_dsc_homeless">
+        Bezdomovec, taková ta osoba, která si občas vyškemrala pár peněz.
+        Většinou si ho nikdo ani nevšiml a často trpěl hlady, ale jeho vysoké štěstí ho dostalo až sem. Na pokraj vyhynutí lidstva.
+        Vlastně svým způsobem je taky tak trochu zombie po těch letech zevlování, žebrání a hladovění, takže pro něj se vlastně nic nezměnilo.
+    </string>
+    
+    <!-- Enemies -->
+    <string name="story1_e_livingdead">Živá mrtvola</string>
+    
+    <!-- Soldier story sections -->
+    <string name="story1_section1_text">
+        Ocitáš se před kasárnama. Je vlhký vzduch a nikde nikdo. Kolem tebe prolétl kus novin, chytáš ho a koukáš na něj.
+        Dočítáš se v něm, že jakýsi druh nějakého viru vyvinutý předníma špičkama v biochemii se dostal do světa. 
+        Zbytek novin chybí, takže nevýš jak moc se to rozšířilo, ale soudíš, že to zasáhlo již celý svět.
+        Rozhlížís a přemýšlíš kudy se vydáš.
+    </string>
+    <string name="story1_section1_option1_text">Na východě to vypadá docela klidně, ale v dáli to vypadá jako by tam něco blokovalo cestu.</string>
+    <string name="story1_section1_option2_text">Při pohledu na sever vidíš až na horizont a vypadalo to, že tam někdo proběhl.</string>
+    <string name="story1_section1_option3_text">Když se podíváš doprava, tak se ti tam moc nechce. Je tam nějaká temná ulička.</string>
+    
+    <!-- Soldier sections -->
+    <string name="story1_section2_text">
+        Dorazil jsi na konec ulice, rozhlížíš se a nikde nic nevidíš. V tom se najednou rozletí dveře za tebou. Ty se otočíš a vidíš, jak na tebe utočí živá mrtvola.
+    </string>
+    <string name="story1_section2_enemy_text">
+        Rozhlížíš se a vidíš mrtvolu před otevřenými dveřmi.
+    </string>
+    <string name="story1_section2_luck_text">
+       K tvému úžasu vyrazila živá mrtvola k protější zdi a začala mlátit hlavou o zeď.
+    </string>
+    <string name="story1_section2_option1_text">Půjdeš do budovy s otevřenými dveřmi.</string>
+    <string name="story1_section2_option2_text">Vrátíš se zpátky ke kasárnám.</string>
+    
 </resources>

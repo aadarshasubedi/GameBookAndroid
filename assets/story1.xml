@@ -1,57 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="file:/E:/develop/git/GameBook/assets/story.xsd"
-	name="@string/story_zombie_apocalypse">
-
-   	<characters>
-   	    <character position="3" id="1" name="@string/s1_ch_soldier" description="@string/s1_dsc_soldier">
-   	        <health>3</health>
-   	        <defense>4</defense>
-   	        <skill>2</skill>
-   	        <luck>2</luck>
-   	    </character>
-   	    <character position="4" id="2" name="@string/s1_ch_homeless" description="@string/s1_dsc_homeless">
-   	        <health>20</health>
-   	        <defense>2</defense>
-   	        <skill>4</skill>
-   	        <luck>2</luck>
-   	    </character>
-   	</characters>
-   	
-	<sections>
-	    <section position="1" text="@string/s1_section1">
-	        <options>
-	            <option section="2" text="@string/s1_section1_option1" skill="2" />
-	            <option section="2" text="@string/s1_section1_option2" />
-	        </options>
-	    </section>
-	
-	    <section position="2" text="@string/s1_section2_endGame" endgame="true" />
-	    
-	    <section position="3" text="@string/s1_section3" enemiesDefeatedText="@string/s1_section3_cleared" luckText="@string/fight_luck_section">
-	        <bonuses>
-	            <bonus type="defense" value="1" debuff="true" state="before_fight" />
-	            <bonus type="luck" value="3" overflowed="true" state="after_fight" />
-	        </bonuses>
-	        <enemies>
-	            <enemy attack="4" skill="5" name="@string/s1_enemy_zombie" />
-	            <enemy attack="2" skill="4" name="@string/s1_enemy_zombie" />
-	            <enemy attack="6" skill="2" name="@string/s1_enemy_zombie" />
-	            <enemy attack="6" skill="2" name="@string/s1_enemy_zombie" />
-	        </enemies>
-	        <options>
-	            <option section="2" text="@string/sg_continue"/>
-	        </options>
-	    </section>
-	    
-	    <section position="4" text="@string/s1_section2">
-	        <bonuses>
-	            <bonus type="health" value="20" debuff="true" overflowed="true" />
-	            <bonus type="luck" value="1" debuff="true"/>
-	        </bonuses>
-	        <options>
-	            <option section="1" text="@string/sg_continue"/>
-	        </options>
-	    </section>
+    xsi:noNamespaceSchemaLocation="../../GameBook/assets/template/story.xsd" name="@string/story_zombie_apocalypse">
+    <characters>
+        <character position="1" id="1" name="@string/story1_ch_soldier" description="@string/story1_dsc_soldier">
+            <health>20</health>
+            <defense>5</defense>
+            <skill>2</skill>
+            <luck>10</luck>
+        </character>
+        <character position="0" id="2" name="@string/story1_ch_doctor" description="@string/story1_dsc_doctor">
+            <health>35</health>
+            <defense>3</defense>
+            <skill>2</skill>
+            <luck>2</luck>
+        </character>
+        <character position="0" id="3" name="@string/story1_ch_policeman" description="@string/story1_dsc_policeman">
+            <health>20</health>
+            <defense>3</defense>
+            <skill>5</skill>
+            <luck>2</luck>
+        </character>
+        <character position="0" id="4" name="@string/story1_ch_homeless" description="@string/story1_dsc_homeless">
+            <health>25</health>
+            <defense>2</defense>
+            <skill>2</skill>
+            <luck>8</luck>
+        </character>
+    </characters>
+    <sections>
+        <section position="1" text="@string/story1_section1_text">
+            <options>
+                <option section="2" text="@string/story1_section1_option1_text"/>
+                <option section="3" text="@string/story1_section1_option2_text"/>
+                <option section="4" text="@string/story1_section1_option3_text"/>
+            </options>
+        </section>
+        <section position="2" text="@string/story1_section2_text" enemiesDefeatedText="@string/story1_section2_enemy_text" luckText="@string/story1_section2_luck_text">
+            <enemies>
+                <enemy attack="6" skill="2" name="@string/story1_e_livingdead" />
+            </enemies>
+            <options>
+                <option section="5" text="@string/story1_section2_option1_text"/>
+                <option section="1" text="@string/story1_section2_option2_text"/>
+            </options>
+        </section>
     </sections>
 </story>

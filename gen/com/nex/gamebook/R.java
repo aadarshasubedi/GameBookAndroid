@@ -165,27 +165,35 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int fight_withoutdamage=0x7f07001f;
         public static final int game_over_section=0x7f070024;
         public static final int options=0x7f07000e;
-        public static final int s1_ch_homeless=0x7f07002e;
-        /**  Characters 
-         */
-        public static final int s1_ch_soldier=0x7f07002c;
-        public static final int s1_dsc_homeless=0x7f07002f;
-        public static final int s1_dsc_soldier=0x7f07002d;
-        /**  nepřátelé 
-         */
-        public static final int s1_enemy_zombie=0x7f070037;
-        /**  Section  strings
-         */
-        public static final int s1_section1=0x7f070030;
-        public static final int s1_section1_option1=0x7f070031;
-        public static final int s1_section1_option2=0x7f070032;
-        public static final int s1_section2=0x7f070033;
-        public static final int s1_section2_endGame=0x7f070034;
-        public static final int s1_section3=0x7f070035;
-        public static final int s1_section3_cleared=0x7f070036;
         public static final int separator=0x7f07000f;
         public static final int sg_continue=0x7f07001d;
         public static final int story=0x7f07001c;
+        public static final int story1_ch_doctor=0x7f07002e;
+        public static final int story1_ch_homeless=0x7f070032;
+        public static final int story1_ch_policeman=0x7f070030;
+        /**  Characters 
+         */
+        public static final int story1_ch_soldier=0x7f07002c;
+        public static final int story1_dsc_doctor=0x7f07002f;
+        public static final int story1_dsc_homeless=0x7f070033;
+        public static final int story1_dsc_policeman=0x7f070031;
+        public static final int story1_dsc_soldier=0x7f07002d;
+        /**  Enemies 
+         */
+        public static final int story1_e_livingdead=0x7f070034;
+        public static final int story1_section1_option1_text=0x7f070036;
+        public static final int story1_section1_option2_text=0x7f070037;
+        public static final int story1_section1_option3_text=0x7f070038;
+        /**  Soldier story sections 
+         */
+        public static final int story1_section1_text=0x7f070035;
+        public static final int story1_section2_enemy_text=0x7f07003a;
+        public static final int story1_section2_luck_text=0x7f07003b;
+        public static final int story1_section2_option1_text=0x7f07003c;
+        public static final int story1_section2_option2_text=0x7f07003d;
+        /**  Soldier sections 
+         */
+        public static final int story1_section2_text=0x7f070039;
         public static final int story_zombie_apocalypse=0x7f07002b;
         public static final int title_activity_character_selection=0x7f070008;
         public static final int title_activity_main=0x7f070007;
