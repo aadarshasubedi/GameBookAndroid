@@ -11,6 +11,7 @@ import com.nex.gamebook.story.section.StorySection;
 public class Story implements Serializable {
 	private String xml;
 	private int name;
+	private int background;
 	private long id;
 	private Map<Integer, StorySection> sections = new HashMap<>();
 	private List<Character> characters = new ArrayList<Character>();
@@ -52,15 +53,25 @@ public class Story implements Serializable {
 	public void setName(int name) {
 		this.name = name;
 	}
+
 	public List<Character> getCharacters() {
 		return characters;
 	}
-	
+
 	public Character getCharacter(int id) {
-		for(Character ch: characters) {
-			if(ch.getId() == id) return ch;
+		for (Character ch : characters) {
+			if (ch.getId() == id)
+				return ch;
 		}
 		return null;
 	}
-	
+
+	public int getBackground() {
+		return background;
+	}
+
+	public void setBackground(int background) {
+		this.background = background;
+	}
+
 }

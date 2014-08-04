@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@drawable/shape" android:layout_margin="5dp">
+
+    <ViewAnimator
+        android:id="@+id/story_sel_animator"
+        android:layout_width="match_parent"
+        android:layout_height="98dp" android:background="@drawable/zombie">
+    </ViewAnimator>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" android:id="@+id/story_info" android:visibility="gone">
+
+        <TextView
+            android:id="@+id/storyName"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.10"
+            android:padding="5dp"
+            android:text="@string/dsc_default" style="@style/textview_story"/>
+
+        <TextView
+            android:id="@+id/storyDescription"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.10"
+            android:padding="5dp"
+            android:text="@string/dsc_default"  style="@style/textview_options"/>
+         <Button
+	        android:id="@+id/play_button"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/button_play" />
+    </LinearLayout>
+    
+</LinearLayout>

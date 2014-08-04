@@ -36,6 +36,8 @@ public class StoryXmlParser {
 	private final String ALREADY_VISITED_TEXT = "alreadyVisitedText";
 	private final String INCLUDE = "include";
 	
+	private final String BACKGROUND = "background";
+	
 	private final String STORY = "story";
 	
 	private final String OPTIONS = "options";
@@ -126,6 +128,9 @@ public class StoryXmlParser {
 					NodeList nameElement = el.getElementsByTagName(NAME);
 					if(nameElement.getLength() > 0)
 					story.setName(getIdentifier(nameElement.item(0).getTextContent()));
+					NodeList background = el.getElementsByTagName(BACKGROUND);
+					if(background.getLength() > 0)
+					story.setBackground(getIdentifier(background.item(0).getTextContent()));
 					initializeStory(story, xml, sections, characters);
 				}
 			}			

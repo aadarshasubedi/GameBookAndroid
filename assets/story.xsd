@@ -1,0 +1,275 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	attributeFormDefault="unqualified" elementFormDefault="qualified"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+	<xs:element name="story" type="storyType" />
+	<xs:simpleType name="bonusState">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="before_fight">
+				<xs:annotation>
+					<xs:documentation>
+						Bonus will be applied before fight.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="after_fight">
+				<xs:annotation>
+					<xs:documentation>
+						Bonus will be applied after fight.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="normal">
+				<xs:annotation>
+					<xs:documentation>
+						<html:p>Default value.</html:p>
+						<html:p>When section has enemies this bonus will be ignored.</html:p>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="attrType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="health" />
+			<xs:enumeration value="defense" />
+			<xs:enumeration value="luck" />
+			<xs:enumeration value="skill" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="androidString">
+		<xs:annotation>
+			<xs:documentation>
+				Text is android string reference and must have format "@string/([a-zA-Z0-9/_])*".
+				<html:p>Example:</html:p>
+				@string/name_of_string_in_android_strings_xml
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="@string/([a-zA-Z0-9/_])*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="characterType">
+		<xs:sequence>
+			<xs:element type="xs:int" name="health" />
+			<xs:element type="xs:int" name="defense" />
+			<xs:element type="xs:int" name="skill" />
+			<xs:element type="xs:int" name="luck" />
+		</xs:sequence>
+		<xs:attribute type="xs:int" name="position" use="required">
+			<xs:annotation>
+				<xs:documentation>Start section position of character
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:int" name="id" use="required" />
+		<xs:attribute type="androidString" name="name" use="required">
+			<xs:annotation>
+				<xs:documentation>Name of character</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="androidString" name="description" use="required">
+			<xs:annotation>
+				<xs:documentation>Description of character</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="charactersType">
+		<xs:sequence>
+			<xs:element type="characterType" name="character" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="includeType">
+		<xs:attribute type="xs:string" name="name" use="required" />
+	</xs:complexType>
+	<xs:complexType name="bonusType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute type="attrType" name="type" use="optional" />
+				<xs:attribute type="xs:int" name="value" use="optional" />
+				<xs:attribute type="xs:boolean" name="debuff" use="optional" >
+					<xs:annotation>
+						<xs:documentation>
+							This bonus has negative effect.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="bonusState" name="state" use="optional" >
+					<xs:annotation>
+						<xs:documentation>
+							Define when bonus will be aplied.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="xs:boolean" name="overflowed" use="optional" >
+					<xs:annotation>
+						<xs:documentation>
+							This bonus can overflow character default attribute.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="bonusesType">
+		<xs:sequence>
+			<xs:element type="bonusType" name="bonus" maxOccurs="unbounded"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="enemyType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute type="xs:int" name="attack" use="required" />
+				<xs:attribute type="xs:int" name="skill" use="required" />
+				<xs:attribute type="androidString" name="name" use="required" />
+				<xs:attribute type="androidString" name="fightWithoutDamageText"
+					use="optional">
+					<xs:annotation>
+						<xs:documentation>Text will shown when character's health is not
+							affected by enemy.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="androidString" name="fightWithDamageText"
+					use="optional">
+					<xs:annotation>
+						<xs:documentation>Text will shown when character's health is
+							affected by enemy.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="androidString" name="fightSkillText"
+					use="optional">
+					<xs:annotation>
+						<xs:documentation>Text will shown when character's skill is
+							greater then enemy skill.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="androidString" name="fightLoseText"
+					use="optional">
+					<xs:annotation>
+						<xs:documentation>Text will shown when character is defeated by
+							enemy.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="androidString" name="fightLuckText"
+					use="optional">
+					<xs:annotation>
+						<xs:documentation>Text will shown when character has luck in fight
+							with enemy.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="enemiesType">
+		<xs:sequence>
+			<xs:element type="enemyType" name="enemy" maxOccurs="unbounded"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="optionType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute type="xs:int" name="section" use="required">
+					<xs:annotation>
+						<xs:documentation>Position of next section.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="androidString" name="text" use="required">
+					<xs:annotation>
+						<xs:documentation>Text is android string reference and must have format "@string/text".</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="xs:boolean" name="disableWhenSelected" use="optional">
+					<xs:annotation>
+						<xs:documentation>
+							This option will be disabled when is selected. 
+							<html:p>(For example when player returns from "dangerous" section.)</html:p>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="xs:boolean" name="luckAspect" use="optional">
+					<xs:annotation>
+						<xs:documentation>This option will be displayed only when character has luck. </xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute type="xs:int" name="skill" use="optional">
+					<xs:annotation>
+						<xs:documentation>Required skill of character for display this option. </xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="optionsType">
+		<xs:sequence>
+			<xs:element type="optionType" name="option" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="sectionType" mixed="true">
+		<xs:sequence>
+			<xs:element type="bonusesType" name="bonuses" minOccurs="0" />
+			<xs:element type="enemiesType" name="enemies" minOccurs="0" />
+			<xs:element type="optionsType" name="options" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute type="xs:int" name="position" use="required" />
+		<xs:attribute type="androidString" name="alreadyVisitedText" use="optional">
+			<xs:annotation>
+				<xs:documentation>Text will be displayed when player already visited section. Default value is standard text.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="androidString" name="text" use="required">
+			<xs:annotation>
+				<xs:documentation>Part of text of story.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:boolean" name="luckDefeatEnemies" use="optional">
+			<xs:annotation>
+				<xs:documentation>If player has luck, then enemies are defeated.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="androidString" name="enemiesDefeatedText"
+			use="optional">
+			<xs:annotation>
+				<xs:documentation>Text will shown when player defeated all enemies
+					(this is required when enemies are defined).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="androidString" name="luckText" use="optional">
+			<xs:annotation>
+				<xs:documentation>Text will shown when player has luck and avoid combat.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:boolean" name="endGame" use="optional">
+			<xs:annotation>
+				<xs:documentation>Indicates this is end of game (last section).
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="sectionsType">
+		<xs:sequence>
+			<xs:element type="sectionType" name="section" maxOccurs="unbounded" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Section of story</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="storyType">
+		<xs:sequence>
+			<xs:element type="androidString" name="name" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name of story</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element type="includeType" name="include" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:element type="charactersType" name="characters"  minOccurs="0"/>
+			<xs:element type="sectionsType" name="sections"  minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>
