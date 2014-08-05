@@ -55,7 +55,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/attr_value_zero" />
-
+			<TextView
+                android:id="@+id/space"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/plaground_name_attack"
                 style="@style/textview_attrName"
@@ -124,7 +127,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/attr_value_zero" />
-            
+            <TextView
+                android:id="@+id/percSkill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/plaground_name_defense"
                 style="@style/textview_attrName"
@@ -191,6 +197,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/attr_value_zero" />
+            <TextView
+                android:id="@+id/percLuck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </TableRow>
     </TableLayout>
 

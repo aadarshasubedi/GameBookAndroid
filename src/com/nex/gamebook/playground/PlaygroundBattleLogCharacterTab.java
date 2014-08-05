@@ -63,17 +63,20 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 		attr.setText(String.valueOf(_character.getStats().getHealth()));
 
 		attr = (TextView) view.findViewById(R.id.playground_def_luck);
-		attr.setText(String.valueOf(_character.getStats().getLuck())
-				+ " ("
-				+ _character.getCurrentStats().getLuckPercentage()
-				+ "%)");
+		attr.setText(String.valueOf(_character.getStats().getLuck()));
 
 		attr = (TextView) view.findViewById(R.id.playground_def_skill);
-		attr.setText(String.valueOf(_character.getStats().getSkill())
-				+ " ("
+		attr.setText(String.valueOf(_character.getStats().getSkill()));
+
+		attr = (TextView) view.findViewById(R.id.percSkill);
+		attr.setText(" ("
 				+ _character.getCurrentStats().getSkillPercentage()
 				+ "%)");
-
+		attr = (TextView) view.findViewById(R.id.percLuck);
+		attr.setText(" ("
+				+ _character.getCurrentStats().getLuckPercentage()
+				+ "%)");
+		
 		attr = (TextView) view.findViewById(R.id.playground_def_defense);
 		attr.setText(String.valueOf(_character.getStats().getDefense()));
 

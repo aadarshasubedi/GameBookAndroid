@@ -6,7 +6,7 @@
     <color name="options_color">#aaaaaa</color>
     <color name="options_color_disabled">#bababa</color>
     <color name="anchor_color">#000000</color>
-    <color name="line_color">#000000</color>
+    <color name="line_color">#aaaaaa</color>
     <color name="line_light_color">#aaaaaa</color>
     <color name="black">#000000</color>
     <color name="attr_color">#078f00</color>
