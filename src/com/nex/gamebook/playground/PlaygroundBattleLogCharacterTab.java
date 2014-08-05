@@ -22,37 +22,36 @@ import com.nex.gamebook.entity.CharacterType;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
 	private Player _character;
-	private PlaygroundActivity activity;
+//	private PlaygroundActivity activity;
 	private StorySection section;
 	private Button resultButton;
-	private boolean fighting = false;
-
-	public PlaygroundBattleLogCharacterTab(Player ch,
-			PlaygroundActivity activity) {
-		this._character = ch;
-		this.activity = activity;
+//	private boolean fighting = false;
+	private boolean newBattle = false;
+	public PlaygroundBattleLogCharacterTab() {
+//		this._character = ch;
+//		this.activity = activity;
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_playground_character,
-				container, false);
+		int display_mode = getResources().getConfiguration().orientation;
+		
+		int layout = R.layout.fragment_playground_character;
+		if (display_mode != 1) {
+		   layout = R.layout.fragment_playground_character_land;
+		}
+		View view = inflater.inflate(layout, container, false);
+		_character = getPlayground().getCharacter();
 		showCurrentValues(view);
 		showDefaultValues(view);
 		resultButton = (Button) view.findViewById(R.id.result_button);
 		resultButton.setVisibility(View.GONE);
 		if (section != null) {
-			if(fighting) {
-				//clear log when entering new combat
-				LinearLayout log = (LinearLayout) view.findViewById(R.id.battle_log);
-				log.removeAllViews();
-			}
 			prepareBattleLog(view);
 		}
 		return view;
@@ -84,20 +83,33 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 	}
 
 	private void prepareBattleLog(View view) {
-		if (!section.isEnemiesAlreadyKilled() && this.fighting) {
-			section.tryApplyLuckForBattle(_character);
+		LinearLayout log = (LinearLayout) view.findViewById(R.id.battle_log);
+		log.removeAllViews();
+		if(newBattle) {
+			if (!section.isEnemiesAlreadyKilled()) {
+				section.tryApplyLuckForBattle(_character);
+			}
+		} else {
+			for(View l: getPlayground().getBattleLog())  {
+				LinearLayout parent = (LinearLayout) l.getParent();
+				parent.removeView(l);
+				log.addView(l);
+			}
 		}
+		displayButtons();
 		View prev = view.findViewById(R.id.button1);
 		View next = view.findViewById(R.id.button2);
 		final TextView enemyName = (TextView) view.findViewById(R.id.enemy_name);
 		final ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.viewSwitcher1);
 		BattleLogAdapter adapter = new BattleLogAdapter(view.getContext(), view);
+		int selectedEnemy = getPlayground().getSelectedEnemy();
 		for(int i = 0; i < section.getEnemies().size(); i++) {
 			Enemy enemy = section.getEnemies().get(i);
 			enemy.setIndex(i+1);
 			View enemyView = adapter.create(enemy, switcher);
 			switcher.addView(enemyView);
 		}
+		switcher.setDisplayedChild(selectedEnemy);
 		prev.setOnClickListener(new OnClickListener() {public void onClick(View v) {
 			switcher.showPrevious();
 			showEnemyPosition(switcher, enemyName, section.getEnemies().size());
@@ -112,10 +124,9 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 			if (section.isLuckDefeatEnemies()) {
 				section.setEnemiesAlreadyKilled(true);
 			}
-			LinearLayout log = (LinearLayout) view.findViewById(R.id.battle_log);
 			NoBattleLogAdapter noBattleAdapter = new NoBattleLogAdapter(view.getContext());
 			log.addView(noBattleAdapter.getView(log));
-			if (fighting) {
+			if (isFighting()) {
 				displayContinueButton();
 			}
 		}
@@ -124,7 +135,9 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
 	private void showEnemyPosition(ViewSwitcher switcher, TextView enemyName, int total) {
 		Enemy enemy = (Enemy) switcher.getCurrentView().getTag();
-		enemyName.setText( enemy.getIndex() +"/"+total);
+		int index = enemy.getIndex();
+		enemyName.setText(index+"/"+total);
+		getPlayground().setSelectedEnemy(index-1);
 	}
 	
 	private void showCurrentValues(View view) {
@@ -170,7 +183,6 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
 	public void fight(StorySection section) {
 		this.section = section;
-		this.fighting = true;
 	}
 
 	class NoBattleLogAdapter {
@@ -213,7 +225,7 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 					if (enemy.isDefeated() || _character.isDefeated() || _character.isFighting() || section.isHasLuck()) {
 						startFight.setVisibility(View.GONE);
 					} else {
-						final FightingLog log = new FightingLog(BattleLogAdapter.this, enemy, this);
+						final FightingLog log = new FightingLog(BattleLogAdapter.this, enemy);
 						startFight.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
@@ -261,15 +273,13 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 	class FightingLog implements AttackCallback, Runnable {
 		private LinearLayout log;
 		private BattleLogAdapter adapter;
-		private LinearLayoutRefreshable container;
 		private Enemy enemy;
-		public FightingLog(BattleLogAdapter ad, Enemy enemy, LinearLayoutRefreshable container) {
+		public FightingLog(BattleLogAdapter ad, Enemy enemy) {
 			super();
 			this.adapter = ad;
 			this.enemy = enemy;
 			this.log = (LinearLayout) ad.masterView
 					.findViewById(R.id.battle_log);
-			this.container = container;
 		}
 
 		@Override
@@ -311,6 +321,7 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 			battleText.setTextAppearance(context, R.style.textview_anchor);
 			battleText.setTextColor(context.getResources().getColor(color));
 			log.addView(battleText);
+			getPlayground().getBattleLog().add(battleText);
 			log.invalidate();
 			showCurrentValues(adapter.masterView);
 		}
@@ -318,12 +329,7 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 		@Override
 		public void fightEnd() {
 			_character.setFighting(false);
-			if (_character.isDefeated()) {
-				displayGameOverButton();
-			} else if (section.isAllDefeated()) {
-				section.setEnemiesAlreadyKilled(true);
-				displayContinueButton();
-			}
+			displayButtons();
 			refresh();			
 		}
 		
@@ -340,6 +346,15 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 		
 	}
 
+	private void displayButtons() {
+		if (_character.isDefeated()) {
+			displayGameOverButton();
+		} else if (section.isAllDefeated()) {
+			section.setEnemiesAlreadyKilled(true);
+			displayContinueButton();
+		}
+	}
+	
 	private void displayGameOverButton() {
 		resultButton.setText(R.string.button_endGame_lose);
 		resultButton.setOnClickListener(gameoverListener);
@@ -356,9 +371,9 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
 		@Override
 		public void onClick(View v) {
+			PlaygroundActivity activity = (PlaygroundActivity) getActivity();
 			activity.changeToStory();
 			section = null;
-			fighting = false;
 		}
 	};
 	OnClickListener gameoverListener = new OnClickListener() {
@@ -371,8 +386,10 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 		}
 	};
 
-	public void setFighting(boolean fighting) {
-		this.fighting = fighting;
+	public boolean isFighting() {
+		return getPlayground().isFighting();
 	}
-
+	public void setNewBattle(boolean newBattle) {
+		this.newBattle = newBattle;
+	}
 }

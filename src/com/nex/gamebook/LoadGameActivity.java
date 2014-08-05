@@ -87,6 +87,7 @@ public class LoadGameActivity extends Activity {
 					Intent intent = new Intent(LoadGameActivity.this, PlaygroundActivity.class);
 					Bundle bundle = new Bundle();
 					bundle.putString("load_game", fileName);
+					bundle.putBoolean("load", true);
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}

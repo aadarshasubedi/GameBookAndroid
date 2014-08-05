@@ -26,20 +26,23 @@ import com.nex.gamebook.entity.io.IOGameOperation;
 import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundStoryTab extends AbstractFragment {
-	private Player _character;
-	private boolean tabClick;
-	private boolean showOptions = true;
-	private boolean alertUnreturnableOptions = false;
-	private PlaygroundActivity activity;
-	public PlaygroundStoryTab(Player ch, PlaygroundActivity activity) {
-		this._character = ch;
-		this.activity = activity;
+	public Player _character;
+//	private boolean tabClick;
+//	private boolean showOptions = true;
+//	private boolean alertUnreturnableOptions = false;
+	public PlaygroundStoryTab() {
+		
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_playground_story, container, false);
+		setShowOptions(true);
+		_character = getPlayground().getCharacter();
 		this.prepareView(view);
+		if(getPlayground().isFighting()) {
+			startFight(view.getContext(), _character.getCurrentSection());
+		}
 		return view;
 	}
 	
@@ -66,10 +69,10 @@ public class PlaygroundStoryTab extends AbstractFragment {
 			showGameOver(view.getContext(), view.findViewById(R.id.playground_story), currentSection);
 		} else if(currentSection.isEndGame()) {
 			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.button_endGame_win);
-		} else if(showOptions) {
+		} else if(isShowOptions()) {
 			prepareChooseSection(view.getContext(), layout, currentSection);
 		}
-		tabClick = true;
+		setTabclick(true);
 	}
 	
 	private void prepareBonusSection(Context context, LinearLayout layout, StorySection section, List<Bonus> bonuses) {
@@ -113,35 +116,38 @@ public class PlaygroundStoryTab extends AbstractFragment {
 				@Override
 				public void onClick(View v) {
 					startFight(context, section);
+					PlaygroundActivity activity = (PlaygroundActivity) getActivity();
+					activity.getCharacterFragment().setNewBattle(true);
 				}
 			});
 			layout.addView(fight);
-			showOptions = false;
+			setShowOptions(false);
 		}
 	}
 	
 	private void startFight(Context context, StorySection section) {
 		section.setBonusesAlreadyGained(false);
+		PlaygroundActivity activity = (PlaygroundActivity) getActivity();
 		activity.changeToBattle(section);
 	}
 	
 	private void prepareAfterFight(Context context, LinearLayout layout, StorySection section) {
 		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.AFTER_FIGHT));
-		showOptions = true;
+		setShowOptions(true);
 	}
 	
 	private void prepareChooseSection(Context context, LinearLayout layout, StorySection section) {
 		for(StorySectionOption option: section.getOptions()) {
 			String text = context.getResources().getString(option.getText());
-			if(!this.tabClick) {
+			if(!isTabclick()) {
 				_character.setCanShowOption(option);
 			}
 			if(!option.isDisplayed()) {
 				continue;
 			}
-			if(option.getSection() == section.getUnreturnableSection() && alertUnreturnableOptions) {
-				text += " " + context.getResources().getString(R.string.option_cant_return);
-			}
+//			if(option.getSection() == section.getUnreturnableSection() && alertUnreturnableOptions) {
+//				text += " " + context.getResources().getString(R.string.option_cant_return);
+//			}
 			if(option.isBothAspects()) {
 				text += " " + context.getResources().getString(R.string.fight_aspect_luck) + " " + context.getResources().getString(R.string.fight_aspect_skill);
 			} else if(option.isLuckAspect()) {
@@ -192,7 +198,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 
 		@Override
 		public void onClick(View v) {
-			tabClick = false;
+			setTabclick(false);
 			this.section.setCompleted(true);
 			this.section.setVisited(true);
 			this.section.setHasLuck(false);
@@ -220,7 +226,19 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		ft.commit();
 	}
 	
-	public void setTabClick(boolean tabClick) {
-		this.tabClick = tabClick;
+
+	
+	public boolean isTabclick() {
+		return getArguments().getBoolean("tabclick");
+	}
+	public void setTabclick(boolean val) {
+		getArguments().putBoolean("tabclick", val);
+	}
+	
+	public boolean isShowOptions() {
+		return getArguments().getBoolean("showOptions");
+	}
+	public void setShowOptions(boolean val) {
+		getArguments().putBoolean("showOptions", val);
 	}
 }

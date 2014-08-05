@@ -1,5 +1,8 @@
 package com.nex.gamebook.playground;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -21,11 +25,12 @@ import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundActivity extends Activity {
+	public static Player _character;
 	private ActionBar.Tab characterTab;
 	private ActionBar.Tab storyTab;
 	private PlaygroundBattleLogCharacterTab characterFragment;
 	private PlaygroundStoryTab storyFragment;
-
+	private static List<View> battleLog = new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,14 +40,17 @@ public class PlaygroundActivity extends Activity {
 		
 
 		try {
-			Player character = load();
-
-			setTitle(character.getStory().getName());
+			if(getIntent().getExtras().getBoolean("load")) {
+				battleLog.clear();
+				_character = load();
+			}
+			setTitle(_character.getStory().getName());
 			setContentView(R.layout.activity_character_selection);
 
-			characterFragment = new PlaygroundBattleLogCharacterTab(character, this);
-			storyFragment = new PlaygroundStoryTab(character, this);
-
+			characterFragment = new PlaygroundBattleLogCharacterTab();
+			storyFragment = new PlaygroundStoryTab();
+			storyFragment.putCharacter(_character);
+			characterFragment.putCharacter(_character);
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayShowTitleEnabled(false);
 			actionBar.setDisplayShowHomeEnabled(false);
@@ -55,13 +63,24 @@ public class PlaygroundActivity extends Activity {
 			storyTab.setTabListener(new MyTabListener(storyFragment));
 			actionBar.addTab(storyTab);
 			storyTab.select();
-
 		} catch (Exception e) {
 			Log.e("GameBook", "", e);
 		}
 
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Bundle b = new Bundle();
+		b.putBoolean("load", false);
+		getIntent().putExtras(b);
+	}
+	
+	public Player getCharacter() {
+		return _character;
+	}
+	
 	private Player load() throws Exception {
 		
 		String loadedGame = getIntent().getExtras().getString("load_game");
@@ -143,13 +162,36 @@ public class PlaygroundActivity extends Activity {
 		getCharacterTab().setText(R.string.fight);
 		getCharacterTab().select();
 		removeTab(getStoryTab());
+		setFighting(true);
 	}
 	
 	public void changeToStory() {
+		setFighting(false);
 		getActionBar().addTab(getStoryTab());
 		getCharacterTab().setText(R.string.character);
 		getStoryTab().select();
-		getStoryFragment().setTabClick(false);
+		getStoryFragment().setTabclick(false);
+		setSelectedEnemy(0);
 	}
-
+	
+	public void setFighting(boolean val) {
+		Bundle b = new Bundle();
+		b.putBoolean("fighting", val);
+		getIntent().putExtras(b);
+	}
+	
+	public void setSelectedEnemy(int i) {
+		Bundle b = new Bundle();
+		b.putInt("selectedEnemy", i);
+		getIntent().putExtras(b);
+	}
+	public int getSelectedEnemy() {
+		return getIntent().getExtras().getInt("selectedEnemy");
+	}
+	public boolean isFighting() {
+		return getIntent().getExtras().getBoolean("fighting");
+	}
+	public List<View> getBattleLog() {
+		return battleLog;
+	}
 }

@@ -2,9 +2,11 @@ package com.nex.gamebook.entity;
 
 import java.lang.reflect.Method;
 
+import com.nex.gamebook.story.section.StorySection;
+
 import android.util.Log;
 
-public class Player extends Character{
+public class Player extends Character {
 
 	private static final long serialVersionUID = 7279750413253963361L;
 	private int id;
@@ -117,4 +119,8 @@ public class Player extends Character{
 		return CharacterType.PLAYER;
 	}
 
+	public StorySection getCurrentSection() {
+		return getStory().getSection(this.position);
+	}
+	
 }
