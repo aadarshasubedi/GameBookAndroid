@@ -70,7 +70,7 @@
         <item name="android:textColor">@color/options_color_disabled</item>
     </style>
     <style name="textview_anchor">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/anchor_color</item>
     </style>
 
@@ -86,25 +86,29 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/attrName_color</item>
     </style>
-    <style name="textview_attrName">
+    <style name="textview_enemyName">
         <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/bonus_color</item>
+    </style>
+    <style name="textview_attrName">
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/attrName_color</item>
     </style>
 
     <style name="textview_attrValue">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/attr_color</item>
     </style>
 
     <!-- atrributes changing by game -->
     <style name="textview_default_attribute">
         <item name="android:gravity">left</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/attrName_color</item>
     </style>
     <style name="textview_neutral_attribute">
         <item name="android:gravity">right</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/attrName_color</item>
     </style>
 </resources>

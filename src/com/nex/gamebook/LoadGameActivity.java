@@ -23,11 +23,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.io.IOGameOperation;
 import com.nex.gamebook.playground.PlaygroundActivity;
 import com.nex.gamebook.story.parser.StoryXmlParser;
-import com.nex.gamebook.entity.character.Character;
 
 public class LoadGameActivity extends Activity {
 	private Map<String, Set<String>> savedGames;
@@ -75,7 +75,7 @@ public class LoadGameActivity extends Activity {
 			TextView characterName = (TextView) rowView.findViewById(R.id.character);
 			try {
 				Story story = parser.loadStory(xml, false, true);
-				Character character = story.getCharacter(Integer.valueOf(charId));
+				Player character = story.getCharacter(Integer.valueOf(charId));
 				storyName.setText(story.getName());
 				characterName.setText(character.getName());
 			} catch (Exception e) {

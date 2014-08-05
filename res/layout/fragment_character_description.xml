@@ -8,7 +8,7 @@
             android:id="@+id/tableLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
-			<TextView
+            <TextView
 		        android:id="@+id/textView2"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
@@ -38,26 +38,28 @@
                     android:text="@string/attr_value_zero"
                     style="@style/textview_attrValue" />
             </TableRow>
-			<TableRow
-                android:id="@+id/tableRow5"
+            <TableRow
+                android:id="@+id/tableRow7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dip" >
-            	<TextView
-                    android:id="@+id/sel_l_luck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="10dip"
-                    android:text="@string/attr_luck"
-                    style="@style/textview_attrName"/>
+                android:paddingLeft="10dip">
 
                 <TextView
-                    android:id="@+id/sel_attr_luck"
+                    android:id="@+id/sel_l_attack"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dip"
+                    android:text="@string/attr_attack"
+                    style="@style/textview_attrName" />
+
+                <TextView
+                    android:id="@+id/sel_attr_attack"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dip"
                     android:text="@string/attr_value_zero"
                     style="@style/textview_attrValue" />
+
             </TableRow>
             <TableRow
                 android:id="@+id/tableRow3"
@@ -80,11 +82,9 @@
                     android:paddingLeft="10dip"
                     android:text="@string/attr_value_zero"
                     style="@style/textview_attrValue" />
-
-                
-
             </TableRow>
-			<TableRow
+			
+            <TableRow
                 android:id="@+id/tableRow6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,6 +106,27 @@
                     android:text="@string/attr_value_zero"
                     style="@style/textview_attrValue" />
 
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip" >
+            	<TextView
+                    android:id="@+id/sel_l_luck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dip"
+                    android:text="@string/attr_luck"
+                    style="@style/textview_attrName"/>
+
+                <TextView
+                    android:id="@+id/sel_attr_luck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dip"
+                    android:text="@string/attr_value_zero"
+                    style="@style/textview_attrValue" />
             </TableRow>
             <TextView
 		        android:id="@+id/textView1"

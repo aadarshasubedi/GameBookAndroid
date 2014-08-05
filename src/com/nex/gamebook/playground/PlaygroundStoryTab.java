@@ -17,21 +17,21 @@ import android.widget.TextView;
 
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
+import com.nex.gamebook.entity.Bonus;
+import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.character.Character;
+import com.nex.gamebook.entity.StorySectionOption;
+import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.io.IOGameOperation;
-import com.nex.gamebook.story.Bonus;
-import com.nex.gamebook.story.Bonus.BonusState;
-import com.nex.gamebook.story.StorySectionOption;
 import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundStoryTab extends AbstractFragment {
-	private Character _character;
+	private Player _character;
 	private boolean tabClick;
 	private boolean showOptions = true;
 	private boolean alertUnreturnableOptions = false;
 	private PlaygroundActivity activity;
-	public PlaygroundStoryTab(Character ch, PlaygroundActivity activity) {
+	public PlaygroundStoryTab(Player ch, PlaygroundActivity activity) {
 		this._character = ch;
 		this.activity = activity;
 	}

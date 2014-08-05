@@ -1,4 +1,4 @@
-package com.nex.gamebook.story;
+package com.nex.gamebook.entity;
 
 import java.io.Serializable;
 

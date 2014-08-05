@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 import com.nex.gamebook.R;
-import com.nex.gamebook.entity.character.Character;
-import com.nex.gamebook.story.Bonus;
-import com.nex.gamebook.story.Bonus.BonusState;
-import com.nex.gamebook.story.Enemy;
-import com.nex.gamebook.story.StorySectionOption;
+import com.nex.gamebook.entity.Bonus;
+import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.Enemy;
+import com.nex.gamebook.entity.StorySectionOption;
+import com.nex.gamebook.entity.Bonus.BonusState;
 
 public class StorySection implements Serializable {
 	
@@ -129,7 +129,7 @@ public class StorySection implements Serializable {
 		this.completed = completed;
 	}
 
-	public void tryApplyLuckForBattle(Character character) {
+	public void tryApplyLuckForBattle(Player character) {
 		hasLuck = character.hasLuck();
 	}
 

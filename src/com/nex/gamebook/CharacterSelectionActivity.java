@@ -1,7 +1,5 @@
 package com.nex.gamebook;
 
-import java.io.IOException;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -17,14 +15,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.character.Character;
-import com.nex.gamebook.entity.character.Stats;
 import com.nex.gamebook.playground.PlaygroundActivity;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class CharacterSelectionActivity extends Activity {
-	public Character selectedCharacter;
+	public Player selectedCharacter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,7 @@ public class CharacterSelectionActivity extends Activity {
 			actionBar.setDisplayShowHomeEnabled(false);
 			
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			for (Character c : story.getCharacters()) {
+			for (Player c : story.getCharacters()) {
 				ActionBar.Tab tab = actionBar.newTab().setText(c.getName());
 				FragmentTab fragmentTab = new FragmentTab(c);
 				tab.setTabListener(new MyTabListener(fragmentTab));
@@ -71,9 +68,9 @@ public class CharacterSelectionActivity extends Activity {
 
 	public class FragmentTab extends Fragment {
 
-		private Character _character;
+		private Player _character;
 
-		public FragmentTab(Character ch) {
+		public FragmentTab(Player ch) {
 			this._character = ch;
 		}
 
@@ -84,14 +81,17 @@ public class CharacterSelectionActivity extends Activity {
 			TextView attr = (TextView) view.findViewById(R.id.sel_attr_health);
 			attr.setText(String.valueOf(_character.getStats().getHealth()));
 
-			attr = (TextView) view.findViewById(R.id.sel_attr_luck);
-			attr.setText(String.valueOf(_character.getStats().getLuck()) + " ("+_character.getStats().getLuckPercentage() + "%)");
-
+			attr = (TextView) view.findViewById(R.id.sel_attr_attack);
+			attr.setText(String.valueOf(_character.getStats().getAttack()));
 			attr = (TextView) view.findViewById(R.id.sel_attr_defense);
 			attr.setText(String.valueOf(_character.getStats().getDefense()));
 
 			attr = (TextView) view.findViewById(R.id.sel_attr_skill);
-			attr.setText(String.valueOf(_character.getStats().getSkill()));
+			attr.setText(String.valueOf(_character.getStats().getSkill()) + " ("+_character.getStats().getSkillPercentage() + "%)");
+			
+			attr = (TextView) view.findViewById(R.id.sel_attr_luck);
+			attr.setText(String.valueOf(_character.getStats().getLuck()) + " ("+_character.getStats().getLuckPercentage() + "%)");
+
 			
 			TextView textview = (TextView) view
 					.findViewById(R.id.sel_char_description);

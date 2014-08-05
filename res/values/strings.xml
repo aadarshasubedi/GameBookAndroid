@@ -18,7 +18,11 @@
     <string name="options">Možnosti:</string>
     <string name="separator">/</string>
     <string name="attributes">Atributy:</string>
+    <string name="enemies">Nepřátelé:</string>
 	<string name="keyword_from">z</string>
+<!-- 	<string name="player">Hráč</string> -->
+<!-- 	<string name="enemy">Nepřítel</string> -->
+	
     <!-- characters attributes -->
     <string name="attr_value_zero">0</string>
     <string name="attr_health">Zdraví</string>
@@ -26,6 +30,13 @@
     <string name="attr_attack">Útok</string>
     <string name="attr_defense">Obrana</string>
     <string name="attr_skill">Dovednost</string>
+    
+    <string name="attr_health_short">Z:</string>
+    <string name="attr_luck_short">Š:</string>
+    <string name="attr_attack_short">Ú:</string>
+    <string name="attr_defense_short">O:</string>
+    <string name="attr_skill_short">D:</string>
+    
     <string name="dsc_default">Default</string>
     <string name="title_activity_story_selection">StorySelectionActivity</string>
     <string name="title_activity_playground">PlaygroundActivity</string>
@@ -38,12 +49,14 @@
     <string name="story">Příběh</string>
     <string name="sg_continue">Pokračovat</string>
 
-    <!-- default fighting messages -->
-    <string name="fight_withdamage">Nepřítel tě zranil, ale úspěšně jsi ho zdolal.</string>
-    <string name="fight_withoutdamage">Nepřítel nedokázal projít přes tvoji úžasnou obranu.</string>
-    <string name="fight_lose">Nepřítel tě zabil, tvůj příběh zde končí v kaluži tvé vlastní krve.</string>
-    <string name="fight_skill">Nepřítele jsi zrušil ještě dřív, než zjistil co se vlastně děje.</string>
-    <string name="fight_luck">Nepřítel zakopl a rozbil si hlavu, v důsledku toho zemřel.</string>
+    <!-- log fighting strings -->
+    <string name="damage">poškození</string>
+    <string name="critical_chance">kritického</string>
+    <string name="you_have_luck">Máš štěstí a nic se ti nestalo.</string>
+    <string name="enemy_has_luck">Nepřítel má štěstí a nic se mu nestalo.</string>
+    <string name="you_take">Dostáváš</string>
+    <string name="you_cause">Způsobuješ</string>
+    
     <string name="fight_luck_section">Žádný boj se nekoná, neboť si tě niko nevšímá.</string>
     <string name="game_over_section">Zničeho nic padáš na zem, v hlavě ti probíhají poslední myšlenky a .... umíráš.</string>
     <string name="fight_error">No message founded</string>
@@ -55,4 +68,6 @@
     <string name="title_activity_load_game">LoadGameActivity</string>
     <string name="hello_world">Hello world!</string>
 
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 </resources>

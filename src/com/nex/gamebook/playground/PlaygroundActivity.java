@@ -13,9 +13,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.nex.gamebook.R;
+import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.character.Character;
-import com.nex.gamebook.entity.character.Stats;
 import com.nex.gamebook.entity.io.IOGameOperation;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.story.section.StorySection;
@@ -35,7 +35,7 @@ public class PlaygroundActivity extends Activity {
 		
 
 		try {
-			Character character = load();
+			Player character = load();
 
 			setTitle(character.getStory().getName());
 			setContentView(R.layout.activity_character_selection);
@@ -62,7 +62,7 @@ public class PlaygroundActivity extends Activity {
 
 	}
 
-	private Character load() throws Exception {
+	private Player load() throws Exception {
 		
 		String loadedGame = getIntent().getExtras().getString("load_game");
 		if(loadedGame!=null && !"".equals(loadedGame)) {
@@ -70,7 +70,7 @@ public class PlaygroundActivity extends Activity {
 		}
 		StoryXmlParser parser = new StoryXmlParser(this);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
-		Character character = story.getCharacter(getIntent().getExtras().getInt("character"));
+		Player character = story.getCharacter(getIntent().getExtras().getInt("character"));
 		character.setCurrentStats(new Stats(character.getStats()));
 		return character;
 	}

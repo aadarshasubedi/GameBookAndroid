@@ -19,13 +19,14 @@ import org.xml.sax.SAXException;
 import android.content.Context;
 import android.util.Log;
 
+import com.nex.gamebook.entity.Bonus;
+import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.Enemy;
+import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.character.Character;
-import com.nex.gamebook.story.Bonus.BonusState;
-import com.nex.gamebook.story.Bonus.BonusType;
-import com.nex.gamebook.story.Bonus;
-import com.nex.gamebook.story.Enemy;
-import com.nex.gamebook.story.StorySectionOption;
+import com.nex.gamebook.entity.StorySectionOption;
+import com.nex.gamebook.entity.Bonus.BonusState;
+import com.nex.gamebook.entity.Bonus.BonusType;
 import com.nex.gamebook.story.section.StorySection;
 
 public class StoryXmlParser {
@@ -65,13 +66,6 @@ public class StoryXmlParser {
 	private final String TYPE = "type";
 	private final String VALUE = "value";
 	private final String OVERFLOWED = "overflowed";
-	
-	
-	private final String FIGHT_WITHOUTDAMAGE = "fightWithoutDamageText";
-	private final String FIGHT_WITHDAMAGE = "fightWithDamageText";
-	private final String FIGHT_SKILL = "fightSkillText";
-	private final String FIGHT_LOSE = "fightLoseText";
-	private final String FIGHT_LUCK = "fightLuckText";
 	
 	Context context;
 
@@ -131,6 +125,9 @@ public class StoryXmlParser {
 					NodeList background = el.getElementsByTagName(BACKGROUND);
 					if(background.getLength() > 0)
 					story.setBackground(getIdentifier(background.item(0).getTextContent()));
+					NodeList description = el.getElementsByTagName(DESCRIPTION);
+					if(description.getLength() > 0)
+					story.setBackground(getIdentifier(description.item(0).getTextContent()));
 					initializeStory(story, xml, sections, characters);
 				}
 			}			
@@ -217,7 +214,7 @@ public class StoryXmlParser {
 	}
 
 	private void loadCharacter(Story story, Element element) throws Exception {
-		Character character = new Character();
+		Player character = new Player();
 		character.setName(getIdentifier(element.getAttribute(NAME)));
 		character.setDescription(getIdentifier(element.getAttribute(DESCRIPTION)));
 		character.setId(getInteger(element.getAttribute(ID)));
@@ -234,6 +231,8 @@ public class StoryXmlParser {
 				character.getStats().setSkill(getInteger(node.getTextContent()));
 			} else if(node.getNodeName().equals(LUCK)) {
 				character.getStats().setLuck(getInteger(node.getTextContent()));
+			} else if(node.getNodeName().equals(ATTACK)) {
+				character.getStats().setAttack(getInteger(node.getTextContent()));
 			}
 		}
 		character.setStory(story);
@@ -291,25 +290,25 @@ public class StoryXmlParser {
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node n = optionsList.item(i);
 			if (n instanceof Element) {
-				Element optionNode = (Element) n;
+				Element enemyNode = (Element) n;
 				Enemy enemy = new Enemy();
-				enemy.setAttack(getInteger(optionNode.getAttribute(ATTACK)));
-				enemy.setSkill(getInteger(optionNode.getAttribute(SKILL)));
-				enemy.setName(getIdentifier(optionNode.getAttribute(NAME)));
-				int text = getIdentifier(optionNode.getAttribute(FIGHT_WITHOUTDAMAGE));
-				if(text > 0) enemy.setWithoutDamageText(text);
-				
-				text = getIdentifier(optionNode.getAttribute(FIGHT_WITHDAMAGE));
-				if(text > 0) enemy.setWithDamageText(text);
-				
-				text = getIdentifier(optionNode.getAttribute(FIGHT_SKILL));
-				if(text > 0) enemy.setSkillText(text);
-				
-				text = getIdentifier(optionNode.getAttribute(FIGHT_LOSE));
-				if(text > 0) enemy.setLoseText(text);
-				
-				text = getIdentifier(optionNode.getAttribute(FIGHT_LUCK));
-				if(text > 0) enemy.setLuckText(text);
+				NodeList stats = enemyNode.getChildNodes();
+				for (int e = 0; e < stats.getLength(); e++) {
+					Node nd = enemyNode.getChildNodes().item(e);
+					if (nd.getNodeName().equals(HEALTH)) {
+						enemy.getStats().setHealth(getInteger(nd.getTextContent()));
+					} else if(nd.getNodeName().equals(DEFENSE)) {
+						enemy.getStats().setDefense(getInteger(nd.getTextContent()));
+					} else if(nd.getNodeName().equals(SKILL)) {
+						enemy.getStats().setSkill(getInteger(nd.getTextContent()));
+					} else if(nd.getNodeName().equals(LUCK)) {
+						enemy.getStats().setLuck(getInteger(nd.getTextContent()));
+					} else if(nd.getNodeName().equals(ATTACK)) {
+						enemy.getStats().setAttack(getInteger(nd.getTextContent()));
+					}
+				}
+				enemy.setCurrentStats(new Stats(enemy.getStats()));
+				enemy.setName(getIdentifier(enemyNode.getAttribute(NAME)));
 				
 				section.getEnemies().add(enemy);
 			}
@@ -352,7 +351,7 @@ public class StoryXmlParser {
 		return s != null && !"".equals(s) ? Boolean.valueOf(s):false;
 	}
 	private int getInteger(String s ) {
-		return s != null && !"".equals(s) ? Integer.valueOf(s):0;
+		return s != null && !"".equals(s) ? Integer.valueOf(s.trim()):0;
 	}
 	
 }

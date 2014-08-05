@@ -10,25 +10,30 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
-import com.nex.gamebook.entity.character.Character;
-import com.nex.gamebook.entity.character.Stats;
-import com.nex.gamebook.story.Enemy;
+import com.nex.gamebook.entity.CharacterType;
+import com.nex.gamebook.entity.Enemy;
+import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.ResultCombat;
+import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
-	private Character _character;
+	private Player _character;
 	private PlaygroundActivity activity;
 	private StorySection section;
 	private Button resultButton;
 	private boolean fighting = false;
 
-	public PlaygroundBattleLogCharacterTab(Character ch,
+	public PlaygroundBattleLogCharacterTab(Player ch,
 			PlaygroundActivity activity) {
 		this._character = ch;
 		this.activity = activity;
@@ -60,39 +65,71 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 				+ _character.getCurrentStats().getLuckPercentage()
 				+ "% "
 				+ view.getContext().getResources()
-						.getString(R.string.keyword_from) + " "
-				+ Stats.getLuckPercentage(Character.MAX_LUCK_OF_CHARACTER)
-				+ "%)");
+						.getString(R.string.keyword_from)
+				+ " "
+				+ Stats.getPercentage(Player.MAX_LUCK_OF_CHARACTER,
+						Player.TOTAL_LUCK_FOR_CALC) + "%)");
+
+		attr = (TextView) view.findViewById(R.id.playground_def_skill);
+		attr.setText(String.valueOf(_character.getStats().getSkill())
+				+ " ("
+				+ _character.getCurrentStats().getSkillPercentage()
+				+ "% "
+				+ view.getContext().getResources()
+						.getString(R.string.keyword_from)
+				+ " "
+				+ Stats.getPercentage(Player.MAX_SKILL_OF_CHARACTER,
+						Player.TOTAL_SKILL_FOR_CALC) + "%)");
 
 		attr = (TextView) view.findViewById(R.id.playground_def_defense);
 		attr.setText(String.valueOf(_character.getStats().getDefense()));
 
-		attr = (TextView) view.findViewById(R.id.playground_def_skill);
-		attr.setText(String.valueOf(_character.getStats().getSkill()));
+		attr = (TextView) view.findViewById(R.id.playground_def_attack);
+		attr.setText(String.valueOf(_character.getStats().getAttack()));
 
 	}
 
 	private void prepareBattleLog(View view) {
-		ListView list = (ListView) view.findViewById(R.id.battle_log);
+		Button prev = (Button) view.findViewById(R.id.button1);
+		Button next = (Button) view.findViewById(R.id.button2);
+		final ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.viewSwitcher1);
+		BattleLogAdapter adapter = new BattleLogAdapter(view.getContext(), view);
+		for(Enemy enemy: section.getEnemies()) {
+			View enemyView = adapter.getView(enemy, (ViewGroup) view);
+			switcher.addView(enemyView);
+		}
+		prev.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				switcher.showPrevious();
+			}
+		});
+		next.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				switcher.showNext();
+			}
+		});
 		if (!section.isEnemiesAlreadyKilled() && this.fighting)
 			section.tryApplyLuckForBattle(_character);
 		if (section.isHasLuck()) {
 			if (section.isLuckDefeatEnemies()) {
 				section.setEnemiesAlreadyKilled(true);
 			}
-			list.setAdapter(new NoBattleLogAdapter(view.getContext()));
+//			list.setAdapter(new NoBattleLogAdapter(view.getContext()));
 			if (fighting) {
 				displayContinueButton();
 			}
 		} else {
-			list.setAdapter(new BattleLogAdapter(view.getContext(), view));
+//			list.setAdapter();
 		}
 
 	}
 
 	private void showCurrentValues(View view) {
-		TextView attr = (TextView) view
-				.findViewById(R.id.playground_curr_health);
+		TextView attr = (TextView) view.findViewById(R.id.playground_curr_health);
 		attr.setText(String.valueOf(_character.getCurrentStats().getHealth()));
 		changeAttributeColor(view.getContext(), attr, _character.getStats()
 				.getHealth(), _character.getCurrentStats().getHealth());
@@ -114,10 +151,8 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
 		if (fighting) {
 			view.findViewById(R.id.textView1).setVisibility(View.VISIBLE);
-			view.findViewById(R.id.underline).setVisibility(View.VISIBLE);
 		} else {
 			view.findViewById(R.id.textView1).setVisibility(View.GONE);
-			view.findViewById(R.id.underline).setVisibility(View.GONE);
 		}
 
 	}
@@ -152,12 +187,9 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(
-					R.layout.battle_log_layout_nobattle, parent, false);
-			TextView result = (TextView) rowView
-					.findViewById(R.id.noBattleText);
-			result.setTextColor(context.getResources().getColor(
-					R.color.bonus_color));
+			View rowView = inflater.inflate(R.layout.battle_log_layout_nobattle, parent, false);
+			TextView result = (TextView) rowView.findViewById(R.id.noBattleText);
+			result.setTextColor(context.getResources().getColor(R.color.bonus_color));
 			result.setText(context.getResources().getString(
 					section.getLuckText())
 					+ " "
@@ -167,72 +199,121 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 		}
 	}
 
-	class BattleLogAdapter extends ArrayAdapter<String> {
+	class BattleLogAdapter {
 		private final Context context;
 		private View masterView;
 
 		public BattleLogAdapter(Context context, View view) {
-			super(context, R.layout.battle_log_layout, new String[section
-					.getEnemies().size()]);
 			this.context = context;
 			masterView = view;
 		}
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.battle_log_layout, parent,
-					false);
-			final Enemy enemy = section.getEnemies().get(position);
-			TextView textView = (TextView) rowView.findViewById(R.id.enemy);
-			TextView startFight = (TextView) rowView.findViewById(R.id.fight);
-			decoreClickableTextView(inflater.getContext(), startFight,
-					R.string.button_fight);
-			final TextView resultFight = (TextView) rowView
-					.findViewById(R.id.fight_result_as_text);
-			if (enemy.isDefeated()) {
-				startFight.setVisibility(View.GONE);
-				resultFight.setText(context.getResources().getString(
-						enemy.getResultText())
-						+ " "
-						+ context.getResources().getString(
-								enemy.getResultAttrText()));
-				if (enemy.isAffectPlayer()) {
-					resultFight.setTextColor(context.getResources().getColor(
-							R.color.debuf_color));
+		public View getView(final Enemy enemy, ViewGroup parent) {
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View rowView = inflater.inflate(R.layout.battle_log_layout, parent, false);
+				TextView textView = (TextView) rowView.findViewById(R.id.enemy);
+				final View startFight = rowView.findViewById(R.id.fight);
+//				decoreClickableTextView(context, (TextView) startFight, R.string.button_fight);
+				if (enemy.isDefeated() || _character.isDefeated() || _character.isFighting()) {
+					startFight.setVisibility(View.GONE);
 				} else {
-					resultFight.setTextColor(context.getResources().getColor(
-							R.color.bonus_color));
+					final FightingLog log = new FightingLog(this, enemy);
+					startFight.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							_character.setFighting(true);
+							startFight.setVisibility(View.GONE);
+							v.post(log);
+						}
+					});
 				}
 
-			} else if (_character.isDefeated()) {
-				resultFight.setVisibility(View.GONE);
-				startFight.setVisibility(View.GONE);
-			} else {
-				resultFight.setVisibility(View.GONE);
-				startFight.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						enemy.setDefeated(true);
-						enemy.fight(_character);
-						if (_character.isDefeated()) {
-							displayGameOverButton();
-						} else if (section.isAllDefeated()) {
-							section.setEnemiesAlreadyKilled(true);
-							displayContinueButton();
-						}
-						notifyDataSetChanged();
-						showCurrentValues(masterView);
-					}
-				});
-			}
-			TextView attack = (TextView) rowView.findViewById(R.id.attack);
-			attack.setText(String.valueOf(enemy.getAttack()));
-			textView.setText(enemy.getName());
+				TextView attack = (TextView) rowView.findViewById(R.id.attack);
+				attack.setText(String.valueOf(enemy.getCurrentStats().getAttack()));
+				attack = (TextView) rowView.findViewById(R.id.health);
+				attack.setText(String.valueOf(enemy.getCurrentStats().getHealth()));
+				attack = (TextView) rowView.findViewById(R.id.luck);
+				attack.setText(String.valueOf(enemy.getCurrentStats().getLuck()));
+				attack = (TextView) rowView.findViewById(R.id.skill);
+				attack.setText(String.valueOf(enemy.getCurrentStats().getSkill()));
+				attack = (TextView) rowView.findViewById(R.id.defense);
+				attack.setText(String.valueOf(enemy.getCurrentStats().getDefense()));
+
+				textView.setText(enemy.getName());
 			return rowView;
 		}
 
+	}
+
+	class FightingLog implements AttackCallback, Runnable {
+		private LinearLayout log;
+		private BattleLogAdapter adapter;
+		private Enemy enemy;
+		public FightingLog(BattleLogAdapter ad, Enemy enemy) {
+			super();
+			this.adapter = ad;
+			this.enemy = enemy;
+			this.log = (LinearLayout) ad.masterView
+					.findViewById(R.id.battle_log);
+			log.removeAllViews();
+		}
+
+		@Override
+		public Player getCharacter() {
+			return _character;
+		}
+
+		@Override
+		public void attackCallBack(ResultCombat resultCombat) {
+			int color = R.color.bonus_color;
+			String text = "\n";
+			Context context = adapter.context;
+			if(resultCombat.isLuck()) {
+				if(resultCombat.getType().equals(CharacterType.ENEMY)) {
+					text += context.getResources().getString(R.string.enemy_has_luck);
+					color = R.color.debuf_color;
+				} else {
+					text += context.getResources().getString(R.string.you_have_luck);
+				}
+			} else {
+				if(resultCombat.getType().equals(CharacterType.ENEMY)) {
+					text += context.getResources().getString(R.string.you_take);
+					color = R.color.debuf_color;
+				} else {
+					text += context.getResources().getString(R.string.you_cause);
+				}
+				text += " " + String.valueOf(resultCombat.getDamage()) + " ";
+				if(resultCombat.isCritical()) {
+					text += context.getResources().getString(R.string.critical_chance) + " ";
+				}
+				text += context.getResources().getString(R.string.damage);
+			}
+			TextView battleText = new TextView(context);
+			battleText.setText(text);
+			battleText.setTextAppearance(context, R.style.textview_anchor);
+			battleText.setTextColor(context.getResources().getColor(color));
+			log.addView(battleText);
+			log.invalidate();
+			showCurrentValues(adapter.masterView);
+		}
+
+		@Override
+		public void fightEnd() {
+			_character.setFighting(false);
+			if (_character.isDefeated()) {
+				displayGameOverButton();
+			} else if (section.isAllDefeated()) {
+				section.setEnemiesAlreadyKilled(true);
+				displayContinueButton();
+			}
+//			adapter.notifyDataSetChanged();
+		}
+		
+		@Override
+		public void run() {
+			enemy.fight(this);
+		}
+		
 	}
 
 	private void displayGameOverButton() {

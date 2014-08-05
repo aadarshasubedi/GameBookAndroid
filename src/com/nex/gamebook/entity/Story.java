@@ -5,16 +5,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.nex.gamebook.entity.character.Character;
+
 import com.nex.gamebook.story.section.StorySection;
 
 public class Story implements Serializable {
 	private String xml;
 	private int name;
 	private int background;
+	private int description;
 	private long id;
 	private Map<Integer, StorySection> sections = new HashMap<>();
-	private List<Character> characters = new ArrayList<Character>();
+	private List<Player> characters = new ArrayList<Player>();
 
 	public long getId() {
 		return id;
@@ -54,12 +55,12 @@ public class Story implements Serializable {
 		this.name = name;
 	}
 
-	public List<Character> getCharacters() {
+	public List<Player> getCharacters() {
 		return characters;
 	}
 
-	public Character getCharacter(int id) {
-		for (Character ch : characters) {
+	public Player getCharacter(int id) {
+		for (Player ch : characters) {
 			if (ch.getId() == id)
 				return ch;
 		}
@@ -72,6 +73,14 @@ public class Story implements Serializable {
 
 	public void setBackground(int background) {
 		this.background = background;
+	}
+
+	public int getDescription() {
+		return description;
+	}
+
+	public void setDescription(int description) {
+		this.description = description;
 	}
 
 }
