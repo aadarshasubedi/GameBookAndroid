@@ -1,18 +1,12 @@
 package com.nex.gamebook.entity;
 
-import java.io.Serializable;
-
-import android.util.Log;
-
-import com.nex.gamebook.R;
 import com.nex.gamebook.playground.AttackCallback;
 
-public class Enemy extends com.nex.gamebook.entity.Character implements
-		Serializable {
+public class Enemy extends com.nex.gamebook.entity.Character {
 
-	private long FIGHT_SPEED = 2000;
-
+	private static final long serialVersionUID = -1969817378614053107L;
 	private int name;
+	private int index;
 	private boolean affectPlayer;
 
 	public int getName() {
@@ -33,6 +27,7 @@ public class Enemy extends com.nex.gamebook.entity.Character implements
 			int attack = attackChar.getCurrentStats().getAttack();
 			if (resultCombat.isCritical()) {
 				double criticalMultiplier = attackChar.hasLuck() ? 1 : 0.5;
+				resultCombat.setMultiply(criticalMultiplier);
 				attack += attack * criticalMultiplier;
 			}
 			resultCombat.setDamage(attack
@@ -42,6 +37,7 @@ public class Enemy extends com.nex.gamebook.entity.Character implements
 			attackedCharacter.getCurrentStats().setHealth(
 					attackedHealth - resultCombat.getDamage());
 		}
+		resultCombat.setEnemyName(getName());
 		return resultCombat;
 	}
 
@@ -58,13 +54,8 @@ public class Enemy extends com.nex.gamebook.entity.Character implements
 			}
 			enemyBegin = !enemyBegin;
 			if (character.isDefeated()) {
-				return;
+				break;
 			}
-//			try {
-//				Thread.sleep(FIGHT_SPEED);
-//			} catch (InterruptedException e) {
-//				Log.e("GmaeBookFighting", "", e);
-//			}
 		}
 		callback.fightEnd();
 	}
@@ -81,4 +72,13 @@ public class Enemy extends com.nex.gamebook.entity.Character implements
 	public CharacterType getType() {
 		return CharacterType.ENEMY;
 	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
 }

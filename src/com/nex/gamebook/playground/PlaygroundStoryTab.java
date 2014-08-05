@@ -143,7 +143,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 				text += " " + context.getResources().getString(R.string.option_cant_return);
 			}
 			if(option.isBothAspects()) {
-				text += " " + context.getResources().getString(R.string.fight_aspect_luck) + "" + context.getResources().getString(R.string.fight_aspect_skill);
+				text += " " + context.getResources().getString(R.string.fight_aspect_luck) + " " + context.getResources().getString(R.string.fight_aspect_skill);
 			} else if(option.isLuckAspect()) {
 				text += " " + context.getResources().getString(R.string.fight_aspect_luck);
 			} else if(option.getSkill() > 0) {

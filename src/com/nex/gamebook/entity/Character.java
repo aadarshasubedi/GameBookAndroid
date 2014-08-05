@@ -1,8 +1,10 @@
 package com.nex.gamebook.entity;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public abstract class Character {
+public abstract class Character  implements Serializable {
+	private static final long serialVersionUID = 214922718575334896L;
 	public static int MAX_LUCK_OF_CHARACTER = 14;
 	public static int MAX_SKILL_OF_CHARACTER = 15;
 

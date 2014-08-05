@@ -3,6 +3,8 @@ package com.nex.gamebook.entity;
 import java.io.Serializable;
 
 public class Stats implements Serializable {
+	private static final long serialVersionUID = 5967013219649795912L;
+	
 	private int health;
 	private int defense;
 	private int skill;

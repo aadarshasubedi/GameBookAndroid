@@ -37,30 +37,26 @@
                     android:paddingLeft="10dip"
                     android:text="@string/attr_value_zero"
                     style="@style/textview_attrValue" />
-            </TableRow>
-            <TableRow
-                android:id="@+id/tableRow7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip">
 
                 <TextView
                     android:id="@+id/sel_l_attack"
+                    style="@style/textview_attrName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dip"
-                    android:text="@string/attr_attack"
-                    style="@style/textview_attrName" />
+                    android:layout_marginLeft="10dip"
+                    android:text="@string/attr_attack" />
 
                 <TextView
                     android:id="@+id/sel_attr_attack"
+                    style="@style/textview_attrValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dip"
-                    android:text="@string/attr_value_zero"
-                    style="@style/textview_attrValue" />
+                    android:text="@string/attr_value_zero" />
 
             </TableRow>
+           
             <TableRow
                 android:id="@+id/tableRow3"
                 android:layout_width="wrap_content"
@@ -68,45 +64,40 @@
                 android:paddingLeft="10dip" >
 
                 <TextView
-                    android:id="@+id/sel_l_defense"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="10dip"
-                    android:text="@string/attr_defense"
-                    style="@style/textview_attrName" />
-
-                <TextView
-                    android:id="@+id/sel_attr_defense"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dip"
-                    android:text="@string/attr_value_zero"
-                    style="@style/textview_attrValue" />
-            </TableRow>
-			
-            <TableRow
-                android:id="@+id/tableRow6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip" >
-
-                <TextView
                     android:id="@+id/sel_l_skill"
+                    style="@style/textview_attrName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dip"
-                    android:text="@string/attr_skill"
-                    style="@style/textview_attrName" />
+                    android:text="@string/attr_skill" />
 
                 <TextView
                     android:id="@+id/sel_attr_skill"
+                    style="@style/textview_attrValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dip"
-                    android:text="@string/attr_value_zero"
-                    style="@style/textview_attrValue" />
+                    android:text="@string/attr_value_zero" />
+
+                <TextView
+                    android:id="@+id/sel_l_defense"
+                    style="@style/textview_attrName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dip"
+                    android:layout_marginLeft="10dip"
+                    android:text="@string/attr_defense" />
+
+                <TextView
+                    android:id="@+id/sel_attr_defense"
+                    style="@style/textview_attrValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dip"
+                    android:text="@string/attr_value_zero" />
 
             </TableRow>
+			
             <TableRow
                 android:id="@+id/tableRow5"
                 android:layout_width="wrap_content"

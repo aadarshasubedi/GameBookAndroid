@@ -1,13 +1,12 @@
 package com.nex.gamebook.entity;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Random;
 
 import android.util.Log;
 
-public class Player extends Character implements Serializable {
+public class Player extends Character{
 
+	private static final long serialVersionUID = 7279750413253963361L;
 	private int id;
 	private int name;
 	private int description;

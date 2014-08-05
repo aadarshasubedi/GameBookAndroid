@@ -3,8 +3,10 @@ package com.nex.gamebook.entity;
 public class ResultCombat {
 	private CharacterType type;
 	private boolean critical;
+	private double multiply;
 	private boolean luck;
 	private int damage;
+	private int enemyName;
 
 	public boolean isCritical() {
 		return critical;
@@ -27,7 +29,7 @@ public class ResultCombat {
 	}
 
 	public void setDamage(int damage) {
-		if(damage < 0) {
+		if (damage < 0) {
 			damage = 0;
 		}
 		this.damage = damage;
@@ -40,4 +42,28 @@ public class ResultCombat {
 	public void setLuck(boolean luck) {
 		this.luck = luck;
 	}
+
+	public int getEnemyName() {
+		return enemyName;
+	}
+
+	public void setEnemyName(int enemyName) {
+		this.enemyName = enemyName;
+	}
+
+	public double getMultiply() {
+		return multiply;
+	}
+
+	public void setMultiply(double multiply) {
+		this.multiply = multiply;
+	}
+
+	public String getMultiplyAsText() {
+		if(multiply == 1d) {
+			return "2x";
+		}
+		return "0.5x";
+	}
+	
 }
