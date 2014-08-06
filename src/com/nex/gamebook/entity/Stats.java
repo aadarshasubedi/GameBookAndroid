@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class Stats implements Serializable {
 	private static final long serialVersionUID = 5967013219649795912L;
-	
+	public static int TOTAL_LUCK_FOR_CALC = 20;
+	public static int TOTAL_SKILL_FOR_CALC = 25;
 	private int health;
 	private int defense;
 	private int skill;
@@ -60,15 +61,15 @@ public class Stats implements Serializable {
 	}
 
 	public int getLuckPercentage() {
-		return Stats.getPercentage(luck, Character.TOTAL_LUCK_FOR_CALC);
+		return Stats.getPercentage(luck, TOTAL_LUCK_FOR_CALC);
 	}
 	
 	public int getSkillPercentage() {
-		return Stats.getPercentage(skill, Character.TOTAL_SKILL_FOR_CALC);
+		return Stats.getPercentage(skill, TOTAL_SKILL_FOR_CALC);
 	}
 	
-	public static int getPercentage(int luck, int what) {
-		float res = ((float) luck / (float) what);
+	public static int getPercentage(int value, int what) {
+		float res = ((float) value / (float) what);
 		return (int) (res * 100);
 	}
 

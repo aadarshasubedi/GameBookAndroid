@@ -8,8 +8,7 @@ public abstract class Character  implements Serializable {
 	public static int MAX_LUCK_OF_CHARACTER = 14;
 	public static int MAX_SKILL_OF_CHARACTER = 15;
 
-	public static int TOTAL_LUCK_FOR_CALC = 20;
-	public static int TOTAL_SKILL_FOR_CALC = 25;
+	
 	private Stats stats = new Stats();
 	private Stats currentStats = new Stats(stats);
 	private boolean fighting;
@@ -32,13 +31,13 @@ public abstract class Character  implements Serializable {
 
 	public boolean hasLuck() {
 		Random random = new Random();
-		int res = random.nextInt(Character.TOTAL_LUCK_FOR_CALC);
+		int res = random.nextInt(Stats.TOTAL_LUCK_FOR_CALC);
 		return getCurrentStats().getLuck() >= res;
 	}
 
 	public boolean isCriticalChance() {
 		Random random = new Random();
-		int res = random.nextInt(Character.TOTAL_SKILL_FOR_CALC);
+		int res = random.nextInt(Stats.TOTAL_SKILL_FOR_CALC);
 		return getCurrentStats().getSkill() >= res;
 	}
 

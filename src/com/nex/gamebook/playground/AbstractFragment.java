@@ -20,7 +20,7 @@ public abstract class AbstractFragment extends GameBookFragment {
 	protected void decoreClickableTextView(Context context, TextView view, String text) {
 		SpannableString spanString = new SpannableString(text);
 		spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
-		view.setTextAppearance(context, R.style.textview_options);
+		view.setTextAppearance(context, R.style.option);
 		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	    llp.setMargins(0, 50, 0, 0);
 	    view.setLayoutParams(llp);
@@ -29,7 +29,7 @@ public abstract class AbstractFragment extends GameBookFragment {
 	protected void decoreClickableDisabledTextView(Context context, TextView view, String text) {
 //		SpannableString spanString = new SpannableString(text);
 //		spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
-		view.setTextAppearance(context, R.style.textview_options_disabled);
+		view.setTextAppearance(context, R.style.option_disabled);
 //		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 //	    llp.setMargins(0, 50, 0, 0);
 //	    view.setLayoutParams(llp);

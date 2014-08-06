@@ -56,7 +56,7 @@ public class StorySelectionActivity extends Activity {
 		public View getView(Story story, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.story_layout, parent,
+			View rowView = inflater.inflate(R.layout.list_story_layout, parent,
 					false);
 			LinearLayout storyInfo = (LinearLayout) rowView.findViewById(R.id.story_info);
 			ViewAnimator animator = (ViewAnimator) rowView

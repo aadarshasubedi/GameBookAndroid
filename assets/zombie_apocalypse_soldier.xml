@@ -39,16 +39,16 @@
                 <enemy name="@string/story1_e_livingdead" >
                     <health>5</health>
                     <defense>3</defense>
-                    <skill>2</skill>
+                    <skill>1</skill>
                     <luck>1</luck>
-                    <attack>12</attack>
+                    <attack>4</attack>
                 </enemy>
                 <enemy name="@string/story1_e_nohander" >
-                    <health>3</health>
+                    <health>10</health>
                     <defense>5</defense>
-                    <skill>2</skill>
+                    <skill>1</skill>
                     <luck>1</luck>
-                    <attack>7</attack>
+                    <attack>3</attack>
                 </enemy>
             </enemies>
             <options>

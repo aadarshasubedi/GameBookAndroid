@@ -2,7 +2,7 @@
 <story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../story.xsd">
     <characters>
-        <character position="4" id="1" name="@string/story1_ch_soldier" description="@string/story1_dsc_soldier">
+        <character position="1" id="1" name="@string/story1_ch_soldier" description="@string/story1_dsc_soldier">
             <health>15</health>
             <defense>5</defense>
             <skill>2</skill>

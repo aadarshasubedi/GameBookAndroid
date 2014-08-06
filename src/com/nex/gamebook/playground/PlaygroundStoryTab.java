@@ -27,6 +27,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
+	private boolean showOptions = false;
 	public Player _character;
 //	private boolean tabClick;
 //	private boolean showOptions = true;
@@ -41,6 +42,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		if(getPlayground().isFighting()) {
 			startFight(view.getContext(), _character.getCurrentSection());
 		}
+		view.setTag(this);
 		return view;
 	}
 	
@@ -61,7 +63,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		if(!currentSection.getEnemies().isEmpty()) {
 			prepareFightSection(view.getContext(), layout, currentSection);
 		} else if(!currentSection.getBonuses().isEmpty()) {
-			prepareBonusSection(view.getContext(), layout, currentSection, currentSection.getBonuses());
+			prepareBonusSection(view.getContext(), (LinearLayout) view.findViewById(R.id.bonuses), currentSection, currentSection.getBonuses());
 		}
 		if(_character.isDefeated()) {
 			showGameOver(view.getContext(), view.findViewById(R.id.playground_story), currentSection);
@@ -70,7 +72,6 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		} else if(isShowOptions()) {
 			prepareChooseSection(view.getContext(), layout, currentSection);
 		}
-		setTabclick(true);
 	}
 	
 	private void prepareBonusSection(Context context, LinearLayout layout, StorySection section, List<Bonus> bonuses) {
@@ -84,17 +85,19 @@ public class PlaygroundStoryTab extends AbstractFragment {
 			}
 			String marker = "+";
 			TextView opt = new TextView(context);
+			opt.setTextAppearance(context, R.style.number);
 			if(bonus.getCoeff() > 0) {
-				opt.setTextAppearance(context, R.style.textview_bonus);
+				opt.setTextColor(context.getResources().getColor(R.color.positive));
 			} else {
 				marker = "-";
-				opt.setTextAppearance(context, R.style.textview_debuff);
+				opt.setTextColor(context.getResources().getColor(R.color.negative));
 			}
 			String s = getContext().getResources().getString(bonus.getText()).toLowerCase();
 			opt.setText(marker + realValue + " " + s);
 			layout.addView(opt);
 		}
 		section.setBonusesAlreadyGained(true);
+		getPlayground().getCharacterFragment().showCurrentValues();
 	}
 	
 	private void prepareFightSection(Context context, LinearLayout layout, StorySection section) {
@@ -137,9 +140,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 	private void prepareChooseSection(Context context, LinearLayout layout, StorySection section) {
 		for(StorySectionOption option: section.getOptions()) {
 			String text = context.getResources().getString(option.getText());
-			if(!isTabclick()) {
-				_character.setCanShowOption(option);
-			}
+			_character.setCanShowOption(option);
 			if(!option.isDisplayed()) {
 				continue;
 			}
@@ -196,7 +197,6 @@ public class PlaygroundStoryTab extends AbstractFragment {
 
 		@Override
 		public void onClick(View v) {
-			setTabclick(false);
 			this.section.setCompleted(true);
 			this.section.setVisited(true);
 			this.section.setHasLuck(false);
@@ -218,25 +218,14 @@ public class PlaygroundStoryTab extends AbstractFragment {
 	}
 	
 	public void refresh() {
-//		final FragmentTransaction ft = getFragmentManager().beginTransaction();
-//		ft.detach(this);
-//		ft.attach(this);
-//		ft.commit();
+		getPlayground().changeToStory();
 	}
-	
 
-	
-	public boolean isTabclick() {
-		return getArguments().getBoolean("tabclick");
-	}
-	public void setTabclick(boolean val) {
-		getArguments().putBoolean("tabclick", val);
-	}
-	
 	public boolean isShowOptions() {
-		return getArguments().getBoolean("showOptions");
+		return showOptions;
 	}
 	public void setShowOptions(boolean val) {
-		getArguments().putBoolean("showOptions", val);
+		showOptions = val;
 	}
+	
 }

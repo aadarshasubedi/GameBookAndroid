@@ -26,17 +26,17 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_marginTop="5dip"
+        style="@style/main_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView1"
         android:layout_alignTop="@+id/imageView1"
         android:layout_toLeftOf="@+id/imageView2"
         android:layout_toRightOf="@+id/imageView1"
-        android:gravity="center_horizontal"
-        style="@style/title"
+        android:gravity="center_horizontal|center_vertical"
         android:text="@string/dsc_default" />
 
-    <ViewSwitcher
+    <ViewFlipper
         android:id="@+id/viewSwitcher1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,6 +47,6 @@
         android:layout_marginBottom="10dip" >
 
 <!--         android:background="@drawable/_background_corners" -->
-    </ViewSwitcher>
+    </ViewFlipper>
     
 </RelativeLayout>

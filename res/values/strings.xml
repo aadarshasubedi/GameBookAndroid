@@ -13,13 +13,16 @@
     <string name="action_settings">Settings</string>
     <string name="begin_fight">Začít boj</string>
     <string name="you_obtain">Získáváš:</string>
-    <string name="description">Popis:</string>
+    <string name="description">Popis</string>
     <string name="battle_log">Battle log:</string>
-    <string name="options">Možnosti:</string>
+    <string name="options">Možnosti</string>
     <string name="separator">/</string>
-    <string name="attributes">Atributy:</string>
+    <string name="attributes">Atributy</string>
     <string name="enemies">Nepřátelé</string>
 	<string name="keyword_from">z</string>
+	<string name="section">Sekce</string>
+	<string name="dead">Mrtvý</string>
+	
 <!-- 	<string name="player">Hráč</string> -->
 <!-- 	<string name="enemy">Nepřítel</string> -->
 	
@@ -30,6 +33,7 @@
     <string name="attr_attack">Útok</string>
     <string name="attr_defense">Obrana</string>
     <string name="attr_skill">Dovednost</string>
+    <string name="attr_critical">Krit.š.</string>
     
     <string name="attr_health_short">Z:</string>
     <string name="attr_luck_short">Š:</string>
@@ -70,4 +74,7 @@
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    
+    <string name="log">Log</string>
+    
 </resources>

@@ -30,7 +30,7 @@ public class FragmentTab extends GameBookFragment {
 
 		try {
 
-			final Player _character = getCharacter(view.getContext());
+			final Player _character = getCharacter();
 			TextView attr = (TextView) view.findViewById(R.id.sel_attr_health);
 			attr.setText(String.valueOf(_character.getStats().getHealth()));
 
@@ -40,13 +40,14 @@ public class FragmentTab extends GameBookFragment {
 			attr.setText(String.valueOf(_character.getStats().getDefense()));
 
 			attr = (TextView) view.findViewById(R.id.sel_attr_skill);
-			attr.setText(String.valueOf(_character.getStats().getSkill())
-					+ " (" + _character.getStats().getSkillPercentage() + "%)");
+			attr.setText(String.valueOf(_character.getStats().getSkill()));
 
 			attr = (TextView) view.findViewById(R.id.sel_attr_luck);
-			attr.setText(String.valueOf(_character.getStats().getLuck()) + " ("
-					+ _character.getStats().getLuckPercentage() + "%)");
-
+			attr.setText(String.valueOf(_character.getStats().getLuckPercentage()));
+			
+			attr = (TextView) view.findViewById(R.id.critical);
+			attr.setText(String.valueOf(_character.getStats().getSkillPercentage()));
+			
 			TextView textview = (TextView) view
 					.findViewById(R.id.sel_char_description);
 			textview.setText(_character.getDescription());
@@ -70,7 +71,7 @@ public class FragmentTab extends GameBookFragment {
 		} catch (Exception e) {
 			Log.e("GameBook CharacterSelection", "", e);
 		}
-
+		view.setTag(this);
 		return view;
 	}
 }

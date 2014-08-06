@@ -16,6 +16,7 @@
             android:name=".MainScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,18 +26,26 @@
         </activity>
         <activity
             android:name=".CharacterSelectionActivity"
+            android:theme="@style/FullscreenTheme"
+             android:screenOrientation="portrait"
             android:label="@string/title_activity_character_selection" >
         </activity>
         <activity
             android:name=".StorySelectionActivity"
+            android:theme="@style/FullscreenTheme"
+             android:screenOrientation="portrait"
             android:label="@string/title_activity_story_selection" >
         </activity>
         <activity
             android:name=".playground.PlaygroundActivity"
+            android:theme="@style/FullscreenTheme"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_playground" >
         </activity>
         <activity
             android:name=".LoadGameActivity"
+            android:theme="@style/FullscreenTheme"
+             android:screenOrientation="portrait"
             android:label="@string/title_activity_load_game" >
         </activity>
     </application>

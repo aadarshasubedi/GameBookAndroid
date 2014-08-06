@@ -2,210 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/character_layout"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    
-
-   <TableLayout
-        android:id="@+id/tableLayout1"
-        android:layout_width="156dp"
-        android:layout_margin="10dip"
-        android:padding="5dip"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" 
-        android:background="@drawable/_background_corners">
-
-        <TextView
-            android:id="@+id/textView2"
-            style="@style/textview_enemyName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/character" />
-
-        <TableRow
-            android:id="@+id/tableRow0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:paddingLeft="10dip" >
-
-            <TextView
-                android:id="@+id/plaground_name_health"
-                style="@style/textview_attrName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dip"
-                android:text="@string/attr_health" />
-
-            <TextView
-                android:id="@+id/playground_curr_health"
-                style="@style/textview_neutral_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/textview_anchor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/separator" />
-
-            <TextView
-                android:id="@+id/playground_def_health"
-                style="@style/textview_default_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-			<TextView
-                android:id="@+id/space"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/plaground_name_attack"
-                style="@style/textview_attrName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dip"
-                 android:layout_marginLeft="10dip"
-                android:text="@string/attr_attack" />
-
-            <TextView
-                android:id="@+id/playground_curr_attack"
-                style="@style/textview_neutral_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip"
-                
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/textview_anchor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/separator" />
-
-            <TextView
-                android:id="@+id/playground_def_attack"
-                style="@style/textview_default_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:paddingLeft="10dip" >
-			<TextView
-                android:id="@+id/plaground_name_skill"
-                style="@style/textview_attrName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dip"
-                
-                android:text="@string/attr_skill" />
-
-            <TextView
-                android:id="@+id/playground_curr_skill"
-                style="@style/textview_neutral_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/textview_anchor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/separator" />
-
-            <TextView
-                android:id="@+id/playground_def_skill"
-                style="@style/textview_default_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-            <TextView
-                android:id="@+id/percSkill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/plaground_name_defense"
-                style="@style/textview_attrName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dip"
-                android:layout_marginLeft="10dip"
-                android:text="@string/attr_defense" />
-
-            <TextView
-                android:id="@+id/playground_curr_defense"
-                style="@style/textview_neutral_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/textview_anchor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/separator" />
-
-            <TextView
-                android:id="@+id/playground_def_defense"
-                style="@style/textview_default_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:paddingLeft="10dip" >
-
-            <TextView
-                android:id="@+id/plaground_name_luck"
-                style="@style/textview_attrName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dip"
-                android:text="@string/attr_luck" />
-
-            <TextView
-                android:id="@+id/playground_curr_luck"
-                style="@style/textview_neutral_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/textview_anchor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/separator" />
-
-            <TextView
-                android:id="@+id/playground_def_luck"
-                style="@style/textview_default_attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-            <TextView
-                android:id="@+id/percLuck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
-    </TableLayout>
+    android:layout_height="fill_parent" android:background="@drawable/corners_">
 
     <Button
         android:id="@+id/result_button"
@@ -213,70 +10,202 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        style="@style/button"
         android:text="@string/sg_continue" />
 
-    <ViewSwitcher
+    <ViewFlipper
         android:id="@+id/viewSwitcher1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:layout_below="@+id/button1"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true"
+        android:padding="10dip" android:visibility="gone">
 
-        
+    </ViewFlipper>
 
-    </ViewSwitcher>
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/result_button"
         android:layout_alignParentLeft="true"
-        android:layout_margin="10dip"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/viewSwitcher1" android:background="@drawable/_background_corners">
+        android:layout_below="@+id/textView1"
+        android:padding="10dip"
+        style="@style/section"
+        android:background="@drawable/_background_corners" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dip" android:paddingRight="10dip"
             android:orientation="vertical" android:id="@+id/battle_log">
-
-            
 
         </LinearLayout>
         
     </ScrollView>
 
-    <TextView
-        android:id="@+id/enemy_name"
-        style="@style/textview_enemyName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tableLayout1"
-        android:layout_marginTop="5dip"
-        android:layout_toLeftOf="@+id/button2"
-        android:layout_toRightOf="@+id/button1"
-        android:gravity="center_horizontal"
-        android:text="@string/enemies"
-        android:textColor="@color/bonus_color" />
-
-    <TextView
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        style="@style/section"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/enemy_name"
-        android:layout_marginLeft="10dip"
-        android:background="@drawable/left"/>
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView2"
+        android:background="@drawable/_background_corners"
+        android:padding="10dp" >
+
+        <TableRow
+            android:id="@+id/tableRow0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/sel_l_health"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_health" />
+
+            <TextView
+                android:id="@+id/sel_attr_health"
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text=""/>
+
+            <TextView
+                android:id="@+id/sel_l_attack"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/attr_attack" />
+
+            <TextView
+                android:id="@+id/sel_attr_attack"
+                style="@style/number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/attr_value_zero" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/sel_l_skill"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_skill" />
+
+            <TextView
+                android:id="@+id/sel_attr_skill"
+                style="@style/number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/sel_l_defense"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/attr_defense" />
+
+            <TextView
+                android:id="@+id/sel_attr_defense"
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/attr_value_zero" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/sel_l_luck"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_luck" />
+
+            <TextView
+                android:id="@+id/sel_attr_luck"
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/number"
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="%" />
+
+            <TextView
+                style="@style/attribute"
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/attr_critical" />
+
+            <TextView
+                style="@style/number"
+                android:id="@+id/critical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100" />
+			<TextView
+                style="@style/number"
+                android:id="@+id/p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="%" />
+        </TableRow>
+    </TableLayout>
 
     <TextView
-        android:id="@+id/button2"
+        android:id="@+id/textView2"
+        style="@style/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dip"
+        android:layout_alignLeft="@+id/tableLayout1"
+        android:layout_below="@+id/viewSwitcher1"
+        android:gravity="center_horizontal"
+        android:text="@string/character" />
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scrollView1"
         android:layout_below="@+id/tableLayout1"
-        android:background="@drawable/right" />
+        android:text="@string/log" />
 
 </RelativeLayout>

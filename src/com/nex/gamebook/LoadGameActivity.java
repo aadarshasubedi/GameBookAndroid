@@ -57,7 +57,7 @@ public class LoadGameActivity extends Activity {
 	class SavedGameItem extends ArrayAdapter<String> {
 		Context context;
 		public SavedGameItem(Context context) {
-			super(context, R.layout.saved_game_item_layout, new String[keys.size()]);
+			super(context, R.layout.list_saved_game_item_layout, new String[keys.size()]);
 			this.context = context;
 		}
 		
@@ -67,7 +67,7 @@ public class LoadGameActivity extends Activity {
 			Set<String> values = savedGames.get(fileName);
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.saved_game_item_layout, parent, false);
+			View rowView = inflater.inflate(R.layout.list_saved_game_item_layout, parent, false);
 			TextView storyName = (TextView) rowView.findViewById(R.id.story_name);
 			Iterator<String> it = values.iterator();
 			String xml = it.next();

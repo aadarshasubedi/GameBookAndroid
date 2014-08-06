@@ -1,14 +1,14 @@
 package com.nex.gamebook;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.ViewSwitcher;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
@@ -20,8 +20,7 @@ public class CharacterSelectionActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		try {
 			StoryXmlParser parser = new StoryXmlParser(this);
@@ -30,22 +29,50 @@ public class CharacterSelectionActivity extends Activity {
 			setContentView(R.layout.activity_character_selection);
 			overridePendingTransition(R.anim.trans_left_in, R.anim.trans_right_out);
 			
-			ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.viewSwitcher1);
+			final ViewFlipper flipper = (ViewFlipper) findViewById(R.id.viewSwitcher1);
+			final TextView title = (TextView) findViewById(R.id.textView1);
+			ImageView left = (ImageView) findViewById(R.id.imageView1);
+			ImageView right = (ImageView) findViewById(R.id.imageView2);
+			ViewFlipListener listener = new ViewFlipListener(left, right, flipper) {
+				@Override
+				public void viewChanged(View currentView) {
+					showTitle(currentView, title);
+				}
+				@Override
+				public Context getContext() {
+					return CharacterSelectionActivity.this;
+				}
+			};
 			
 			for (Player c : story.getCharacters()) {
-				
 				FragmentTab fragmentTab = new FragmentTab(this);
-				fragmentTab.putCharacter(c);
-				switcher.addView(fragmentTab.create(switcher));
+				fragmentTab.setCharacter(c);
+				flipper.addView(fragmentTab.create(flipper));
 			}
+			listener.select(0);
+			showTitle(flipper.getCurrentView(), title);
 		} catch (Exception e) {
 			Log.e("Gamebook", "", e);
 		}
-		
 	}
+	
+	
+	private void showTitle(View currentView, TextView title) {
+		FragmentTab selectedTab = (FragmentTab) currentView.getTag();
+		title.setText(selectedTab.getCharacter().getName());
+	}
+	
 	@Override
 	public void onBackPressed() {
 	    super.onBackPressed();
 	    overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

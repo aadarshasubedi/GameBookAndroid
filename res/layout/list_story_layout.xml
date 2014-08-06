@@ -21,7 +21,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.10"
             android:padding="5dp"
-            android:text="@string/dsc_default" style="@style/textview_story"/>
+            android:text="@string/dsc_default" style="@style/text"/>
 
         <TextView
             android:id="@+id/storyDescription"
@@ -29,7 +29,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.10"
             android:padding="5dp"
-            android:text="@string/dsc_default"  style="@style/textview_options"/>
+            android:text="@string/dsc_default"  style="@style/option"/>
          <Button
 	        android:id="@+id/play_button"
 	        android:layout_width="match_parent"
