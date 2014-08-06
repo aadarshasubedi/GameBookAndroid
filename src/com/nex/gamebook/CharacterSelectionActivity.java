@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ViewSwitcher;
 
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
@@ -19,7 +20,6 @@ public class CharacterSelectionActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
@@ -29,17 +29,14 @@ public class CharacterSelectionActivity extends Activity {
 			setTitle(story.getName());
 			setContentView(R.layout.activity_character_selection);
 			overridePendingTransition(R.anim.trans_left_in, R.anim.trans_right_out);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayShowTitleEnabled(false);
-			actionBar.setDisplayShowHomeEnabled(false);
 			
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.viewSwitcher1);
+			
 			for (Player c : story.getCharacters()) {
-				ActionBar.Tab tab = actionBar.newTab().setText(c.getName());
-				FragmentTab fragmentTab = new FragmentTab();
+				
+				FragmentTab fragmentTab = new FragmentTab(this);
 				fragmentTab.putCharacter(c);
-				tab.setTabListener(new MyTabListener(fragmentTab));
-				actionBar.addTab(tab);
+				switcher.addView(fragmentTab.create(switcher));
 			}
 		} catch (Exception e) {
 			Log.e("Gamebook", "", e);
@@ -51,32 +48,4 @@ public class CharacterSelectionActivity extends Activity {
 	    super.onBackPressed();
 	    overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
 	}
-		
-
-	public class MyTabListener implements ActionBar.TabListener {
-		FragmentTab fragment;
-
-		
-		
-		public MyTabListener(FragmentTab fragment) {
-			this.fragment = fragment;
-		}
-
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
-			ft.replace(R.id.fragment_container, fragment);
-		}
-
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-			ft.remove(fragment);
-		}
-
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-
-		}
-	}
-//	@Override
-//	protected void onDestroy() {
-//		super.onDestroy();
-//		selectedCharacter = null;
-//	}
 }

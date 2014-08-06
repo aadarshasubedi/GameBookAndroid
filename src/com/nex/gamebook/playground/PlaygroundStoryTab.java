@@ -2,12 +2,9 @@ package com.nex.gamebook.playground;
 
 import java.util.List;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -18,25 +15,26 @@ import android.widget.TextView;
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.entity.Bonus;
+import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySectionOption;
-import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.io.IOGameOperation;
 import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundStoryTab extends AbstractFragment {
+	public PlaygroundStoryTab(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
 	public Player _character;
 //	private boolean tabClick;
 //	private boolean showOptions = true;
 //	private boolean alertUnreturnableOptions = false;
-	public PlaygroundStoryTab() {
-		
-	}
+
 	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_playground_story, container, false);
+	public View create(ViewGroup container) {
+		View view = getPlayground().getLayoutInflater().inflate(R.layout.fragment_playground_story, container, false);
 		setShowOptions(true);
 		_character = getPlayground().getCharacter();
 		this.prepareView(view);
@@ -92,7 +90,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 				marker = "-";
 				opt.setTextAppearance(context, R.style.textview_debuff);
 			}
-			String s = getResources().getString(bonus.getText()).toLowerCase();
+			String s = getContext().getResources().getString(bonus.getText()).toLowerCase();
 			opt.setText(marker + realValue + " " + s);
 			layout.addView(opt);
 		}
@@ -116,7 +114,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 				@Override
 				public void onClick(View v) {
 					startFight(context, section);
-					PlaygroundActivity activity = (PlaygroundActivity) getActivity();
+					PlaygroundActivity activity = getPlayground();
 					activity.getCharacterFragment().setNewBattle(true);
 				}
 			});
@@ -127,7 +125,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 	
 	private void startFight(Context context, StorySection section) {
 		section.setBonusesAlreadyGained(false);
-		PlaygroundActivity activity = (PlaygroundActivity) getActivity();
+		PlaygroundActivity activity = getPlayground();
 		activity.changeToBattle(section);
 	}
 	
@@ -180,8 +178,8 @@ public class PlaygroundStoryTab extends AbstractFragment {
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getView().getContext(), MainScreenActivity.class);
-				getView().getContext().startActivity(intent);
+				Intent intent = new Intent(v.getContext(), MainScreenActivity.class);
+				v.getContext().startActivity(intent);
 			}
 		});
 		button.setVisibility(View.VISIBLE);
@@ -220,10 +218,10 @@ public class PlaygroundStoryTab extends AbstractFragment {
 	}
 	
 	public void refresh() {
-		final FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ft.detach(this);
-		ft.attach(this);
-		ft.commit();
+//		final FragmentTransaction ft = getFragmentManager().beginTransaction();
+//		ft.detach(this);
+//		ft.attach(this);
+//		ft.commit();
 	}
 	
 

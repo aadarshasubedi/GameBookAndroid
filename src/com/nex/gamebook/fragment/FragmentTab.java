@@ -1,5 +1,7 @@
 package com.nex.gamebook.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,13 +18,14 @@ import com.nex.gamebook.playground.PlaygroundActivity;
 
 public class FragmentTab extends GameBookFragment {
 
-	public FragmentTab() {
-		// TODO Auto-generated constructor stub
+	
+
+	public FragmentTab(Context context) {
+		super(context);
 	}
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_character_description,
+	public View create(ViewGroup container) {
+		View view = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.fragment_character_description,
 				container, false);
 
 		try {
@@ -60,7 +63,7 @@ public class FragmentTab extends GameBookFragment {
 					bundle.putBoolean("load", true);
 					
 					intent.putExtras(bundle);
-					startActivity(intent);
+					getContext().startActivity(intent);
 
 				}
 			});

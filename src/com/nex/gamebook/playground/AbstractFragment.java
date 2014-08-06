@@ -11,7 +11,12 @@ import com.nex.gamebook.R;
 import com.nex.gamebook.fragment.GameBookFragment;
 
 
-public class AbstractFragment extends GameBookFragment {
+public abstract class AbstractFragment extends GameBookFragment {
+	
+	public AbstractFragment(Context context) {
+		super(context);
+	}
+	
 	protected void decoreClickableTextView(Context context, TextView view, String text) {
 		SpannableString spanString = new SpannableString(text);
 		spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
@@ -34,6 +39,6 @@ public class AbstractFragment extends GameBookFragment {
 		this.decoreClickableTextView(context, view, context.getResources().getString(text));
 	}
 	protected PlaygroundActivity getPlayground() {
-		return (PlaygroundActivity) getActivity();
+		return (PlaygroundActivity) getContext();
 	}
 }

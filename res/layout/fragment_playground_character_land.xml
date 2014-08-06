@@ -3,7 +3,7 @@
     android:id="@+id/character_layout"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/background_color" >
+     android:background="@drawable/background_land">
 
 <TextView
     android:id="@+id/textView2"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView2"
-        android:layout_toLeftOf="@+id/button1" >
+        android:layout_toLeftOf="@+id/button1">
 
         <TableRow
             android:id="@+id/tableRow0"

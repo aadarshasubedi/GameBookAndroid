@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ViewSwitcher;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.entity.Player;
@@ -47,22 +48,14 @@ public class PlaygroundActivity extends Activity {
 			setTitle(_character.getStory().getName());
 			setContentView(R.layout.activity_character_selection);
 
-			characterFragment = new PlaygroundBattleLogCharacterTab();
-			storyFragment = new PlaygroundStoryTab();
-			storyFragment.putCharacter(_character);
+			characterFragment = new PlaygroundBattleLogCharacterTab(this);
 			characterFragment.putCharacter(_character);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayShowTitleEnabled(false);
-			actionBar.setDisplayShowHomeEnabled(false);
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-			characterTab = actionBar.newTab().setText(R.string.character);
-			characterTab.setTabListener(new MyTabListener(characterFragment));
-			actionBar.addTab(characterTab);
-			storyTab = actionBar.newTab().setText(R.string.story);
-			storyTab.setTabListener(new MyTabListener(storyFragment));
-			actionBar.addTab(storyTab);
-			storyTab.select();
+			
+//			storyFragment = new PlaygroundStoryTab();
+//			storyFragment.putCharacter(_character);
+			
+			ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.viewSwitcher1);
+			switcher.addView(characterFragment.create(switcher));
 		} catch (Exception e) {
 			Log.e("GameBook", "", e);
 		}

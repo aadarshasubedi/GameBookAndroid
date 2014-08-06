@@ -1,15 +1,23 @@
 package com.nex.gamebook.fragment;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
-public class GameBookFragment extends Fragment {
+public abstract class GameBookFragment {
+	private Context context;
+	public GameBookFragment(Context context) {
+		this.context = context;
+	}
 
+	public abstract View create(ViewGroup container);
+	
 	public Player getCharacter(Context context) throws Exception {
 		StoryXmlParser parser = new StoryXmlParser(context);
 		Story story = parser.loadStory(getArguments().getString("story"), true,
@@ -26,4 +34,16 @@ public class GameBookFragment extends Fragment {
 		setArguments(bundle);
 	}
 
+	public Bundle getArguments() {
+		Activity activity = (Activity) getContext();
+		return activity.getIntent().getExtras();
+	}
+	
+	public void setArguments(Bundle bundle) {
+		Activity activity = (Activity) getContext();
+		activity.getIntent().putExtras(bundle);
+	}
+	public Context getContext() {
+		return context;
+	}
 }

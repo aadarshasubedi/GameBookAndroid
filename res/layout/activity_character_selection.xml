@@ -1,4 +1,52 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/character_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/previous"
+        android:layout_margin="10dip"
+        android:src="@drawable/left" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_margin="10dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/next"
+        android:src="@drawable/right" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_marginTop="5dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView1"
+        android:layout_toLeftOf="@+id/imageView2"
+        android:layout_toRightOf="@+id/imageView1"
+        android:gravity="center_horizontal"
+        style="@style/title"
+        android:text="@string/dsc_default" />
+
+    <ViewSwitcher
+        android:id="@+id/viewSwitcher1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/imageView2"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginBottom="10dip" >
+
+<!--         android:background="@drawable/_background_corners" -->
+    </ViewSwitcher>
+    
+</RelativeLayout>

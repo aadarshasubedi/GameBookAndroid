@@ -26,26 +26,23 @@ import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
-	private Player _character;
-//	private PlaygroundActivity activity;
-	private StorySection section;
-	private Button resultButton;
-//	private boolean fighting = false;
-	private boolean newBattle = false;
-	public PlaygroundBattleLogCharacterTab() {
-//		this._character = ch;
-//		this.activity = activity;
+	public PlaygroundBattleLogCharacterTab(Context context) {
+		super(context);
 	}
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		int display_mode = getResources().getConfiguration().orientation;
+	private Player _character;
+	private StorySection section;
+	private Button resultButton;
+	private boolean newBattle = false;
+	
+	public View create(ViewGroup container) {
+		int display_mode = getContext().getResources().getConfiguration().orientation;
 		
 		int layout = R.layout.fragment_playground_character;
 		if (display_mode != 1) {
 		   layout = R.layout.fragment_playground_character_land;
 		}
-		View view = inflater.inflate(layout, container, false);
+		View view = getPlayground().getLayoutInflater().inflate(layout, container, false);
 		_character = getPlayground().getCharacter();
 		showCurrentValues(view);
 		showDefaultValues(view);
@@ -374,7 +371,7 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
 		@Override
 		public void onClick(View v) {
-			PlaygroundActivity activity = (PlaygroundActivity) getActivity();
+			PlaygroundActivity activity = getPlayground();
 			activity.changeToStory();
 			section = null;
 		}
@@ -383,9 +380,9 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getView().getContext(),
+			Intent intent = new Intent(v.getContext(),
 					MainScreenActivity.class);
-			getView().getContext().startActivity(intent);
+			v.getContext().startActivity(intent);
 		}
 	};
 
