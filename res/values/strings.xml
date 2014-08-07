@@ -63,8 +63,6 @@
     
     <string name="fight_luck_section">Žádný boj se nekoná, neboť si tě niko nevšímá.</string>
     <string name="game_over_section">Zničeho nic padáš na zem, v hlavě ti probíhají poslední myšlenky a .... umíráš.</string>
-    <string name="fight_error">No message founded</string>
-    <string name="fight_error_attr">(A)</string>
     <string name="fight_aspect_health">(Zdraví)</string>
     <string name="fight_aspect_defense">(Obrana)</string>
     <string name="fight_aspect_skill">(Dovednost)</string>
@@ -76,5 +74,10 @@
     <string name="previous">Previous</string>
     
     <string name="log">Log</string>
-    
+	<string name="close_book">Zavřít knihu</string>
+	<string name="close_book_description">Pokud bojujete přijdete tím o aktualní stav boje.\nOpravdu chcete zavřít knihu?</string>
+	<string name="yes">Ano</string>
+	<string name="no">Ne</string>
+	<string name="modifications">Modifikace</string>
+	
 </resources>

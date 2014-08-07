@@ -21,7 +21,7 @@
         style="@style/section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/endGame_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -42,22 +42,43 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="@string/dsc_default" />
+			
+            
+		 <LinearLayout
+	                android:id="@+id/modification"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content" 
+	                android:layout_marginBottom="5dip"
+	                android:orientation="vertical"
+	                android:background="@drawable/_background_corners" android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/bonuses"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+	                <TextView
+	                    android:id="@+id/mod_text"
+	                    style="@style/attribute"
+	                    android:gravity="center_horizontal"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginBottom="5dip"
+	                    android:text="@string/modifications" />
 
-                <Button
+	            <LinearLayout
+	                android:id="@+id/bonuses"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                style="@style/section"
+	                android:orientation="vertical" >
+	
+	                
+	
+	            </LinearLayout>
+	      </LinearLayout>
+			<Button
                     android:id="@+id/fight_buton"
                     style="@style/button"
+                    android:layout_margin="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/fight" android:visibility="gone"/>
-
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/gameOver_view"
                 style="@style/negative"

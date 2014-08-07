@@ -3,11 +3,12 @@
     <color name="black_overlay">#66000000</color>
     <color name="title_color">#000000</color>
     <color name="main_title_color">#000000</color>
+    <color name="options_background">#000000</color>
     <color name="button_color">#ffffff</color>
     <color name="number_color">#80000000</color>
 	<color name="attribute">#000000</color>
-	<color name="positive">#96dc70</color>
+	<color name="positive">#4c8341</color>
 	<color name="negative">#9e2311</color>
-	<color name="option">#bbbbbb</color>
-	<color name="option_disabled">#acacac</color>
+	<color name="option">#000000</color>
+	<color name="option_disabled">#d9d9d9</color>
 </resources>

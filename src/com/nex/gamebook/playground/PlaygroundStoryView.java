@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -56,21 +57,29 @@ public class PlaygroundStoryView extends AbstractFragment {
 		} else {
 			tw.setText(currentSection.getText());	
 		}
+		if(currentSection.isLoseSection()) {
+			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.button_endGame_lose);
+		} else if(currentSection.isWinSection()) {
+			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.button_endGame_win);
+		} else {
 		if(!currentSection.getEnemies().isEmpty()) {
 			prepareFightSection(view.getContext(), layout, currentSection);
 		} else if(!currentSection.getBonuses().isEmpty()) {
-			prepareBonusSection(view.getContext(), (LinearLayout) view.findViewById(R.id.bonuses), currentSection, currentSection.getBonuses());
+			prepareBonusSection(view.getContext(), view, currentSection, currentSection.getBonuses());
 		}
-		if(_character.isDefeated()) {
-			showGameOver(view.getContext(), view.findViewById(R.id.playground_story), currentSection);
-		} else if(currentSection.isEndGame()) {
-			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.button_endGame_win);
-		} else if(isShowOptions()) {
-			prepareChooseSection(view.getContext(), layout, currentSection);
+			if(_character.isDefeated()) {
+				showGameOver(view.getContext(), view.findViewById(R.id.playground_story), currentSection);
+			}else if(isShowOptions()) {
+				prepareChooseSection(view.getContext(), layout, currentSection);
+			}
 		}
 	}
 	
-	private void prepareBonusSection(Context context, LinearLayout layout, StorySection section, List<Bonus> bonuses) {
+	private void prepareBonusSection(Context context, View view , StorySection section, List<Bonus> bonuses) {
+		LinearLayout layout = (LinearLayout) view.findViewById(R.id.bonuses);
+		if(!bonuses.isEmpty() && !section.isBonusesAlreadyGained()) {
+			view.findViewById(R.id.modification).setVisibility(View.VISIBLE);
+		}
 		for(Bonus bonus: bonuses) {
 			if(bonus.isAlreadyGained() && section.isVisited()) continue;
 			bonus.setAlreadyGained(true);
@@ -132,6 +141,10 @@ public class PlaygroundStoryView extends AbstractFragment {
 	}
 	
 	private void prepareChooseSection(Context context, LinearLayout layout, StorySection section) {
+		TextView optionslabel = new TextView(context);
+		optionslabel.setTextAppearance(context, R.style.title);
+		optionslabel.setText(R.string.options);
+		layout.addView(optionslabel);
 		for(StorySectionOption option: section.getOptions()) {
 			String text = option.getText();
 			_character.setCanShowOption(option);
@@ -148,15 +161,19 @@ public class PlaygroundStoryView extends AbstractFragment {
 			} else if(option.getSkill() > 0) {
 				text += " " + context.getResources().getString(R.string.fight_aspect_skill);
 			}
-			TextView opt = new TextView(context);
-			
+			LayoutInflater inflater = (LayoutInflater) context .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LinearLayout optionslayout = (LinearLayout) inflater.inflate(R.layout.option_layout, layout, false);
+			TextView enabled = (TextView) optionslayout.findViewById(R.id.enabled);
+			TextView disabled = (TextView) optionslayout.findViewById(R.id.disabled);
 			if(option.isDisabled()) {
-				decoreClickableDisabledTextView(context, opt, text + " " + context.getResources().getString(R.string.option_disabled));
+				disabled.setText(text = text + " " + context.getResources().getString(R.string.option_disabled));
+				enabled.setVisibility(View.GONE);
 			} else {
-				decoreClickableTextView(context, opt, text);
-				opt.setOnClickListener(new OptionClickListener(option, section));
+				enabled.setText(text);
+				disabled.setVisibility(View.GONE);
+				enabled.setOnClickListener(new OptionClickListener(option, section));
 			}
-			layout.addView(opt);
+			layout.addView(optionslayout);
 			option.setAlreadyDisplayed(true);
 		}
 	}
@@ -197,7 +214,6 @@ public class PlaygroundStoryView extends AbstractFragment {
 			option.setDisabled(option.isDisableWhenSelected());
 			int sectionId = _character.getPosition();
 			PlaygroundStoryView.this._character.setPosition(option.getSection());
-			PlaygroundStoryView.this.refresh();
 			StorySection nextSection = _character.getStory().getSection(_character.getPosition());
 			if(option.isDisabled()) {
 				nextSection.setUnreturnableSection(sectionId);
@@ -207,6 +223,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 			} catch (Exception e) {
 				Log.e("GameBookSaver", "", e);
 			}
+			PlaygroundStoryView.this.refresh();
 		}
 		
 	}

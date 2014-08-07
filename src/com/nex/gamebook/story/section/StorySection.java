@@ -3,14 +3,13 @@ package com.nex.gamebook.story.section;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.Enemy;
-import com.nex.gamebook.entity.StorySectionOption;
 import com.nex.gamebook.entity.Bonus.BonusState;
+import com.nex.gamebook.entity.Enemy;
+import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.StorySectionOption;
 
 public class StorySection implements Serializable {
 
@@ -20,9 +19,11 @@ public class StorySection implements Serializable {
 
 	private int unreturnableSection = -1;
 
+	private boolean loseSection;
+	private boolean winSection;
+
 	private boolean bonusesAlreadyGained;
 	private boolean enemiesAlreadyKilled;
-	private boolean endGame;
 	private boolean completed;
 	private boolean visited;
 	private boolean hasLuck;
@@ -74,14 +75,6 @@ public class StorySection implements Serializable {
 			}
 		}
 		return bon;
-	}
-
-	public boolean isEndGame() {
-		return endGame;
-	}
-
-	public void setEndGame(boolean endGame) {
-		this.endGame = endGame;
 	}
 
 	public boolean isAllDefeated() {
@@ -179,6 +172,22 @@ public class StorySection implements Serializable {
 
 	public void setEnemiesDefeatedText(String enemiesDefeatedText) {
 		this.enemiesDefeatedText = enemiesDefeatedText;
+	}
+
+	public boolean isLoseSection() {
+		return loseSection;
+	}
+
+	public void setLoseSection(boolean loseSection) {
+		this.loseSection = loseSection;
+	}
+
+	public boolean isWinSection() {
+		return winSection;
+	}
+
+	public void setWinSection(boolean winSection) {
+		this.winSection = winSection;
 	}
 
 }

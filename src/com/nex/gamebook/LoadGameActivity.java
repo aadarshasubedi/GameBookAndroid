@@ -1,6 +1,5 @@
 package com.nex.gamebook;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -70,8 +69,9 @@ public class LoadGameActivity extends Activity {
 			View rowView = inflater.inflate(R.layout.list_saved_game_item_layout, parent, false);
 			TextView storyName = (TextView) rowView.findViewById(R.id.story_name);
 			Iterator<String> it = values.iterator();
-			String xml = it.next();
 			String charId = it.next();
+			String xml = it.next();
+			
 			TextView characterName = (TextView) rowView.findViewById(R.id.character);
 			try {
 				Story story = parser.loadStory(xml, false, true);

@@ -32,12 +32,12 @@
 	    <item name="android:background">@drawable/button</item>
 	</style>
     <style name="title">
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/title_color</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="main_title">
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">25sp</item>
         <item name="android:textColor">@color/main_title_color</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -52,15 +52,18 @@
     </style>
     
     <style name="option">
+        <item name="android:background">@drawable/option_background</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">italic</item>
         <item name="android:textColor">@color/option</item>
     </style>
     
     <style name="option_disabled">
+        <item name="android:background">@drawable/option_background_disabled</item>
         <item name="android:textStyle">italic</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/option_disabled</item>
+        
     </style>
     
     <style name="negative">

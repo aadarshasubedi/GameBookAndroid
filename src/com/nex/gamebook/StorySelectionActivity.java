@@ -59,8 +59,7 @@ public class StorySelectionActivity extends Activity {
 			View rowView = inflater.inflate(R.layout.list_story_layout, parent,
 					false);
 			LinearLayout storyInfo = (LinearLayout) rowView.findViewById(R.id.story_info);
-			ViewAnimator animator = (ViewAnimator) rowView
-					.findViewById(R.id.story_sel_animator);
+			ViewAnimator animator = (ViewAnimator) rowView.findViewById(R.id.story_sel_animator);
 			animator.setBackground(context.getResources().getDrawable(
 					story.getBackground()));
 			animator.setOnClickListener(new OnImageListener(context, storyInfo));

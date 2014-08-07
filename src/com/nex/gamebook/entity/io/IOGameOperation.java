@@ -34,7 +34,7 @@ public class IOGameOperation {
 		os.close();
 		Editor editor = prefs.edit();
 		Set<String> values = new HashSet<>();
-		values.add(character.getStory().getXml());
+		values.add(character.getStory().getFullpath());
 		values.add(String.valueOf(character.getId()));
 		editor.putStringSet(fileName, values);
 		editor.apply();

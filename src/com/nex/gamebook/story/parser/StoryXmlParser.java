@@ -3,9 +3,10 @@ package com.nex.gamebook.story.parser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,7 +24,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 import com.nex.gamebook.entity.Bonus;
@@ -47,7 +47,11 @@ public class StoryXmlParser {
 	private final String INCLUDE = "include";
 
 	private final String BACKGROUND = "background";
-
+	
+	private final String LOSE_SECTION = "loseSection";
+	private final String WIN_SECTION = "winSection";
+	
+	
 	private final String STORY = "story";
 
 	private final String OPTIONS = "options";
@@ -134,7 +138,9 @@ public class StoryXmlParser {
 		for (String file: fileList) {
 			try {
 				InputStream fileStream = new FileInputStream(file);
-				prop.load(fileStream);
+				Reader reader = new InputStreamReader(fileStream, "Cp1250");
+				
+				prop.load(reader);
 				fileStream.close();
 			} catch (FileNotFoundException e) {
 				Log.d("GameBookXmlParser", "Ignoring missing property file " + file);
@@ -315,7 +321,8 @@ public class StoryXmlParser {
 		}
 
 		StorySection section = new StorySection();
-		section.setEndGame(getBoolean(element.getAttribute("endgame")));
+		section.setLoseSection(getBoolean(element.getAttribute(LOSE_SECTION)));
+		section.setWinSection(getBoolean(element.getAttribute(WIN_SECTION)));
 		String text = getText(element.getAttribute(TEXT), texts);
 		section.setText(text);
 		section.setAlreadyVisitedText(text);

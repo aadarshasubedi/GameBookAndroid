@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -54,7 +57,6 @@ public class PlaygroundActivity extends Activity {
 			flipper.addView(characterFragment.create(flipper));
 			storyFragment = new PlaygroundStoryView(this);
 			storyFragment.setCharacter(_character);
-			flipper.addView(storyFragment.create(flipper));
 			changeToStory();
 		} catch (Exception e) {
 			Log.e("GameBook", "", e);
@@ -68,9 +70,9 @@ public class PlaygroundActivity extends Activity {
 			@Override
 			public void viewChanged(View currentView) {
 				if(currentView.getTag().getClass().equals(PlaygroundStoryView.class)) {
-					title.setText(R.string.story);
+					title.setText(_character.getStory().getName());
 				} else {
-					title.setText(R.string.character);
+					title.setText(_character.getName());
 				}
 			}
 			
@@ -145,7 +147,7 @@ public class PlaygroundActivity extends Activity {
 	public void changeToStory() {
 		setFighting(false);
 		characterFragment.setNewBattle(false);
-		title.setText(R.string.story);
+		title.setText(_character.getStory().getName());
 		flipper.removeAllViews();
 		flipper.addView(storyFragment.create(flipper));
 		flipper.addView(characterFragment.create(flipper));
@@ -167,6 +169,37 @@ public class PlaygroundActivity extends Activity {
 		if(this.listener==null) return false;
 		return this.listener.onTouchEvent(event);
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    //Handle the back button
+	    if(keyCode == KeyEvent.KEYCODE_BACK) {
+	        //Ask the user if they want to quit
+	        new AlertDialog.Builder(this)
+	        .setIcon(android.R.drawable.ic_dialog_alert)
+	        .setTitle(R.string.close_book)
+	        .setMessage(R.string.close_book_description)
+	        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+
+	                //Stop the activity
+	                PlaygroundActivity.this.finish();    
+	            }
+
+	        })
+	        .setNegativeButton(R.string.no, null)
+	        .show();
+
+	        return true;
+	    }
+	    else {
+	        return super.onKeyDown(keyCode, event);
+	    }
+
+	}
+	
 //	@Override
 //	public boolean dispatchTouchEvent(MotionEvent ev){
 //	    super.dispatchTouchEvent(ev);
