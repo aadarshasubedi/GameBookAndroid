@@ -6,7 +6,7 @@ public class ResultCombat {
 	private double multiply;
 	private boolean luck;
 	private int damage;
-	private int enemyName;
+	private String enemyName;
 
 	public boolean isCritical() {
 		return critical;
@@ -43,11 +43,11 @@ public class ResultCombat {
 		this.luck = luck;
 	}
 
-	public int getEnemyName() {
+	public String getEnemyName() {
 		return enemyName;
 	}
 
-	public void setEnemyName(int enemyName) {
+	public void setEnemyName(String enemyName) {
 		this.enemyName = enemyName;
 	}
 

@@ -10,8 +10,8 @@ public class Player extends Character {
 
 	private static final long serialVersionUID = 7279750413253963361L;
 	private int id;
-	private int name;
-	private int description;
+	private String name;
+	private String description;
 	private int position;
 
 	private Story story;
@@ -46,19 +46,19 @@ public class Player extends Character {
 		option.setDisplayed(both ? isLuck && hasSkill : isLuck || hasSkill);
 	}
 
-	public int getName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setName(int name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public int getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(int description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -80,11 +80,9 @@ public class Player extends Character {
 		int realValue = bonus.getValue();
 		try {
 			Method currentAttr = Stats.class.getDeclaredMethod(
-					createMethodName("get", bonus.getType().name()
-							.toLowerCase()), new Class[0]);
+					createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
 			Method defaultAttr = Stats.class.getDeclaredMethod(
-					createMethodName("get", bonus.getType().name()
-							.toLowerCase()), new Class[0]);
+					createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
 			int currentValue = (int) currentAttr.invoke(getCurrentStats(),
 					new Object[0]);
 			int total = currentValue + (bonus.getCoeff() * bonus.getValue());
@@ -122,5 +120,5 @@ public class Player extends Character {
 	public StorySection getCurrentSection() {
 		return getStory().getSection(this.position);
 	}
-	
+
 }

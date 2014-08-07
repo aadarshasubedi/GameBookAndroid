@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class StorySectionOption implements Serializable {
 
 	private int section;
-	private int text;
+	private String text;
 	private int skill;
 	private boolean luckAspect;
 	private boolean alreadyDisplayed;
@@ -21,11 +21,11 @@ public class StorySectionOption implements Serializable {
 		this.section = section;
 	}
 
-	public int getText() {
+	public String getText() {
 		return text;
 	}
 
-	public void setText(int text) {
+	public void setText(String text) {
 		this.text = text;
 	}
 

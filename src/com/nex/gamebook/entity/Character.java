@@ -7,7 +7,7 @@ public abstract class Character  implements Serializable {
 	private static final long serialVersionUID = 214922718575334896L;
 	public static int MAX_LUCK_OF_CHARACTER = 14;
 	public static int MAX_SKILL_OF_CHARACTER = 15;
-
+	public static int MAX_DEFENSE_OF_CHARACTER = 20;
 	
 	private Stats stats = new Stats();
 	private Stats currentStats = new Stats(stats);

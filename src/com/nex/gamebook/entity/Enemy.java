@@ -5,15 +5,15 @@ import com.nex.gamebook.playground.AttackCallback;
 public class Enemy extends com.nex.gamebook.entity.Character {
 
 	private static final long serialVersionUID = -1969817378614053107L;
-	private int name;
+	private String name;
 	private int index;
 	private boolean affectPlayer;
 
-	public int getName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setName(int name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -25,13 +25,15 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 		if (!resultCombat.isLuck()) {
 			resultCombat.setCritical(attackChar.isCriticalChance());
 			int attack = attackChar.getCurrentStats().getAttack();
+			int defense = attackedCharacter.getCurrentStats()
+					.getDefensePercentage();
+			int totalDamage = (attack - (int) (((double) attack / 100d) * defense));
 			if (resultCombat.isCritical()) {
 				double criticalMultiplier = attackChar.hasLuck() ? 1 : 0.5;
 				resultCombat.setMultiply(criticalMultiplier);
-				attack += attack * criticalMultiplier;
+				totalDamage += totalDamage * criticalMultiplier;
 			}
-			resultCombat.setDamage(attack
-					- attackedCharacter.getCurrentStats().getDefense());
+			resultCombat.setDamage(totalDamage);
 			int attackedHealth = attackedCharacter.getCurrentStats()
 					.getHealth();
 			attackedCharacter.getCurrentStats().setHealth(

@@ -2,28 +2,28 @@
 <story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../story.xsd">
     <characters>
-        <character position="1" id="1" name="@string/story1_ch_soldier" description="@string/story1_dsc_soldier">
+        <character position="5" id="1" name="ch_soldier" description="dsc_soldier">
             <health>15</health>
             <defense>5</defense>
             <skill>2</skill>
             <luck>1</luck>
             <attack>7</attack>
         </character>
-        <character position="" id="2" name="@string/story1_ch_doctor" description="@string/story1_dsc_doctor">
+        <character position="" id="2" name="ch_doctor" description="dsc_doctor">
             <health>25</health>
             <defense>2</defense>
             <skill>1</skill>
             <luck>1</luck>
             <attack>7</attack>
         </character>
-        <character position="" id="3" name="@string/story1_ch_policeman" description="@string/story1_dsc_policeman">
+        <character position="" id="3" name="ch_policeman" description="dsc_policeman">
             <health>15</health>
             <defense>2</defense>
             <skill>5</skill>
             <luck>1</luck>
             <attack>7</attack>
         </character>
-        <character position="" id="4" name="@string/story1_ch_homeless" description="@string/story1_dsc_homeless">
+        <character position="" id="4" name="ch_homeless" description="dsc_homeless">
             <health>10</health>
             <defense>1</defense>
             <skill>2</skill>

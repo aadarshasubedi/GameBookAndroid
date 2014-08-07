@@ -24,12 +24,11 @@ import com.nex.gamebook.entity.CharacterType;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.story.section.StorySection;
 
-public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
+public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
-	public PlaygroundBattleLogCharacterTab(Context context) {
+	public PlaygroundBattleLogCharacterView(Context context) {
 		super(context);
 	}
 
@@ -66,12 +65,6 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 			if (!section.isEnemiesAlreadyKilled()) {
 				section.tryApplyLuckForBattle(_character);
 			}
-		} else {
-			for(View l: getPlayground().getBattleLog())  {
-				LinearLayout parent = (LinearLayout) l.getParent();
-				parent.removeView(l);
-				log.addView(l);
-			}
 		}
 		displayButtons();
 		BattleLogAdapter adapter = new BattleLogAdapter(view.getContext());
@@ -85,7 +78,7 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 			switcher.addView(enemyView);
 		}
 		
-		if (section.isHasLuck()) {
+		if (section.isHasLuck() && newBattle) {
 			if (section.isLuckDefeatEnemies()) {
 				section.setEnemiesAlreadyKilled(true);
 			}
@@ -97,8 +90,8 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 		}
 	}
 
-	public void createListeners(ImageView left, ImageView right, final TextView title) {
-		ViewFlipListener listener = new ViewFlipListener(left, right, switcher) {
+	public ViewFlipListener createListener(ImageView left, ImageView right, final TextView title) {
+		ViewFlipListener listener = new ViewFlipListener(left, right, switcher, title) {
 			
 			@Override
 			public void viewChanged(View currentView) {
@@ -107,12 +100,12 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 			}
 			@Override
 			public Context getContext() {
-				return PlaygroundBattleLogCharacterTab.this.getContext();
+				return PlaygroundBattleLogCharacterView.this.getContext();
 			}
 		};
 		listener.select(0);
 		showEnemyPosition(switcher, title, section.getEnemies().size());
-		
+		return listener;
 	}
 	
 	private void showEnemyPosition(ViewFlipper switcher, TextView enemyName, int total) {
@@ -133,7 +126,9 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 		attr.setText(String.valueOf(_character.getCurrentStats().getLuckPercentage()));
 		changeAttributeColor(view.getContext(), attr, _character.getStats()
 				.getLuck(), _character.getCurrentStats().getLuck());
-
+		changeAttributeColor(view.getContext(), (TextView) view.findViewById(R.id.luck_perc), _character.getStats()
+				.getLuck(), _character.getCurrentStats().getLuck());
+		
 		attr = (TextView) view.findViewById(R.id.sel_attr_defense);
 		attr.setText(String.valueOf(_character.getCurrentStats().getDefense()));
 		changeAttributeColor(view.getContext(), attr, _character.getStats()
@@ -151,6 +146,9 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 
 		attr = (TextView) view.findViewById(R.id.critical);
 		attr.setText(String.valueOf(_character.getCurrentStats().getSkillPercentage()));
+		
+		attr = (TextView) view.findViewById(R.id.sel_l_def_perc);
+		attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
 		
 		masterView.findViewById(R.id.tableLayout1).invalidate();
 	}
@@ -236,6 +234,8 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 					attack.setText(String.valueOf(enemy.getCurrentStats().getDefense()));
 					attack = (TextView) rowView.findViewById(R.id.enemy_critical);
 					attack.setText(String.valueOf(enemy.getCurrentStats().getSkillPercentage()));
+					attack = (TextView) rowView.findViewById(R.id.enemy_l_def_perc);
+					attack.setText(String.valueOf(enemy.getStats().getDefensePercentage()));
 				}
 			};
 			changeableView.addView(rowView);
@@ -305,7 +305,7 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 					text += " ("+ resultCombat.getMultiplyAsText() + ") ";
 				}
 			}
-			text += " ("+context.getResources().getString(resultCombat.getEnemyName()) + ")";
+			text += " ("+resultCombat.getEnemyName() + ")";
 			TextView battleText = new TextView(context);
 			battleText.setText(text);
 			battleText.setTextColor(context.getResources().getColor(color));
@@ -365,7 +365,7 @@ public class PlaygroundBattleLogCharacterTab extends AbstractFragment {
 			PlaygroundActivity activity = getPlayground();
 			activity.changeToStory();
 			section = null;
-			v.setVisibility(View.GONE);
+			resultButton.setVisibility(View.GONE);
 		}
 	};
 	OnClickListener gameoverListener = new OnClickListener() {

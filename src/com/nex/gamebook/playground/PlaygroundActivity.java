@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -30,8 +31,9 @@ public class PlaygroundActivity extends Activity {
 	private ImageView left;
 	private ImageView right;
 	private TextView title;
-	private PlaygroundBattleLogCharacterTab characterFragment;
-	private PlaygroundStoryTab storyFragment;
+	private PlaygroundBattleLogCharacterView characterFragment;
+	private PlaygroundStoryView storyFragment;
+	private ViewFlipListener listener;
 	private static List<View> battleLog = new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,10 @@ public class PlaygroundActivity extends Activity {
 			left = (ImageView) findViewById(R.id.imageView1);
 			right = (ImageView) findViewById(R.id.imageView2);
 			title = (TextView) findViewById(R.id.textView1);
-			characterFragment = new PlaygroundBattleLogCharacterTab(this);
+			characterFragment = new PlaygroundBattleLogCharacterView(this);
 			characterFragment.setCharacter(_character);
 			flipper.addView(characterFragment.create(flipper));
-			storyFragment = new PlaygroundStoryTab(this);
+			storyFragment = new PlaygroundStoryView(this);
 			storyFragment.setCharacter(_character);
 			flipper.addView(storyFragment.create(flipper));
 			changeToStory();
@@ -59,13 +61,13 @@ public class PlaygroundActivity extends Activity {
 		}
 
 	}
-
-	private ViewFlipListener createListener() {
-		ViewFlipListener listener = new ViewFlipListener(left, right, flipper) {
+	
+	private void createListener() {
+		listener = new ViewFlipListener(left, right, flipper, title) {
 			
 			@Override
 			public void viewChanged(View currentView) {
-				if(currentView.getTag().getClass().equals(PlaygroundStoryTab.class)) {
+				if(currentView.getTag().getClass().equals(PlaygroundStoryView.class)) {
 					title.setText(R.string.story);
 				} else {
 					title.setText(R.string.character);
@@ -77,7 +79,6 @@ public class PlaygroundActivity extends Activity {
 				return PlaygroundActivity.this;
 			}
 		};
-		return listener;
 	}
 	
 	@Override
@@ -124,52 +125,52 @@ public class PlaygroundActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public PlaygroundBattleLogCharacterTab getCharacterFragment() {
+	public PlaygroundBattleLogCharacterView getCharacterFragment() {
 		return characterFragment;
 	}
 
-	public PlaygroundStoryTab getStoryFragment() {
+	public PlaygroundStoryView getStoryFragment() {
 		return storyFragment;
 	}
 	
 	public void changeToBattle(StorySection section) {
+		setFighting(true);
+		characterFragment.setNewBattle(true);
 		getCharacterFragment().fight(section);
 		flipper.removeAllViews();
 		flipper.addView(characterFragment.create(flipper));
-		setFighting(true);
-		characterFragment.createListeners(left, right, title);
+		listener = characterFragment.createListener(left, right, title);
 		characterFragment.getSwitcher().setVisibility(View.VISIBLE);
 	}
-	
 	public void changeToStory() {
 		setFighting(false);
+		characterFragment.setNewBattle(false);
 		title.setText(R.string.story);
 		flipper.removeAllViews();
-		flipper.addView(characterFragment.create(flipper));
 		flipper.addView(storyFragment.create(flipper));
-		createListener().select(1);
-		setSelectedEnemy(0);
+		flipper.addView(characterFragment.create(flipper));
+		createListener();
 		characterFragment.getSwitcher().setVisibility(View.GONE);
 	}
-	
+	boolean fighting;
 	public void setFighting(boolean val) {
-		Bundle b = new Bundle();
-		b.putBoolean("fighting", val);
-		getIntent().putExtras(b);
-	}
-	
-	public void setSelectedEnemy(int i) {
-		Bundle b = new Bundle();
-		b.putInt("selectedEnemy", i);
-		getIntent().putExtras(b);
-	}
-	public int getSelectedEnemy() {
-		return getIntent().getExtras().getInt("selectedEnemy");
+		fighting = val;
 	}
 	public boolean isFighting() {
-		return getIntent().getExtras().getBoolean("fighting");
+		return fighting;
 	}
 	public List<View> getBattleLog() {
 		return battleLog;
 	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if(this.listener==null) return false;
+		return this.listener.onTouchEvent(event);
+	}
+//	@Override
+//	public boolean dispatchTouchEvent(MotionEvent ev){
+//	    super.dispatchTouchEvent(ev);
+//	    if(this.listener==null) return false;
+//	    return listener.onTouchEvent(ev);
+//	}
 }

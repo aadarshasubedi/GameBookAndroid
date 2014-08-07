@@ -6,6 +6,7 @@ public class Stats implements Serializable {
 	private static final long serialVersionUID = 5967013219649795912L;
 	public static int TOTAL_LUCK_FOR_CALC = 20;
 	public static int TOTAL_SKILL_FOR_CALC = 25;
+	public static int TOTAL_ARMOR_FOR_CALC = 25;
 	private int health;
 	private int defense;
 	private int skill;
@@ -36,6 +37,8 @@ public class Stats implements Serializable {
 	}
 
 	public void setDefense(int defense) {
+		if(defense > Character.MAX_DEFENSE_OF_CHARACTER)
+			defense = Character.MAX_DEFENSE_OF_CHARACTER;
 		this.defense = defense;
 	}
 
@@ -44,7 +47,6 @@ public class Stats implements Serializable {
 	}
 
 	public void setSkill(int skill) {
-
 		if(skill > Character.MAX_SKILL_OF_CHARACTER)
 			skill = Character.MAX_SKILL_OF_CHARACTER;
 		this.skill = skill;
@@ -59,13 +61,17 @@ public class Stats implements Serializable {
 			luck = Character.MAX_LUCK_OF_CHARACTER;
 		this.luck = luck;
 	}
-
+	
 	public int getLuckPercentage() {
 		return Stats.getPercentage(luck, TOTAL_LUCK_FOR_CALC);
 	}
 	
 	public int getSkillPercentage() {
 		return Stats.getPercentage(skill, TOTAL_SKILL_FOR_CALC);
+	}
+	
+	public int getDefensePercentage() {
+		return Stats.getPercentage(defense, TOTAL_SKILL_FOR_CALC);
 	}
 	
 	public static int getPercentage(int value, int what) {

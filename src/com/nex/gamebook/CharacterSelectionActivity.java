@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -16,7 +17,7 @@ import com.nex.gamebook.fragment.FragmentTab;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class CharacterSelectionActivity extends Activity {
-	
+	ViewFlipListener listener;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,7 +34,7 @@ public class CharacterSelectionActivity extends Activity {
 			final TextView title = (TextView) findViewById(R.id.textView1);
 			ImageView left = (ImageView) findViewById(R.id.imageView1);
 			ImageView right = (ImageView) findViewById(R.id.imageView2);
-			ViewFlipListener listener = new ViewFlipListener(left, right, flipper) {
+			listener = new ViewFlipListener(left, right, flipper, title) {
 				@Override
 				public void viewChanged(View currentView) {
 					showTitle(currentView, title);
@@ -66,13 +67,9 @@ public class CharacterSelectionActivity extends Activity {
 	public void onBackPressed() {
 	    super.onBackPressed();
 	    overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+	}	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		return listener.onTouchEvent(event);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

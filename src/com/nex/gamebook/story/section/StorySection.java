@@ -13,10 +13,10 @@ import com.nex.gamebook.entity.StorySectionOption;
 import com.nex.gamebook.entity.Bonus.BonusState;
 
 public class StorySection implements Serializable {
-	
-	private int text;
-	private int alreadyVisitedText;
-	private int enemiesDefeatedText;
+
+	private String text;
+	private String alreadyVisitedText;
+	private String enemiesDefeatedText;
 
 	private int unreturnableSection = -1;
 
@@ -36,22 +36,6 @@ public class StorySection implements Serializable {
 
 	public StorySection() {
 		super();
-	}
-
-	public int getEnemiesDefeatedText() {
-		return enemiesDefeatedText;
-	}
-
-	public void setEnemiesDefeatedText(int enemiesDefeatedText) {
-		this.enemiesDefeatedText = enemiesDefeatedText;
-	}
-
-	public int getText() {
-		return text;
-	}
-
-	public void setText(int text) {
-		this.text = text;
 	}
 
 	public List<StorySectionOption> getOptions() {
@@ -165,20 +149,36 @@ public class StorySection implements Serializable {
 		this.luckDefeatEnemies = luckDefeatEnemies;
 	}
 
-	public int getAlreadyVisitedText() {
-		return alreadyVisitedText;
-	}
-
-	public void setAlreadyVisitedText(int alreadyVisitedText) {
-		this.alreadyVisitedText = alreadyVisitedText;
-	}
-
 	public int getUnreturnableSection() {
 		return unreturnableSection;
 	}
 
 	public void setUnreturnableSection(int unreturnableSection) {
 		this.unreturnableSection = unreturnableSection;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getAlreadyVisitedText() {
+		return alreadyVisitedText;
+	}
+
+	public void setAlreadyVisitedText(String alreadyVisitedText) {
+		this.alreadyVisitedText = alreadyVisitedText;
+	}
+
+	public String getEnemiesDefeatedText() {
+		return enemiesDefeatedText;
+	}
+
+	public void setEnemiesDefeatedText(String enemiesDefeatedText) {
+		this.enemiesDefeatedText = enemiesDefeatedText;
 	}
 
 }

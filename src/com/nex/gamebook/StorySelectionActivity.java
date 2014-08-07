@@ -106,7 +106,7 @@ public class StorySelectionActivity extends Activity {
 					CharacterSelectionActivity.class);
 			Bundle b = new Bundle();
 			// intent
-			b.putString("story", story.getXml());
+			b.putString("story", story.getFullpath());
 			intent.putExtras(b);
 			startActivity(intent);
 		}

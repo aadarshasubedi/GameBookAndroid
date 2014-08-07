@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../story.xsd">
+    <sections>
+        <!-- SECTION 1 -->
+        <section position="1" text="section1_text" alreadyVisitedText="section1_visited_text">
+            <options>
+                <option section="2" text="section1_option1_text"/>
+                <option section="" text="section1_option2_text"/>
+                <option section="" text="section1_option3_text"/>
+            </options>
+        </section>
+        <!-- SECTION 2 -->
+        <section position="2" text="section2_text" enemiesDefeatedText="section2_enemy_text" luckText="section2_luck_text">
+            <enemies>
+                <enemy name="e_livingdead">
+                    <health>7</health>
+                    <defense>4</defense>
+                    <skill>2</skill>
+                    <luck>1</luck>
+                    <attack>4</attack>
+                </enemy>
+            </enemies>
+            <options>
+                <option section="3" text="section2_option1_text"/>
+                <option section="1" text="section2_option_barracks_text"/>
+            </options>
+        </section>
+        <!-- SECTION 3 -->
+        <section position="3" text="section3_text">
+            <options>
+                <option section="4" text="section3_option1_text"/>
+                <option section="1" text="section2_option_barracks_text"/>
+            </options>
+        </section>
+        <!-- SECTION 4 -->
+        <section position="4" text="section4_text" enemiesDefeatedText="section4_enemy_text" luckText="section4_luck_text" luckDefeatEnemies="true">
+            <enemies>
+                <enemy name="e_livingdead" >
+                    <health>5</health>
+                    <defense>3</defense>
+                    <skill>1</skill>
+                    <luck>1</luck>
+                    <attack>4</attack>
+                </enemy>
+                <enemy name="e_nohander" >
+                    <health>4</health>
+                    <defense>5</defense>
+                    <skill>1</skill>
+                    <luck>1</luck>
+                    <attack>3</attack>
+                </enemy>
+            </enemies>
+            <options>
+                <option section="5" text="section4_option1_text"/>
+                <option section="1" text="section2_option_barracks_text"/>
+            </options>
+        </section>
+        <!-- SECTION 5 -->
+        <section position="5" text="section5_text" alreadyVisitedText="section5_visited_text">
+            <bonuses>
+                <bonus type="health" value="3" debuff="true"/>
+                <bonus type="luck" value="1" overflowed="true" />
+            </bonuses>
+            <options>
+                <option section="6" text="section5_option1_text" disableWhenSelected="true" />
+                <option section="8" text="section5_option2_text" />
+                <option section="9" text="section5_option3_text" luckAspect="true" disableWhenSelected="true" />
+            </options>
+        </section>
+        <!-- SECTION 6 -->
+        <section position="6" text="section6_text">
+            <options>
+                <option section="5" text="section6_option1_text" />
+                <option section="7" text="section6_option2_text" />
+            </options>
+        </section>
+        <!-- SECTION 8 -->
+        <section position="8" text="section8_text">
+             <bonuses>
+                 <bonus type="health" value="1" />
+             </bonuses>
+            <options>
+                <option section="10" text="section8_option1_text" />
+                <option section="12" text="section8_option2_text" />
+            </options>
+        </section>
+        <!-- SECTION 9 -->
+        <section position="9" text="section9_text">
+            <bonuses>
+                <bonus type="skill" value="1" overflowed="true" />
+            </bonuses>
+            <options>
+                <option section="5" text="section9_option1_text" />
+            </options>
+        </section>
+        <!-- SECTION 11 -->
+        <section position="11" text="section11_text">
+            <bonuses>
+                <bonus type="defense" value="1" overflowed="true" />
+            </bonuses>
+            <options>
+                <option section="10" text="section11_option1_text" />
+            </options>
+        </section>
+        
+        
+        <!-- enter to shared sections -->
+        <!-- SECTION 7 -->
+        <section position="7" text="section7_text">
+            <bonuses>
+                <bonus type="health" value="2" />
+            </bonuses>
+            <options>
+                <option section="" text="@string/sg_continue" />
+            </options>
+        </section>
+        <!-- SECTION 10 -->
+        <section position="10" text="section10_text" alreadyVisitedText="section10_visited_text">
+            <options>
+                <option section="" text="section10_option1_text" />
+                <option section="11" text="section10_option2_text" disableWhenSelected="true" luckAspect="true"/>
+            </options>
+        </section>
+        <!-- SECTION 12 -->
+        <section position="12" text="section12_text">
+            <options>
+                <option section="" text="section12_option1_text" />
+            </options>
+        </section>
+    </sections>
+</story>

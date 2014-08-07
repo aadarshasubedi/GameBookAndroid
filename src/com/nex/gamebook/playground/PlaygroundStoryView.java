@@ -22,16 +22,12 @@ import com.nex.gamebook.entity.StorySectionOption;
 import com.nex.gamebook.entity.io.IOGameOperation;
 import com.nex.gamebook.story.section.StorySection;
 
-public class PlaygroundStoryTab extends AbstractFragment {
-	public PlaygroundStoryTab(Context context) {
+public class PlaygroundStoryView extends AbstractFragment {
+	public PlaygroundStoryView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 	private boolean showOptions = false;
 	public Player _character;
-//	private boolean tabClick;
-//	private boolean showOptions = true;
-//	private boolean alertUnreturnableOptions = false;
 
 	
 	public View create(ViewGroup container) {
@@ -111,17 +107,15 @@ public class PlaygroundStoryTab extends AbstractFragment {
 	private void prepareBeforeFight(final Context context, LinearLayout layout, final StorySection section) {
 		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.BEFORE_FIGHT));
 		if(!_character.isDefeated()) {
-			TextView fight = new TextView(context);
-			decoreClickableTextView(context, fight, R.string.button_fight);
+			final Button fight = (Button) layout.findViewById(R.id.fight_buton);
+			fight.setVisibility(View.VISIBLE);
 			fight.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					fight.setVisibility(View.GONE);
 					startFight(context, section);
-					PlaygroundActivity activity = getPlayground();
-					activity.getCharacterFragment().setNewBattle(true);
 				}
 			});
-			layout.addView(fight);
 			setShowOptions(false);
 		}
 	}
@@ -139,7 +133,7 @@ public class PlaygroundStoryTab extends AbstractFragment {
 	
 	private void prepareChooseSection(Context context, LinearLayout layout, StorySection section) {
 		for(StorySectionOption option: section.getOptions()) {
-			String text = context.getResources().getString(option.getText());
+			String text = option.getText();
 			_character.setCanShowOption(option);
 			if(!option.isDisplayed()) {
 				continue;
@@ -202,14 +196,14 @@ public class PlaygroundStoryTab extends AbstractFragment {
 			this.section.setHasLuck(false);
 			option.setDisabled(option.isDisableWhenSelected());
 			int sectionId = _character.getPosition();
-			PlaygroundStoryTab.this._character.setPosition(option.getSection());
-			PlaygroundStoryTab.this.refresh();
+			PlaygroundStoryView.this._character.setPosition(option.getSection());
+			PlaygroundStoryView.this.refresh();
 			StorySection nextSection = _character.getStory().getSection(_character.getPosition());
 			if(option.isDisabled()) {
 				nextSection.setUnreturnableSection(sectionId);
 			}
 			try {
-				IOGameOperation.saveCharacter(v.getContext(), PlaygroundStoryTab.this._character);
+				IOGameOperation.saveCharacter(v.getContext(), PlaygroundStoryView.this._character);
 			} catch (Exception e) {
 				Log.e("GameBookSaver", "", e);
 			}

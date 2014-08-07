@@ -56,8 +56,8 @@
     <!-- log fighting strings -->
     <string name="damage">poškození</string>
     <string name="critical_chance">kritického</string>
-    <string name="you_have_luck">Máš štěstí a nic se ti nestalo.</string>
-    <string name="enemy_has_luck">Nepřítel má štěstí a nic se mu nestalo.</string>
+    <string name="you_have_luck">Vyhýbáš se útoku. (štěstí)</string>
+    <string name="enemy_has_luck">Nepřítel se vyhýbá útoku. (štěstí)</string>
     <string name="you_take">Dostáváš</string>
     <string name="you_cause">Způsobuješ</string>
     

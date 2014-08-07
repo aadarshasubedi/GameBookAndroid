@@ -48,6 +48,9 @@ public class FragmentTab extends GameBookFragment {
 			attr = (TextView) view.findViewById(R.id.critical);
 			attr.setText(String.valueOf(_character.getStats().getSkillPercentage()));
 			
+			attr = (TextView) view.findViewById(R.id.sel_l_def_perc);
+			attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
+			
 			TextView textview = (TextView) view
 					.findViewById(R.id.sel_char_description);
 			textview.setText(_character.getDescription());
@@ -60,7 +63,7 @@ public class FragmentTab extends GameBookFragment {
 							PlaygroundActivity.class);
 					Bundle bundle = new Bundle();
 					bundle.putInt("character", _character.getId());
-					bundle.putString("story", _character.getStory().getXml());
+					bundle.putString("story", _character.getStory().getFullpath());
 					bundle.putBoolean("load", true);
 					
 					intent.putExtras(bundle);
