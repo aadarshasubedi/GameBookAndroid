@@ -17,6 +17,10 @@ public class IOGameOperation {
 
 	public static final String SAVE_GAME_PREFIX = "gb_story_";
 	
+	public static final String TIME = "time_";
+	public static final String CHARACTER = "char_";
+	public static final String STORY = "story_";
+	
 	public static Player loadCharacter(Context context, String filename) throws Exception {
 		FileInputStream fis = context.openFileInput(filename);
 		ObjectInputStream is = new ObjectInputStream(fis);
@@ -34,8 +38,10 @@ public class IOGameOperation {
 		os.close();
 		Editor editor = prefs.edit();
 		Set<String> values = new HashSet<>();
-		values.add(character.getStory().getFullpath());
-		values.add(String.valueOf(character.getId()));
+		values.add(TIME + String.valueOf(System.currentTimeMillis()));
+		values.add(STORY + character.getStory().getFullpath());
+		values.add(CHARACTER + String.valueOf(character.getId()));
+		
 		editor.putStringSet(fileName, values);
 		editor.apply();
 	}
@@ -43,6 +49,15 @@ public class IOGameOperation {
 	public static SharedPreferences getPreferences(Context context) {
 		SharedPreferences prefs = context.getSharedPreferences("com.nex.gamebook", Context.MODE_PRIVATE);
 		return prefs;
+	}
+	
+	public static String getValue(String what, Set<String> values) {
+		for(String s: values) {
+			if(s.startsWith(what)) {
+				return s.substring(what.length());
+			}
+		}
+		return null;
 	}
 	
 }

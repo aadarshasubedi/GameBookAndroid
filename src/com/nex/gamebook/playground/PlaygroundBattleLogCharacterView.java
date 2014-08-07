@@ -347,7 +347,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	}
 	
 	private void displayGameOverButton() {
-		resultButton.setText(R.string.button_endGame_lose);
+		resultButton.setText(R.string.endGame_lose);
 		resultButton.setOnClickListener(gameoverListener);
 		resultButton.setVisibility(View.VISIBLE);
 	}

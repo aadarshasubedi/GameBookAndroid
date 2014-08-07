@@ -1,6 +1,8 @@
 package com.nex.gamebook;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -68,11 +70,14 @@ public class LoadGameActivity extends Activity {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.list_saved_game_item_layout, parent, false);
 			TextView storyName = (TextView) rowView.findViewById(R.id.story_name);
-			Iterator<String> it = values.iterator();
-			String charId = it.next();
-			String xml = it.next();
-			
+			String charId = IOGameOperation.getValue(IOGameOperation.CHARACTER, values);
+			String timeInString = IOGameOperation.getValue(IOGameOperation.TIME, values);
+			String xml = IOGameOperation.getValue(IOGameOperation.STORY, values);	
 			TextView characterName = (TextView) rowView.findViewById(R.id.character);
+			TextView time = (TextView) rowView.findViewById(R.id.time);
+			DateFormat df = DateFormat.getDateTimeInstance();
+			String formatedTime = df.format(new Date(Long.valueOf(timeInString)));
+			time.setText(formatedTime);
 			try {
 				Story story = parser.loadStory(xml, false, true);
 				Player character = story.getCharacter(Integer.valueOf(charId));
@@ -94,5 +99,6 @@ public class LoadGameActivity extends Activity {
 			});
 			return rowView;
 		}
+		
 	}
 }

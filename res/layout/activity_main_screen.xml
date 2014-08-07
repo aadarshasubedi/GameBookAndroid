@@ -25,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView1"
             android:layout_centerHorizontal="true"
-            android:onClick="loadGame"
-            android:text="@string/button_load" />
+            android:onClick="newGame"
+            android:text="@string/newGame" />
 
         <Button
             android:id="@+id/button1"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/button2"
             android:layout_centerHorizontal="true"
-            android:onClick="newGame"
-            android:text="@string/button_new" />
+            android:onClick="loadGame"
+            android:text="@string/loadGame" />
 
 </RelativeLayout>

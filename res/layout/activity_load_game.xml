@@ -9,11 +9,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.nex.gamebook.LoadGameActivity" >
 
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/saved_games"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/saved_games"
+        android:padding="15dip"
+        android:layout_marginBottom="10dp"
+        android:text="@string/loadGame" />
+
     <ListView
         android:id="@+id/saved_games"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true" >
 
     </ListView>

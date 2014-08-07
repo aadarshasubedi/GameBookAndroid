@@ -58,9 +58,9 @@ public class PlaygroundStoryView extends AbstractFragment {
 			tw.setText(currentSection.getText());	
 		}
 		if(currentSection.isLoseSection()) {
-			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.button_endGame_lose);
+			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.endGame_lose);
 		} else if(currentSection.isWinSection()) {
-			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.button_endGame_win);
+			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.endGame_win);
 		} else {
 		if(!currentSection.getEnemies().isEmpty()) {
 			prepareFightSection(view.getContext(), layout, currentSection);
@@ -181,7 +181,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 		TextView v = (TextView) parent.findViewById(R.id.gameOver_view);
 		v.setText(context.getResources().getString(section.getGameOverText()) + " " + context.getResources().getString(R.string.fight_aspect_health));
 		v.setVisibility(View.VISIBLE);
-		displayEndGameButton(context, parent, R.string.button_endGame_lose);
+		displayEndGameButton(context, parent, R.string.endGame_lose);
 
 	}
 	private void displayEndGameButton(Context ctx, View parent, int text) {

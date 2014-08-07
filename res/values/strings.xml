@@ -2,11 +2,11 @@
 <resources>
 
     <string name="app_name">GameBook</string>
-    <string name="button_new">Nová hra</string>
-    <string name="button_load">Nahrát hru</string>
-    <string name="button_play">Hrát</string>
-    <string name="button_endGame_lose">Prohra</string>
-    <string name="button_endGame_win">Vítězství</string>
+    <string name="newGame">Nová hra</string>
+    <string name="loadGame">Nahrát hru</string>
+    <string name="play">Hrát</string>
+    <string name="endGame_lose">Prohra</string>
+    <string name="endGame_win">Vítězství</string>
     <string name="button_fight">Bojovat</string>
     <string name="title_activity_main">Main</string>
     <string name="title_activity_character_selection">Select character</string>
