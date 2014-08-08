@@ -60,11 +60,11 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 			if (character.isDefeated()) {
 				break;
 			}
-			try {
-				Thread.sleep(700);
-			} catch (InterruptedException e) {
-				Log.e("GameBookFighting", "", e);
-			}
+//			try {
+//				Thread.sleep(700);
+//			} catch (InterruptedException e) {
+//				Log.e("GameBookFighting", "", e);
+//			}
 		}
 		callback.fightEnd();
 	}

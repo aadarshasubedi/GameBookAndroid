@@ -2,7 +2,6 @@ package com.nex.gamebook;
 
 import java.io.IOException;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -16,12 +15,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
@@ -29,7 +28,7 @@ import com.nex.gamebook.story.parser.StoryXmlParser;
 public class StorySelectionActivity extends Activity {
 	
 //	private 
-	
+	private OnImageListener activeListener;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,15 +70,19 @@ public class StorySelectionActivity extends Activity {
 			Button button = (Button) storyInfo.findViewById(R.id.play_button);
 			button.setTag(story);
 			button.setOnClickListener(buttonClicked);
-			image.setOnClickListener(new OnImageListener(context, storyInfo));
-//			storyInfo.setVisibility(View.GONE);
+			OnImageListener list = new OnImageListener(context, storyInfo);
+			image.setOnClickListener(list);
+			list.hide();
+			TextView name = (TextView) rowView.findViewById(R.id.storyName);
+			TextView description = (TextView) rowView.findViewById(R.id.storyDescription);
+			name.setText(story.getName());
+			description.setText(story.getDescription());
 			return rowView;
 		}
 	}
 
 	class OnImageListener implements OnClickListener {
 		private LinearLayout layout;
-		private int height;
 		private Context context;
 		public OnImageListener(Context context, LinearLayout layout) {
 			super();
@@ -89,20 +92,38 @@ public class StorySelectionActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			
-			 Animation animation   =    AnimationUtils.loadAnimation(context, R.anim.trans_top_down);
-			    animation.setDuration(500);
-			    layout.setAnimation(animation);
-			    layout.animate();
-			    animation.start();
-//			int visibility = layout.getVisibility();
-//			if(visibility == View.GONE) {
-//				layout.setVisibility(View.VISIBLE);
-//			} else {
-//				layout.setVisibility(View.GONE);
-//			}
+			if(activeListener != null && !activeListener.equals(this)) {
+				activeListener.hide();
+			}
+			activeListener = this;
+			toggle();
 		}
 
+		public void toggle() {
+			int visibility = layout.getVisibility();
+			if(visibility == View.GONE) {
+				show();
+			} else {
+				hide();
+			}
+		}
+		
+		public void show() {
+			layout.setVisibility(View.VISIBLE);
+//			animate(R.anim.trans_show);
+		}
+		
+		public void hide() {
+			layout.setVisibility(View.GONE);
+			
+		}
+		private void animate(int anim) {
+			Animation animation = AnimationUtils.loadAnimation(context, anim);
+		    animation.setDuration(500);
+		    layout.setAnimation(animation);
+		    layout.animate();
+		    animation.start();
+		}
 	}
 	
 	OnClickListener buttonClicked = new OnClickListener() {

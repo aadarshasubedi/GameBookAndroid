@@ -214,7 +214,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 							@Override
 							public void onClick(View v) {
 								_character.setFighting(true);
-								v.post(log);
+								parent.post(log);
 							}
 						});
 					}
@@ -313,7 +313,6 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			params.setMargins(0,0,0,0);
 			battleText.setLayoutParams(params);
 			log.addView(battleText);
-			log.requestLayout();
 //			getPlayground().getBattleLog().add(battleText);
 		}
 
