@@ -1,7 +1,6 @@
 package com.nex.gamebook.entity;
 
-import android.util.Log;
-
+import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.playground.AttackCallback;
 
 public class Enemy extends com.nex.gamebook.entity.Character {
@@ -12,15 +11,14 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	private boolean affectPlayer;
 
 	public String getName() {
-		return name;
+		return GameBookUtils.getInstance().getText(name);
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	private ResultCombat attack(Character attackChar,
-			Character attackedCharacter) {
+	private ResultCombat attack(Character attackChar, Character attackedCharacter) {
 		ResultCombat resultCombat = new ResultCombat();
 		resultCombat.setType(attackChar.getType());
 		resultCombat.setLuck(attackedCharacter.hasLuck());

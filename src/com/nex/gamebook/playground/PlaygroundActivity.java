@@ -24,9 +24,9 @@ import com.nex.gamebook.ViewFlipListener;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.io.IOGameOperation;
+import com.nex.gamebook.entity.StorySection;
+import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.story.parser.StoryXmlParser;
-import com.nex.gamebook.story.section.StorySection;
 
 public class PlaygroundActivity extends Activity {
 	public static Player _character;
@@ -99,7 +99,7 @@ public class PlaygroundActivity extends Activity {
 		
 		String loadedGame = getIntent().getExtras().getString("load_game");
 		if(loadedGame!=null && !"".equals(loadedGame)) {
-			return IOGameOperation.loadCharacter(this, loadedGame);
+			return GameBookUtils.getInstance().loadCharacter(loadedGame);
 		}
 		StoryXmlParser parser = new StoryXmlParser(this);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
@@ -183,7 +183,6 @@ public class PlaygroundActivity extends Activity {
 
 	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
-
 	                //Stop the activity
 	                PlaygroundActivity.this.finish();    
 	            }

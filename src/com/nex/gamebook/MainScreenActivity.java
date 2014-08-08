@@ -5,18 +5,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.nex.gamebook.story.parser.StoryXmlParser;
+import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.util.SystemUiHider;
 
 /**
@@ -34,9 +32,9 @@ public class MainScreenActivity extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main_screen);
-
-		String category = StoryXmlParser.FOLDER;
-		copyAssetFolder(getAssets(), category, getFilesDir() + File.separator + category + File.separator);
+		GameBookUtils.initialize(this);
+		String category = GameBookUtils.FOLDER;
+		copyAssetFolder(getAssets(), category, GameBookUtils.getGamebookStorage(this) + File.separator + category + File.separator);
 
 	}
 
@@ -58,6 +56,7 @@ public class MainScreenActivity extends Activity {
 			if(!dir.exists()) {
 				dir.mkdirs();
 			}
+			
 			boolean res = true;
 			for (String file : files)
 				if (file.contains("."))

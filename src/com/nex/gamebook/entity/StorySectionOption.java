@@ -2,8 +2,11 @@ package com.nex.gamebook.entity;
 
 import java.io.Serializable;
 
-public class StorySectionOption implements Serializable {
+import com.nex.gamebook.entity.io.GameBookUtils;
 
+public class StorySectionOption implements Serializable, Mergable {
+
+	private static final long serialVersionUID = -1471697440605117269L;
 	private int section;
 	private String text;
 	private int skill;
@@ -22,7 +25,7 @@ public class StorySectionOption implements Serializable {
 	}
 
 	public String getText() {
-		return text;
+		return GameBookUtils.getInstance().getText(text);
 	}
 
 	public void setText(String text) {

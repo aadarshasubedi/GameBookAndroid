@@ -2,15 +2,10 @@ package com.nex.gamebook.story.parser;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -33,25 +28,25 @@ import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
+import com.nex.gamebook.entity.StorySection;
 import com.nex.gamebook.entity.StorySectionOption;
-import com.nex.gamebook.story.section.StorySection;
-
+import com.nex.gamebook.entity.io.GameBookUtils;
 public class StoryXmlParser {
+
 	
-	public static final String FOLDER = "stories";
-	
+
 	private final String CHARACTER = "character";
 	private final String SECTION = "section";
 	private final String TEXT = "text";
 	private final String ALREADY_VISITED_TEXT = "alreadyVisitedText";
 	private final String INCLUDE = "include";
+	private final String VERSION = "version";
 
 	private final String BACKGROUND = "background";
-	
+
 	private final String LOSE_SECTION = "loseSection";
 	private final String WIN_SECTION = "winSection";
-	
-	
+
 	private final String STORY = "story";
 
 	private final String OPTIONS = "options";
@@ -81,20 +76,19 @@ public class StoryXmlParser {
 	private final String OVERFLOWED = "overflowed";
 
 	Context context;
+
 	public StoryXmlParser(Context context) {
 		super();
 		this.context = context;
 	}
+
 	
-	private File getStoriesFolder(String subFolder) {
-		return new File(context.getFilesDir() + File.separator + FOLDER +  File.separator + subFolder);
-	}
-	
+
 	public List<Story> loadStories() throws IOException {
 		List<Story> stories = new ArrayList<Story>();
 		InputStream stream = null;
 		try {
-			stream = new FileInputStream(getStoriesFolder("stories.xml"));
+			stream = new FileInputStream(GameBookUtils.getInstance().getStoriesFolder("stories.xml"));
 			Document document = getDocument(stream);
 			NodeList nList = document.getElementsByTagName(STORY);
 			for (int temp = 0; temp < nList.getLength(); temp++) {
@@ -116,7 +110,7 @@ public class StoryXmlParser {
 		return stories;
 	}
 
-	public Story loadStory(String xml,  boolean fully) throws Exception {
+	public Story loadStory(String xml, boolean fully) throws Exception {
 		return loadStory(xml, fully, fully);
 	}
 
@@ -124,73 +118,24 @@ public class StoryXmlParser {
 			throws Exception {
 		Story story = new Story();
 		story.saveXmlPath(xml);
-		Properties texts = loadPropties(story);
-		story.setName(getText(NAME, texts));
-		story.setDescription(getText(DESCRIPTION, texts));
-		loadStory(story, story.getXml(), texts, sections, characters);
+		GameBookUtils.getInstance().loadPropties(story);
+		story.setName(NAME);
+		story.setDescription(DESCRIPTION);
+		
+		loadStory(story, story.getXml(), sections, characters);
 		return story;
 	}
 
-	public Properties loadPropties(Story story) throws IOException {
-		
-		List<String> fileList = getRelevantLocalizedFiles(story);
-		Properties prop = new Properties();
-		for (String file: fileList) {
-			try {
-				InputStream fileStream = new FileInputStream(file);
-				Reader reader = new InputStreamReader(fileStream, "Cp1250");
-				
-				prop.load(reader);
-				fileStream.close();
-			} catch (FileNotFoundException e) {
-				Log.d("GameBookXmlParser", "Ignoring missing property file " + file);
-			}
-		}
-		return prop;
-	}
+	
 
-	private List<String> getRelevantLocalizedFiles(Story story) {
-		String defaultLang = "cs";
-		String lang = Locale.getDefault().getLanguage();
-		List<String> defaultTexts = new ArrayList<>();
-		List<String> texts = new ArrayList<>();
-		File root = getStoriesFolder(story.getPath() + File.separator+"texts"+ File.separator+lang+File.separator);
-		boolean exist = root.exists();
-		if(!exist) {
-			getStoriesFolder(story.getPath() + File.separator+"texts"+ File.separator+defaultLang+File.separator);
-		}
-		if(exist && root.isDirectory()) {
-			for(String file: root.list()) {
-				boolean isDefault = isDefault(file);
-				file = root + "/" + file;
-				File test = new File(file);
-				if(!test.exists()) {
-					Log.w("GameBookProperties", "property not exists.");
-				}
-				if(isDefault) {
-					defaultTexts.add(file);
-				} else if(file.contains(lang)) {
-					texts.add(file);
-				}
-			}
-		}
-		if(texts.isEmpty()) {
-			texts = defaultTexts;
-		}
-		return texts;
-	}
 	
-	private boolean isDefault(String file) {
-		int last_ = file.lastIndexOf("_");
-		String dot = file.substring(last_, last_+2);
-		return !".".endsWith(dot);
-	}
-	
-	private void loadStory(Story story, String xml, Properties texts, boolean sections, boolean characters) throws Exception {
-		
+
+	private void loadStory(Story story, String xml, boolean sections, boolean characters) throws Exception {
+
 		InputStream stream = null;
 		try {
-			File storiesFolder = getStoriesFolder(story.getPath() + File.separator + xml);
+			File storiesFolder = GameBookUtils.getInstance().getStoriesFolder(story.getPath()
+					+ File.separator + xml);
 			stream = new FileInputStream(storiesFolder);
 			Document document = getDocument(stream);
 			NodeList nList = document.getElementsByTagName(STORY);
@@ -198,12 +143,15 @@ public class StoryXmlParser {
 				Node node = nList.item(temp);
 				if (node instanceof Element) {
 					Element el = (Element) node;
-					include(story, el, texts, sections, characters);
+					include(story, el, sections, characters);
 					NodeList background = el.getElementsByTagName(BACKGROUND);
 					if (background.getLength() > 0)
 						story.setBackground(getIdentifier(background.item(0)
 								.getTextContent()));
-					initializeStory(story, document, texts, sections, characters);
+					NodeList version = el.getElementsByTagName(VERSION);
+					if (version.getLength() > 0)
+						story.setVersion(getInteger(version.item(0).getTextContent()));
+					initializeStory(story, document, sections, characters);
 				}
 			}
 		} catch (Exception e) {
@@ -215,49 +163,50 @@ public class StoryXmlParser {
 		}
 	}
 
-	private void include(Story story, Element el, Properties texts, boolean sections, boolean characters) throws Exception {
+	private void include(Story story, Element el, boolean sections, boolean characters) throws Exception {
 		NodeList includes = el.getElementsByTagName(INCLUDE);
 		for (int i = 0; i < includes.getLength(); i++) {
 			Node node = includes.item(i);
 			if (node instanceof Element) {
 				String includeXml = ((Element) node).getAttribute(NAME);
-				loadStory(story, includeXml, texts, sections, characters);
+				loadStory(story, includeXml, sections, characters);
 			}
 
 		}
 	}
 
-	public void initializeStory(Story story, Document document, Properties texts, boolean sections, boolean characters) throws Exception {
+	public void initializeStory(Story story, Document document,
+			boolean sections, boolean characters) throws Exception {
 		if (!sections && !characters)
 			return;
 
-			if (sections)
-				loadSections(document, story, texts);
-			if (characters)
-				loadCharacters(document, story, texts);
-		
+		if (sections)
+			loadSections(document, story);
+		if (characters)
+			loadCharacters(document, story);
+
 	}
 
-	private void loadSections(Document document, Story story, Properties texts) throws Exception {
+	private void loadSections(Document document, Story story) throws Exception {
 
 		NodeList nList = document.getElementsByTagName(SECTION);
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node node = nList.item(temp);
 			if (node instanceof Element) {
 				Element el = (Element) node;
-				loadSection(story, el, texts);
+				loadSection(story, el);
 			}
 		}
 	}
 
-	private void loadCharacters(Document document, Story story, Properties texts)
+	private void loadCharacters(Document document, Story story)
 			throws Exception {
 		NodeList nList = document.getElementsByTagName(CHARACTER);
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node node = nList.item(temp);
 			if (node instanceof Element) {
 				Element el = (Element) node;
-				loadCharacter(story, el, texts);
+				loadCharacter(story, el);
 			}
 		}
 	}
@@ -283,10 +232,10 @@ public class StoryXmlParser {
 		return document;
 	}
 
-	private void loadCharacter(Story story, Element element, Properties texts) throws Exception {
+	private void loadCharacter(Story story, Element element) throws Exception {
 		Player character = new Player();
-		character.setName(getText(element.getAttribute(NAME), texts));
-		character.setDescription(getText(element.getAttribute(DESCRIPTION), texts));
+		character.setName(element.getAttribute(NAME));
+		character.setDescription(element.getAttribute(DESCRIPTION));
 		character.setId(getInteger(element.getAttribute(ID)));
 		character.setPosition(getInteger(element.getAttribute(POSITION)));
 
@@ -313,7 +262,7 @@ public class StoryXmlParser {
 		story.getCharacters().add(character);
 	}
 
-	private void loadSection(Story story, Element element, Properties texts) throws Exception {
+	private void loadSection(Story story, Element element) throws Exception {
 		int position = getInteger(element.getAttribute(POSITION));
 		if (position == 0) {
 			throw new IllegalStateException(
@@ -323,21 +272,21 @@ public class StoryXmlParser {
 		StorySection section = new StorySection();
 		section.setLoseSection(getBoolean(element.getAttribute(LOSE_SECTION)));
 		section.setWinSection(getBoolean(element.getAttribute(WIN_SECTION)));
-		String text = getText(element.getAttribute(TEXT), texts);
+		String text = element.getAttribute(TEXT);
 		section.setText(text);
 		section.setAlreadyVisitedText(text);
-		String alreadyVisitedText = getText(element.getAttribute(ALREADY_VISITED_TEXT), texts);
+		String alreadyVisitedText = element.getAttribute(ALREADY_VISITED_TEXT);
 		if (alreadyVisitedText != null)
 			section.setAlreadyVisitedText(alreadyVisitedText);
 
-		String enemiesDefeatedText = getText(element.getAttribute("enemiesDefeatedText"), texts);
-		int luckText = getIdentifier(element
-				.getAttribute(FIGHT_LUCK_TEXT_SECTION));
-		if (luckText > 0)
+		String enemiesDefeatedText = element
+				.getAttribute("enemiesDefeatedText");
+		String luckText = element.getAttribute(FIGHT_LUCK_TEXT_SECTION);
+		if (luckText !=null && luckText.trim().length() > 0)
 			section.setLuckText(luckText);
 
-		int gameOverText = getIdentifier(element.getAttribute(GAMEOVER_SECTION));
-		if (gameOverText > 0)
+		String gameOverText = element.getAttribute(GAMEOVER_SECTION);
+		if (luckText!=null && luckText.trim().length()> 0)
 			section.setGameOverText(gameOverText);
 		section.setLuckDefeatEnemies(getBoolean(element
 				.getAttribute(LUCK_DEFEAT_ENEMIES)));
@@ -345,9 +294,9 @@ public class StoryXmlParser {
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
 			if (node.getNodeName().equals(OPTIONS)) {
-				createOptions(section, node, texts);
+				createOptions(section, node);
 			} else if (node.getNodeName().equals(ENEMIES)) {
-				createEnemies(section, node, texts);
+				createEnemies(section, node);
 			} else if (node.getNodeName().equals(BONUSES)) {
 				createBonuses(section, node);
 			}
@@ -369,7 +318,7 @@ public class StoryXmlParser {
 		return 0;
 	}
 
-	private void createEnemies(StorySection section, Node node, Properties texts) {
+	private void createEnemies(StorySection section, Node node) {
 		NodeList optionsList = node.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node n = optionsList.item(i);
@@ -397,7 +346,7 @@ public class StoryXmlParser {
 					}
 				}
 				enemy.setCurrentStats(new Stats(enemy.getStats()));
-				enemy.setName(getText(enemyNode.getAttribute(NAME), texts));
+				enemy.setName(enemyNode.getAttribute(NAME));
 
 				section.getEnemies().add(enemy);
 			}
@@ -425,7 +374,7 @@ public class StoryXmlParser {
 		}
 	}
 
-	private void createOptions(StorySection section, Node node, Properties texts) {
+	private void createOptions(StorySection section, Node node) {
 		NodeList optionsList = node.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node n = optionsList.item(i);
@@ -435,7 +384,7 @@ public class StoryXmlParser {
 				option.setSection(getInteger(optionNode.getAttribute(SECTION)));
 				option.setDisableWhenSelected(getBoolean(optionNode
 						.getAttribute(DISABLE_WHEN_SELECTED)));
-				option.setText(getText(optionNode.getAttribute(TEXT), texts));
+				option.setText(optionNode.getAttribute(TEXT));
 				option.setSkill(getInteger(optionNode.getAttribute(SKILL)));
 				option.setLuckAspect(getBoolean(optionNode
 						.getAttribute(LUCK_ASPECT)));
@@ -451,11 +400,7 @@ public class StoryXmlParser {
 	private int getInteger(String s) {
 		return s != null && !"".equals(s) ? Integer.valueOf(s.trim()) : 0;
 	}
-
-	private String getText(String name, Properties texts) {
-		if("".equals(name) || name == null) return null;
-		String text = texts.getProperty(name);
-		return text == null ? "_" + name + "_" : text;
-	}
 	
+	
+
 }

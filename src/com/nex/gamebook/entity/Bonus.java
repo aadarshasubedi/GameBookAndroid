@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.nex.gamebook.R;
 
-public class Bonus implements Serializable {
+public class Bonus implements Serializable, Mergable {
 	public enum BonusState implements Serializable {
 		BEFORE_FIGHT, AFTER_FIGHT, NORMAL;
 
@@ -33,7 +33,6 @@ public class Bonus implements Serializable {
 	private BonusState state;
 	private BonusType type;
 	private int value;
-	private int realvalue;
 	private boolean overflowed;
 	private int coeff;
 	private boolean alreadyGained;
@@ -66,13 +65,6 @@ public class Bonus implements Serializable {
 		return this.type.getText();
 	}
 
-	public int getRealvalue() {
-		return realvalue;
-	}
-
-	public void setRealvalue(int realvalue) {
-		this.realvalue = realvalue;
-	}
 
 	public int getCoeff() {
 		return coeff;

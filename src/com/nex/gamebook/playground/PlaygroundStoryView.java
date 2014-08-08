@@ -19,9 +19,9 @@ import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
+import com.nex.gamebook.entity.StorySection;
 import com.nex.gamebook.entity.StorySectionOption;
-import com.nex.gamebook.entity.io.IOGameOperation;
-import com.nex.gamebook.story.section.StorySection;
+import com.nex.gamebook.entity.io.GameBookUtils;
 
 public class PlaygroundStoryView extends AbstractFragment {
 	public PlaygroundStoryView(Context context) {
@@ -83,10 +83,9 @@ public class PlaygroundStoryView extends AbstractFragment {
 		for(Bonus bonus: bonuses) {
 			if(bonus.isAlreadyGained() && section.isVisited()) continue;
 			bonus.setAlreadyGained(true);
-			int realValue = bonus.getRealvalue();
+			int realValue = bonus.getValue();
 			if(!section.isBonusesAlreadyGained()) {
 				realValue = _character.addBonus(bonus);
-				bonus.setRealvalue(realValue);
 			}
 			String marker = "+";
 			TextView opt = new TextView(context);
@@ -179,7 +178,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 	}
 	private void showGameOver(Context context, View parent, StorySection section) {
 		TextView v = (TextView) parent.findViewById(R.id.gameOver_view);
-		v.setText(context.getResources().getString(section.getGameOverText()) + " " + context.getResources().getString(R.string.fight_aspect_health));
+		v.setText(section.getGameOverText() + " " + context.getResources().getString(R.string.fight_aspect_health));
 		v.setVisibility(View.VISIBLE);
 		displayEndGameButton(context, parent, R.string.endGame_lose);
 
@@ -219,7 +218,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 				nextSection.setUnreturnableSection(sectionId);
 			}
 			try {
-				IOGameOperation.saveCharacter(v.getContext(), PlaygroundStoryView.this._character);
+				GameBookUtils.getInstance().saveCharacter(PlaygroundStoryView.this._character);
 			} catch (Exception e) {
 				Log.e("GameBookSaver", "", e);
 			}

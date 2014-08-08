@@ -1,22 +1,22 @@
-package com.nex.gamebook.story.section;
+package com.nex.gamebook.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nex.gamebook.R;
-import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
-import com.nex.gamebook.entity.Enemy;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.StorySectionOption;
+import com.nex.gamebook.entity.io.GameBookUtils;
 
-public class StorySection implements Serializable {
+public class StorySection implements Serializable, Mergable {
 
+	private static final long serialVersionUID = 3228667395424629590L;
 	private String text;
 	private String alreadyVisitedText;
 	private String enemiesDefeatedText;
-
+	private String luckText = "main_luck_text";
+	private String gameOverText = "main_gameover_text";
+	
+	
 	private int unreturnableSection = -1;
 
 	private boolean loseSection;
@@ -28,8 +28,7 @@ public class StorySection implements Serializable {
 	private boolean visited;
 	private boolean hasLuck;
 	private boolean luckDefeatEnemies;
-	private int luckText = R.string.fight_luck_section;
-	private int gameOverText = R.string.game_over_section;
+	
 
 	private List<StorySectionOption> options = new ArrayList<>();
 	private List<Enemy> enemies = new ArrayList<>();
@@ -86,11 +85,11 @@ public class StorySection implements Serializable {
 		return true;
 	}
 
-	public int getLuckText() {
-		return luckText;
+	public String getLuckText() {
+		return GameBookUtils.getInstance().getText(luckText);
 	}
 
-	public void setLuckText(int luckText) {
+	public void setLuckText(String luckText) {
 		this.luckText = luckText;
 	}
 
@@ -126,11 +125,11 @@ public class StorySection implements Serializable {
 		this.hasLuck = hasLuck;
 	}
 
-	public int getGameOverText() {
-		return gameOverText;
+	public String getGameOverText() {
+		return GameBookUtils.getInstance().getText(gameOverText);
 	}
 
-	public void setGameOverText(int gameOverText) {
+	public void setGameOverText(String gameOverText) {
 		this.gameOverText = gameOverText;
 	}
 
@@ -151,7 +150,7 @@ public class StorySection implements Serializable {
 	}
 
 	public String getText() {
-		return text;
+		return GameBookUtils.getInstance().getText(text);
 	}
 
 	public void setText(String text) {
@@ -159,7 +158,7 @@ public class StorySection implements Serializable {
 	}
 
 	public String getAlreadyVisitedText() {
-		return alreadyVisitedText;
+		return GameBookUtils.getInstance().getText(alreadyVisitedText);
 	}
 
 	public void setAlreadyVisitedText(String alreadyVisitedText) {
@@ -167,7 +166,7 @@ public class StorySection implements Serializable {
 	}
 
 	public String getEnemiesDefeatedText() {
-		return enemiesDefeatedText;
+		return GameBookUtils.getInstance().getText(enemiesDefeatedText);
 	}
 
 	public void setEnemiesDefeatedText(String enemiesDefeatedText) {

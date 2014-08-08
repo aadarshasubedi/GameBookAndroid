@@ -2,6 +2,7 @@
 <story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xi="http://www.w3.org/2001/XInclude"
     xsi:noNamespaceSchemaLocation="../story.xsd">
     <background>@drawable/zombie</background>
+    <version>2</version>
     <include name="zombie_apocalypse_characters.xml"/>
     <include name="zombie_apocalypse_soldier.xml"/>
 </story>

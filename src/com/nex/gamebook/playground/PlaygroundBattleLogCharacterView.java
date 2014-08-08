@@ -24,7 +24,7 @@ import com.nex.gamebook.entity.CharacterType;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.story.section.StorySection;
+import com.nex.gamebook.entity.StorySection;
 
 public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
@@ -183,8 +183,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			View rowView = inflater.inflate(R.layout.fragment_battle_log_layout_nobattle, parent, false);
 			TextView result = (TextView) rowView.findViewById(R.id.noBattleText);
 			result.setTextColor(context.getResources().getColor(R.color.positive));
-			result.setText(context.getResources().getString(
-					section.getLuckText())
+			result.setText(section.getLuckText()
 					+ " "
 					+ context.getResources().getString(
 							R.string.fight_aspect_luck));

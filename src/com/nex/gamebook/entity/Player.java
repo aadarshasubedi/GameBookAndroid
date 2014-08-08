@@ -2,7 +2,7 @@ package com.nex.gamebook.entity;
 
 import java.lang.reflect.Method;
 
-import com.nex.gamebook.story.section.StorySection;
+import com.nex.gamebook.entity.io.GameBookUtils;
 
 import android.util.Log;
 
@@ -13,7 +13,7 @@ public class Player extends Character {
 	private String name;
 	private String description;
 	private int position;
-
+	private int sections;
 	private Story story;
 
 	public int getId() {
@@ -47,7 +47,7 @@ public class Player extends Character {
 	}
 
 	public String getName() {
-		return name;
+		return GameBookUtils.getInstance().getText(name);
 	}
 
 	public void setName(String name) {
@@ -55,7 +55,7 @@ public class Player extends Character {
 	}
 
 	public String getDescription() {
-		return description;
+		return GameBookUtils.getInstance().getText(description);
 	}
 
 	public void setDescription(String description) {
@@ -80,19 +80,19 @@ public class Player extends Character {
 		int realValue = bonus.getValue();
 		try {
 			Method currentAttr = Stats.class.getDeclaredMethod(
-					createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
+					GameBookUtils.createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
 			Method defaultAttr = Stats.class.getDeclaredMethod(
-					createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
+					GameBookUtils.createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
 			int currentValue = (int) currentAttr.invoke(getCurrentStats(),
 					new Object[0]);
 			int total = currentValue + (bonus.getCoeff() * bonus.getValue());
 			int defaultValue = (int) defaultAttr.invoke(getStats(),
 					new Object[0]);
 			currentAttr = Stats.class.getDeclaredMethod(
-					createMethodName("set", bonus.getType().name()
+					GameBookUtils.createMethodName("set", bonus.getType().name()
 							.toLowerCase()), int.class);
 			defaultAttr = Stats.class.getDeclaredMethod(
-					createMethodName("set", bonus.getType().name()
+					GameBookUtils.createMethodName("set", bonus.getType().name()
 							.toLowerCase()), int.class);
 			if (total > defaultValue && !bonus.isOverflowed()) {
 				realValue = defaultValue - currentValue;
@@ -106,11 +106,7 @@ public class Player extends Character {
 		return realValue;
 	}
 
-	private String createMethodName(String type, String fieldName) {
-		String firstPart = fieldName.substring(0, 1).toUpperCase();
-		String secondPart = fieldName.substring(1);
-		return type + firstPart + secondPart;
-	}
+	
 
 	@Override
 	public CharacterType getType() {
@@ -120,5 +116,15 @@ public class Player extends Character {
 	public StorySection getCurrentSection() {
 		return getStory().getSection(this.position);
 	}
-
+	
+	public int getSections() {
+		return sections;
+	}
+	
+	public void addSection() {
+		sections++;
+	}
+	public void setSections(int sections) {
+		this.sections = sections;
+	}
 }

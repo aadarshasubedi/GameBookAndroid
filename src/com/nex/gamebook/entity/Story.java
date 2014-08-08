@@ -1,15 +1,14 @@
 package com.nex.gamebook.entity;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.nex.gamebook.story.section.StorySection;
+import com.nex.gamebook.entity.io.GameBookUtils;
 
-public class Story implements Serializable {
+public class Story implements Serializable, Mergable {
 	private static final long serialVersionUID = -4844842607652119895L;
 	private String xml;
 	private String path;
@@ -18,6 +17,7 @@ public class Story implements Serializable {
 	private String description;
 	private int background;
 	private long id;
+	private int version;
 	private Map<Integer, StorySection> sections = new HashMap<>();
 	private List<Player> characters = new ArrayList<Player>();
 
@@ -52,7 +52,7 @@ public class Story implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return GameBookUtils.getInstance().getText(name);
 	}
 
 	public void setName(String name) {
@@ -64,7 +64,7 @@ public class Story implements Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		return GameBookUtils.getInstance().getText(description);
 	}
 
 	public List<Player> getCharacters() {
@@ -94,13 +94,24 @@ public class Story implements Serializable {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
 	public void saveXmlPath(String xml) {
 		this.fullpath = xml;
 		int t = xml.lastIndexOf("/");
-		this.xml = xml.substring(t+1);
+		this.xml = xml.substring(t + 1);
 		this.path = xml.substring(0, t);
 	}
+
 	public String getFullpath() {
 		return fullpath;
 	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
 }
