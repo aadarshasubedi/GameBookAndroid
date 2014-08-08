@@ -2,39 +2,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" android:background="@drawable/shape" android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:orientation="vertical" >
 
-    <ViewAnimator
-        android:id="@+id/story_sel_animator"
+    <ExpandableListView
+        android:id="@+id/expandableListView1"
         android:layout_width="match_parent"
-        android:layout_height="98dp" android:background="@drawable/zombie">
-    </ViewAnimator>
+        android:layout_height="wrap_content" >
+    </ExpandableListView>
+
+<LinearLayout
+    	android:id="@+id/imagerounding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+           	android:orientation="vertical" android:background="@drawable/rounded_image" >
+
+                <ImageView
+                    android:id="@+id/story_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/zombie" >
+
+			    </ImageView>
+        </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/story_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" android:id="@+id/story_info" android:visibility="gone">
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="-1dp"
+        android:background="@drawable/image_tootltip"
+        android:orientation="vertical"
+        android:padding="5dip" >
 
         <TextView
             android:id="@+id/storyName"
+            style="@style/text"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.10"
-            android:padding="5dp"
-            android:text="@string/dsc_default" style="@style/text"/>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/dsc_default" />
 
         <TextView
             android:id="@+id/storyDescription"
+            style="@style/attribute"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.10"
-            android:padding="5dp"
-            android:text="@string/dsc_default"  style="@style/option"/>
-         <Button
-	        android:id="@+id/play_button"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/play" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/dsc_default" />
+
+        <Button
+            android:id="@+id/play_button"
+            style="@style/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/play" />
     </LinearLayout>
-    
+
 </LinearLayout>

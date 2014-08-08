@@ -1,15 +1,36 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/stories_scroll"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_centerHorizontal="true" >
+    android:layout_height="fill_parent" 
+    android:padding="10dip"
+    android:background="@drawable/background">
+	<TextView
+	        style="@style/main_title"
+	         android:padding="15dip"
+	    	android:layout_marginBottom="10dp"
+	        android:id="@+id/textView1"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/stories" />
 
-    <LinearLayout
-        android:id="@+id/stories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+	<ScrollView
+	    android:id="@+id/stories_scroll"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:padding="5dip"
+	    android:layout_below="@+id/textView1" android:background="@drawable/corners_">
+	
+		    <LinearLayout
+		        android:id="@+id/stories"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical" >
 
-    </LinearLayout>
-
-</ScrollView>
+<!-- 		        <include -->
+<!-- 		            android:layout_width="wrap_content" -->
+<!-- 		            android:layout_height="wrap_content" -->
+<!-- 		            layout="@layout/list_story_layout" /> -->
+		
+		    </LinearLayout>
+	
+	</ScrollView>
+</RelativeLayout>

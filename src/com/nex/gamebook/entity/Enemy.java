@@ -1,5 +1,7 @@
 package com.nex.gamebook.entity;
 
+import android.util.Log;
+
 import com.nex.gamebook.playground.AttackCallback;
 
 public class Enemy extends com.nex.gamebook.entity.Character {
@@ -57,6 +59,11 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 			enemyBegin = !enemyBegin;
 			if (character.isDefeated()) {
 				break;
+			}
+			try {
+				Thread.sleep(700);
+			} catch (InterruptedException e) {
+				Log.e("GameBookFighting", "", e);
 			}
 		}
 		callback.fightEnd();

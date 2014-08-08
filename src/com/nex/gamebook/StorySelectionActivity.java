@@ -2,6 +2,7 @@ package com.nex.gamebook;
 
 import java.io.IOException;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -16,21 +17,24 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Transformation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ViewAnimator;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class StorySelectionActivity extends Activity {
-
+	
+//	private 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_story_selection);
 		StoryXmlParser parser = new StoryXmlParser(this);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.stories);
@@ -58,20 +62,24 @@ public class StorySelectionActivity extends Activity {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.list_story_layout, parent,
 					false);
+			LinearLayout imagerounding = (LinearLayout) rowView.findViewById(R.id.imagerounding);
 			LinearLayout storyInfo = (LinearLayout) rowView.findViewById(R.id.story_info);
-			ViewAnimator animator = (ViewAnimator) rowView.findViewById(R.id.story_sel_animator);
-			animator.setBackground(context.getResources().getDrawable(
-					story.getBackground()));
-			animator.setOnClickListener(new OnImageListener(context, storyInfo));
+			
+//			imagerounding.bringToFront();
+			ImageView image = (ImageView) rowView.findViewById(R.id.story_image);
+			image.setBackground(context.getResources().getDrawable(story.getBackground()));
 			Button button = (Button) storyInfo.findViewById(R.id.play_button);
 			button.setTag(story);
 			button.setOnClickListener(buttonClicked);
+			image.setOnClickListener(new OnImageListener(context, storyInfo));
+//			storyInfo.setVisibility(View.GONE);
 			return rowView;
 		}
 	}
 
 	class OnImageListener implements OnClickListener {
 		private LinearLayout layout;
+		private int height;
 		private Context context;
 		public OnImageListener(Context context, LinearLayout layout) {
 			super();
@@ -87,12 +95,12 @@ public class StorySelectionActivity extends Activity {
 			    layout.setAnimation(animation);
 			    layout.animate();
 			    animation.start();
-			int visibility = layout.getVisibility();
-			if(visibility == View.GONE) {
-				layout.setVisibility(View.VISIBLE);
-			} else {
-				layout.setVisibility(View.GONE);
-			}
+//			int visibility = layout.getVisibility();
+//			if(visibility == View.GONE) {
+//				layout.setVisibility(View.VISIBLE);
+//			} else {
+//				layout.setVisibility(View.GONE);
+//			}
 		}
 
 	}
