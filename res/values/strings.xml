@@ -28,6 +28,7 @@
     <string name="attr_health">Zdraví</string>
     <string name="attr_luck">Štěstí</string>
     <string name="attr_attack">Útok</string>
+    <string name="attr_baseDmg">Základní poškození</string>
     <string name="attr_defense">Obrana</string>
     <string name="attr_skill">Dovednost</string>
     <string name="attr_critical">Krit.š.</string>
@@ -102,6 +103,7 @@
         1) Ovlivňuje zobrazení některých možností, které vyžadují štěstí.\n\n
         2) Před bojem má vliv na úplné vyhnutí se boji, v některých sekcí uplně odstraní nepřátele.\n\n
         3) V boji pak má vliv na vyhnutí se útoku a při kritickém zranění šanci na dvojnásobný kritický úder.\n\n
+        4) Pokud máš štěstí začínáš boj, jinak ho vždy začíná nepřítel.\n\n
     </string>
     <string name="guide_option">
        Možnost je možný výběr v sekci příběhu, tím se hráč rozhoduje kudy se vydá nebo co podnikne.
@@ -135,7 +137,8 @@
     <string name="guide_modifications">
      Modifikace ovlivňují atributy postavy hráče.
      Mohou být pozitivní i negativní. Všechny modifikace jsou permanentní.
-     Pokud je v sekci boj, tak jsou některé modifikace aplikovány před bojem a některé po boji.
+     Pokud je v sekci bitva, tak jsou některé modifikace aplikovány před bojem a některé po boji.
+     Některé modifikace mohou navýšit tvoje aktuální atributy nad základní.
     </string>
 	<string name="guide_description">
 	    Gamebook je kniha, ve které ovlivňujete příběh svým vlastním rozhodováním.

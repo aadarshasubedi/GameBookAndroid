@@ -7,8 +7,7 @@
             <defense>5</defense>
             <skill>2</skill>
             <luck>1</luck>
-            <attack>7</attack>
-            <baseDamage>2</baseDamage>
+            <attack>7</attack>   
         </character>
         <character position="" id="2" name="ch_doctor" description="dsc_doctor">
             <health>25</health>

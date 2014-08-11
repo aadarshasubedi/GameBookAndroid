@@ -5,6 +5,8 @@ import java.io.Serializable;
 import com.nex.gamebook.R;
 
 public class Bonus implements Serializable, Mergable {
+	private static final long serialVersionUID = 4130822562659948335L;
+
 	public enum BonusState implements Serializable {
 		BEFORE_FIGHT, AFTER_FIGHT, NORMAL;
 
@@ -17,8 +19,12 @@ public class Bonus implements Serializable, Mergable {
 	}
 
 	public enum BonusType implements Serializable {
-		HEALTH(R.string.attr_health), LUCK(R.string.attr_luck), SKILL(
-				R.string.attr_skill), DEFENSE(R.string.attr_defense);
+		HEALTH(R.string.attr_health), 
+		LUCK(R.string.attr_luck), 
+		SKILL(R.string.attr_skill), 
+		DEFENSE(R.string.attr_defense),  
+		ATTACK(R.string.attr_attack),
+		DAMAGE(R.string.attr_baseDmg);
 		public int text;
 
 		private BonusType(int text) {

@@ -6,7 +6,7 @@
         <section position="1" text="section1_text" alreadyVisitedText="section1_visited_text">
             <options>
                 <option section="2" text="section1_option1_text"/>
-                <option section="" text="section1_option2_text"/>
+                <option section="13" text="section1_option2_text"/>
                 <option section="" text="section1_option3_text"/>
             </options>
         </section>
@@ -15,16 +15,12 @@
             <enemies>
                 <enemy name="e_livingdead">
                     <health>7</health>
-                    <defense>4</defense>
+                    <defense>2</defense>
                     <skill>2</skill>
                     <luck>1</luck>
                     <attack>4</attack>
                 </enemy>
             </enemies>
-            <bonuses>
-                <bonus state="after_fight" type="health" value="3" debuff="true"/>
-                <bonus state="before_fight" type="luck" value="1" overflowed="true" />
-            </bonuses>
             <options>
                 <option section="3" text="section2_option1_text"/>
                 <option section="1" text="section2_option_barracks_text"/>
@@ -40,16 +36,16 @@
         <!-- SECTION 4 -->
         <section position="4" text="section4_text" enemiesDefeatedText="section4_enemy_text" luckText="section4_luck_text" luckDefeatEnemies="true">
             <enemies>
-                <enemy name="e_livingdead" >
+                <enemy name="e_livingdead">
                     <health>5</health>
-                    <defense>3</defense>
+                    <defense>2</defense>
                     <skill>1</skill>
                     <luck>1</luck>
                     <attack>4</attack>
                 </enemy>
-                <enemy name="e_nohander" >
+                <enemy name="e_nohander">
                     <health>4</health>
-                    <defense>5</defense>
+                    <defense>3</defense>
                     <skill>1</skill>
                     <luck>1</luck>
                     <attack>3</attack>
@@ -81,9 +77,9 @@
         </section>
         <!-- SECTION 8 -->
         <section position="8" text="section8_text">
-             <bonuses>
-                 <bonus type="health" value="1" />
-             </bonuses>
+            <bonuses>
+                <bonus type="health" value="1" />
+            </bonuses>
             <options>
                 <option section="10" text="section8_option1_text" />
                 <option section="12" text="section8_option2_text" />
@@ -107,7 +103,76 @@
                 <option section="10" text="section11_option1_text" />
             </options>
         </section>
+        <!-- SECTION 13 -->
+        <section position="13" text="section13_text" enemiesDefeatedText="section13_enemy_text" luckText="section13_luck_text">
+            <enemies>
+                <enemy name="e_undead">
+                    <health>5</health>
+                    <defense>2</defense>
+                    <skill>2</skill>
+                    <luck>2</luck>
+                    <attack>5</attack>
+                </enemy>
+                <enemy name="e_undead">
+                    <health>7</health>
+                    <defense>3</defense>
+                    <skill>1</skill>
+                    <luck>1</luck>
+                    <attack>6</attack>
+                </enemy>
+            </enemies>
+            <options>
+                <option section="" text="section13_option1_text" />
+                <option section="14" text="section13_option2_text" />
+            </options>
+        </section>
+        <!-- SECTION 14 -->
+        <section position="14" text="section14_text" alreadyVisitedText="section14_visited_text">
+            <bonuses>
+                <bonus type="attack" overflowed="true" value="2" />
+            </bonuses>
+            <options>
+                <option section="13" text="section14_option1_text" />
+                <option section="" text="section14_option3_text" />
+                <option section="15" text="section14_option2_text" disableWhenSelected="true"/>
+            </options>
+        </section>
         
+        <!-- SECTION 15 -->
+        <section position="15" text="section15_text">
+            <options>
+                <option section="17" text="section15_option1_text" />
+                <option section="16" text="section15_option2_text" />
+            </options>
+        </section>
+        
+        <!-- SECTION 16 -->
+        <section position="16" text="section16_text">
+            <options>
+                <option section="14" text="sg_continue" />
+            </options>
+        </section>
+        
+        <!-- SECTION 17 -->
+        <section position="17" text="section17_text">
+            <options>
+                <option section="18" text="section17_option1_text" />
+            </options>
+        </section>
+        
+        <!-- SECTION 18 -->
+        <section position="18" text="section18_text">
+            <bonuses>
+                <bonus type="health" value="5" debuff="true" />
+                <bonus type="attack" value="1" debuff="true" />
+            </bonuses>
+            <options>
+                <option section="" text="section18_option1_text" />
+                <option section="19" text="section18_option2_text" />
+            </options>
+        </section>
+        
+       
         
         <!-- enter to shared sections -->
         <!-- SECTION 7 -->
@@ -116,7 +181,7 @@
                 <bonus type="health" value="2" />
             </bonuses>
             <options>
-                <option section="" text="@string/sg_continue" />
+                <option section="" text="sg_continue" />
             </options>
         </section>
         <!-- SECTION 10 -->
@@ -132,5 +197,16 @@
                 <option section="" text="section12_option1_text" />
             </options>
         </section>
+        <!-- SECTION 19 -->
+        <section position="19" text="section19_text">
+            <bonuses>
+                <bonus type="health" value="10"/>
+                <bonus type="attack" value="1" overflowed="true"/>
+            </bonuses>
+            <options>
+                <option section="" text="section19_option1_text" />
+            </options>
+        </section>
+        
     </sections>
 </story>

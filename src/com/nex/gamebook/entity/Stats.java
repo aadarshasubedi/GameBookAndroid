@@ -12,7 +12,7 @@ public class Stats implements Serializable {
 	private int skill;
 	private int luck;
 	private int attack;
-	private int baseDamage = 1;
+	private int damage = 1;
 
 	public Stats() {
 	}
@@ -23,7 +23,7 @@ public class Stats implements Serializable {
 		this.skill = stats.skill;
 		this.luck = stats.luck;
 		this.attack = stats.attack;
-		this.baseDamage = stats.baseDamage;
+		this.damage = stats.damage;
 	}
 
 	public int getHealth() {
@@ -89,12 +89,12 @@ public class Stats implements Serializable {
 		this.attack = attack;
 	}
 
-	public int getBaseDamage() {
-		return baseDamage;
+	public int getDamage() {
+		return damage;
 	}
 
-	public void setBaseDamage(int baseDamage) {
-		this.baseDamage = baseDamage;
+	public void setDamage(int damage) {
+		this.damage = damage;
 	}
 
 }

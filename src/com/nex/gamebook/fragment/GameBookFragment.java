@@ -58,17 +58,18 @@ public abstract class GameBookFragment {
 
 		attr = (TextView) view.findViewById(R.id.sel_attr_luck_d);
 		attr.setText(String.valueOf(_character.getStats().getLuckPercentage()));
-		
+
 		attr = (TextView) view.findViewById(R.id.critical_d);
 		attr.setText(String.valueOf(_character.getStats().getSkillPercentage()));
-		
+
 		attr = (TextView) view.findViewById(R.id.sel_l_def_perc_d);
-		attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
-		
+		attr.setText(String.valueOf(_character.getStats()
+				.getDefensePercentage()));
+
 		attr = (TextView) view.findViewById(R.id.sel_l_baseDmg_d);
-		attr.setText(String.valueOf(_character.getStats().getBaseDamage()));
+		attr.setText(String.valueOf(_character.getStats().getDamage()));
 	}
-	
+
 	protected void fillCurrentStats(View view) {
 		final Player _character = getCharacter();
 		TextView attr = (TextView) view.findViewById(R.id.sel_attr_health);
@@ -77,12 +78,15 @@ public abstract class GameBookFragment {
 				.getHealth(), _character.getCurrentStats().getHealth());
 
 		attr = (TextView) view.findViewById(R.id.sel_attr_luck);
-		attr.setText(String.valueOf(_character.getCurrentStats().getLuckPercentage()));
+		attr.setText(String.valueOf(_character.getCurrentStats()
+				.getLuckPercentage()));
 		changeAttributeColor(view.getContext(), attr, _character.getStats()
 				.getLuck(), _character.getCurrentStats().getLuck());
-		changeAttributeColor(view.getContext(), (TextView) view.findViewById(R.id.luck_perc), _character.getStats()
-				.getLuck(), _character.getCurrentStats().getLuck());
-		
+		changeAttributeColor(view.getContext(),
+				(TextView) view.findViewById(R.id.luck_perc), _character
+						.getStats().getLuck(), _character.getCurrentStats()
+						.getLuck());
+
 		attr = (TextView) view.findViewById(R.id.sel_attr_defense);
 		attr.setText(String.valueOf(_character.getCurrentStats().getDefense()));
 		changeAttributeColor(view.getContext(), attr, _character.getStats()
@@ -99,17 +103,19 @@ public abstract class GameBookFragment {
 				.getAttack(), _character.getCurrentStats().getAttack());
 
 		attr = (TextView) view.findViewById(R.id.critical);
-		attr.setText(String.valueOf(_character.getCurrentStats().getSkillPercentage()));
-		
+		attr.setText(String.valueOf(_character.getCurrentStats()
+				.getSkillPercentage()));
+
 		attr = (TextView) view.findViewById(R.id.sel_l_def_perc);
-		attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
-		
+		attr.setText(String.valueOf(_character.getStats()
+				.getDefensePercentage()));
+
 		attr = (TextView) view.findViewById(R.id.sel_attr_baseDmg_d);
-		attr.setText(String.valueOf(_character.getCurrentStats().getBaseDamage()));
+		attr.setText(String.valueOf(_character.getCurrentStats().getDamage()));
 		changeAttributeColor(view.getContext(), attr, _character.getStats()
-				.getBaseDamage(), _character.getCurrentStats().getBaseDamage());
+				.getDamage(), _character.getCurrentStats().getDamage());
 	}
-	
+
 	@SuppressLint("ResourceAsColor")
 	private void changeAttributeColor(Context ctx, TextView text,
 			int defaultValue, int currentvalue) {
@@ -118,8 +124,7 @@ public abstract class GameBookFragment {
 		} else if (currentvalue < defaultValue) {
 			text.setTextColor(ctx.getResources().getColor(R.color.negative));
 		} else {
-			text.setTextColor(ctx.getResources().getColor(
-					R.color.number_color));
+			text.setTextColor(ctx.getResources().getColor(R.color.number_color));
 		}
 	}
 }
