@@ -4,13 +4,11 @@
     
     <style name="GameBookActionBar" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
-        
+        <item name="android:actionBarItemBackground">@drawable/actionbar_selector</item>
     </style>
 
     <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@drawable/actionbar_selector</item>
-<!--         <item name="android:actionBarItemBackground"></item> -->
-        
+        <item name="android:background">@color/button</item>
         <item name="android:titleTextStyle">@style/ActionBarTitle</item>
    		<item name="android:icon">@android:color/transparent</item>
     </style>
@@ -50,10 +48,10 @@
 	</style>
 	
 	<style name="guide_item">
-	    <item name="android:layout_margin">10dp</item>
+	    <item name="android:padding">10dip</item>
 	    <item name="android:textColor">@color/button_color</item>
 	    <item name="android:textSize">25sp</item>
-	    <item name="android:background">@drawable/list_item</item>
+	    <item name="android:background">@android:color/transparent</item>
 	</style>
 	
     <style name="title">

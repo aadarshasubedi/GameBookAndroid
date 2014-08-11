@@ -21,6 +21,10 @@
                     <attack>4</attack>
                 </enemy>
             </enemies>
+            <bonuses>
+                <bonus state="after_fight" type="health" value="3" debuff="true"/>
+                <bonus state="before_fight" type="luck" value="1" overflowed="true" />
+            </bonuses>
             <options>
                 <option section="3" text="section2_option1_text"/>
                 <option section="1" text="section2_option_barracks_text"/>

@@ -34,7 +34,6 @@
 		                android:text="@string/guide_description" />
                 </LinearLayout>
             </ScrollView>
-            
         </LinearLayout>
 
         
@@ -47,10 +46,10 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#4dffffff"
+        android:background="#cc505050"
         android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:listSelector="@android:color/transparent"/>
+        android:divider="#4dffffff"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/listview_guid_selector"/>
 
 </android.support.v4.widget.DrawerLayout>

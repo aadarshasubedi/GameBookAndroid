@@ -12,6 +12,7 @@ public class Stats implements Serializable {
 	private int skill;
 	private int luck;
 	private int attack;
+	private int baseDamage = 1;
 
 	public Stats() {
 	}
@@ -22,6 +23,7 @@ public class Stats implements Serializable {
 		this.skill = stats.skill;
 		this.luck = stats.luck;
 		this.attack = stats.attack;
+		this.baseDamage = stats.baseDamage;
 	}
 
 	public int getHealth() {
@@ -37,7 +39,7 @@ public class Stats implements Serializable {
 	}
 
 	public void setDefense(int defense) {
-		if(defense > Character.MAX_DEFENSE_OF_CHARACTER)
+		if (defense > Character.MAX_DEFENSE_OF_CHARACTER)
 			defense = Character.MAX_DEFENSE_OF_CHARACTER;
 		this.defense = defense;
 	}
@@ -47,7 +49,7 @@ public class Stats implements Serializable {
 	}
 
 	public void setSkill(int skill) {
-		if(skill > Character.MAX_SKILL_OF_CHARACTER)
+		if (skill > Character.MAX_SKILL_OF_CHARACTER)
 			skill = Character.MAX_SKILL_OF_CHARACTER;
 		this.skill = skill;
 	}
@@ -61,19 +63,19 @@ public class Stats implements Serializable {
 			luck = Character.MAX_LUCK_OF_CHARACTER;
 		this.luck = luck;
 	}
-	
+
 	public int getLuckPercentage() {
 		return Stats.getPercentage(luck, TOTAL_LUCK_FOR_CALC);
 	}
-	
+
 	public int getSkillPercentage() {
 		return Stats.getPercentage(skill, TOTAL_SKILL_FOR_CALC);
 	}
-	
+
 	public int getDefensePercentage() {
 		return Stats.getPercentage(defense, TOTAL_SKILL_FOR_CALC);
 	}
-	
+
 	public static int getPercentage(int value, int what) {
 		float res = ((float) value / (float) what);
 		return (int) (res * 100);
@@ -85,6 +87,14 @@ public class Stats implements Serializable {
 
 	public void setAttack(int attack) {
 		this.attack = attack;
+	}
+
+	public int getBaseDamage() {
+		return baseDamage;
+	}
+
+	public void setBaseDamage(int baseDamage) {
+		this.baseDamage = baseDamage;
 	}
 
 }

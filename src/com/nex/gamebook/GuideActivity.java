@@ -2,8 +2,6 @@ package com.nex.gamebook;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -54,14 +52,12 @@ public class GuideActivity extends Activity {
 			/** Called when drawer is closed */
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
-				invalidateOptionsMenu();
 
 			}
 
 			/** Called when a drawer is opened */
 			public void onDrawerOpened(View drawerView) {
 				getActionBar().setTitle(getString(R.string.guide));
-				invalidateOptionsMenu();
 			}
 
 		};
@@ -84,40 +80,15 @@ public class GuideActivity extends Activity {
 
 		// Setting item click listener for the listview mDrawerList
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-
-				// Getting an array of rivers
 				String[] menuItems = getMenuItems();
-
-				// Currently selected river
 				mTitle = menuItems[position];
-
-				// Creating a fragment object
-//				GuideFragment rFragment = new GuideFragment();
-
-				// Passing selected item information to fragment
 				int text = getTexts()[position];
-				
-				
-//				// Getting reference to the FragmentManager
-//				FragmentManager fragmentManager = getFragmentManager();
-//
-//				// Creating a fragment transaction
-//				FragmentTransaction ft = fragmentManager.beginTransaction();
-//
-//				// Adding a fragment to the fragment transaction
-//				ft.replace(R.id.content_frame, rFragment);
-//				
-//				// Committing the transaction
-//				ft.commit();
 				TextView textView = (TextView) findViewById(R.id.guideText);
 				textView.setText(text);
-				// Closing the drawer
 				mDrawerLayout.closeDrawer(mDrawerList);
-
 			}
 		});
 	}
@@ -140,9 +111,28 @@ public class GuideActivity extends Activity {
 	
 	private String[] getMenuItems() {
 		return new String[]{
-				getString(R.string.attr_health)};
+				getString(R.string.attr_health),
+				getString(R.string.attr_attack),
+				getString(R.string.attr_defense),
+				getString(R.string.attr_skill),
+				getString(R.string.attr_luck),
+				getString(R.string.section),
+				getString(R.string.options),
+				getString(R.string.battle),
+				getString(R.string.modifications),
+				getString(R.string.game_saving)};
 	}
 	private int[] getTexts() {
-		return new int[]{R.string.guide_health};
+		return new int[]{
+				R.string.guide_health, 
+				R.string.guide_attack, 
+				R.string.guide_defense, 
+				R.string.guide_skill, 
+				R.string.guide_luck, 
+				R.string.guide_section, 
+				R.string.guide_option, 
+				R.string.guide_battle, 
+				R.string.guide_modifications,
+				R.string.guide_save,};
 	}
 }

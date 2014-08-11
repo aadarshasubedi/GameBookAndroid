@@ -63,7 +63,7 @@ public class ResultCombat {
 		if(multiply == 1d) {
 			return "2x";
 		}
-		return "0.5x";
+		return "1.5x";
 	}
 	
 }

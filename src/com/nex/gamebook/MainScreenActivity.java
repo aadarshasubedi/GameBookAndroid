@@ -33,7 +33,7 @@ public class MainScreenActivity extends Activity {
 		setContentView(R.layout.activity_main_screen);
 		GameBookUtils.initialize(this);
 		String category = GameBookUtils.FOLDER;
-		GameBookUtils.getInstance().getPreferences().edit().clear().commit();
+//		GameBookUtils.getInstance().getPreferences().edit().clear().commit();
 		copyAssetFolder(getAssets(), category, GameBookUtils.getGamebookStorage(this) + File.separator + category + File.separator);
 	}
 

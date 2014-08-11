@@ -24,9 +24,8 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 		resultCombat.setLuck(attackedCharacter.hasLuck());
 		if (!resultCombat.isLuck()) {
 			resultCombat.setCritical(attackChar.isCriticalChance());
-			int attack = attackChar.getCurrentStats().getAttack();
-			int defense = attackedCharacter.getCurrentStats()
-					.getDefensePercentage();
+			int attack = attackChar.getCurrentStats().getAttack() * attackChar.getCurrentStats().getBaseDamage();
+			int defense = attackedCharacter.getCurrentStats().getDefensePercentage();
 			int totalDamage = (attack - (int) (((double) attack / 100d) * defense));
 			if (resultCombat.isCritical()) {
 				double criticalMultiplier = attackChar.hasLuck() ? 1 : 0.5;

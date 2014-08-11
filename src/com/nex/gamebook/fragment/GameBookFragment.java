@@ -64,6 +64,9 @@ public abstract class GameBookFragment {
 		
 		attr = (TextView) view.findViewById(R.id.sel_l_def_perc_d);
 		attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
+		
+		attr = (TextView) view.findViewById(R.id.sel_l_baseDmg_d);
+		attr.setText(String.valueOf(_character.getStats().getBaseDamage()));
 	}
 	
 	protected void fillCurrentStats(View view) {
@@ -100,6 +103,11 @@ public abstract class GameBookFragment {
 		
 		attr = (TextView) view.findViewById(R.id.sel_l_def_perc);
 		attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
+		
+		attr = (TextView) view.findViewById(R.id.sel_attr_baseDmg_d);
+		attr.setText(String.valueOf(_character.getCurrentStats().getBaseDamage()));
+		changeAttributeColor(view.getContext(), attr, _character.getStats()
+				.getBaseDamage(), _character.getCurrentStats().getBaseDamage());
 	}
 	
 	@SuppressLint("ResourceAsColor")

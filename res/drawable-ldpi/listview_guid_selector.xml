@@ -3,6 +3,9 @@
         android:state_pressed="true"
         android:drawable="@color/button_select" />
     <item
-        android:drawable="@color/button" />
+        android:state_selected="true"
+        android:drawable="@color/button_select" />
+    <item
+        android:drawable="@android:color/transparent" />
      
 </selector>

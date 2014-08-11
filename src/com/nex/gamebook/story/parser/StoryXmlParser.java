@@ -51,6 +51,8 @@ public class StoryXmlParser {
 
 	private final String OPTIONS = "options";
 	private final String ENEMIES = "enemies";
+	private final String BASE_DAMAGE = "baseDamage";
+	
 	private final String BONUSES = "bonuses";
 	private final String FIGHT_LUCK_TEXT_SECTION = "luckText";
 	private final String GAMEOVER_SECTION = "gameOverText";
@@ -255,6 +257,9 @@ public class StoryXmlParser {
 			} else if (node.getNodeName().equals(ATTACK)) {
 				character.getStats().setAttack(
 						getInteger(node.getTextContent()));
+			} else if (node.getNodeName().equals(BASE_DAMAGE)) {
+				int baseDamage = getInteger(node.getTextContent());
+				character.getStats().setBaseDamage(baseDamage==0?1:baseDamage);
 			}
 		}
 		character.setStory(story);
