@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,9 +24,10 @@ import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySection;
 import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.story.parser.StoryXmlParser;
+import com.nex.gamebook.util.DialogBuilder;
 
 public class PlaygroundActivity extends Activity {
-	public static Player _character;
+	public Player _character;
 	private ViewFlipper flipper;
 	private ImageView left;
 	private ImageView right;
@@ -44,10 +42,8 @@ public class PlaygroundActivity extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_playground);
 		try {
-			if(getIntent().getExtras().getBoolean("load")) {
-				battleLog.clear();
-				_character = load();
-			}
+			_character = load();
+			battleLog.clear();
 			flipper = (ViewFlipper) findViewById(R.id.viewSwitcher1);
 			left = (ImageView) findViewById(R.id.imageView1);
 			right = (ImageView) findViewById(R.id.imageView2);
@@ -86,9 +82,7 @@ public class PlaygroundActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		Bundle b = new Bundle();
-		b.putBoolean("load", false);
-		getIntent().putExtras(b);
+		this._character = null;
 	}
 	
 	public Player getCharacter() {
@@ -106,25 +100,6 @@ public class PlaygroundActivity extends Activity {
 		Player character = story.getCharacter(getIntent().getExtras().getInt("character"));
 		character.setCurrentStats(new Stats(character.getStats()));
 		return character;
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.playground, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	public PlaygroundBattleLogCharacterView getCharacterFragment() {
@@ -175,21 +150,18 @@ public class PlaygroundActivity extends Activity {
 	    //Handle the back button
 	    if(keyCode == KeyEvent.KEYCODE_BACK) {
 	        //Ask the user if they want to quit
-	        new AlertDialog.Builder(this)
-	        .setIcon(android.R.drawable.ic_dialog_alert)
-	        .setTitle(R.string.close_book)
-	        .setMessage(R.string.close_book_description)
-	        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-
-	            @Override
-	            public void onClick(DialogInterface dialog, int which) {
-	                //Stop the activity
-	                PlaygroundActivity.this.finish();    
-	            }
-
-	        })
+	    	new DialogBuilder(this)
+	    	.setTitle(R.string.close_book)
+	    	.setText(R.string.close_book_description)
+	    	.setPositiveButton(R.string.yes, new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					PlaygroundActivity.this.finish();
+				}
+			})
 	        .setNegativeButton(R.string.no, null)
 	        .show();
+
 
 	        return true;
 	    }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.nex.gamebook.entity.io.GameBookUtils;
 
@@ -20,6 +21,8 @@ public class Story implements Serializable, Mergable {
 	private int version;
 	private Map<Integer, StorySection> sections = new HashMap<>();
 	private List<Player> characters = new ArrayList<Player>();
+
+	private transient Properties properties;
 
 	public long getId() {
 		return id;
@@ -52,7 +55,7 @@ public class Story implements Serializable, Mergable {
 	}
 
 	public String getName() {
-		return GameBookUtils.getInstance().getText(name);
+		return GameBookUtils.getInstance().getText(name, this);
 	}
 
 	public void setName(String name) {
@@ -64,7 +67,7 @@ public class Story implements Serializable, Mergable {
 	}
 
 	public String getDescription() {
-		return GameBookUtils.getInstance().getText(description);
+		return GameBookUtils.getInstance().getText(description, this);
 	}
 
 	public List<Player> getCharacters() {
@@ -112,6 +115,14 @@ public class Story implements Serializable, Mergable {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
 	}
 
 }

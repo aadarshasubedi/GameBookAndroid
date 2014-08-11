@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -29,31 +28,13 @@ public class FragmentTab extends GameBookFragment {
 				container, false);
 
 		try {
-
 			final Player _character = getCharacter();
-			TextView attr = (TextView) view.findViewById(R.id.sel_attr_health);
-			attr.setText(String.valueOf(_character.getStats().getHealth()));
-
-			attr = (TextView) view.findViewById(R.id.sel_attr_attack);
-			attr.setText(String.valueOf(_character.getStats().getAttack()));
-			attr = (TextView) view.findViewById(R.id.sel_attr_defense);
-			attr.setText(String.valueOf(_character.getStats().getDefense()));
-
-			attr = (TextView) view.findViewById(R.id.sel_attr_skill);
-			attr.setText(String.valueOf(_character.getStats().getSkill()));
-
-			attr = (TextView) view.findViewById(R.id.sel_attr_luck);
-			attr.setText(String.valueOf(_character.getStats().getLuckPercentage()));
-			
-			attr = (TextView) view.findViewById(R.id.critical);
-			attr.setText(String.valueOf(_character.getStats().getSkillPercentage()));
-			
-			attr = (TextView) view.findViewById(R.id.sel_l_def_perc);
-			attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
+			fillDefaultStats(view);
 			
 			TextView textview = (TextView) view
 					.findViewById(R.id.sel_char_description);
 			textview.setText(_character.getDescription());
+			
 			Button button = (Button) view.findViewById(R.id.play_button);
 			button.setOnClickListener(new OnClickListener() {
 

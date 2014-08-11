@@ -3,15 +3,18 @@ package com.nex.gamebook.entity;
 import java.io.Serializable;
 import java.util.Random;
 
-public abstract class Character  implements Serializable, Mergable {
+public abstract class Character implements Serializable, Mergable {
 	private static final long serialVersionUID = 214922718575334896L;
 	public static int MAX_LUCK_OF_CHARACTER = 14;
 	public static int MAX_SKILL_OF_CHARACTER = 15;
 	public static int MAX_DEFENSE_OF_CHARACTER = 20;
-	
+
 	private Stats stats = new Stats();
 	private Stats currentStats = new Stats(stats);
 	private boolean fighting;
+	private int sections;
+	private int visitedSections;
+	private Story story;
 
 	public Stats getStats() {
 		return stats;
@@ -53,6 +56,38 @@ public abstract class Character  implements Serializable, Mergable {
 
 	public void setFighting(boolean fighting) {
 		this.fighting = fighting;
+	}
+
+	public int getSections() {
+		return sections;
+	}
+
+	public void setSections(int sections) {
+		this.sections = sections;
+	}
+
+	public int getVisitedSections() {
+		return visitedSections;
+	}
+
+	public void setVisitedSections(int visitedSections) {
+		this.visitedSections = visitedSections;
+	}
+
+	public void addSection() {
+		this.sections++;
+	}
+
+	public void addVisitedSection() {
+		this.visitedSections++;
+	}
+
+	public Story getStory() {
+		return story;
+	}
+
+	public void setStory(Story story) {
+		this.story = story;
 	}
 
 }

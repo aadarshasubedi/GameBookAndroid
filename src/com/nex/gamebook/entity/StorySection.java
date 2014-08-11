@@ -15,8 +15,7 @@ public class StorySection implements Serializable, Mergable {
 	private String enemiesDefeatedText;
 	private String luckText = "main_luck_text";
 	private String gameOverText = "main_gameover_text";
-	
-	
+
 	private int unreturnableSection = -1;
 
 	private boolean loseSection;
@@ -28,7 +27,9 @@ public class StorySection implements Serializable, Mergable {
 	private boolean visited;
 	private boolean hasLuck;
 	private boolean luckDefeatEnemies;
-	
+	private float scoreMultiplier;
+
+	private Story story;
 
 	private List<StorySectionOption> options = new ArrayList<>();
 	private List<Enemy> enemies = new ArrayList<>();
@@ -86,7 +87,7 @@ public class StorySection implements Serializable, Mergable {
 	}
 
 	public String getLuckText() {
-		return GameBookUtils.getInstance().getText(luckText);
+		return GameBookUtils.getInstance().getText(luckText, story);
 	}
 
 	public void setLuckText(String luckText) {
@@ -126,7 +127,7 @@ public class StorySection implements Serializable, Mergable {
 	}
 
 	public String getGameOverText() {
-		return GameBookUtils.getInstance().getText(gameOverText);
+		return GameBookUtils.getInstance().getText(gameOverText, story);
 	}
 
 	public void setGameOverText(String gameOverText) {
@@ -150,7 +151,7 @@ public class StorySection implements Serializable, Mergable {
 	}
 
 	public String getText() {
-		return GameBookUtils.getInstance().getText(text);
+		return GameBookUtils.getInstance().getText(text, story);
 	}
 
 	public void setText(String text) {
@@ -158,7 +159,7 @@ public class StorySection implements Serializable, Mergable {
 	}
 
 	public String getAlreadyVisitedText() {
-		return GameBookUtils.getInstance().getText(alreadyVisitedText);
+		return GameBookUtils.getInstance().getText(alreadyVisitedText, story);
 	}
 
 	public void setAlreadyVisitedText(String alreadyVisitedText) {
@@ -166,7 +167,7 @@ public class StorySection implements Serializable, Mergable {
 	}
 
 	public String getEnemiesDefeatedText() {
-		return GameBookUtils.getInstance().getText(enemiesDefeatedText);
+		return GameBookUtils.getInstance().getText(enemiesDefeatedText, story);
 	}
 
 	public void setEnemiesDefeatedText(String enemiesDefeatedText) {
@@ -187,6 +188,22 @@ public class StorySection implements Serializable, Mergable {
 
 	public void setWinSection(boolean winSection) {
 		this.winSection = winSection;
+	}
+
+	public float getScoreMultiplier() {
+		return scoreMultiplier;
+	}
+
+	public void setScoreMultiplier(float scoreMultiplier) {
+		this.scoreMultiplier = scoreMultiplier;
+	}
+
+	public void setStory(Story story) {
+		this.story = story;
+	}
+
+	public Story getStory() {
+		return story;
 	}
 
 }

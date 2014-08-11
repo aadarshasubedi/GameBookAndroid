@@ -15,7 +15,7 @@ public class StorySectionOption implements Serializable, Mergable {
 	private boolean disableWhenSelected;
 	private boolean disabled;
 	private boolean displayed;
-
+	private Story story;
 	public int getSection() {
 		return section;
 	}
@@ -25,7 +25,7 @@ public class StorySectionOption implements Serializable, Mergable {
 	}
 
 	public String getText() {
-		return GameBookUtils.getInstance().getText(text);
+		return GameBookUtils.getInstance().getText(text, story);
 	}
 
 	public void setText(String text) {
@@ -88,4 +88,12 @@ public class StorySectionOption implements Serializable, Mergable {
 		this.displayed = displayed;
 	}
 
+	public Story getStory() {
+		return story;
+	}
+
+	public void setStory(Story story) {
+		this.story = story;
+	}
+	
 }

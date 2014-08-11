@@ -116,54 +116,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	
 	public void showCurrentValues() {
 		View view = masterView;
-		TextView attr = (TextView) view.findViewById(R.id.sel_attr_health);
-		attr.setText(String.valueOf(_character.getCurrentStats().getHealth()));
-		attr.invalidate();
-		changeAttributeColor(view.getContext(), attr, _character.getStats()
-				.getHealth(), _character.getCurrentStats().getHealth());
-
-		attr = (TextView) view.findViewById(R.id.sel_attr_luck);
-		attr.setText(String.valueOf(_character.getCurrentStats().getLuckPercentage()));
-		changeAttributeColor(view.getContext(), attr, _character.getStats()
-				.getLuck(), _character.getCurrentStats().getLuck());
-		changeAttributeColor(view.getContext(), (TextView) view.findViewById(R.id.luck_perc), _character.getStats()
-				.getLuck(), _character.getCurrentStats().getLuck());
-		
-		attr = (TextView) view.findViewById(R.id.sel_attr_defense);
-		attr.setText(String.valueOf(_character.getCurrentStats().getDefense()));
-		changeAttributeColor(view.getContext(), attr, _character.getStats()
-				.getDefense(), _character.getCurrentStats().getDefense());
-
-		attr = (TextView) view.findViewById(R.id.sel_attr_skill);
-		attr.setText(String.valueOf(_character.getCurrentStats().getSkill()));
-		changeAttributeColor(view.getContext(), attr, _character.getStats()
-				.getSkill(), _character.getCurrentStats().getSkill());
-
-		attr = (TextView) view.findViewById(R.id.sel_attr_attack);
-		attr.setText(String.valueOf(_character.getCurrentStats().getAttack()));
-		changeAttributeColor(view.getContext(), attr, _character.getStats()
-				.getAttack(), _character.getCurrentStats().getAttack());
-
-		attr = (TextView) view.findViewById(R.id.critical);
-		attr.setText(String.valueOf(_character.getCurrentStats().getSkillPercentage()));
-		
-		attr = (TextView) view.findViewById(R.id.sel_l_def_perc);
-		attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
-		
+		fillCurrentStats(view);
 		masterView.findViewById(R.id.tableLayout1).invalidate();
-	}
-
-	@SuppressLint("ResourceAsColor")
-	private void changeAttributeColor(Context ctx, TextView text,
-			int defaultValue, int currentvalue) {
-		if (currentvalue > defaultValue) {
-			text.setTextColor(ctx.getResources().getColor(R.color.positive));
-		} else if (currentvalue < defaultValue) {
-			text.setTextColor(ctx.getResources().getColor(R.color.negative));
-		} else {
-			text.setTextColor(ctx.getResources().getColor(
-					R.color.number_color));
-		}
 	}
 
 	public void fight(StorySection section) {
@@ -371,9 +325,9 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(v.getContext(),
-					MainScreenActivity.class);
+			Intent intent = new Intent(v.getContext(), MainScreenActivity.class);
 			v.getContext().startActivity(intent);
+			getPlayground().finish();
 		}
 	};
 

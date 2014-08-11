@@ -31,9 +31,8 @@ import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySection;
 import com.nex.gamebook.entity.StorySectionOption;
 import com.nex.gamebook.entity.io.GameBookUtils;
-public class StoryXmlParser {
 
-	
+public class StoryXmlParser {
 
 	private final String CHARACTER = "character";
 	private final String SECTION = "section";
@@ -46,6 +45,7 @@ public class StoryXmlParser {
 
 	private final String LOSE_SECTION = "loseSection";
 	private final String WIN_SECTION = "winSection";
+	private final String SCORE_MULTIPLIER = "scoreMultiplier";
 
 	private final String STORY = "story";
 
@@ -88,7 +88,7 @@ public class StoryXmlParser {
 		List<Story> stories = new ArrayList<Story>();
 		InputStream stream = null;
 		try {
-			stream = new FileInputStream(GameBookUtils.getInstance().getStoriesFolder("stories.xml"));
+			stream = new FileInputStream(GameBookUtils.getInstance().getApplicationFolder("stories.xml"));
 			Document document = getDocument(stream);
 			NodeList nList = document.getElementsByTagName(STORY);
 			for (int temp = 0; temp < nList.getLength(); temp++) {
@@ -121,7 +121,6 @@ public class StoryXmlParser {
 		GameBookUtils.getInstance().loadPropties(story);
 		story.setName(NAME);
 		story.setDescription(DESCRIPTION);
-		
 		loadStory(story, story.getXml(), sections, characters);
 		return story;
 	}
@@ -134,7 +133,7 @@ public class StoryXmlParser {
 
 		InputStream stream = null;
 		try {
-			File storiesFolder = GameBookUtils.getInstance().getStoriesFolder(story.getPath()
+			File storiesFolder = GameBookUtils.getInstance().getApplicationFolder(story.getPath()
 					+ File.separator + xml);
 			stream = new FileInputStream(storiesFolder);
 			Document document = getDocument(stream);
@@ -265,13 +264,14 @@ public class StoryXmlParser {
 	private void loadSection(Story story, Element element) throws Exception {
 		int position = getInteger(element.getAttribute(POSITION));
 		if (position == 0) {
-			throw new IllegalStateException(
-					"position attribute must existk on <section />");
+			throw new IllegalStateException("position attribute must exist on <section />");
 		}
 
 		StorySection section = new StorySection();
+		section.setStory(story);
 		section.setLoseSection(getBoolean(element.getAttribute(LOSE_SECTION)));
 		section.setWinSection(getBoolean(element.getAttribute(WIN_SECTION)));
+		section.setScoreMultiplier(getFloat(element.getAttribute(SCORE_MULTIPLIER)));
 		String text = element.getAttribute(TEXT);
 		section.setText(text);
 		section.setAlreadyVisitedText(text);
@@ -347,7 +347,7 @@ public class StoryXmlParser {
 				}
 				enemy.setCurrentStats(new Stats(enemy.getStats()));
 				enemy.setName(enemyNode.getAttribute(NAME));
-
+				enemy.setStory(section.getStory());
 				section.getEnemies().add(enemy);
 			}
 		}
@@ -388,6 +388,7 @@ public class StoryXmlParser {
 				option.setSkill(getInteger(optionNode.getAttribute(SKILL)));
 				option.setLuckAspect(getBoolean(optionNode
 						.getAttribute(LUCK_ASPECT)));
+				option.setStory(section.getStory());
 				section.getOptions().add(option);
 			}
 		}
@@ -400,7 +401,9 @@ public class StoryXmlParser {
 	private int getInteger(String s) {
 		return s != null && !"".equals(s) ? Integer.valueOf(s.trim()) : 0;
 	}
-	
+	private float getFloat(String s) {
+		return s != null && !"".equals(s) ? Float.valueOf(s.trim()) : 0;
+	}
 	
 
 }

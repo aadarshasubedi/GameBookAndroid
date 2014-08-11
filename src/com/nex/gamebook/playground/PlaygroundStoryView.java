@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
+import com.nex.gamebook.ScoreActivity;
 import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.Player;
@@ -183,12 +185,28 @@ public class PlaygroundStoryView extends AbstractFragment {
 		displayEndGameButton(context, parent, R.string.endGame_lose);
 
 	}
-	private void displayEndGameButton(Context ctx, View parent, int text) {
+	private void displayEndGameButton(Context ctx, View parent, final int text) {
 		Button button = (Button) parent.findViewById(R.id.endGame_button);
 		button.setText(text);
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				getPlayground().finish();
+				if(text == R.string.endGame_win) {
+					try {
+						GameBookUtils.getInstance().removeSavedGame(_character);
+						String fileName = GameBookUtils.getInstance().saveCharacterForScore(_character);
+						Intent intent = new Intent(v.getContext(), ScoreActivity.class);
+						Bundle b = new Bundle();
+						b.putString("fileName", fileName);
+						intent.putExtras(b);
+						v.getContext().startActivity(intent);
+						return;
+					} catch (Exception e) {
+						Log.e("GameBookScore", "failed score saving", e);
+					}
+				}
+				getPlayground().finish();
 				Intent intent = new Intent(v.getContext(), MainScreenActivity.class);
 				v.getContext().startActivity(intent);
 			}
@@ -208,8 +226,12 @@ public class PlaygroundStoryView extends AbstractFragment {
 		@Override
 		public void onClick(View v) {
 			this.section.setCompleted(true);
+			if(!this.section.isVisited()) {
+				_character.addVisitedSection();
+			}
 			this.section.setVisited(true);
 			this.section.setHasLuck(false);
+			_character.addSection();
 			option.setDisabled(option.isDisableWhenSelected());
 			int sectionId = _character.getPosition();
 			PlaygroundStoryView.this._character.setPosition(option.getSection());
@@ -224,7 +246,6 @@ public class PlaygroundStoryView extends AbstractFragment {
 			}
 			PlaygroundStoryView.this.refresh();
 		}
-		
 	}
 	
 	public void refresh() {

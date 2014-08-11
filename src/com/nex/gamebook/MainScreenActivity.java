@@ -15,7 +15,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.nex.gamebook.entity.io.GameBookUtils;
-import com.nex.gamebook.util.SystemUiHider;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -34,8 +33,8 @@ public class MainScreenActivity extends Activity {
 		setContentView(R.layout.activity_main_screen);
 		GameBookUtils.initialize(this);
 		String category = GameBookUtils.FOLDER;
+		GameBookUtils.getInstance().getPreferences().edit().clear().commit();
 		copyAssetFolder(getAssets(), category, GameBookUtils.getGamebookStorage(this) + File.separator + category + File.separator);
-
 	}
 
 	public void newGame(View view) {
@@ -47,7 +46,15 @@ public class MainScreenActivity extends Activity {
 		Intent intent = new Intent(this, LoadGameActivity.class);
 		startActivity(intent);
 	}
-
+	
+	public void guide(View view) {
+		Intent intent = new Intent(this, GuideActivity.class);
+		startActivity(intent);
+	}
+	public void scoreboard(View view) {
+		Intent intent = new Intent(this, ScoreBoardActivity.class);
+		startActivity(intent);
+	}
 	private static boolean copyAssetFolder(AssetManager assetManager,
 			String fromAssetPath, String toPath) {
 		try {

@@ -9,16 +9,13 @@ import java.util.Map;
 import java.util.Set;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,11 +26,9 @@ import android.widget.TextView;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.io.GameBookUtils;
-import com.nex.gamebook.playground.PlaygroundActivity;
 import com.nex.gamebook.story.parser.StoryXmlParser;
-import com.nex.gamebook.util.DialogBuilder;
 
-public class LoadGameActivity extends Activity {
+public class ScoreBoardActivity extends Activity {
 	private Map<String, Set<String>> savedGames;
 	private List<String> keys;
 	private StoryXmlParser parser;
@@ -42,7 +37,7 @@ public class LoadGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_load_game);
+		setContentView(R.layout.activity_score_board);
 		savedGames = new HashMap<String, Set<String>>();
 		this.keys = new ArrayList<String>();
 		parser = new StoryXmlParser(this);
@@ -50,17 +45,17 @@ public class LoadGameActivity extends Activity {
 		for(Map.Entry<String, ?> entry: prefs.getAll().entrySet()) {
 			Set<String> value = (Set<String>) entry.getValue();
 			String key = entry.getKey();
-			if(key.startsWith(GameBookUtils.SAVE_GAME_PREFIX)) {
+			if(key.startsWith(GameBookUtils.SCORE_GAME_PREFIX)) {
 				savedGames.put(key,value);
 				keys.add(key);
 			}
 		}
-		ListView list = (ListView) findViewById(R.id.saved_games);
-		list.setAdapter(new SavedGameItem(this));
+		ListView list = (ListView) findViewById(R.id.scores);
+		list.setAdapter(new ScoreItem(this));
 	}
-	class SavedGameItem extends ArrayAdapter<String> {
+	class ScoreItem extends ArrayAdapter<String> {
 		Context context;
-		public SavedGameItem(Context context) {
+		public ScoreItem(Context context) {
 			super(context, R.layout.list_character_item, new String[keys.size()]);
 			this.context = context;
 		}
@@ -69,15 +64,12 @@ public class LoadGameActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final String fileName = keys.get(position);
 			Set<String> values = savedGames.get(fileName);
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.list_character_item, parent, false);
 			TextView storyName = (TextView) rowView.findViewById(R.id.story_name);
 			String charId = GameBookUtils.getInstance().getValue(GameBookUtils.CHARACTER, values);
 			String timeInString = GameBookUtils.getInstance().getValue(GameBookUtils.TIME, values);
 			String xml = GameBookUtils.getInstance().getValue(GameBookUtils.STORY, values);
-			final int version = Integer.valueOf(GameBookUtils.getInstance().getValue(GameBookUtils.VERSION, values));
-			
 			TextView characterName = (TextView) rowView.findViewById(R.id.character);
 			TextView time = (TextView) rowView.findViewById(R.id.time);
 			DateFormat df = DateFormat.getDateTimeInstance();
@@ -89,40 +81,10 @@ public class LoadGameActivity extends Activity {
 				rowView.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if(story.getVersion() == version) {
-							load();
-							 LoadGameActivity.this.finish();
-							return;
-						}
-				        new DialogBuilder(LoadGameActivity.this)
-				        .setTitle(R.string.story_changed)
-				        .setText(R.string.story_changed_description)
-				        .setPositiveButton(R.string.yes, new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Intent intent = new Intent(LoadGameActivity.this, PlaygroundActivity.class);
-								Bundle bundle = new Bundle();
-								bundle.putInt("character", _character.getId());
-								bundle.putString("story", _character.getStory().getFullpath());
-								bundle.putBoolean("load", true);
-								intent.putExtras(bundle);
-								getContext().startActivity(intent);
-								LoadGameActivity.this.finish();
-							}
-						}).setNegativeButton(R.string.no, new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								load();
-				            	LoadGameActivity.this.finish();
-							}
-						}).show();
-					}
-					public void load() {
-						Intent intent = new Intent(LoadGameActivity.this, PlaygroundActivity.class);
-						Bundle bundle = new Bundle();
-						bundle.putString("load_game", fileName);
-						bundle.putBoolean("load", true);
-						intent.putExtras(bundle);
+						Intent intent = new Intent(v.getContext(), ScoreActivity.class);
+						Bundle b = new Bundle();
+						b.putString("fileName", fileName);
+						intent.putExtras(b);
 						startActivity(intent);
 					}
 				});

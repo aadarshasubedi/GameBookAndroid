@@ -4,28 +4,26 @@
     <string name="app_name">GameBook</string>
     <string name="newGame">Nová hra</string>
     <string name="loadGame">Nahrát hru</string>
+    <string name="scoreBoard">Scoreboard</string>
     <string name="play">Hrát</string>
     <string name="endGame_lose">Prohra</string>
     <string name="endGame_win">Vítězství</string>
     <string name="button_fight">Bojovat</string>
-    <string name="title_activity_main">Main</string>
+    <string name="title_activity_main">Gamebook</string>
     <string name="title_activity_character_selection">Select character</string>
     <string name="action_settings">Settings</string>
     <string name="begin_fight">Začít boj</string>
     <string name="you_obtain">Získáváš:</string>
     <string name="description">Popis</string>
-    <string name="battle_log">Battle log:</string>
     <string name="options">Možnosti</string>
     <string name="separator">/</string>
     <string name="attributes">Atributy</string>
+    <string name="defaultAttributes">Startovní atributy</string>
     <string name="enemies">Nepřátelé</string>
-	<string name="keyword_from">z</string>
-	<string name="section">Sekce</string>
-	<string name="dead">Mrtvý</string>
-	
-<!-- 	<string name="player">Hráč</string> -->
-<!-- 	<string name="enemy">Nepřítel</string> -->
-	
+    <string name="keyword_from">z</string>
+    <string name="section">Sekce</string>
+    <string name="dead">Mrtvý</string>
+
     <!-- characters attributes -->
     <string name="attr_value_zero">0</string>
     <string name="attr_health">Zdraví</string>
@@ -34,19 +32,12 @@
     <string name="attr_defense">Obrana</string>
     <string name="attr_skill">Dovednost</string>
     <string name="attr_critical">Krit.š.</string>
-    
-    <string name="attr_health_short">Z:</string>
-    <string name="attr_luck_short">Š:</string>
-    <string name="attr_attack_short">Ú:</string>
-    <string name="attr_defense_short">O:</string>
-    <string name="attr_skill_short">D:</string>
-    
     <string name="dsc_default">Default</string>
     <string name="title_activity_story_selection">StorySelectionActivity</string>
     <string name="title_activity_playground">PlaygroundActivity</string>
     <string name="option_disabled">(Zablokováno)</string>
     <string name="option_cant_return">(Sem se již nebudeš moci vrátit)</string>
-    
+
     <!-- Playground tab -->
     <string name="character">Postava</string>
     <string name="fight">Boj</string>
@@ -60,30 +51,41 @@
     <string name="enemy_has_luck">Nepřítel se vyhýbá útoku. (štěstí)</string>
     <string name="you_take">Dostáváš</string>
     <string name="you_cause">Způsobuješ</string>
-    
     <string name="fight_aspect_health">(Zdraví)</string>
     <string name="fight_aspect_defense">(Obrana)</string>
     <string name="fight_aspect_skill">(Dovednost)</string>
     <string name="fight_aspect_luck">(Štěstí)</string>
-    <string name="title_activity_load_game">LoadGameActivity</string>
-    <string name="hello_world">Hello world!</string>
-
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    
     <string name="log">Log</string>
-	<string name="close_book">Zavřít knihu</string>
-	<string name="close_book_description">Pokud bojujete přijdete tím o aktualní stav boje.\nOpravdu chcete zavřít knihu?</string>
-	<string name="yes">Ano</string>
-	<string name="no">Ne</string>
-	<string name="modifications">Modifikace</string>
-	<string name="stories">Příběhy</string>
-	<string name="story_changed">Detekována změna příběhu</string>
-	<string name="story_changed_description">
-	    Původní příběh byl změněn a může dojít k odlišnostem s uloženou pozicí.\n\n
-		Chcete začít příběh znovu nebo chcete pokračovat.?
+    <string name="close_book">Zavřít knihu</string>
+    <string name="close_book_description">Pokud bojujete přijdete tím o aktualní stav boje.\nOpravdu chcete zavřít knihu?</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
+    <string name="modifications">Modifikace</string>
+    <string name="stories">Příběhy</string>
+    <string name="story_changed">Detekována změna příběhu</string>
+    <string name="story_changed_description">Původní příběh byl změněn a může dojít k odlišnostem s uloženou pozicí.\n\n
+        Chcete začít příběh znovu?	</string>
+    <string name="continue_story">Pokračovat</string>
+    <string name="begin_again">Začít znovu</string>
+    <string name="score">Skóre</string>
+    <string name="sections">Celkem sekcí</string>
+    <string name="visitedSections">Navštívených sekcí</string>
+    <string name="mainPage">Hlavní nabídka</string>
+    <string name="guide">Příručka</string>
+
+    <string name="drawer_open">Otevřít</string>
+    <string name="drawer_close">Schovat</string>
+
+    <string name="guide_health">Něco o zdraví.</string>
+	<string name="guide_description">
+	    Gamebook je hra, ve které samy ovlivňujete příběh svým vlastním rozhodováním.
+	    Příběhy jsou odlišné a každý má jiný styl prožívání příběhu.
+	    V některých příbězích je děj lineární a má jeden konec, například porazit posledního bosse.
+	    Jiné mají zase příběh dynamický a mají více možností jak hru ukončit, to se pak odvíjí na závěrečném skóre.\n\n
+		V postraním menu se dozvíte více o jednotlivých aspektech hry.
+		
 	</string>
-	<string name="continue_story">Pokračovat</string>
-	<string name="begin_again">Začít znovu</string>
-	
+	    
 </resources>

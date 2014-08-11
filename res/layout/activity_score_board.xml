@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="10dip"
+    tools:context="com.nex.gamebook.LoadGameActivity" >
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scores"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/scores"
+        android:padding="15dip"
+        android:layout_marginBottom="10dp"
+        android:text="@string/scoreBoard" />
+
+    <ListView
+        android:id="@+id/scores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true" >
+
+    </ListView>
+
+</RelativeLayout>

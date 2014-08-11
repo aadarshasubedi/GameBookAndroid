@@ -11,7 +11,7 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	private boolean affectPlayer;
 
 	public String getName() {
-		return GameBookUtils.getInstance().getText(name);
+		return GameBookUtils.getInstance().getText(name, getStory());
 	}
 
 	public void setName(String name) {

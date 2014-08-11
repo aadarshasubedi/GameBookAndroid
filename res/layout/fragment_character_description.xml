@@ -39,14 +39,14 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/sel_l_health"
+                android:id="@+id/sel_l_health_d"
                 style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/attr_health" />
 
             <TextView
-                android:id="@+id/sel_attr_health"
+                android:id="@+id/sel_attr_health_d"
                 style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content" android:text=""/>
 
             <TextView
-                android:id="@+id/sel_l_attack"
+                android:id="@+id/sel_l_attack_d"
                 style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 android:text="@string/attr_attack" />
 
             <TextView
-                android:id="@+id/sel_attr_attack"
+                android:id="@+id/sel_attr_attack_d"
                 style="@style/number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,14 +81,14 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/sel_l_skill"
+                android:id="@+id/sel_l_skill_d"
                 style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/attr_skill" />
 
             <TextView
-                android:id="@+id/sel_attr_skill"
+                android:id="@+id/sel_attr_skill_d"
                 style="@style/number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                 android:text="" />
 
             <TextView
-                android:id="@+id/sel_l_defense"
+                android:id="@+id/sel_l_defense_d"
                 style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 android:text="@string/attr_defense" />
 
             <TextView
-                android:id="@+id/sel_attr_defense"
+                android:id="@+id/sel_attr_defense_d"
                 style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                 android:text="(" />
 
             <TextView
-                android:id="@+id/sel_l_def_perc"
+                android:id="@+id/sel_l_def_perc_d"
                 style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -153,14 +153,14 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/sel_l_luck"
+                android:id="@+id/sel_l_luck_d"
                 style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/attr_luck" />
 
             <TextView
-                android:id="@+id/sel_attr_luck"
+                android:id="@+id/sel_attr_luck_d"
                 style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
 
             <TextView
                 style="@style/number"
-                android:id="@+id/critical"
+                android:id="@+id/critical_d"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100" />

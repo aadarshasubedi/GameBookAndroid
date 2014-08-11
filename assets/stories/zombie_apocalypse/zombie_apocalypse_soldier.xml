@@ -27,7 +27,7 @@
             </options>
         </section>
         <!-- SECTION 3 -->
-        <section position="3" text="section3_text">
+        <section position="3" text="section3_text" winSection="true" scoreMultiplier="2">
             <options>
                 <option section="4" text="section3_option1_text"/>
                 <option section="1" text="section2_option_barracks_text"/>

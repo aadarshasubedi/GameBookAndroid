@@ -13,8 +13,7 @@ public class Player extends Character {
 	private String name;
 	private String description;
 	private int position;
-	private int sections;
-	private Story story;
+	
 
 	public int getId() {
 		return id;
@@ -22,14 +21,6 @@ public class Player extends Character {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public Story getStory() {
-		return story;
-	}
-
-	public void setStory(Story story) {
-		this.story = story;
 	}
 
 	public void setCanShowOption(StorySectionOption option) {
@@ -47,7 +38,7 @@ public class Player extends Character {
 	}
 
 	public String getName() {
-		return GameBookUtils.getInstance().getText(name);
+		return GameBookUtils.getInstance().getText(name, getStory());
 	}
 
 	public void setName(String name) {
@@ -55,7 +46,7 @@ public class Player extends Character {
 	}
 
 	public String getDescription() {
-		return GameBookUtils.getInstance().getText(description);
+		return GameBookUtils.getInstance().getText(description, getStory());
 	}
 
 	public void setDescription(String description) {
@@ -116,15 +107,26 @@ public class Player extends Character {
 	public StorySection getCurrentSection() {
 		return getStory().getSection(this.position);
 	}
-	
-	public int getSections() {
-		return sections;
-	}
-	
-	public void addSection() {
-		sections++;
-	}
-	public void setSections(int sections) {
-		this.sections = sections;
+
+	public int getScore() {
+		int score = 0;
+		int health = getCurrentStats().getHealth() - getStats().getHealth();
+		if(health>0)score+=health;
+		int attack = getCurrentStats().getAttack() - getStats().getAttack();
+		if(attack>0)score+=attack;
+		int defense = getCurrentStats().getDefense() - getStats().getDefense();
+		if(defense>0)score+=defense;
+		int skill = getCurrentStats().getSkill() - getStats().getSkill();
+		if(skill>0)score+=skill;
+		int luck = getCurrentStats().getLuck() - getStats().getLuck();
+		if(luck>0)score+=luck;
+		int sectionsMultiplier = getSections() - getVisitedSections();
+		if(sectionsMultiplier == 0) sectionsMultiplier = 1;
+		score += getSections() * sectionsMultiplier;
+		float multiplier = getStory().getSection(position).getScoreMultiplier();
+		if(multiplier>1f) {
+			score *= multiplier;
+		}
+		return score;
 	}
 }

@@ -10,8 +10,6 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,21 +24,19 @@ import android.content.SharedPreferences.Editor;
 import android.os.Environment;
 import android.util.Log;
 
-import com.nex.gamebook.entity.Mergable;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class GameBookUtils {
 	public static final String FOLDER = "stories";
 	public static final String SAVE_GAME_PREFIX = "gb_story_";
-
+	public static final String SCORE_GAME_PREFIX = "gb_score_";
+	
 	public static final String TIME = "time_";
 	public static final String CHARACTER = "char_";
 	public static final String STORY = "story_";
 	public static final String VERSION = "version_";
 	private static GameBookUtils instance;
-	private Properties properties;
 	private Context context;
 
 	public static void initialize(Context context) {
@@ -75,7 +71,6 @@ public class GameBookUtils {
 			try {
 				InputStream fileStream = new FileInputStream(file);
 				Reader reader = new InputStreamReader(fileStream, "Cp1250");
-
 				prop.load(reader);
 				fileStream.close();
 			} catch (FileNotFoundException e) {
@@ -83,72 +78,90 @@ public class GameBookUtils {
 						+ file);
 			}
 		}
-		this.properties = prop;
+		story.setProperties(prop);
 	}
 
-	public String getText(String name) {
+	public String getText(String name, Story story) {
 		if ("".equals(name) || name == null)
 			return null;
-		String text = this.properties.getProperty(name);
+		String text = story.getProperties().getProperty(name);
 		return text == null ? "_" + name + "_" : text;
 	}
 
 	private List<String> getRelevantLocalizedFiles(Story story) {
+		List<String> texts = new ArrayList<>();
+		addTexts(story.getPath(), texts);
+		addTexts("main", texts);
+		return texts;
+	}
+
+	private void addTexts(String path, List<String> texts) {
 		String defaultLang = "cs";
 		String lang = Locale.getDefault().getLanguage();
-		List<String> defaultTexts = new ArrayList<>();
-		List<String> texts = new ArrayList<>();
-		File root = getStoriesFolder(story.getPath() + File.separator + "texts"
+		File root = getApplicationFolder(path + File.separator + "texts"
 				+ File.separator + lang + File.separator);
 		boolean exist = root.exists();
 		if (!exist) {
-			getStoriesFolder(story.getPath() + File.separator + "texts"
+			getApplicationFolder(path + File.separator + "texts"
 					+ File.separator + defaultLang + File.separator);
 		}
 		if (exist && root.isDirectory()) {
 			for (String file : root.list()) {
-				boolean isDefault = isDefault(file);
 				file = root + "/" + file;
 				File test = new File(file);
 				if (!test.exists()) {
 					Log.w("GameBookProperties", "property not exists.");
 				}
-				if (isDefault) {
-					defaultTexts.add(file);
-				} else if (file.contains(lang)) {
-					texts.add(file);
-				}
+				texts.add(file);
 			}
 		}
-		if (texts.isEmpty()) {
-			texts = defaultTexts;
-		}
-		return texts;
 	}
 
-	public File getStoriesFolder(String subFolder) {
+	public File getApplicationFolder(String subFolder) {
 		return new File(getGamebookStorage(context) + File.separator + FOLDER
 				+ File.separator + subFolder);
 	}
 
-	private boolean isDefault(String file) {
-		int last_ = file.lastIndexOf("_");
-		String dot = file.substring(last_, last_ + 2);
-		return !".".endsWith(dot);
+	
+	public Set<String> getFileNames(String prefix) {
+		Set<String> keys = new HashSet<>();
+		for(Map.Entry<String, ?> entry: getPreferences().getAll().entrySet()) {
+			String key = entry.getKey();
+			if(key.startsWith(prefix)) {
+				keys.add(key);
+			}
+		}
+		return keys;
 	}
-
+	
+	public String saveCharacterForScore(Player character) throws Exception {
+		int index = getFileNames(SCORE_GAME_PREFIX).size() + 1;
+		String fileName = SCORE_GAME_PREFIX + character.getId() + "_" + character.getStory().getId() + "_"+index+".sav";
+		save(character, fileName);
+		return fileName;
+	}
+	public void saveCharacter(Player character) throws Exception {
+		save(character, createSaveGameFileName(character));
+	}
+	private String createSaveGameFileName(Player character) {
+		String fileName = SAVE_GAME_PREFIX + character.getId() + "_"
+				+ character.getStory().getId() + ".sav";
+		return fileName;
+	}
 	public Player loadCharacter(String filename) throws Exception {
 		FileInputStream fis = context.openFileInput(filename);
 		ObjectInputStream is = new ObjectInputStream(fis);
 		Player simpleClass = (Player) is.readObject();
+		loadPropties(simpleClass.getStory());
 		is.close();
 		return simpleClass;
 	}
 
-	public void saveCharacter(Player character) throws Exception {
+	
+
+	private void save(Player character, String fileName) throws Exception {
 		SharedPreferences prefs = getPreferences();
-		String fileName = SAVE_GAME_PREFIX + character.getId() + "_"
-				+ character.getStory().getId() + ".sav";
+		
 		FileOutputStream fos = context.openFileOutput(fileName,
 				Context.MODE_PRIVATE);
 		ObjectOutputStream os = new ObjectOutputStream(fos);
@@ -163,15 +176,24 @@ public class GameBookUtils {
 		editor.putStringSet(fileName, values);
 		editor.apply();
 	}
-
-	public static String getGamebookStorage(Context ctx) {
-		return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "com.nex.gamebook";
+	
+	public void removeSavedGame(Player player) {
+		Editor editor = getPreferences().edit();
+		String fileName = createSaveGameFileName(player);
+		context.deleteFile(fileName);
+		editor.remove(fileName);
+		editor.commit();
 	}
 	
+	public static String getGamebookStorage(Context ctx) {
+		return Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ File.separator + "com.nex.gamebook";
+	}
+
 	public static String createMethodName(String type, String fieldName) {
 		String firstPart = fieldName.substring(0, 1).toUpperCase();
 		String secondPart = fieldName.substring(1);
 		return type + firstPart + secondPart;
 	}
-	
+
 }

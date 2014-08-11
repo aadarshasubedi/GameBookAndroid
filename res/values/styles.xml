@@ -2,6 +2,23 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     
+    <style name="GameBookActionBar" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
+        
+    </style>
+
+    <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@drawable/actionbar_selector</item>
+<!--         <item name="android:actionBarItemBackground"></item> -->
+        
+        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
+   		<item name="android:icon">@android:color/transparent</item>
+    </style>
+	<style name="ActionBarTitle" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:textColor">@color/button_color</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>
@@ -31,6 +48,14 @@
 	    <item name="android:textSize">25sp</item>
 	    <item name="android:background">@drawable/button</item>
 	</style>
+	
+	<style name="guide_item">
+	    <item name="android:layout_margin">10dp</item>
+	    <item name="android:textColor">@color/button_color</item>
+	    <item name="android:textSize">25sp</item>
+	    <item name="android:background">@drawable/list_item</item>
+	</style>
+	
     <style name="title">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/title_color</item>
