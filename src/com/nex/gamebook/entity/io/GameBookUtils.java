@@ -67,10 +67,11 @@ public class GameBookUtils {
 
 		List<String> fileList = getRelevantLocalizedFiles(story);
 		Properties prop = new Properties();
+//		prop.
 		for (String file : fileList) {
 			try {
 				InputStream fileStream = new FileInputStream(file);
-				Reader reader = new InputStreamReader(fileStream, "Cp1250");
+				Reader reader = new InputStreamReader(fileStream);
 				prop.load(reader);
 				fileStream.close();
 			} catch (FileNotFoundException e) {

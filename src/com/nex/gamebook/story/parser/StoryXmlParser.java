@@ -121,8 +121,6 @@ public class StoryXmlParser {
 		Story story = new Story();
 		story.saveXmlPath(xml);
 		GameBookUtils.getInstance().loadPropties(story);
-		story.setName(NAME);
-		story.setDescription(DESCRIPTION);
 		loadStory(story, story.getXml(), sections, characters);
 		return story;
 	}

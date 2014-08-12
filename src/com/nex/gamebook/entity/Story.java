@@ -14,8 +14,6 @@ public class Story implements Serializable, Mergable {
 	private String xml;
 	private String path;
 	private String fullpath;
-	private String name;
-	private String description;
 	private int background;
 	private long id;
 	private int version;
@@ -55,19 +53,12 @@ public class Story implements Serializable, Mergable {
 	}
 
 	public String getName() {
-		return GameBookUtils.getInstance().getText(name, this);
+		return GameBookUtils.getInstance().getText("name", this);
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public String getDescription() {
-		return GameBookUtils.getInstance().getText(description, this);
+		return GameBookUtils.getInstance().getText("description", this);
 	}
 
 	public List<Player> getCharacters() {

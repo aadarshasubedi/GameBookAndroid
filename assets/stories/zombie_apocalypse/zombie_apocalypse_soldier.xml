@@ -7,7 +7,7 @@
             <options>
                 <option section="2" text="section1_option1_text"/>
                 <option section="13" text="section1_option2_text"/>
-                <option section="" text="section1_option3_text"/>
+                <option section="30" text="section1_option3_text"/>
             </options>
         </section>
         <!-- SECTION 2 -->
@@ -122,7 +122,7 @@
                 </enemy>
             </enemies>
             <options>
-                <option section="" text="section13_option1_text" />
+                <option section="20" text="section13_option1_text" />
                 <option section="14" text="section13_option2_text" />
             </options>
         </section>
@@ -133,7 +133,7 @@
             </bonuses>
             <options>
                 <option section="13" text="section14_option1_text" />
-                <option section="" text="section14_option3_text" />
+                <option section="24" text="section14_option3_text" />
                 <option section="15" text="section14_option2_text" disableWhenSelected="true"/>
             </options>
         </section>
@@ -167,15 +167,108 @@
                 <bonus type="attack" value="1" debuff="true" />
             </bonuses>
             <options>
-                <option section="" text="section18_option1_text" />
+                <option section="29" text="section18_option1_text" />
                 <option section="19" text="section18_option2_text" />
             </options>
         </section>
         
+        <!-- SECTION 20 -->
+        <section position="20" text="section20_text">
+            <options>
+                <option section="21" text="section20_option1_text"/>
+                <option section="22" text="section20_option2_text"/>
+            </options>
+        </section>
        
+        <!-- SECTION 21 -->
+        <section position="21" text="section21_text">
+            <options>
+                <option section="23" text="section21_option1_text"/>
+            </options>
+        </section>
+        
+        <!-- SECTION 22 -->
+        <section position="22" text="section22_text" enemiesDefeatedText="section22_enemy_text" luckText="section22_luck_text" luckDefeatEnemies="true">
+            <enemies>
+                <enemy name="e_infected_cat">
+                    <health>9</health>
+                    <defense>2</defense>
+                    <skill>1</skill>
+                    <luck>1</luck>
+                    <attack>5</attack>
+                </enemy>
+            </enemies>
+            <options>
+                <option section="23" text="section22_option1_text"/>
+            </options>
+        </section>
+        
+        <!-- SECTION 24 -->
+        <section position="24" text="section24_text">
+            <options>
+                <option section="25" text="section24_option1_text"/>
+                <option section="28" text="section24_option2_text"/>
+            </options>
+        </section>
+        
+        <!-- SECTION 25 -->
+        <section position="25" text="section25_text">
+            <bonuses>
+                <bonus type="health" value="2" />
+            </bonuses>
+            <options>
+                <option section="26" text="section25_option1_text"/>
+                <option section="27" text="section25_option2_text"/>
+            </options>
+        </section>
+        
+        <!-- SECTION 26 -->
+        <section position="26" text="section26_text" enemiesDefeatedText="section26_enemy_text" luckText="section26_luck_text">
+            <bonuses>
+                <bonus type="luck" state="after_fight" value="1" overflowed="true"/>
+            </bonuses>
+            <enemies>
+                <enemy name="e_livingdead">
+                    <health>10</health>
+                    <defense>1</defense>
+                    <skill>1</skill>
+                    <luck>1</luck>
+                    <attack>5</attack>
+                </enemy>
+                <enemy name="e_zombie">
+                    <health>10</health>
+                    <defense>5</defense>
+                    <skill>1</skill>
+                    <luck>1</luck>
+                    <attack>3</attack>
+                </enemy>
+            </enemies>
+            <options>
+                <option section="28" text="section26_option1_text" />
+            </options>
+        </section>
+        
+        <!-- SECTION 27 -->
+        <section position="27" text="section27_text">
+            <bonuses>
+                <bonus type="luck" value="1" overflowed="true" debuff="true" />
+            </bonuses>
+            <options>
+                <option section="28" text="section27_option1_text" />
+            </options>
+        </section>
+        
+        <!-- SECTION 30 -->
+        <section position="30" text="section30_text">
+            <options>
+                <option section="" text="section30_option1_text" />
+                <option section="" text="section30_option2_text" />
+                <option section="" text="section30_option3_text" />
+            </options>
+        </section>
         
         <!-- enter to shared sections -->
-        <!-- SECTION 7 -->
+        <!-- SECTION 7 To any dangerous way 1-->
         <section position="7" text="section7_text">
             <bonuses>
                 <bonus type="health" value="2" />
@@ -184,29 +277,50 @@
                 <option section="" text="sg_continue" />
             </options>
         </section>
-        <!-- SECTION 10 -->
+        <!-- SECTION 10 To Kaltul way 1 (tru road)-->
         <section position="10" text="section10_text" alreadyVisitedText="section10_visited_text">
             <options>
                 <option section="" text="section10_option1_text" />
                 <option section="11" text="section10_option2_text" disableWhenSelected="true" luckAspect="true"/>
             </options>
         </section>
-        <!-- SECTION 12 -->
+        <!-- SECTION 12 To any dangerous way 2-->
         <section position="12" text="section12_text">
             <options>
                 <option section="" text="section12_option1_text" />
             </options>
         </section>
-        <!-- SECTION 19 -->
+        <!-- SECTION 19 To Port-->
         <section position="19" text="section19_text">
             <bonuses>
-                <bonus type="health" value="10"/>
+                <bonus type="health" value="5"/>
                 <bonus type="attack" value="1" overflowed="true"/>
             </bonuses>
             <options>
                 <option section="" text="section19_option1_text" />
             </options>
         </section>
+        <!-- SECTION 23 To Kaltul way 2 (tru highway)-->
+        <section position="23" text="section23_text">
+            <options>
+                <option section="" text="section23_option1_text"/>
+            </options>
+        </section>
         
+        <!-- SECTION 28 To Mirnis-->
+        <section position="28" text="section28_text">
+            <options>
+                <option section="" text="section28_option1_text" />
+            </options>
+        </section>
+        
+        <!-- SECTION 29 To Port, or Kaltul (tru road) or Mirnis-->
+        <section position="29" text="section29_text">
+            <options>
+                <option section="" text="section29_option1_text" />
+                <option section="" text="section29_option2_text" />
+                <option section="" text="section29_option3_text" />
+            </options>
+        </section>
     </sections>
 </story>
