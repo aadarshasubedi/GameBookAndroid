@@ -73,7 +73,7 @@ public class Stats implements Serializable {
 	}
 
 	public int getDefensePercentage() {
-		return Stats.getPercentage(defense, TOTAL_SKILL_FOR_CALC);
+		return Stats.getPercentage(defense, TOTAL_ARMOR_FOR_CALC);
 	}
 
 	public static int getPercentage(int value, int what) {
