@@ -19,7 +19,8 @@ public class Story implements Serializable, Mergable {
 	private int version;
 	private Map<Integer, StorySection> sections = new HashMap<>();
 	private List<Player> characters = new ArrayList<Player>();
-
+	private Map<String, Enemy> enemies = new HashMap<String, Enemy>();
+	
 	private transient Properties properties;
 
 	public long getId() {
@@ -115,5 +116,19 @@ public class Story implements Serializable, Mergable {
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
-
+	public Enemy findEnemy(String id) {
+		return this.enemies.get(id);
+	}
+	public Map<String, Enemy> getEnemies() {
+		return enemies;
+	}
+	
+	public void assignEnemiesToSections() {
+		if(enemies.isEmpty()) return;
+		for(Map.Entry<Integer, StorySection> entry: sections.entrySet()) {
+			entry.getValue().assignEnemies();
+		}
+		enemies.clear();
+	}
+	
 }

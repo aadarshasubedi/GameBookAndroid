@@ -10,6 +10,15 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	private int index;
 	private boolean affectPlayer;
 
+	public Enemy() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Enemy(Enemy enemy) {
+		super(enemy);
+		this.name = enemy.name;
+	}
+	
 	public String getName() {
 		return GameBookUtils.getInstance().getText(name, getStory());
 	}

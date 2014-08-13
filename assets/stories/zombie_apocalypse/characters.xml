@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../story.xsd">
+    <characters>
+        <character position="1" id="1" name="ch_soldier" description="dsc_soldier">
+            <health>30</health>
+            <!-- 31% -->
+            <defense>11</defense>
+            <!-- 11% -->
+            <skill>4</skill>
+            <!-- 8% -->
+            <luck>3</luck>
+            <attack>7</attack>
+        </character>
+        <character position="" id="2" name="ch_doctor" description="dsc_doctor">
+            <health>70</health>
+            <!-- 11% -->
+            <defense>4</defense>
+            <!-- 8% -->
+            <skill>3</skill>
+            <!-- 8% -->
+            <luck>3</luck>
+            <attack>5</attack>
+        </character>
+        <character position="" id="3" name="ch_policeman" description="dsc_policeman">
+            <health>30</health>
+            <!-- 11% -->
+            <defense>4</defense>
+            <!-- 31% -->
+            <skill>11</skill>
+            <!-- 8% -->
+            <luck>3</luck>
+            <attack>6</attack>
+        </character>
+        <character position="" id="4" name="ch_homeless" description="dsc_homeless">
+            <health>25</health>
+            <!-- 5% -->
+            <defense>2</defense>
+            <!-- 8% -->
+            <skill>3</skill>
+            <!-- 51% -->
+            <luck>18</luck>
+            <attack>4</attack>
+        </character>
+    </characters>
+</story>

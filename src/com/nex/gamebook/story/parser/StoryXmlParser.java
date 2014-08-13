@@ -51,6 +51,7 @@ public class StoryXmlParser {
 
 	private final String OPTIONS = "options";
 	private final String ENEMIES = "enemies";
+	private final String ENEMY = "enemy";
 	private final String BASE_DAMAGE = "damage";
 	
 	private final String BONUSES = "bonuses";
@@ -76,7 +77,8 @@ public class StoryXmlParser {
 	private final String TYPE = "type";
 	private final String VALUE = "value";
 	private final String OVERFLOWED = "overflowed";
-
+//	private final String REF = "ref";
+	
 	Context context;
 
 	public StoryXmlParser(Context context) {
@@ -122,6 +124,7 @@ public class StoryXmlParser {
 		story.saveXmlPath(xml);
 		GameBookUtils.getInstance().loadPropties(story);
 		loadStory(story, story.getXml(), sections, characters);
+		story.assignEnemiesToSections();
 		return story;
 	}
 
@@ -129,7 +132,7 @@ public class StoryXmlParser {
 
 	
 
-	private void loadStory(Story story, String xml, boolean sections, boolean characters) throws Exception {
+	public void loadStory(Story story, String xml, boolean sections, boolean characters) throws Exception {
 
 		InputStream stream = null;
 		try {
@@ -178,16 +181,16 @@ public class StoryXmlParser {
 			boolean sections, boolean characters) throws Exception {
 		if (!sections && !characters)
 			return;
-
-		if (sections)
+		if (sections) {
 			loadSections(document, story);
+			loadEnemies(document, story);
+		}
 		if (characters)
 			loadCharacters(document, story);
 
 	}
 
 	private void loadSections(Document document, Story story) throws Exception {
-
 		NodeList nList = document.getElementsByTagName(SECTION);
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node node = nList.item(temp);
@@ -210,27 +213,29 @@ public class StoryXmlParser {
 		}
 	}
 
-	// Returns the entire XML document
-	public Document getDocument(InputStream inputStream) {
-		Document document = null;
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		try {
-			DocumentBuilder db = factory.newDocumentBuilder();
-			InputSource inputSource = new InputSource(inputStream);
-			document = db.parse(inputSource);
-		} catch (ParserConfigurationException e) {
-			Log.e("Error: ", e.getMessage());
-			return null;
-		} catch (SAXException e) {
-			Log.e("Error: ", e.getMessage());
-			return null;
-		} catch (IOException e) {
-			Log.e("Error: ", e.getMessage());
-			return null;
+	private void loadEnemies(Document document, Story story) {
+		NodeList nList = document.getElementsByTagName(ENEMY);
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node node = nList.item(temp);
+			if (node instanceof Element) {
+				Element el = (Element) node;
+				loadEnemy(story, el);
+			}
 		}
-		return document;
 	}
-
+	
+	private void loadEnemy(Story story, Element element) {
+		Enemy enemy = new Enemy();
+		enemy.setName(element.getAttribute(NAME));
+		String id = element.getAttribute(ID);
+		NodeList optionsList = element.getChildNodes();
+		for (int i = 0; i < optionsList.getLength(); i++) {
+			Node node = element.getChildNodes().item(i);
+			putStats(enemy, node);
+		}
+		enemy.setStory(story);
+		story.getEnemies().put(id, enemy);
+	}
 	private void loadCharacter(Story story, Element element) throws Exception {
 		Player character = new Player();
 		character.setName(element.getAttribute(NAME));
@@ -241,29 +246,34 @@ public class StoryXmlParser {
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
-			if (node.getNodeName().equals(HEALTH)) {
-				character.getStats().setHealth(
-						getInteger(node.getTextContent()));
-			} else if (node.getNodeName().equals(DEFENSE)) {
-				character.getStats().setDefense(
-						getInteger(node.getTextContent()));
-			} else if (node.getNodeName().equals(SKILL)) {
-				character.getStats()
-						.setSkill(getInteger(node.getTextContent()));
-			} else if (node.getNodeName().equals(LUCK)) {
-				character.getStats().setLuck(getInteger(node.getTextContent()));
-			} else if (node.getNodeName().equals(ATTACK)) {
-				character.getStats().setAttack(
-						getInteger(node.getTextContent()));
-			} else if (node.getNodeName().equals(BASE_DAMAGE)) {
-				int damage = getInteger(node.getTextContent());
-				character.getStats().setDamage(damage==0?1:damage);
-			}
+			putStats(character, node);
 		}
 		character.setStory(story);
 		story.getCharacters().add(character);
 	}
 
+	private void putStats(com.nex.gamebook.entity.Character character, Node node) {
+		if (node.getNodeName().equals(HEALTH)) {
+			character.getStats().setHealth(
+					getInteger(node.getTextContent()));
+		} else if (node.getNodeName().equals(DEFENSE)) {
+			character.getStats().setDefense(
+					getInteger(node.getTextContent()));
+		} else if (node.getNodeName().equals(SKILL)) {
+			character.getStats()
+					.setSkill(getInteger(node.getTextContent()));
+		} else if (node.getNodeName().equals(LUCK)) {
+			character.getStats().setLuck(getInteger(node.getTextContent()));
+		} else if (node.getNodeName().equals(ATTACK)) {
+			character.getStats().setAttack(
+					getInteger(node.getTextContent()));
+		} else if (node.getNodeName().equals(BASE_DAMAGE)) {
+			int damage = getInteger(node.getTextContent());
+			character.getStats().setDamage(damage==0?1:damage);
+		}
+		character.setCurrentStats(new Stats(character.getStats()));
+	}
+	
 	private void loadSection(Story story, Element element) throws Exception {
 		int position = getInteger(element.getAttribute(POSITION));
 		if (position == 0) {
@@ -299,7 +309,7 @@ public class StoryXmlParser {
 			if (node.getNodeName().equals(OPTIONS)) {
 				createOptions(section, node);
 			} else if (node.getNodeName().equals(ENEMIES)) {
-				createEnemies(section, node);
+				createEnemiesReferences(section, node);
 			} else if (node.getNodeName().equals(BONUSES)) {
 				createBonuses(section, node);
 			}
@@ -321,40 +331,18 @@ public class StoryXmlParser {
 		return 0;
 	}
 
-	private void createEnemies(StorySection section, Node node) {
+	private void createEnemiesReferences(StorySection section, Node node) {
 		NodeList optionsList = node.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node n = optionsList.item(i);
 			if (n instanceof Element) {
 				Element enemyNode = (Element) n;
-				Enemy enemy = new Enemy();
-				NodeList stats = enemyNode.getChildNodes();
-				for (int e = 0; e < stats.getLength(); e++) {
-					Node nd = enemyNode.getChildNodes().item(e);
-					if (nd.getNodeName().equals(HEALTH)) {
-						enemy.getStats().setHealth(
-								getInteger(nd.getTextContent()));
-					} else if (nd.getNodeName().equals(DEFENSE)) {
-						enemy.getStats().setDefense(
-								getInteger(nd.getTextContent()));
-					} else if (nd.getNodeName().equals(SKILL)) {
-						enemy.getStats().setSkill(
-								getInteger(nd.getTextContent()));
-					} else if (nd.getNodeName().equals(LUCK)) {
-						enemy.getStats().setLuck(
-								getInteger(nd.getTextContent()));
-					} else if (nd.getNodeName().equals(ATTACK)) {
-						enemy.getStats().setAttack(
-								getInteger(nd.getTextContent()));
-					}
-				}
-				enemy.setCurrentStats(new Stats(enemy.getStats()));
-				enemy.setName(enemyNode.getAttribute(NAME));
-				enemy.setStory(section.getStory());
-				section.getEnemies().add(enemy);
+				section.getEnemiesIds().add(enemyNode.getAttribute(VALUE));
 			}
 		}
 	}
+	
+	
 
 	private void createBonuses(StorySection section, Node node) {
 		NodeList optionsList = node.getChildNodes();
@@ -396,7 +384,29 @@ public class StoryXmlParser {
 			}
 		}
 	}
+	
+	// Returns the entire XML document
+		public Document getDocument(InputStream inputStream) {
+			Document document = null;
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			try {
+				DocumentBuilder db = factory.newDocumentBuilder();
+				InputSource inputSource = new InputSource(inputStream);
+				document = db.parse(inputSource);
+			} catch (ParserConfigurationException e) {
+				Log.e("Error: ", e.getMessage());
+				return null;
+			} catch (SAXException e) {
+				Log.e("Error: ", e.getMessage());
+				return null;
+			} catch (IOException e) {
+				Log.e("Error: ", e.getMessage());
+				return null;
+			}
+			return document;
+		}
 
+	
 	private boolean getBoolean(String s) {
 		return s != null && !"".equals(s) ? Boolean.valueOf(s) : false;
 	}

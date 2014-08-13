@@ -25,7 +25,8 @@ public class CharacterSelectionActivity extends Activity {
 		
 		try {
 			StoryXmlParser parser = new StoryXmlParser(this);
-			Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
+			Story story = parser.loadStory(getIntent().getExtras().getString("story"), false);
+			parser.loadStory(story, story.getXml(), false, true);
 			setTitle(story.getName());
 			setContentView(R.layout.activity_character_selection);
 			overridePendingTransition(R.anim.trans_left_in, R.anim.trans_right_out);

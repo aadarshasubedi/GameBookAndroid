@@ -4,9 +4,14 @@ import java.io.Serializable;
 
 public class Stats implements Serializable {
 	private static final long serialVersionUID = 5967013219649795912L;
-	public static int TOTAL_LUCK_FOR_CALC = 20;
-	public static int TOTAL_SKILL_FOR_CALC = 25;
-	public static int TOTAL_ARMOR_FOR_CALC = 25;
+	
+	public static int MAX_LUCK_OF_CHARACTER = 23;//66%
+	public static int MAX_SKILL_OF_CHARACTER = 23;//65%
+	public static int MAX_DEFENSE_OF_CHARACTER = 24;//68%
+	
+	public static int TOTAL_LUCK_FOR_CALC = 35;
+	public static int TOTAL_SKILL_FOR_CALC = 35;
+	public static int TOTAL_ARMOR_FOR_CALC = 35;
 	private int health;
 	private int defense;
 	private int skill;
@@ -39,8 +44,8 @@ public class Stats implements Serializable {
 	}
 
 	public void setDefense(int defense) {
-		if (defense > Character.MAX_DEFENSE_OF_CHARACTER)
-			defense = Character.MAX_DEFENSE_OF_CHARACTER;
+		if (defense > MAX_DEFENSE_OF_CHARACTER)
+			defense = MAX_DEFENSE_OF_CHARACTER;
 		this.defense = defense;
 	}
 
@@ -49,8 +54,8 @@ public class Stats implements Serializable {
 	}
 
 	public void setSkill(int skill) {
-		if (skill > Character.MAX_SKILL_OF_CHARACTER)
-			skill = Character.MAX_SKILL_OF_CHARACTER;
+		if (skill > MAX_SKILL_OF_CHARACTER)
+			skill = MAX_SKILL_OF_CHARACTER;
 		this.skill = skill;
 	}
 
@@ -59,8 +64,8 @@ public class Stats implements Serializable {
 	}
 
 	public void setLuck(int luck) {
-		if (luck > Character.MAX_LUCK_OF_CHARACTER)
-			luck = Character.MAX_LUCK_OF_CHARACTER;
+		if (luck > MAX_LUCK_OF_CHARACTER)
+			luck = MAX_LUCK_OF_CHARACTER;
 		this.luck = luck;
 	}
 

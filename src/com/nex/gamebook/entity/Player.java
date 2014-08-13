@@ -13,7 +13,8 @@ public class Player extends Character {
 	private String name;
 	private String description;
 	private int position;
-	
+	private int sections;
+	private int visitedSections;
 
 	public int getId() {
 		return id;
@@ -128,5 +129,29 @@ public class Player extends Character {
 			score *= multiplier;
 		}
 		return score;
+	}
+	
+	public int getSections() {
+		return sections;
+	}
+
+	public void setSections(int sections) {
+		this.sections = sections;
+	}
+
+	public int getVisitedSections() {
+		return visitedSections;
+	}
+
+	public void setVisitedSections(int visitedSections) {
+		this.visitedSections = visitedSections;
+	}
+
+	public void addSection() {
+		this.sections++;
+	}
+
+	public void addVisitedSection() {
+		this.visitedSections++;
 	}
 }

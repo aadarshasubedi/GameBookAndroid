@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
@@ -34,7 +36,8 @@ public class StorySection implements Serializable, Mergable {
 	private List<StorySectionOption> options = new ArrayList<>();
 	private List<Enemy> enemies = new ArrayList<>();
 	private List<Bonus> bonuses = new ArrayList<>();
-
+	private List<String> enemiesIds = new ArrayList<String>();
+	
 	public StorySection() {
 		super();
 	}
@@ -206,4 +209,19 @@ public class StorySection implements Serializable, Mergable {
 		return story;
 	}
 
+	public List<String> getEnemiesIds() {
+		return enemiesIds;
+	}
+	
+	public void assignEnemies() {
+		for(String enemyKey: enemiesIds) {
+			Enemy enemy = story.findEnemy(enemyKey);
+			if(enemy == null) {
+				Log.e("GamebookEnemeNotFound", enemyKey);
+				continue;
+			}
+			this.enemies.add(new Enemy(enemy));
+		}
+	}
+	
 }
