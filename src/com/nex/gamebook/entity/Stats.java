@@ -35,38 +35,40 @@ public class Stats implements Serializable {
 		return health;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
+	public int setHealth(int health) {
+		return this.health = health;
 	}
 
 	public int getDefense() {
 		return defense;
 	}
 
-	public void setDefense(int defense) {
+	public int setDefense(int defense) {
 		if (defense > MAX_DEFENSE_OF_CHARACTER)
 			defense = MAX_DEFENSE_OF_CHARACTER;
-		this.defense = defense;
+		return this.defense = defense;
 	}
 
+	
+	
 	public int getSkill() {
 		return skill;
 	}
 
-	public void setSkill(int skill) {
+	public int setSkill(int skill) {
 		if (skill > MAX_SKILL_OF_CHARACTER)
 			skill = MAX_SKILL_OF_CHARACTER;
-		this.skill = skill;
+		return this.skill = skill;
 	}
 
 	public int getLuck() {
 		return luck;
 	}
 
-	public void setLuck(int luck) {
+	public int setLuck(int luck) {
 		if (luck > MAX_LUCK_OF_CHARACTER)
 			luck = MAX_LUCK_OF_CHARACTER;
-		this.luck = luck;
+		return this.luck = luck;
 	}
 
 	public int getLuckPercentage() {
@@ -90,16 +92,25 @@ public class Stats implements Serializable {
 		return attack;
 	}
 
-	public void setAttack(int attack) {
-		this.attack = attack;
+	public int setAttack(int attack) {
+		return this.attack = attack;
 	}
 
 	public int getDamage() {
 		return damage;
 	}
 
-	public void setDamage(int damage) {
-		this.damage = damage;
+	public int setDamage(int damage) {
+		return this.damage = damage;
 	}
 
+	public void releaseTemporalStats(Stats releaseStats) {
+		this.health -= releaseStats.health;
+		this.attack -= releaseStats.attack;
+		this.defense -= releaseStats.defense;
+		this.skill -= releaseStats.skill;
+		this.luck -= releaseStats.luck;
+		this.damage -= releaseStats.damage;
+	}
+	
 }

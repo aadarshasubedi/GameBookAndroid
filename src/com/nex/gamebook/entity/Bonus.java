@@ -19,12 +19,9 @@ public class Bonus implements Serializable, Mergable {
 	}
 
 	public enum BonusType implements Serializable {
-		HEALTH(R.string.attr_health), 
-		LUCK(R.string.attr_luck), 
-		SKILL(R.string.attr_skill), 
-		DEFENSE(R.string.attr_defense),  
-		ATTACK(R.string.attr_attack),
-		DAMAGE(R.string.attr_baseDmg);
+		HEALTH(R.string.attr_health), LUCK(R.string.attr_luck), SKILL(
+				R.string.attr_skill), DEFENSE(R.string.attr_defense), ATTACK(
+				R.string.attr_attack), DAMAGE(R.string.attr_baseDmg);
 		public int text;
 
 		private BonusType(int text) {
@@ -42,6 +39,7 @@ public class Bonus implements Serializable, Mergable {
 	private boolean overflowed;
 	private int coeff;
 	private boolean alreadyGained;
+	private boolean permanent;
 
 	public BonusType getType() {
 		return type;
@@ -71,7 +69,6 @@ public class Bonus implements Serializable, Mergable {
 		return this.type.getText();
 	}
 
-
 	public int getCoeff() {
 		return coeff;
 	}
@@ -94,6 +91,14 @@ public class Bonus implements Serializable, Mergable {
 
 	public void setAlreadyGained(boolean alreadyGained) {
 		this.alreadyGained = alreadyGained;
+	}
+
+	public boolean isPermanent() {
+		return permanent;
+	}
+
+	public void setPermanent(boolean permanent) {
+		this.permanent = permanent;
 	}
 
 }

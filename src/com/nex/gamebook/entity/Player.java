@@ -1,10 +1,12 @@
 package com.nex.gamebook.entity;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
-import com.nex.gamebook.entity.io.GameBookUtils;
+import java.util.List;
 
 import android.util.Log;
+
+import com.nex.gamebook.entity.io.GameBookUtils;
 
 public class Player extends Character {
 
@@ -15,7 +17,7 @@ public class Player extends Character {
 	private int position;
 	private int sections;
 	private int visitedSections;
-
+	private transient Stats temporalStatsHolder;
 	public int getId() {
 		return id;
 	}
@@ -75,22 +77,31 @@ public class Player extends Character {
 					GameBookUtils.createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
 			Method defaultAttr = Stats.class.getDeclaredMethod(
 					GameBookUtils.createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
-			int currentValue = (int) currentAttr.invoke(getCurrentStats(),
-					new Object[0]);
+			
+			int currentValue = (int) currentAttr.invoke(getCurrentStats(), new Object[0]);
 			int total = currentValue + (bonus.getCoeff() * bonus.getValue());
-			int defaultValue = (int) defaultAttr.invoke(getStats(),
-					new Object[0]);
+			int defaultValue = (int) defaultAttr.invoke(getStats(), new Object[0]);
 			currentAttr = Stats.class.getDeclaredMethod(
-					GameBookUtils.createMethodName("set", bonus.getType().name()
-							.toLowerCase()), int.class);
-			defaultAttr = Stats.class.getDeclaredMethod(
-					GameBookUtils.createMethodName("set", bonus.getType().name()
-							.toLowerCase()), int.class);
+					GameBookUtils.createMethodName("set", bonus.getType().name().toLowerCase()), int.class);
+			int setedValue = 0;
 			if (total > defaultValue && !bonus.isOverflowed()) {
 				realValue = defaultValue - currentValue;
-				currentAttr.invoke(getCurrentStats(), defaultValue);
+				setedValue = (int)currentAttr.invoke(getCurrentStats(), defaultValue);
 			} else {
-				currentAttr.invoke(getCurrentStats(), total);
+				setedValue = (int)currentAttr.invoke(getCurrentStats(), total);
+			}
+			if((currentValue + realValue) != setedValue) {
+				realValue = setedValue - currentValue;
+			}
+			if(!bonus.isPermanent()) {
+				if(this.temporalStatsHolder == null) {
+					this.temporalStatsHolder = new Stats();
+					this.temporalStatsHolder.setDamage(0);
+				}
+				Field tempAttr = Stats.class.getDeclaredField(bonus.getType().name().toLowerCase());
+				tempAttr.setAccessible(true);
+				tempAttr.set(this.temporalStatsHolder, realValue);
+				tempAttr.setAccessible(false);
 			}
 		} catch (Exception e) {
 			Log.e("GameBook", "", e);
@@ -153,5 +164,16 @@ public class Player extends Character {
 
 	public void addVisitedSection() {
 		this.visitedSections++;
+	}
+	
+	public Stats getTemporalStatsHolder() {
+		return temporalStatsHolder;
+	}
+	public Stats releaseTemporalStats() {
+		if(this.temporalStatsHolder == null) return null;
+		getCurrentStats().releaseTemporalStats(this.temporalStatsHolder);
+		Stats releasedStats = new Stats(this.temporalStatsHolder);
+		this.temporalStatsHolder = null;
+		return releasedStats;
 	}
 }

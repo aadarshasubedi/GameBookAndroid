@@ -37,7 +37,11 @@
     <string name="title_activity_playground">PlaygroundActivity</string>
     <string name="option_disabled">(Zablokováno)</string>
     <string name="option_cant_return">(Sem se již nebudeš moci vrátit)</string>
-
+	<string name="temporal">(Dočasně)</string>
+    <string name="enemy_boss">(Boss)</string>
+    <string name="enemy_minion">(Minion)</string>
+    <string name="enemy_creature"></string>
+    
     <!-- Playground tab -->
     <string name="character">Postava</string>
     <string name="fight">Boj</string>
@@ -147,5 +151,5 @@
 	    Jiné mají zase příběh dynamický a mají více možností jak hru ukončit, to se pak odvíjí na závěrečném skóre.\n\n
 		V postraním menu se dozvíte více o jednotlivých aspektech hry.
 	</string>
-	    
+	
 </resources>

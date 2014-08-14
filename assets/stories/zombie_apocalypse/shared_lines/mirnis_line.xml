@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../story.xsd">
+    <sections>
+        <section position="46" text="section46_text">
+            <options>
+                <option section="" text="section46_option1_text"></option>
+            </options>
+        </section>
+        
+    </sections>
+</story>

@@ -23,7 +23,7 @@
     </ViewFlipper>
 
     <ScrollView
-        android:id="@+id/scrollView1"
+        android:id="@+id/battleLogScrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/result_button"
@@ -250,7 +250,7 @@
         style="@style/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/scrollView1"
+        android:layout_alignLeft="@+id/battleLogScrollView"
         android:layout_below="@+id/tableLayout1"
         android:text="@string/log" />
 

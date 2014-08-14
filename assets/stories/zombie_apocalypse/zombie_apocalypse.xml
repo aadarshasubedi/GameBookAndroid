@@ -3,9 +3,19 @@
     xsi:noNamespaceSchemaLocation="../../story.xsd">
     <background>@drawable/zombie</background>
     <version>0</version>
-    <include name="easy_enemies.xml"/>
-    <include name="hard_enemies.xml"/>
-    <include name="mini_bosses.xml"/>
+    <include name="enemies/easy_enemies.xml"/>
+    <include name="enemies/hard_enemies.xml"/>
+    <include name="enemies/mini_bosses.xml"/>
     <include name="characters.xml"/>
-    <include name="soldier_story_line.xml"/>
+    <include name="characters_lines/soldier_line.xml"/>
+    <include name="characters_lines/homeless_line.xml"/>
+    <include name="characters_lines/policeman_line.xml"/>
+    <include name="characters_lines/doctor_line.xml"/>
+    
+    <include name="shared_lines/kaltul_highway_line.xml"/>
+    <include name="shared_lines/kaltul_road_line.xml"/>
+    <include name="shared_lines/dangerous_line.xml"/>
+    <include name="shared_lines/port_line.xml"/>
+    <include name="shared_lines/mirnis_line.xml"/>
+    
 </story>

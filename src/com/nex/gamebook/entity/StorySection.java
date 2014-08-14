@@ -79,7 +79,15 @@ public class StorySection implements Serializable, Mergable {
 		}
 		return bon;
 	}
-
+	public List<Bonus> getTemporalBonuses() {
+		List<Bonus> bon = new ArrayList<Bonus>();
+		for (Bonus b : bonuses) {
+			if (!b.isPermanent()) {
+				bon.add(b);
+			}
+		}
+		return bon;
+	}
 	public boolean isAllDefeated() {
 		for (Enemy enemy : this.enemies) {
 			if (!enemy.isDefeated()) {

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -74,7 +75,9 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			enemy.setIndex(i+1);
 			View enemyView = adapter.create(enemy, switcher);
 			TextView v = (TextView) enemyView.findViewById(R.id.enemy_name);
-			v.setText(enemy.getName());
+			String name = enemy.getName();
+			name += " " + getContext().getResources().getString(enemy.getLevel().getCode());
+			v.setText(name);
 			switcher.addView(enemyView);
 		}
 		
@@ -266,6 +269,13 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			params.setMargins(0,0,0,0);
 			battleText.setLayoutParams(params);
 			log.addView(battleText);
+			final ScrollView sc = (ScrollView) masterView.findViewById(R.id.battleLogScrollView);
+			sc.post(new Runnable() {            
+			    @Override
+			    public void run() {
+			    	sc.fullScroll(View.FOCUS_DOWN);              
+			    }
+			});
 //			getPlayground().getBattleLog().add(battleText);
 		}
 

@@ -24,6 +24,7 @@ import android.util.Log;
 import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Enemy.EnemyLevel;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Stats;
@@ -77,6 +78,12 @@ public class StoryXmlParser {
 	private final String TYPE = "type";
 	private final String VALUE = "value";
 	private final String OVERFLOWED = "overflowed";
+	private final String PERMANENT = "permanent";
+	
+	private final String DEBUFF = "debuff";
+	private final String STATE = "state";
+	
+	
 //	private final String REF = "ref";
 	
 	Context context;
@@ -228,6 +235,7 @@ public class StoryXmlParser {
 		Enemy enemy = new Enemy();
 		enemy.setName(element.getAttribute(NAME));
 		String id = element.getAttribute(ID);
+		enemy.setLevel(EnemyLevel.getLevelByString(element.getAttribute(TYPE)));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
@@ -299,7 +307,7 @@ public class StoryXmlParser {
 			section.setLuckText(luckText);
 
 		String gameOverText = element.getAttribute(GAMEOVER_SECTION);
-		if (luckText!=null && luckText.trim().length()> 0)
+		if (gameOverText!=null && gameOverText.trim().length()> 0)
 			section.setGameOverText(gameOverText);
 		section.setLuckDefeatEnemies(getBoolean(element
 				.getAttribute(LUCK_DEFEAT_ENEMIES)));
@@ -356,10 +364,11 @@ public class StoryXmlParser {
 				bonus.setValue(getInteger(optionNode.getAttribute(VALUE)));
 				bonus.setOverflowed(getBoolean(optionNode
 						.getAttribute(OVERFLOWED)));
-				Boolean coeff = getBoolean(optionNode.getAttribute("debuff"));
+				Boolean coeff = getBoolean(optionNode.getAttribute(DEBUFF));
 				bonus.setCoeff(coeff ? -1 : 1);
 				bonus.setState(BonusState.getStateByString(optionNode
-						.getAttribute("state")));
+						.getAttribute(STATE)));
+				bonus.setPermanent(getBoolean(optionNode.getAttribute(PERMANENT), true));
 				section.getBonuses().add(bonus);
 			}
 		}
@@ -408,9 +417,11 @@ public class StoryXmlParser {
 
 	
 	private boolean getBoolean(String s) {
-		return s != null && !"".equals(s) ? Boolean.valueOf(s) : false;
+		return getBoolean(s, false);
 	}
-
+	private boolean getBoolean(String s, boolean defaultValue) {
+		return s != null && !"".equals(s) ? Boolean.valueOf(s) : defaultValue;
+	}
 	private int getInteger(String s) {
 		return s != null && !"".equals(s) ? Integer.valueOf(s.trim()) : 0;
 	}

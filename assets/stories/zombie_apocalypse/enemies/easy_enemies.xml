@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../story.xsd">
+    xsi:noNamespaceSchemaLocation="../../../story.xsd">
     <enemies>
         <enemy name="e_livingdead" id="living_dead">
             <health>5</health>
@@ -8,13 +8,6 @@
             <skill>2</skill>
             <luck>1</luck>
             <attack>2</attack>
-        </enemy>
-        <enemy name="e_livingdead" id="living_dead_hard">
-            <health>7</health>
-            <defense>2</defense>
-            <skill>1</skill>
-            <luck>1</luck>
-            <attack>5</attack>
         </enemy>
         <enemy name="e_nohander" id="nohander">
             <health>4</health>
@@ -29,13 +22,6 @@
             <skill>2</skill>
             <luck>2</luck>
             <attack>5</attack>
-        </enemy>
-        <enemy name="e_undead" id="undead_hard">
-            <health>7</health>
-            <defense>3</defense>
-            <skill>1</skill>
-            <luck>1</luck>
-            <attack>6</attack>
         </enemy>
         <enemy name="e_infected_cat" id="infected_cat">
             <health>9</health>

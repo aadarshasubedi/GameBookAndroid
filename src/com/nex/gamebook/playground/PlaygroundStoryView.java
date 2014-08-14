@@ -20,6 +20,7 @@ import com.nex.gamebook.ScoreActivity;
 import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySection;
 import com.nex.gamebook.entity.StorySectionOption;
@@ -52,9 +53,9 @@ public class PlaygroundStoryView extends AbstractFragment {
 		StorySection currentSection = story.getSection(_character.getPosition());
 		if(currentSection.isEnemiesAlreadyKilled()) {
 			tw.setText(currentSection.getEnemiesDefeatedText());
-		} else if(currentSection.isHasLuck()){
+		} else if(currentSection.isHasLuck()) {
 			tw.setText(currentSection.getLuckText());
-		} else if(currentSection.isVisited()){
+		} else if(currentSection.isVisited()) {
 			tw.setText(currentSection.getAlreadyVisitedText());	
 		} else {
 			tw.setText(currentSection.getText());	
@@ -68,6 +69,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 			prepareFightSection(view.getContext(), layout, currentSection);
 		} else if(!currentSection.getBonuses().isEmpty()) {
 			prepareBonusSection(view.getContext(), view, currentSection, currentSection.getBonuses());
+			currentSection.setBonusesAlreadyGained(true);
 		}
 			if(_character.isDefeated()) {
 				showGameOver(view.getContext(), view.findViewById(R.id.playground_story), currentSection);
@@ -83,11 +85,16 @@ public class PlaygroundStoryView extends AbstractFragment {
 			view.findViewById(R.id.modification).setVisibility(View.VISIBLE);
 		}
 		for(Bonus bonus: bonuses) {
-			if(bonus.isAlreadyGained() && section.isVisited()) continue;
+			if(bonus.isAlreadyGained() && section.isVisited() 
+			|| (!bonus.isPermanent() && !BonusState.NORMAL.equals(bonus.getState()))) continue;
 			bonus.setAlreadyGained(true);
 			int realValue = bonus.getValue();
 			if(!section.isBonusesAlreadyGained()) {
 				realValue = _character.addBonus(bonus);
+			}
+			String suffix = " ";
+			if(!bonus.isPermanent()) {
+				suffix = context.getResources().getString(R.string.temporal);
 			}
 			String marker = "+";
 			TextView opt = new TextView(context);
@@ -99,10 +106,9 @@ public class PlaygroundStoryView extends AbstractFragment {
 				opt.setTextColor(context.getResources().getColor(R.color.negative));
 			}
 			String s = getContext().getResources().getString(bonus.getText()).toLowerCase();
-			opt.setText(marker + realValue + " " + s);
+			opt.setText(marker + realValue + " " + s + suffix);
 			layout.addView(opt);
 		}
-		section.setBonusesAlreadyGained(true);
 		getPlayground().getCharacterFragment().showCurrentValues();
 	}
 	
@@ -116,6 +122,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 	
 	private void prepareBeforeFight(final Context context, LinearLayout layout, final StorySection section) {
 		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.BEFORE_FIGHT));
+		prepareBonusSection(context, layout, section, section.getTemporalBonuses());
 		if(!_character.isDefeated()) {
 			final Button fight = (Button) layout.findViewById(R.id.fight_buton);
 			fight.setVisibility(View.VISIBLE);
@@ -130,6 +137,41 @@ public class PlaygroundStoryView extends AbstractFragment {
 		}
 	}
 	
+	private void removeTemporalBonuses(Context context, View view) {
+		Stats releasedStats = _character.releaseTemporalStats();
+		if(releasedStats==null) return;
+		LinearLayout layout = (LinearLayout) view.findViewById(R.id.bonuses);
+		layout.setVisibility(View.VISIBLE);
+		int value = Math.abs(releasedStats.getHealth());
+		if(value>0)
+		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_health, context));
+		value = Math.abs(releasedStats.getAttack());
+		if(value>0)
+		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_attack, context));
+		value = Math.abs(releasedStats.getDefense());
+		if(value>0)
+		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_defense, context));
+		value = Math.abs(releasedStats.getSkill());
+		if(value>0)
+		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill, context));
+		value = Math.abs(releasedStats.getLuck());
+		if(value>0)
+		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_luck, context));
+		value = Math.abs(releasedStats.getDamage());
+		if(value>0)
+		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context));
+	}
+	
+	
+	private TextView getViewForReleasedTemporalAttribute(int value, int attrName, Context context) {
+		TextView opt = new TextView(context);
+		opt.setTextAppearance(context, R.style.number);
+		opt.setTextColor(context.getResources().getColor(R.color.negative));
+		String s = getContext().getResources().getString(attrName).toLowerCase();
+		opt.setText(value + " " + s);
+		return opt;
+	}
+	
 	private void startFight(Context context, StorySection section) {
 		section.setBonusesAlreadyGained(false);
 		PlaygroundActivity activity = getPlayground();
@@ -138,6 +180,8 @@ public class PlaygroundStoryView extends AbstractFragment {
 	
 	private void prepareAfterFight(Context context, LinearLayout layout, StorySection section) {
 		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.AFTER_FIGHT));
+		removeTemporalBonuses(context, layout);
+		section.setBonusesAlreadyGained(true);
 		setShowOptions(true);
 	}
 	
