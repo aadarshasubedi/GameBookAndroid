@@ -45,7 +45,7 @@ public class DialogBuilder {
 			listener = new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					dialog.cancel();
+					dialog.dismiss();
 				}
 			};
 		}
@@ -61,5 +61,9 @@ public class DialogBuilder {
 	public void show() {
 		this.dialog.show();
 	}
-
+	
+	public void dismiss() {
+		this.dialog.dismiss();
+	}
+	
 }

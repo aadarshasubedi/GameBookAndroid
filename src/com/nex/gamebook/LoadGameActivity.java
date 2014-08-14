@@ -61,7 +61,7 @@ public class LoadGameActivity extends Activity {
 	class SavedGameItem extends ArrayAdapter<String> {
 		Context context;
 		public SavedGameItem(Context context) {
-			super(context, R.layout.list_character_item, new String[keys.size()]);
+			super(context, R.layout.list_item, new String[keys.size()]);
 			this.context = context;
 		}
 		
@@ -71,7 +71,7 @@ public class LoadGameActivity extends Activity {
 			Set<String> values = savedGames.get(fileName);
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.list_character_item, parent, false);
+			View rowView = inflater.inflate(R.layout.list_item, parent, false);
 			TextView storyName = (TextView) rowView.findViewById(R.id.story_name);
 			String charId = GameBookUtils.getInstance().getValue(GameBookUtils.CHARACTER, values);
 			String timeInString = GameBookUtils.getInstance().getValue(GameBookUtils.TIME, values);
@@ -94,10 +94,18 @@ public class LoadGameActivity extends Activity {
 							 LoadGameActivity.this.finish();
 							return;
 						}
-				        new DialogBuilder(LoadGameActivity.this)
+						final DialogBuilder dialog = new DialogBuilder(LoadGameActivity.this)
 				        .setTitle(R.string.story_changed)
 				        .setText(R.string.story_changed_description)
-				        .setPositiveButton(R.string.yes, new OnClickListener() {
+				        ;
+						dialog.setNegativeButton(R.string.no, new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								load();
+								dialog.dismiss();
+				            	LoadGameActivity.this.finish();
+							}
+						}).setPositiveButton(R.string.yes, new OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								Intent intent = new Intent(LoadGameActivity.this, PlaygroundActivity.class);
@@ -107,13 +115,8 @@ public class LoadGameActivity extends Activity {
 								bundle.putBoolean("load", true);
 								intent.putExtras(bundle);
 								getContext().startActivity(intent);
+								dialog.dismiss();
 								LoadGameActivity.this.finish();
-							}
-						}).setNegativeButton(R.string.no, new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								load();
-				            	LoadGameActivity.this.finish();
 							}
 						}).show();
 					}

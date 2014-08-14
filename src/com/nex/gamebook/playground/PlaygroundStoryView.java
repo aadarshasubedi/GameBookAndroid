@@ -94,7 +94,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 			}
 			String suffix = " ";
 			if(!bonus.isPermanent()) {
-				suffix = context.getResources().getString(R.string.temporal);
+				suffix += context.getResources().getString(R.string.temporal);
 			}
 			String marker = "+";
 			TextView opt = new TextView(context);
@@ -123,6 +123,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 	private void prepareBeforeFight(final Context context, LinearLayout layout, final StorySection section) {
 		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.BEFORE_FIGHT));
 		prepareBonusSection(context, layout, section, section.getTemporalBonuses());
+		_character.holdCurrentStatsToTemporal();
 		if(!_character.isDefeated()) {
 			final Button fight = (Button) layout.findViewById(R.id.fight_buton);
 			fight.setVisibility(View.VISIBLE);

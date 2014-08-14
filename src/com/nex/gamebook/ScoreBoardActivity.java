@@ -56,7 +56,7 @@ public class ScoreBoardActivity extends Activity {
 	class ScoreItem extends ArrayAdapter<String> {
 		Context context;
 		public ScoreItem(Context context) {
-			super(context, R.layout.list_character_item, new String[keys.size()]);
+			super(context, R.layout.list_item, new String[keys.size()]);
 			this.context = context;
 		}
 		
@@ -65,7 +65,7 @@ public class ScoreBoardActivity extends Activity {
 			final String fileName = keys.get(position);
 			Set<String> values = savedGames.get(fileName);
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.list_character_item, parent, false);
+			View rowView = inflater.inflate(R.layout.list_item, parent, false);
 			TextView storyName = (TextView) rowView.findViewById(R.id.story_name);
 			String charId = GameBookUtils.getInstance().getValue(GameBookUtils.CHARACTER, values);
 			String timeInString = GameBookUtils.getInstance().getValue(GameBookUtils.TIME, values);

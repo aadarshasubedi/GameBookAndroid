@@ -13,7 +13,7 @@
 	<color name="option">#000000</color>
 	<color name="option_disabled">#d9d9d9</color>
 	
-	<color name="button">#505050</color>
+	<color name="button">#99505050</color>
 	<color name="button_select">#bc9e56</color>
 	<color name="button_stroke">#505050</color>
 	

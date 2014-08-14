@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
 import com.nex.gamebook.entity.Player;
@@ -150,17 +152,19 @@ public class PlaygroundActivity extends Activity {
 	    //Handle the back button
 	    if(keyCode == KeyEvent.KEYCODE_BACK) {
 	        //Ask the user if they want to quit
-	    	new DialogBuilder(this)
+	    	final DialogBuilder dialog = new DialogBuilder(this)
 	    	.setTitle(R.string.close_book)
 	    	.setText(R.string.close_book_description)
-	    	.setPositiveButton(R.string.yes, new OnClickListener() {
+	        .setNegativeButton(R.string.no, null);
+	    	dialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					//Intent intent = new Intent(PlaygroundActivity.this, MainScreenActivity.class);
+					//PlaygroundActivity.this.startActivity(intent);
+					dialog.dismiss();
 					PlaygroundActivity.this.finish();
 				}
-			})
-	        .setNegativeButton(R.string.no, null)
-	        .show();
+			}).show();
 
 
 	        return true;

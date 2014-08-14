@@ -124,25 +124,30 @@
     </string>
     <string name="battle">Bitva</string>
     <string name="guide_battle">
-      Boje nejsou automatické a pořadí nepřátel si určuje sám hráč.
-      Po každém boji s jedním nepřítelem se zobrazí průběh boje.
-      Pokračovat v příběhu může hráč pouze tehdy, porazí-li všechny nepřátele.
-      Pokud hráč v průbehu hry zemře, tak musí začít buď znovu nebo nahrát hru a boj zkusit znovu.
-      Každý boj může díky atributům štěstí a dovednosti probíhat pokaždé jinak.
+		Boje nejsou automatické a pořadí nepřátel si určuje sám hráč.
+		Po každém boji s jedním nepřítelem se zobrazí průběh boje.
+		Pokračovat v příběhu může hráč pouze tehdy, porazí-li všechny nepřátele.
+		Pokud hráč v průbehu hry zemře, tak musí začít buď znovu nebo nahrát hru a boj zkusit znovu.
+		Každý boj může díky atributům štěstí a dovednosti probíhat pokaždé jinak.
     </string>
     <string name="section">Sekce</string>
     <string name="guide_section">
-     Sekce je část příběhu, která má následující vlastnosti:\n
-     Text příběhu\n
-     Možnosti\n
-     Bitvy\n
-     Modifikace\n
+		Sekce je část příběhu, která má následující vlastnosti:\n
+		Text příběhu\n
+		Možnosti\n
+		Bitvy\n
+		Modifikace\n
     </string>
     <string name="guide_modifications">
-     Modifikace ovlivňují atributy postavy hráče.
-     Mohou být pozitivní i negativní. Všechny modifikace jsou permanentní.
-     Pokud je v sekci bitva, tak jsou některé modifikace aplikovány před bojem a některé po boji.
-     Některé modifikace mohou navýšit tvoje aktuální atributy nad základní.
+		Modifikace ovlivňují atributy postavy hráče.
+		Mohou být pozitivní i negativní.
+		\n\nDočasné modifikace:\n
+		Mohou být pouze pozitivní a jsou aplikovány před bojem a po boji jsou zase zrušeny.
+		Hráči při jejich odečtení nesníží attributy pod původní hodnotu před aplikací modifikace. 
+		
+		\n\nPermanentní modifikace:\n
+		Pokud je v sekci bitva, tak jsou některé modifikace aplikovány před bojem a některé po boji.
+		Některé modifikace mohou navýšit tvoje aktuální atributy nad základní.
     </string>
 	<string name="guide_description">
 	    Gamebook je kniha, ve které ovlivňujete příběh svým vlastním rozhodováním.

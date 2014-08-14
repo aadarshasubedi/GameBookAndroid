@@ -96,6 +96,7 @@ public class Player extends Character {
 			if(!bonus.isPermanent()) {
 				if(this.temporalStatsHolder == null) {
 					this.temporalStatsHolder = new Stats();
+					
 					this.temporalStatsHolder.setDamage(0);
 				}
 				Field tempAttr = Stats.class.getDeclaredField(bonus.getType().name().toLowerCase());
@@ -109,7 +110,6 @@ public class Player extends Character {
 		return realValue;
 	}
 
-	
 
 	@Override
 	public CharacterType getType() {
@@ -168,6 +168,11 @@ public class Player extends Character {
 	
 	public Stats getTemporalStatsHolder() {
 		return temporalStatsHolder;
+	}
+	public void holdCurrentStatsToTemporal() {
+		if(this.temporalStatsHolder!=null) {
+			this.temporalStatsHolder.setHolder(new Stats(getCurrentStats()));
+		}
 	}
 	public Stats releaseTemporalStats() {
 		if(this.temporalStatsHolder == null) return null;

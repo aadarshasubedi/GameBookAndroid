@@ -6,6 +6,7 @@
     <TextView
         android:id="@+id/story_name"
         style="@style/title"
+        android:textColor="@color/button_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="left"
@@ -18,6 +19,7 @@
         <TextView
             android:id="@+id/character"
             style="@style/attribute"
+        android:textColor="@color/button_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dsc_default" />
@@ -26,22 +28,23 @@
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+        android:textColor="@color/button_color"
             android:gravity="right"
             style="@style/number"
             android:text="@string/dsc_default" />
 
     </LinearLayout>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+<!--     <TableLayout -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="wrap_content" > -->
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+<!--         <TableRow -->
+<!--             android:id="@+id/tableRow1" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" > -->
 
-        </TableRow>
-    </TableLayout>
+<!--         </TableRow> -->
+<!--     </TableLayout> -->
 
 </LinearLayout>

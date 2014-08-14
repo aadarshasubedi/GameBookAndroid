@@ -19,6 +19,8 @@ public class Stats implements Serializable {
 	private int attack;
 	private int damage = 1;
 
+	private transient Stats holder;
+	
 	public Stats() {
 	}
 
@@ -105,6 +107,13 @@ public class Stats implements Serializable {
 	}
 
 	public void releaseTemporalStats(Stats releaseStats) {
+		
+		int damage = releaseStats.holder.health - this.health;
+		int resultHealth = releaseStats.health - damage;
+		if(resultHealth < 0) {
+			resultHealth = 0;
+		}
+		releaseStats.setHealth(resultHealth);
 		this.health -= releaseStats.health;
 		this.attack -= releaseStats.attack;
 		this.defense -= releaseStats.defense;
@@ -112,5 +121,7 @@ public class Stats implements Serializable {
 		this.luck -= releaseStats.luck;
 		this.damage -= releaseStats.damage;
 	}
-	
+	public void setHolder(Stats holder) {
+		this.holder = holder;
+	}
 }
