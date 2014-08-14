@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
 import com.nex.gamebook.entity.Player;
@@ -29,7 +27,7 @@ import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.util.DialogBuilder;
 
 public class PlaygroundActivity extends Activity {
-	public Player _character;
+	private Player _character;
 	private ViewFlipper flipper;
 	private ImageView left;
 	private ImageView right;
@@ -84,7 +82,14 @@ public class PlaygroundActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		this._character = null;
+		_character = null;
+		flipper = null;
+		left = null;
+		right = null;
+		title = null;
+		characterFragment = null;
+		storyFragment = null;
+		listener = null;
 	}
 	
 	public Player getCharacter() {
@@ -174,6 +179,8 @@ public class PlaygroundActivity extends Activity {
 	    }
 
 	}
+	
+	
 	
 //	@Override
 //	public boolean dispatchTouchEvent(MotionEvent ev){
