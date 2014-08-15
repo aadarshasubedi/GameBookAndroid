@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../story.xsd">
+    <enemies>
+        <enemy name="e_brain_eater" id="brain_eater" type="boss">
+            <health>40</health>
+            <defense>5</defense>
+            <skill>5</skill>
+            <luck>20</luck>
+            <attack>11</attack>
+        </enemy>
+    </enemies>
+</story>

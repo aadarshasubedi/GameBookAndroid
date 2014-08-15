@@ -54,6 +54,7 @@
     <string name="you_have_luck">Vyhýbáš se útoku. (štěstí)</string>
     <string name="enemy_has_luck">Nepřítel se vyhýbá útoku. (štěstí)</string>
     <string name="you_take">Dostáváš</string>
+    <string name="special_attack">speciální útok</string>
     <string name="you_cause">Způsobuješ</string>
     <string name="fight_aspect_health">(Zdraví)</string>
     <string name="fight_aspect_defense">(Obrana)</string>
@@ -130,6 +131,19 @@
 		Pokud hráč v průbehu hry zemře, tak musí začít buď znovu nebo nahrát hru a boj zkusit znovu.
 		Každý boj může díky atributům štěstí a dovednosti probíhat pokaždé jinak.
     </string>
+    <string name="guide_enemies">
+		Nepřátelé se dělí na tři druhy.
+		\n\n1) Normální nepřátelé\n
+		Jsou nepřátelé kteří dávají pouze poškození, uplatňují štěstí a šanci na kritické zranění.
+		\n\n2) Minioni\n
+		Jsou nepřátelé kteří dávají poškození, uplatňují štěstí a šanci na kritické zranění a mají speciální útok.
+		Jejich speciální útok je, že dávají dodatečně navíc jedno poškození.
+		\n\n3) Bossové\n
+		Jsou nepřátelé kteří dávají poškození, uplatňují štěstí a šanci na kritické zranění a mají speciální útok.
+		Jejich speciální útok je, že hráči dočasně sníží jeden útok. Avšak hráčův útok nikdy neklesne pod hodnotu 4.
+		\n\n\n\n
+		Specialní útok se projeví pouze tehdy, pokud má nepřítel štěstí.
+	</string>
     <string name="section">Sekce</string>
     <string name="guide_section">
 		Sekce je část příběhu, která má následující vlastnosti:\n

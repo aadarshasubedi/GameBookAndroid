@@ -2,6 +2,7 @@ package com.nex.gamebook.entity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
@@ -18,6 +19,7 @@ public class Player extends Character {
 	private int sections;
 	private int visitedSections;
 	private transient Stats temporalStatsHolder;
+	private transient List<Bonus> specialTempAttacks = new ArrayList<Bonus>();
 	public int getId() {
 		return id;
 	}
@@ -101,6 +103,7 @@ public class Player extends Character {
 				}
 				Field tempAttr = Stats.class.getDeclaredField(bonus.getType().name().toLowerCase());
 				tempAttr.setAccessible(true);
+				int tempValue = tempAttr.getInt(this.temporalStatsHolder);
 				tempAttr.set(this.temporalStatsHolder, realValue);
 				tempAttr.setAccessible(false);
 			}
@@ -173,6 +176,12 @@ public class Player extends Character {
 		if(this.temporalStatsHolder!=null) {
 			this.temporalStatsHolder.setHolder(new Stats(getCurrentStats()));
 		}
+	}
+	
+	public List<Bonus> getSpecialTempAttacks() {
+		if(specialTempAttacks==null)
+			specialTempAttacks = new ArrayList<Bonus>();
+		return specialTempAttacks;
 	}
 	public Stats releaseTemporalStats() {
 		if(this.temporalStatsHolder == null) return null;

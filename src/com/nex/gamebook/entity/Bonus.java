@@ -40,6 +40,7 @@ public class Bonus implements Serializable, Mergable {
 	private int coeff;
 	private boolean alreadyGained;
 	private boolean permanent;
+	private boolean specialAttack;
 
 	public BonusType getType() {
 		return type;
@@ -99,6 +100,14 @@ public class Bonus implements Serializable, Mergable {
 
 	public void setPermanent(boolean permanent) {
 		this.permanent = permanent;
+	}
+
+	public boolean isSpecialAttack() {
+		return specialAttack;
+	}
+
+	public void setSpecialAttack(boolean specialAttack) {
+		this.specialAttack = specialAttack;
 	}
 
 }

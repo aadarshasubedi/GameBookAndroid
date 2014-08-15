@@ -118,6 +118,7 @@ public class GuideActivity extends Activity {
 				getString(R.string.attr_luck),
 				getString(R.string.section),
 				getString(R.string.options),
+				getString(R.string.enemies),
 				getString(R.string.battle),
 				getString(R.string.modifications),
 				getString(R.string.game_saving)};
@@ -131,6 +132,7 @@ public class GuideActivity extends Activity {
 				R.string.guide_luck, 
 				R.string.guide_section, 
 				R.string.guide_option, 
+				R.string.guide_enemies,
 				R.string.guide_battle, 
 				R.string.guide_modifications,
 				R.string.guide_save,};

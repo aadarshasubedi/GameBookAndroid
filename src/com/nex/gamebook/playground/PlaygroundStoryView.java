@@ -58,7 +58,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 		} else if(currentSection.isVisited()) {
 			tw.setText(currentSection.getAlreadyVisitedText());	
 		} else {
-			tw.setText(currentSection.getText());	
+			tw.setText(currentSection.getText());
 		}
 		if(currentSection.isLoseSection()) {
 			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.endGame_lose);
@@ -99,7 +99,10 @@ public class PlaygroundStoryView extends AbstractFragment {
 			String marker = "+";
 			TextView opt = new TextView(context);
 			opt.setTextAppearance(context, R.style.number);
-			if(bonus.getCoeff() > 0) {
+			if(bonus.isSpecialAttack()) {
+				marker = "";
+				opt.setTextColor(context.getResources().getColor(R.color.special_attack));
+			} else if(bonus.getCoeff() > 0) {
 				opt.setTextColor(context.getResources().getColor(R.color.positive));
 			} else {
 				marker = "-";
@@ -160,14 +163,14 @@ public class PlaygroundStoryView extends AbstractFragment {
 		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_luck, context));
 		value = Math.abs(releasedStats.getDamage());
 		if(value>0)
-		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context));
+		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context));		
 	}
 	
 	
 	private TextView getViewForReleasedTemporalAttribute(int value, int attrName, Context context) {
 		TextView opt = new TextView(context);
 		opt.setTextAppearance(context, R.style.number);
-		opt.setTextColor(context.getResources().getColor(R.color.negative));
+		opt.setTextColor(context.getResources().getColor(R.color.temporal));
 		String s = getContext().getResources().getString(attrName).toLowerCase();
 		opt.setText(value + " " + s);
 		return opt;
@@ -182,6 +185,8 @@ public class PlaygroundStoryView extends AbstractFragment {
 	private void prepareAfterFight(Context context, LinearLayout layout, StorySection section) {
 		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.AFTER_FIGHT));
 		removeTemporalBonuses(context, layout);
+		prepareBonusSection(context, layout, section, _character.getSpecialTempAttacks());
+		_character.getSpecialTempAttacks().clear();
 		section.setBonusesAlreadyGained(true);
 		setShowOptions(true);
 	}

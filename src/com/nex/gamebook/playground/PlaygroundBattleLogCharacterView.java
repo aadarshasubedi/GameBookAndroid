@@ -26,6 +26,7 @@ import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.entity.StorySection;
+import com.nex.gamebook.entity.special.SpecialAttack;
 
 public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
@@ -215,6 +216,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		
 	}
 	
+	@SuppressLint("NewApi")
 	class FightingLog implements AttackCallback, Runnable {
 		private LinearLayout log;
 		private BattleLogAdapter adapter;
@@ -235,6 +237,24 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		@SuppressLint("NewApi")
 		@Override
 		public void attackCallBack(ResultCombat resultCombat) {
+			SpecialAttack spec = resultCombat.getSpecialAttack();
+			if(spec==null) {
+				logNormalAttack(resultCombat);
+			} else {
+				logSpecialAttack(resultCombat);
+			}
+		}
+		private void logSpecialAttack(ResultCombat resultCombat) {
+			Context context = adapter.context;
+			String text = context.getResources().getString(R.string.you_take);
+			text += " " + context.getResources().getString(R.string.special_attack);
+			text += " -" + resultCombat.getDamage() + " " 
+			+ context.getResources().getString(resultCombat.getSpecialAttack().getAffectedAttributeId()).toLowerCase();
+			text += " ("+resultCombat.getEnemyName() + ")";
+			addResultToLog(text, context, R.color.negative);
+		}
+		
+		private void logNormalAttack(ResultCombat resultCombat) {
 			int color = R.color.positive;
 			String text = "\n";
 			Context context = adapter.context;
@@ -262,6 +282,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 				}
 			}
 			text += " ("+resultCombat.getEnemyName() + ")";
+			addResultToLog(text, context, color);
+		}
+		
+		private void addResultToLog(String text, Context context, int color) {
 			TextView battleText = new TextView(context);
 			battleText.setText(text);
 			battleText.setTextColor(context.getResources().getColor(color));
@@ -276,9 +300,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			    	sc.fullScroll(View.FOCUS_DOWN);              
 			    }
 			});
-//			getPlayground().getBattleLog().add(battleText);
 		}
-
+		
 		@Override
 		public void fightEnd() {
 			_character.setFighting(false);
