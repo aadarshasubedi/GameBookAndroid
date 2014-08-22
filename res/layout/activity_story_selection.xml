@@ -5,7 +5,7 @@
     android:background="@drawable/background">
 	<TextView
 	        style="@style/main_title"
-	         android:padding="15dip"
+	        android:padding="15dip"
 	    	android:layout_marginBottom="10dp"
 	        android:id="@+id/textView1"
 	        android:layout_width="match_parent"

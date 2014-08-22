@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.util.Log;
 
+import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
@@ -36,7 +37,7 @@ public class StorySection implements Serializable, Mergable {
 	private List<StorySectionOption> options = new ArrayList<>();
 	private List<Enemy> enemies = new ArrayList<>();
 	private List<Bonus> bonuses = new ArrayList<>();
-	private List<String> enemiesIds = new ArrayList<String>();
+	private transient List<EnemyAssign> enemiesIds = new ArrayList<EnemyAssign>();
 	
 	public StorySection() {
 		super();
@@ -217,18 +218,28 @@ public class StorySection implements Serializable, Mergable {
 		return story;
 	}
 
-	public List<String> getEnemiesIds() {
+	public List<EnemyAssign> getEnemiesIds() {
 		return enemiesIds;
 	}
 	
 	public void assignEnemies() {
-		for(String enemyKey: enemiesIds) {
-			Enemy enemy = story.findEnemy(enemyKey);
+		for(EnemyAssign enemyKey: enemiesIds) {
+			Enemy enemy = story.findEnemy(enemyKey.getEnemyKey());
 			if(enemy == null) {
-				Log.e("GamebookEnemeNotFound", enemyKey);
+				Log.e("GamebookEnemeNotFound", enemyKey.getEnemyKey());
 				continue;
 			}
-			this.enemies.add(new Enemy(enemy));
+			SpecialSkill skill = SpecialSkillsMap.getEnemiesAttack(enemyKey.getEnemySkill());
+			if(skill==null && enemy.getSpecialSkill()!=null) {
+				Class<? extends SpecialSkill> cls = enemy.getSpecialSkill().getClass();
+				try {
+					skill = cls.newInstance();
+				} catch (InstantiationException | IllegalAccessException e) {
+					Log.e("EnemyAssing", "", e);
+				}
+			}
+			
+			this.enemies.add(new Enemy(enemy, skill));
 		}
 	}
 	

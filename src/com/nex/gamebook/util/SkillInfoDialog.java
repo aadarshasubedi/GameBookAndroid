@@ -9,35 +9,30 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.nex.gamebook.R;
+import com.nex.gamebook.attack.special.SpecialSkill;
 
-public class DialogBuilder {
+public class SkillInfoDialog {
 
 	private Dialog dialog;
 
-	public DialogBuilder(Context context) {
+	public SkillInfoDialog(Context context, SpecialSkill skill) {
 		super();
 		dialog = new Dialog(context);
-		dialog.setContentView(R.layout.dialog_layout);
+		dialog.setContentView(R.layout.skill_info_layout);
 		dialog.setCancelable(true);
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		TextView view = (TextView) dialog.findViewById(R.id.skill_name);
+		view.setText(context.getString(skill.getNameId()));
+		
+		view = (TextView) dialog.findViewById(R.id.skill_description);
+		view.setText(context.getString(skill.getDescriptionId()));
+		
+		view = (TextView) dialog.findViewById(R.id.skill_type);
+		view.setText(context.getString(skill.getTypeId()));
+//		
+//		setButton(R.string.confirm, R.id.confirm, null);
 	}
 
-	public DialogBuilder setText(int id) {
-		// set up text
-		TextView text = (TextView) dialog.findViewById(R.id.dialog_text);
-		text.setText(id);
-		return this;
-	}
-
-	public DialogBuilder setPositiveButton(int textId, OnClickListener listener) {
-		setButton(textId, R.id.positiveButon, listener);
-		return this;
-	}
-
-	public DialogBuilder setNegativeButton(int textId, OnClickListener listener) {
-		setButton(textId, R.id.negativeButton, listener);
-		return this;
-	}
 
 	private void setButton(int textId, int buttonId, OnClickListener listener) {
 		// set up button
@@ -55,9 +50,6 @@ public class DialogBuilder {
 		button.setOnClickListener(listener);
 	}
 
-	public DialogBuilder setTitle(int id) {
-		return this;
-	}
 
 	public void show() {
 		this.dialog.show();
@@ -66,5 +58,4 @@ public class DialogBuilder {
 	public void dismiss() {
 		this.dialog.dismiss();
 	}
-	
 }

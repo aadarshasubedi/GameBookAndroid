@@ -6,8 +6,8 @@
             <health>40</health>
             <defense>5</defense>
             <skill>5</skill>
-            <luck>20</luck>
-            <attack>11</attack>
+            <luck>5</luck>
+            <attack>10</attack>
         </enemy>
     </enemies>
 </story>

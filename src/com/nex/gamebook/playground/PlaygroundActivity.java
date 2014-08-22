@@ -19,6 +19,7 @@ import android.widget.ViewFlipper;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
 import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.SpecialSkillsMap;
 import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySection;
@@ -105,6 +106,7 @@ public class PlaygroundActivity extends Activity {
 		StoryXmlParser parser = new StoryXmlParser(this);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
 		Player character = story.getCharacter(getIntent().getExtras().getInt("character"));
+		character.setSpecialSkill(SpecialSkillsMap.getPlayersAttack(getIntent().getExtras().getString("skill")));
 		character.setCurrentStats(new Stats(character.getStats()));
 		return character;
 	}

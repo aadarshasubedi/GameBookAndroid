@@ -7,6 +7,8 @@ import com.nex.gamebook.R;
 public class Bonus implements Serializable, Mergable {
 	private static final long serialVersionUID = 4130822562659948335L;
 
+	private transient String conditionId;
+
 	public enum BonusState implements Serializable {
 		BEFORE_FIGHT, AFTER_FIGHT, NORMAL;
 
@@ -108,6 +110,14 @@ public class Bonus implements Serializable, Mergable {
 
 	public void setSpecialAttack(boolean specialAttack) {
 		this.specialAttack = specialAttack;
+	}
+
+	public String getConditionId() {
+		return conditionId;
+	}
+
+	public void setConditionId(String conditionId) {
+		this.conditionId = conditionId;
 	}
 
 }

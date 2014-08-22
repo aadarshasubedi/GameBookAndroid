@@ -1,12 +1,12 @@
 package com.nex.gamebook.entity;
 
-import com.nex.gamebook.entity.special.SpecialAttack;
+import com.nex.gamebook.attack.special.SpecialSkill;
 
 public class ResultCombat {
 	private CharacterType type;
 	private boolean critical;
 	private double multiply;
-	private SpecialAttack specialAttack;
+	private SpecialSkill specialAttack;
 	private boolean luck;
 	private int damage;
 	private String enemyName;
@@ -69,11 +69,11 @@ public class ResultCombat {
 		return "1.5x";
 	}
 
-	public SpecialAttack getSpecialAttack() {
+	public SpecialSkill getSpecialAttack() {
 		return specialAttack;
 	}
 
-	public void setSpecialAttack(SpecialAttack specialAttack) {
+	public void setSpecialAttack(SpecialSkill specialAttack) {
 		this.specialAttack = specialAttack;
 	}
 

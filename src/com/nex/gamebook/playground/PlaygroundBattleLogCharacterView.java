@@ -21,12 +21,14 @@ import android.widget.ViewFlipper;
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
+import com.nex.gamebook.attack.special.SpecialSkill;
+import com.nex.gamebook.combat.CombatProcess;
 import com.nex.gamebook.entity.CharacterType;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.entity.StorySection;
-import com.nex.gamebook.entity.special.SpecialAttack;
+import com.nex.gamebook.util.SkillInfoDialog;
 
 public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
@@ -121,9 +123,22 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	public void showCurrentValues() {
 		View view = masterView;
 		fillCurrentStats(view);
+		showSkill((TextView) view.findViewById(R.id.skill_name), _character.getSpecialSkill());
 		masterView.findViewById(R.id.tableLayout1).invalidate();
 	}
 
+	public void showSkill(TextView view, final SpecialSkill skill) {
+		view.setText(skill.getNameId());
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				SkillInfoDialog dialog = new SkillInfoDialog(getContext(), skill);
+				dialog.show();
+			}
+		});
+	}
+	
 	public void fight(StorySection section) {
 		this.section = section;
 	}
@@ -192,7 +207,15 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					attack = (TextView) rowView.findViewById(R.id.enemy_critical);
 					attack.setText(String.valueOf(enemy.getCurrentStats().getSkillPercentage()));
 					attack = (TextView) rowView.findViewById(R.id.enemy_l_def_perc);
-					attack.setText(String.valueOf(enemy.getStats().getDefensePercentage()));
+					attack.setText(String.valueOf(enemy.getCurrentStats().getDefensePercentage()));
+					LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.enemy_special_skill_row);
+					if(enemy.getSpecialSkill() == null) {
+						layout.setVisibility(View.GONE);
+					} else {
+						layout.setVisibility(View.VISIBLE);
+						TextView skillname = (TextView) layout.findViewById(R.id.enemy_skill_name);
+						showSkill(skillname, enemy.getSpecialSkill());
+					}
 				}
 			};
 			changeableView.addView(rowView);
@@ -237,21 +260,33 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		@SuppressLint("NewApi")
 		@Override
 		public void attackCallBack(ResultCombat resultCombat) {
-			SpecialAttack spec = resultCombat.getSpecialAttack();
+			SpecialSkill spec = resultCombat.getSpecialAttack();
 			if(spec==null) {
 				logNormalAttack(resultCombat);
 			} else {
 				logSpecialAttack(resultCombat);
 			}
 		}
+		
 		private void logSpecialAttack(ResultCombat resultCombat) {
 			Context context = adapter.context;
-			String text = context.getResources().getString(R.string.you_take);
-			text += " " + context.getResources().getString(R.string.special_attack);
-			text += " -" + resultCombat.getDamage() + " " 
-			+ context.getResources().getString(resultCombat.getSpecialAttack().getAffectedAttributeId()).toLowerCase();
-			text += " ("+resultCombat.getEnemyName() + ")";
-			addResultToLog(text, context, R.color.negative);
+			SpecialSkill skill = resultCombat.getSpecialAttack();
+			if(CharacterType.ENEMY.equals(resultCombat.getType())) {
+				String text = resultCombat.getEnemyName();
+				text += " " + context.getString(R.string.enemy_use);
+				text += " " + context.getString(skill.getNameId()).toLowerCase();
+				text += " " + context.getString(R.string.for_word);
+				text += " " + resultCombat.getDamage();
+				text += " " + context.getString(skill.getTextId());
+				addResultToLog(text, context, R.color.negative);
+			} else {
+				String text = context.getString(R.string.you_use);
+				text += " " + context.getString(skill.getNameId()).toLowerCase();
+				text += " " + context.getString(R.string.for_word);
+				text += " " + resultCombat.getDamage();
+				text += " " + context.getString(skill.getTextId());
+				addResultToLog(text, context, R.color.positive);
+			}
 		}
 		
 		private void logNormalAttack(ResultCombat resultCombat) {
@@ -318,7 +353,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		
 		@Override
 		public void run() {
-			enemy.fight(this);
+			CombatProcess combat = new CombatProcess(enemy);
+			combat.fight(this);
 		}
 		
 	}

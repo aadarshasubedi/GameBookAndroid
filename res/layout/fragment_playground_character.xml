@@ -233,6 +233,26 @@
                 android:layout_height="wrap_content"
                 android:text="%" />
         </TableRow>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/special_skill" />
+
+            <TextView
+                style="@style/text"
+                android:id="@+id/skill_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dsc_default" />
+
+        </LinearLayout>
     </TableLayout>
 
     <TextView

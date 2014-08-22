@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/character_layout"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:id="@+id/character_layout" android:background="@drawable/corners_">
+    android:layout_height="fill_parent"
+    android:background="@drawable/corners_" >
 
     <Button
         android:id="@+id/play_button"
@@ -24,12 +25,11 @@
 
     <TableLayout
         android:id="@+id/tableLayout1"
+        style="@style/section"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView2"
-        style="@style/section"
-        
         android:background="@drawable/_background_corners"
         android:padding="10dp" >
 
@@ -56,7 +56,8 @@
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text=""/>
+                android:layout_height="wrap_content"
+                android:text="" />
 
             <TextView
                 android:id="@+id/sel_l_attack_d"
@@ -73,8 +74,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="@string/attr_value_zero" />
-             <TextView
-               
+
+            <TextView
                 style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,19 +152,18 @@
                 android:text="@string/attr_value_zero" />
 
             <TextView
-                style="@style/number"
                 android:id="@+id/textView7"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="%" />
 
             <TextView
-                style="@style/number"
                 android:id="@+id/textView10"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=")" />
-
         </TableRow>
 
         <TableRow
@@ -187,53 +187,45 @@
                 android:text="@string/attr_value_zero" />
 
             <TextView
-                style="@style/number"
                 android:id="@+id/textView6"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="%" />
 
             <TextView
-                style="@style/attribute"
                 android:id="@+id/textView3"
+                style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
                 android:text="@string/attr_critical" />
 
             <TextView
-                style="@style/number"
                 android:id="@+id/critical_d"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100" />
-			<TextView
-                style="@style/number"
+
+            <TextView
                 android:id="@+id/p"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="%" />
         </TableRow>
     </TableLayout>
 
-    <TextView
-        android:id="@+id/textView1"
-        style="@style/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/scrollView2"
-        android:layout_below="@+id/tableLayout1"
-        android:text="@string/description" />
-
     <ScrollView
         android:id="@+id/scrollView2"
+        style="@style/section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/play_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView1"
-        style="@style/section"
         android:background="@drawable/_background_corners"
         android:padding="10dp" >
 
@@ -250,5 +242,36 @@
                 android:text="@string/dsc_default" />
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/textView8"
+        style="@style/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tableLayout1"
+        android:layout_below="@+id/tableLayout1"
+        android:text="@string/special_skill" />
+
+    <Spinner
+        android:id="@+id/skills"
+        style="@style/spinner"
+        android:spinnerMode="dropdown"
+        android:popupBackground="@drawable/spinner"
+        android:dropDownVerticalOffset="-50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scrollView2"
+        android:layout_alignRight="@+id/scrollView2"
+        android:layout_below="@+id/skills"
+        android:text="@string/description" />
 
 </RelativeLayout>

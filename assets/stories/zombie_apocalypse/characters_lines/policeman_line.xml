@@ -1,5 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../story.xsd">
-
+    <sections>
+        <section position="47" text="section47_text" enemiesDefeatedText="section47_enemy_text" luckDefeatEnemies="true" luckText="section47_luck_text">
+            <enemies>
+                <ref value="dead_policeman"/>
+            </enemies>
+            <options>
+                <option section="48" text="section47_option1_text"/>
+            </options>
+        </section>
+        <section position="48" text="section48_text" enemiesDefeatedText="section48_enemy_text" luckText="section48_luck_text">
+            <enemies>
+                <ref value="dead_policeman" overrideSkill="defenseCondition"/>
+                <ref value="dead_policeman"/>
+                <ref value="dead_policeman"/>
+            </enemies>
+            <options>
+                <option section="49" text="section48_option1_text"/>
+            </options>
+        </section> 
+        <section position="49" text="section49_text">
+            <options>
+                <option section="50" text="section49_option1_text"/>
+                <option section="51" text="section49_option2_text"/>
+            </options>
+        </section>
+        <section position="50" text="section50_text">
+            <bonuses>
+                <bonus overflowed="true" type="health" value="20" />
+            </bonuses>
+            <options>
+                <option section="52" text="section50_option1_text"/>
+            </options>
+        </section> 
+        <section position="51" text="section51_text">
+            <bonuses>
+                <bonus overflowed="true" type="attack" value="2" />
+                <bonus overflowed="true" type="skill" value="1" />
+            </bonuses>
+            <options>
+                <option section="53" text="section51_option1_text"/>
+            </options>
+        </section>
+        <section position="52" text="section52_text">
+            <options>
+                <option section="54" text="section52_option1_text"/>
+            </options>
+        </section>
+        <section position="53" text="section53_text">
+            <options>
+                <option section="54" text="section53_option1_text"/>
+            </options>
+        </section>
+        <section position="54" text="section54_text">
+            <options>
+                <option section="55" text="section54_option1_text"/>
+            </options>
+        </section>
+        <section position="55" text="section55_text">
+            <options>
+                <option section="56" text="section55_option1_text" />
+                <option section="" text="section55_option2_text" skill="11"/>
+            </options>
+        </section>
+        <section position="56" text="section56_text">
+            <options>
+                <option section="57" text="section56_option1_text" />
+                <option section="" text="section56_option2_text" />
+            </options>
+        </section>
+        <section position="57" text="section57_text">
+            <bonuses>
+                <bonus overflowed="true" type="luck" value="1" />
+            </bonuses>
+            <options>
+                <option section="58" text="section57_option1_text" />
+            </options>
+        </section>
+        <section position="58" text="section58_text" alreadyVisitedText="section58_visited_text">
+            <options>
+                <option section="59" text="section58_option1_text" />
+                <option section="" text="section58_option2_text" />
+            </options>
+        </section>
+        <section position="59" text="section59_text" alreadyVisitedText="section59_visited_text">
+            <bonuses>
+                <bonus type="defense" overflowed="true" value="1" />
+            </bonuses>
+            <options>
+                <option section="58" text="section59_option1_text" />
+                <option section="60" text="section59_option2_text" disableWhenSelected="true"/>
+            </options>
+        </section>
+        <section position="60" text="section60_text">
+            <options>
+                <option section="61" text="section_escalator_1th" />
+                <option section="62" text="section_escalator_2th" />
+                <option section="63" text="section_escalator_3th" />
+                <option section="64" text="section_escalator_4th" />
+            </options>
+        </section>
+        <section position="61" text="section61_text">
+            <options>
+                <option section="62" text="section_escalator_2th" />
+                <option section="63" text="section_escalator_3th" />
+                <option section="64" text="section_escalator_4th" />
+            </options>
+        </section>
+        <section position="62" text="section62_text" enemiesDefeatedText="section62_enemy_text" luckText="section62_luck_text">
+            <enemies>
+                <ref value="zombie" />
+                <ref value="zombie" />
+                <ref value="zombie" />
+            </enemies>
+            <options>
+                <option section="63" text="section_escalator_3th" />
+                <option section="64" text="section_escalator_4th" />
+            </options>
+        </section>
+        <section position="63" text="section63_text">
+            <options>
+                <option section="64" text="section_escalator_4th" />
+            </options>
+        </section>
+        <section position="64" text="section64_text">
+            <options>
+                <option section="59" text="section64_option1_text" />
+            </options>
+        </section>
+    </sections>
 </story>

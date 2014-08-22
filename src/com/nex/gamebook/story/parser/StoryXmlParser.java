@@ -24,9 +24,11 @@ import android.util.Log;
 import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.Bonus.BonusType;
-import com.nex.gamebook.entity.Enemy.EnemyLevel;
 import com.nex.gamebook.entity.Enemy;
+import com.nex.gamebook.entity.Enemy.EnemyLevel;
+import com.nex.gamebook.entity.EnemyAssign;
 import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.SpecialSkillsMap;
 import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySection;
@@ -41,7 +43,7 @@ public class StoryXmlParser {
 	private final String ALREADY_VISITED_TEXT = "alreadyVisitedText";
 	private final String INCLUDE = "include";
 	private final String VERSION = "version";
-
+	private final String SPECIAL_ATTACK = "specialAttack";
 	private final String BACKGROUND = "background";
 
 	private final String LOSE_SECTION = "loseSection";
@@ -77,6 +79,7 @@ public class StoryXmlParser {
 
 	private final String TYPE = "type";
 	private final String VALUE = "value";
+	private final String OVERRIDE_SKILL = "overrideSkill";
 	private final String OVERFLOWED = "overflowed";
 	private final String PERMANENT = "permanent";
 	
@@ -278,6 +281,8 @@ public class StoryXmlParser {
 		} else if (node.getNodeName().equals(BASE_DAMAGE)) {
 			int damage = getInteger(node.getTextContent());
 			character.getStats().setDamage(damage==0?1:damage);
+		} else if (node.getNodeName().equals(SPECIAL_ATTACK)) {
+			character.setSpecialSkill(SpecialSkillsMap.getEnemiesAttack(node.getTextContent()));
 		}
 		character.setCurrentStats(new Stats(character.getStats()));
 	}
@@ -345,7 +350,7 @@ public class StoryXmlParser {
 			Node n = optionsList.item(i);
 			if (n instanceof Element) {
 				Element enemyNode = (Element) n;
-				section.getEnemiesIds().add(enemyNode.getAttribute(VALUE));
+				section.getEnemiesIds().add(new EnemyAssign(enemyNode.getAttribute(VALUE), enemyNode.getAttribute(OVERRIDE_SKILL)));
 			}
 		}
 	}

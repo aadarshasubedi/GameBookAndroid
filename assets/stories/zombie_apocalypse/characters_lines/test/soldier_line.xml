@@ -307,6 +307,12 @@
                 <bonus type="skill" value="1" overflowed="true" state="after_fight" />
             </bonuses>
             <enemies>
+                <ref value="living_dead"/>
+                <ref value="nohander"/>
+                <ref value="rotten_corpse"/>
+                <ref value="living_dead"/>
+                <ref value="living_dead"/>
+                <ref value="zombie"/>
                 <ref value="brain_eater"/>
             </enemies>
             <options>

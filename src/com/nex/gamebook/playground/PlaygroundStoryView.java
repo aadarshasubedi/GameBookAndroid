@@ -144,26 +144,42 @@ public class PlaygroundStoryView extends AbstractFragment {
 	private void removeTemporalBonuses(Context context, View view) {
 		Stats releasedStats = _character.releaseTemporalStats();
 		if(releasedStats==null) return;
+		boolean show = false;
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.bonuses);
-		layout.setVisibility(View.VISIBLE);
 		int value = Math.abs(releasedStats.getHealth());
-		if(value>0)
-		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_health, context));
+		if(value>0) {
+			show = true;
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_health, context));
+		}
 		value = Math.abs(releasedStats.getAttack());
-		if(value>0)
-		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_attack, context));
+		if(value>0) {
+			show = true;
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_attack, context));
+		}
 		value = Math.abs(releasedStats.getDefense());
-		if(value>0)
-		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_defense, context));
+		if(value>0) {
+			show = true;
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_defense, context));
+		}
 		value = Math.abs(releasedStats.getSkill());
-		if(value>0)
-		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill, context));
+		if(value>0)  {
+			show = true;
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill, context));
+		}
 		value = Math.abs(releasedStats.getLuck());
-		if(value>0)
-		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_luck, context));
+		if(value>0) {
+			show = true;
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_luck, context));
+		}
 		value = Math.abs(releasedStats.getDamage());
-		if(value>0)
-		layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context));		
+		if(value>0) {
+			show = true;
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context));
+		}
+		if(show) {
+			view.findViewById(R.id.modification).setVisibility(View.VISIBLE);
+			layout.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	
@@ -185,8 +201,8 @@ public class PlaygroundStoryView extends AbstractFragment {
 	private void prepareAfterFight(Context context, LinearLayout layout, StorySection section) {
 		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.AFTER_FIGHT));
 		removeTemporalBonuses(context, layout);
-		prepareBonusSection(context, layout, section, _character.getSpecialTempAttacks());
-		_character.getSpecialTempAttacks().clear();
+		prepareBonusSection(context, layout, section, _character.getConditions());
+		_character.getConditions().clear();
 		section.setBonusesAlreadyGained(true);
 		setShowOptions(true);
 	}

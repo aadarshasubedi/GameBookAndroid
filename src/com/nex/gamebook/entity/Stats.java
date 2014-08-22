@@ -1,6 +1,12 @@
 package com.nex.gamebook.entity;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
+
+import android.util.Log;
+
+import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.io.GameBookUtils;
 
 public class Stats implements Serializable {
 	private static final long serialVersionUID = 5967013219649795912L;
@@ -106,8 +112,19 @@ public class Stats implements Serializable {
 		return this.damage = damage;
 	}
 
+	public int getValueByBonusType(BonusType type) {
+		Method currentAttr;
+		try {
+			currentAttr = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", type.name().toLowerCase()), new Class[0]);
+			int currentValue = (int) currentAttr.invoke(this, new Object[0]);
+			return currentValue;
+		} catch (Exception e) {
+			Log.e("Stats", "", e);
+		}
+		return 0;
+	}
+	
 	public void releaseTemporalStats(Stats releaseStats) {
-		
 		int damage = releaseStats.holder.health - this.health;
 		int resultHealth = releaseStats.health - damage;
 		if(resultHealth < 0) {
