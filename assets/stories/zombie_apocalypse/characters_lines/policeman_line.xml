@@ -28,6 +28,7 @@
         </section>
         <section position="50" text="section50_text">
             <bonuses>
+                <bonus overflowed="true" type="health" value="10" base="true"/>
                 <bonus overflowed="true" type="health" value="20" />
             </bonuses>
             <options>

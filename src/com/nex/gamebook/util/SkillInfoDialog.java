@@ -4,55 +4,86 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialSkill;
-
+import com.nex.gamebook.entity.Character;
 public class SkillInfoDialog {
 
 	private Dialog dialog;
 
-	public SkillInfoDialog(Context context, SpecialSkill skill) {
+	public SkillInfoDialog(Context context, Character applicator) {
 		super();
 		dialog = new Dialog(context);
+//		dialog.
 		dialog.setContentView(R.layout.skill_info_layout);
 		dialog.setCancelable(true);
+		SpecialSkill skill = applicator.getSpecialSkill();
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		TextView view = (TextView) dialog.findViewById(R.id.skill_name);
-		view.setText(context.getString(skill.getNameId()));
+		view.setText(skill.getNameId());
 		
 		view = (TextView) dialog.findViewById(R.id.skill_description);
-		view.setText(context.getString(skill.getDescriptionId()));
+		view.setText(skill.getDescriptionId());
 		
 		view = (TextView) dialog.findViewById(R.id.skill_type);
-		view.setText(context.getString(skill.getTypeId()));
-//		
-//		setButton(R.string.confirm, R.id.confirm, null);
-	}
-
-
-	private void setButton(int textId, int buttonId, OnClickListener listener) {
-		// set up button
-		if (listener == null) {
-			listener = new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					dialog.dismiss();
-				}
-			};
+		TextView aspect = (TextView) dialog.findViewById(R.id.skill_type_aspect);
+		aspect.setVisibility(View.GONE);
+		if(!skill.isPermanent()) {
+			aspect.setVisibility(View.VISIBLE);
+			aspect.setText(context.getString(R.string.special_skill_type_temp));
 		}
-		Button button = (Button) dialog.findViewById(buttonId);
-		button.setVisibility(View.VISIBLE);
-		button.setText(textId);
-		button.setOnClickListener(listener);
+		view.setText(context.getString(skill.getTypeId()));
+		
+		int value = skill.getValue(applicator);
+		int luckValue = skill.getValueWhenLuck(applicator);
+		if(value < 0) {
+			View powerRow = dialog.findViewById(R.id.power_row);
+			powerRow.setVisibility(View.GONE);
+		}
+		view = (TextView) dialog.findViewById(R.id.skill_aspect);
+		view.setText(skill.getAspectId());
+		
+		TextView skillPower = (TextView) dialog.findViewById(R.id.skill_power);
+		TextView skillPowerLuck = (TextView) dialog.findViewById(R.id.skill_power_luck);
+		String mark = "";
+		if(skill.showPercentage()) {
+			mark = "%";
+		}
+		skillPower.setText(String.valueOf(value) + mark);
+		skillPowerLuck.setText(String.valueOf(luckValue) + mark);
+		view = (TextView) dialog.findViewById(R.id.skill_trigger);
+		if(skill.isTriggerAfterEnemyAttack()) {
+			view.setText(R.string.special_skill_trigger_after_enemy);
+		} else if(skill.isTriggerBeforeEnemyAttack()) {
+			view.setText(R.string.special_skill_trigger_before_enemy);
+		} else if(skill.afterNormalAttack()){
+			view.setText(R.string.special_skill_trigger_after);
+		} else{
+			view.setText(R.string.special_skill_trigger_normal);
+		}
+		view = (TextView) dialog.findViewById(R.id.attempts);
+		view.setText(String.valueOf(skill.attemptsPerFight()));
+		if(skill.attemptsPerFight() < 0) {
+			view.setText(R.string.always);
+			dialog.findViewById(R.id.attempts_marker).setVisibility(View.GONE);
+		}
+		
 	}
-
 
 	public void show() {
 		this.dialog.show();
+		//Grab the window of the dialog, and change the width
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		Window window = dialog.getWindow();
+		lp.copyFrom(window.getAttributes());
+		//This makes the dialog take up the full width
+		lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+		lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		window.setAttributes(lp);
 	}
 	
 	public void dismiss() {

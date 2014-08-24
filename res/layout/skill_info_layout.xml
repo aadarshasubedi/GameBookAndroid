@@ -4,67 +4,139 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" android:background="@drawable/corners_noopacity" android:padding="10dip">
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <TableRow
-            android:id="@+id/tableRow1"
+        <TextView
+            style="@style/title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/name" />
 
-            <TextView
-                style="@style/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="@string/name" />
-
-            <TextView
-                android:id="@+id/skill_name"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dsc_default" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
+        <TextView
+            android:id="@+id/skill_name"
+            style="@style/attribute"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:text="@string/dsc_default" />
 
-            <TextView
-                
-                style="@style/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="@string/special_skill_type" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/skill_type"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dsc_default" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow3"
+        <TextView
+            style="@style/title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/special_skill_type" />
 
-        <TableRow
-            android:id="@+id/tableRow4"
+        <TextView
+            android:id="@+id/skill_type"
+            style="@style/attribute"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-    </TableLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/dsc_default" />
 
-<TextView
+        <TextView
+            android:id="@+id/skill_type_aspect"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dsc_default" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/special_skill_trigger" />
+
+        <TextView
+            android:id="@+id/skill_trigger"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dsc_default" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/attempts_row">
+
+        <TextView
+            style="@style/title"
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:text="@string/special_skill_attempts" />
+
+        <TextView
+            style="@style/attribute"
+            android:id="@+id/attempts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/attr_value_zero" />
+		<TextView
+		    android:id="@+id/attempts_marker"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/power_row">
+
+        <TextView
+            android:id="@+id/skill_aspect"
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/dsc_default" />
+
+        <TextView
+            android:id="@+id/skill_power"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/dsc_default" />
+
+        <TextView
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/with_luck" />
+
+        <TextView
+            android:id="@+id/skill_power_luck"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/dsc_default" />
+
+    </LinearLayout>
+
+
+	<TextView
             android:id="@+id/skill_description"
             style="@style/attribute"
             android:layout_marginTop="10dip"

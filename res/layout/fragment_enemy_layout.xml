@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:text="@string/dsc_default" />
 
-    <TableLayout
+   <TableLayout
         android:id="@+id/tableLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/_background_corners"
         android:padding="10dp" >
 
@@ -178,43 +178,56 @@
                 android:layout_height="wrap_content"
                 android:text="%" />
         </TableRow>
-
-        <LinearLayout
-            android:id="@+id/enemy_special_skill_row"
+ <LinearLayout
+     android:id="@+id/enemy_special_skill_row"
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginBottom="10dp">
 
             <TextView
-                style="@style/title"
+                style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="@string/special_skill" />
+                android:text="@string/power" android:layout_marginRight="5dip"/>
 
             <TextView
-                style="@style/text"
+                style="@style/attribute"
                 android:id="@+id/enemy_skill_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dsc_default" />
+                android:layout_marginRight="5dip"
+                android:text="@string/dsc_default"/>
 
+            <TextView
+                android:id="@+id/enemy_skill_power"
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
         </LinearLayout>
+       
+        <ScrollView
+            android:id="@+id/e_battleLogScrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/_background_corners"
+            android:padding="10dip" android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/e_battle_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+        </ScrollView>
 
         <Button
             android:id="@+id/fight"
             style="@style/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="0dp"
             android:text="@string/button_fight" />
-
-        <TextView
-            android:gravity="center_horizontal"
-            style="@style/title"
-            android:id="@+id/dead_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dead" android:visibility="gone"/>
 
     </TableLayout>
 

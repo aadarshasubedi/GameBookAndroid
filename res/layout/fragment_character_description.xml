@@ -215,6 +215,26 @@
                 android:layout_height="wrap_content"
                 android:text="%" />
         </TableRow>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:text="@string/attr_skill_power" />
+
+            <TextView
+                android:id="@+id/skill_power"
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+        </LinearLayout>
     </TableLayout>
 
     <ScrollView

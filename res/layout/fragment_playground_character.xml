@@ -6,42 +6,32 @@
 
     <Button
         android:id="@+id/result_button"
+        style="@style/button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        style="@style/button"
         android:text="@string/sg_continue" />
+
+<!--     <TextView -->
+<!--         android:id="@+id/textView1" -->
+<!--         style="@style/title" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:layout_alignLeft="@+id/battleLogScrollView" -->
+<!--         android:layout_below="@+id/tableLayout1" -->
+<!--         android:text="@string/log" /> -->
 
     <ViewFlipper
         android:id="@+id/viewSwitcher1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:padding="10dip" android:visibility="gone">
-
-    </ViewFlipper>
-
-    <ScrollView
-        android:id="@+id/battleLogScrollView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
         android:layout_above="@+id/result_button"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
-        android:padding="10dip"
-        style="@style/section"
-        android:background="@drawable/_background_corners" >
+        android:layout_below="@+id/tableLayout1"
+        android:padding="10dip" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" android:id="@+id/battle_log">
-
-        </LinearLayout>
-        
-    </ScrollView>
+    </ViewFlipper>
 
     <TableLayout
         android:id="@+id/tableLayout1"
@@ -49,8 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/actualStats"
         android:background="@drawable/_background_corners"
         android:padding="10dp" >
 
@@ -77,7 +66,7 @@
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text=""/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/sel_l_attack"
@@ -94,8 +83,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="@string/attr_value_zero" />
+
             <TextView
-               
                 style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,8 +127,7 @@
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/sel_l_defense"
@@ -156,6 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="@string/attr_value_zero" />
+
             <TextView
                 android:id="@+id/textView13"
                 style="@style/number"
@@ -171,15 +160,15 @@
                 android:text="@string/attr_value_zero" />
 
             <TextView
-                style="@style/number"
                 android:id="@+id/textView12"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="%" />
 
             <TextView
-                style="@style/number"
                 android:id="@+id/textView11"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=")" />
@@ -206,72 +195,92 @@
                 android:text="@string/attr_value_zero" />
 
             <TextView
-                style="@style/number"
                 android:id="@+id/luck_perc"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="%" />
 
             <TextView
-                style="@style/attribute"
                 android:id="@+id/textView9"
+                style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
                 android:text="@string/attr_critical" />
 
             <TextView
-                style="@style/number"
                 android:id="@+id/critical"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100" />
-			<TextView
-                style="@style/number"
+
+            <TextView
                 android:id="@+id/p"
+                style="@style/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="%" />
         </TableRow>
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
             <TextView
-                style="@style/title"
+                style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="@string/special_skill" />
+                android:text="@string/power" android:layout_marginRight="5dip"/>
 
             <TextView
-                style="@style/text"
+                style="@style/attribute"
                 android:id="@+id/skill_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
                 android:text="@string/dsc_default" />
 
+            <TextView
+                android:id="@+id/skill_power"
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
         </LinearLayout>
+
     </TableLayout>
 
     <TextView
-        android:id="@+id/textView2"
         style="@style/title"
+        android:layout_marginRight="10dp"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/tableLayout1"
         android:layout_alignLeft="@+id/tableLayout1"
-        android:layout_below="@+id/viewSwitcher1"
-        android:gravity="center_horizontal"
-        android:text="@string/character" />
+        android:text="@string/attributes" />
 
     <TextView
-        android:id="@+id/textView1"
-        style="@style/title"
+        android:id="@+id/actualStats"
+        android:layout_marginRight="10dp"
+        style="@style/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/battleLogScrollView"
-        android:layout_below="@+id/tableLayout1"
-        android:text="@string/log" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textView1"
+        android:gravity="center_horizontal"
+        android:text="@string/actual_stats" />
+
+    <TextView
+        android:id="@+id/base_stats"
+        style="@style/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tableLayout1"
+        android:layout_toRightOf="@+id/actualStats"
+        android:text="@string/base_stats" />
 
 </RelativeLayout>

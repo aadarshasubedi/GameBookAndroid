@@ -24,7 +24,8 @@ public class Stats implements Serializable {
 	private int luck;
 	private int attack;
 	private int damage = 1;
-
+	private int skillPower = 1;
+	
 	private transient Stats holder;
 	
 	public Stats() {
@@ -37,6 +38,7 @@ public class Stats implements Serializable {
 		this.luck = stats.luck;
 		this.attack = stats.attack;
 		this.damage = stats.damage;
+		this.skillPower = stats.skillPower;
 	}
 
 	public int getHealth() {
@@ -51,6 +53,14 @@ public class Stats implements Serializable {
 		return defense;
 	}
 
+	public int getSkillPower() {
+		return skillPower;
+	}
+	
+	public void setSkillPower(int skillPower) {
+		this.skillPower = skillPower;
+	}
+	
 	public int setDefense(int defense) {
 		if (defense > MAX_DEFENSE_OF_CHARACTER)
 			defense = MAX_DEFENSE_OF_CHARACTER;
@@ -131,6 +141,7 @@ public class Stats implements Serializable {
 			resultHealth = 0;
 		}
 		releaseStats.setHealth(resultHealth);
+		
 		this.health -= releaseStats.health;
 		this.attack -= releaseStats.attack;
 		this.defense -= releaseStats.defense;
@@ -141,4 +152,26 @@ public class Stats implements Serializable {
 	public void setHolder(Stats holder) {
 		this.holder = holder;
 	}
+	
+	public int getSpecialSkillPower() {
+		int skillPower = getSkillPower();
+		float one = (float) skillPower / 100f;
+		int percCalc = TOTAL_SKILL_FOR_CALC - skillPower;
+		if(percCalc <= 0) {
+			percCalc = 1;
+		}
+		int addition = (int)  (skillPower + one * Stats.getPercentage(skill, percCalc));
+		return skillPower + addition;
+	}
+	
+	public void nullAllAttributes() {
+		this.health = 0;
+		this.skill = 0;
+		this.skillPower = 0;
+		this.damage = 0;
+		this.defense = 0;
+		this.luck = 0;
+		this.attack = 0;
+	}
+	
 }

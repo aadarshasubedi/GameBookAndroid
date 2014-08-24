@@ -1,10 +1,8 @@
 package com.nex.gamebook.playground;
 
-import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nex.gamebook.R;
@@ -18,13 +16,10 @@ public abstract class AbstractFragment extends GameBookFragment {
 	}
 	
 	protected void decoreClickableTextView(Context context, TextView view, String text) {
-		SpannableString spanString = new SpannableString(text);
-		spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
-		view.setTextAppearance(context, R.style.option);
-		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-	    llp.setMargins(0, 50, 0, 0);
-	    view.setLayoutParams(llp);
-	    view.setText(spanString);
+		SpannableString content = new SpannableString(text);
+		content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+		view.setText(content);
+		
 	}
 	protected void decoreClickableDisabledTextView(Context context, TextView view, String text) {
 //		SpannableString spanString = new SpannableString(text);

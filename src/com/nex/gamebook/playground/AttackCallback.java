@@ -7,7 +7,7 @@ public interface AttackCallback {
 	
 	Player getCharacter();
 	
-	void attackCallBack(ResultCombat resultCombat);
-	
+	void logAttack(ResultCombat resultCombat);
+	void divide(int turn);
 	void fightEnd();
 }

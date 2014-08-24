@@ -3,6 +3,8 @@ package com.nex.gamebook.entity;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.util.Log;
@@ -19,6 +21,7 @@ public abstract class Character implements Serializable, Mergable {
 	private Story story;
 	private transient Stats temporalStatsHolder;
 	private SpecialSkill specialSkill;
+	private transient List<Bonus> conditions = new ArrayList<Bonus>();
 
 	public Character() {
 		// TODO Auto-generated constructor stub
@@ -47,11 +50,13 @@ public abstract class Character implements Serializable, Mergable {
 	}
 
 	public boolean hasLuck() {
+		return hasLuck(Stats.TOTAL_LUCK_FOR_CALC);
+	}
+	public boolean hasLuck(int modificator) {
 		Random random = new Random();
-		int res = random.nextInt(Stats.TOTAL_LUCK_FOR_CALC);
+		int res = random.nextInt(modificator);
 		return getCurrentStats().getLuck() >= res;
 	}
-
 	public boolean isCriticalChance() {
 		Random random = new Random();
 		int res = random.nextInt(Stats.TOTAL_SKILL_FOR_CALC);
@@ -100,11 +105,21 @@ public abstract class Character implements Serializable, Mergable {
 			currentAttr = Stats.class.getDeclaredMethod(
 					GameBookUtils.createMethodName("set", bonus.getType()
 							.name().toLowerCase()), int.class);
+			defaultAttr = Stats.class.getDeclaredMethod(
+					GameBookUtils.createMethodName("set", bonus.getType()
+							.name().toLowerCase()), int.class);
 			int setedValue = 0;
-			if (total > defaultValue && !bonus.isOverflowed()) {
-				realValue = defaultValue - currentValue;
-				setedValue = (int) currentAttr.invoke(getCurrentStats(),
-						defaultValue);
+			if(bonus.isBase()) {
+				defaultAttr.invoke(this.stats, defaultValue + realValue);
+				return realValue;
+			} else if (total > defaultValue && !bonus.isOverflowed()) {
+				if(currentValue < defaultValue) {
+					realValue = defaultValue - currentValue;
+					setedValue = (int) currentAttr.invoke(getCurrentStats(),
+							defaultValue);
+				} else {
+					realValue = 0;
+				}
 			} else {
 				if (total < 0) {
 					realValue = currentValue;
@@ -118,8 +133,7 @@ public abstract class Character implements Serializable, Mergable {
 			if (!bonus.isPermanent()) {
 				if (this.temporalStatsHolder == null) {
 					this.temporalStatsHolder = new Stats();
-
-					this.temporalStatsHolder.setDamage(0);
+					this.temporalStatsHolder.nullAllAttributes();
 				}
 				Field tempAttr = Stats.class.getDeclaredField(bonus.getType().name().toLowerCase());
 				tempAttr.setAccessible(true);
@@ -158,5 +172,18 @@ public abstract class Character implements Serializable, Mergable {
 	public void setSpecialSkill(SpecialSkill specialAttack) {
 		this.specialSkill = specialAttack;
 	}
-
+	public List<Bonus> getConditions() {
+		if (conditions == null)
+			conditions = new ArrayList<Bonus>();
+		return conditions;
+	}
+	
+	public Bonus findConditionById(String id) {
+		for(Bonus b: conditions) {
+			if(b.getConditionId().equals(id)) {
+				return b;
+			}
+		}
+		return null;
+	}
 }

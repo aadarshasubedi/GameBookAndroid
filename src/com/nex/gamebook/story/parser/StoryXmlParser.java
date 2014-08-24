@@ -49,10 +49,12 @@ public class StoryXmlParser {
 	private final String LOSE_SECTION = "loseSection";
 	private final String WIN_SECTION = "winSection";
 	private final String SCORE_MULTIPLIER = "scoreMultiplier";
+	
 
 	private final String STORY = "story";
 
 	private final String OPTIONS = "options";
+	private final String BASE = "base";
 	private final String ENEMIES = "enemies";
 	private final String ENEMY = "enemy";
 	private final String BASE_DAMAGE = "damage";
@@ -70,7 +72,8 @@ public class StoryXmlParser {
 	private final String DEFENSE = "defense";
 	private final String SKILL = "skill";
 	private final String LUCK = "luck";
-
+	private final String SKILL_POWER = "skillPower";
+	
 	private final String LUCK_ASPECT = "luckAspect";
 
 	private final String NAME = "name";
@@ -276,13 +279,13 @@ public class StoryXmlParser {
 		} else if (node.getNodeName().equals(LUCK)) {
 			character.getStats().setLuck(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(ATTACK)) {
-			character.getStats().setAttack(
-					getInteger(node.getTextContent()));
+			character.getStats().setAttack(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(BASE_DAMAGE)) {
-			int damage = getInteger(node.getTextContent());
-			character.getStats().setDamage(damage==0?1:damage);
+			character.getStats().setDamage(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(SPECIAL_ATTACK)) {
-			character.setSpecialSkill(SpecialSkillsMap.getEnemiesAttack(node.getTextContent()));
+			character.setSpecialSkill(SpecialSkillsMap.get(node.getTextContent()));
+		} else if (node.getNodeName().equals(SKILL_POWER)) {
+			character.getStats().setSkillPower(getInteger(node.getTextContent()));
 		}
 		character.setCurrentStats(new Stats(character.getStats()));
 	}
@@ -302,7 +305,7 @@ public class StoryXmlParser {
 		section.setText(text);
 		section.setAlreadyVisitedText(text);
 		String alreadyVisitedText = element.getAttribute(ALREADY_VISITED_TEXT);
-		if (alreadyVisitedText != null)
+		if (alreadyVisitedText != null && alreadyVisitedText.length()>0)
 			section.setAlreadyVisitedText(alreadyVisitedText);
 
 		String enemiesDefeatedText = element
@@ -374,6 +377,7 @@ public class StoryXmlParser {
 				bonus.setState(BonusState.getStateByString(optionNode
 						.getAttribute(STATE)));
 				bonus.setPermanent(getBoolean(optionNode.getAttribute(PERMANENT), true));
+				bonus.setBase(getBoolean(optionNode.getAttribute(BASE)));
 				section.getBonuses().add(bonus);
 			}
 		}

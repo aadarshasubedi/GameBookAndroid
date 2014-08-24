@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../story.xsd">
+    xsi:noNamespaceSchemaLocation="../../../../story.xsd">
     <sections>
         <!-- SECTION 1 -->
         <section position="1" text="section1_text" alreadyVisitedText="section1_visited_text">
@@ -11,7 +11,7 @@
             </options>
         </section>
         <!-- SECTION 2 -->
-        <section position="2" text="section2_text" enemiesDefeatedText="section2_enemy_text" luckText="section2_luck_text">
+        <section position="2" text="section2_text" enemiesDefeatedText="section2_enemy_text" luckText="section2_luck_text" alreadyVisitedText="section2_visited_text">
             <enemies>
                 <ref value="living_dead"/>
             </enemies>

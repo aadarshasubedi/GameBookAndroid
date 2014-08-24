@@ -14,7 +14,6 @@ public class Player extends Character {
 	private int position;
 	private int sections;
 	private int visitedSections;
-	private transient List<Bonus> conditions = new ArrayList<Bonus>();
 
 	public int getId() {
 		return id;
@@ -123,19 +122,6 @@ public class Player extends Character {
 		this.visitedSections++;
 	}
 
-	public List<Bonus> getConditions() {
-		if (conditions == null)
-			conditions = new ArrayList<Bonus>();
-		return conditions;
-	}
 	
-	public Bonus findConditionById(String id) {
-		for(Bonus b: conditions) {
-			if(b.getConditionId().equals(id)) {
-				return b;
-			}
-		}
-		return null;
-	}
 	
 }

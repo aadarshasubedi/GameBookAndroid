@@ -8,6 +8,7 @@
             <skill>4</skill>
             <luck>2</luck>
             <attack>7</attack>
+            <skillPower>1</skillPower>
         </character>
         <character position="" id="2" name="ch_doctor" description="dsc_doctor">
             <health>70</health>
@@ -15,6 +16,7 @@
             <skill>3</skill>
             <luck>2</luck>
             <attack>5</attack>
+            <skillPower>3</skillPower>
         </character>
         <character position="47" id="3" name="ch_policeman" description="dsc_policeman">
             <health>30</health>
@@ -22,13 +24,15 @@
             <skill>10</skill>
             <luck>2</luck>
             <attack>6</attack>
+            <skillPower>1</skillPower>
         </character>
         <character position="" id="4" name="ch_homeless" description="dsc_homeless">
             <health>25</health>
             <defense>2</defense>
             <skill>3</skill>
-            <luck>12</luck>
+            <luck>10</luck>
             <attack>4</attack>
+            <skillPower>2</skillPower>
         </character>
     </characters>
 </story>

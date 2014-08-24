@@ -49,7 +49,7 @@ public class ScoreActivity extends Activity {
 			Player player = getCharacter();
 			TextView title = (TextView) view.findViewById(R.id.title);
 			title.setText(player.getStory().getName() + "\n" + player.getName());
-			fillCurrentStats(view);
+			showStats(view, player.getCurrentStats(), player.getStats(), true);
 			fillDefaultStats(view);
 			TextView text = (TextView) view.findViewById(R.id.score);
 			text.setText(String.valueOf(player.getScore()));

@@ -22,7 +22,8 @@
     <string name="enemies">Nepřátelé</string>
     <string name="keyword_from">z</string>
     <string name="dead">Mrtvý</string>
-
+	<string name="turn">Kolo</string>
+	
     <!-- characters attributes -->
     <string name="attr_value_zero">0</string>
     <string name="attr_health">Zdraví</string>
@@ -31,13 +32,17 @@
     <string name="attr_baseDmg">Základní poškození</string>
     <string name="attr_defense">Obrana</string>
     <string name="attr_skill">Dovednost</string>
+    <string name="attr_skill_power">Síla speciální dovednosti</string>
+    <string name="base_skill_power">Základní síla dovednosti</string>
+    <string name="power">Síla</string>
+    
     <string name="attr_critical">Krit.š.</string>
     <string name="dsc_default">Default</string>
     <string name="title_activity_story_selection">StorySelectionActivity</string>
     <string name="title_activity_playground">PlaygroundActivity</string>
     <string name="option_disabled">(Zablokováno)</string>
     <string name="option_cant_return">(Sem se již nebudeš moci vrátit)</string>
-	<string name="temporal">(Dočasně)</string>
+<!-- 	<string name="temporal">(Dočasně)</string> -->
     <string name="enemy_boss">(Boss)</string>
     <string name="enemy_minion">(Minion)</string>
     <string name="enemy_creature"></string>
@@ -47,7 +52,9 @@
     <string name="fight">Boj</string>
     <string name="story">Příběh</string>
     <string name="sg_continue">Pokračovat</string>
-
+	<string name="actual_stats">Aktualní</string>
+	<string name="base_stats">Základní</string>
+	  
     <!-- log fighting strings -->
     <string name="damage">poškození</string>
     <string name="critical_chance">kritického</string>
@@ -69,7 +76,7 @@
     <string name="previous">Previous</string>
     <string name="log">Log</string>
     <string name="close_book">Zavřít knihu</string>
-    <string name="close_book_description">bojujete přijdete tím o aktualní stav boje.\nOpravdu chcete zavřít knihu?</string>
+    <string name="close_book_description">Pokud bojujete přijdete tím o aktualní stav boje.\nOpravdu chcete zavřít knihu?</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="confirm">Potvrdit</string>
@@ -177,40 +184,30 @@
 		V postraním menu se dozvíte více o jednotlivých aspektech hry.
 	</string>
 	
-	<!-- SPECIAL ATTACKS -->
-	<string name="twice_attack_name">Dvojitý útok</string>
-	<string name="twice_attack_description">
-	    V boji útočí 2x. Tuto dovednost lze použít jednou v každém boji.
-	</string>
 	
-	<string name="defense_condition_name">Drtivý úder</string>
-	<string name="defense_condition_description">
-	    V boji postava sníží obranu nepříteli. Štěstí hodnotu zvýší.
-	    Tuto dovednost lze použít jednou v každém boji.
-	</string>
 	
-	<string name="attack_boost_name">Zuřivost</string>
-	<string name="attack_boost_description">
-	    V bitvě si postava zvýší útok. Štěstí hodnotu zvýší.
-	  	Tuto dovednost lze použít jednou v každém boji.
-	</string>
+	<string name="special_skill_type">Typ</string>
+	<string name="special_skill_aspect_power">Síla</string>
+	<string name="special_skill_aspect_chance">Šance</string>
+	<string name="special_skill_aspect_reflect">Odražení</string>
+	<string name="special_skill_trigger">Spuštení</string>
+	<string name="special_skill_trigger_normal">Před normálním útokem</string>
+	<string name="special_skill_trigger_after">Po normálním útoku</string>
+	<string name="special_skill_trigger_before_enemy">Před útokem nepřítele</string>
+	<string name="special_skill_trigger_after_enemy">Po útoku nepřítele</string>
 	
-	<string name="attack_condition_name">Odzbrojení</string>
-	<string name="attack_condition_description">
-	    Sníží útok nepřítele.
-	    Tuto dovednost může postava použít 2x na každého nepřítele.
-	</string>
-	
-	<string name="health_condition_name">Krvácení</string>
-	<string name="health_condition_description">
-	    V boji postava snižuje útok nepřítele o 2, pokud má štěstí, tak o 3. 
-	    Tuto dovednost může postava použít 2x na každého nepřítele.
-	</string>
-	<string name="special_skill_type">Typ</string>	
-	<string name="special_skill_debuf_perm">Snížení attributu</string>
-	<string name="special_skill_buff_perm">Navýšení attributu</string>
-	<string name="special_skill_debuf_temp">Snížení attributu (dočasně)</string>
-	<string name="special_skill_buff_temp">Navýšení attributu (dočasně)</string>
-	<string name="special_skill_attack">Specialní útok</string>
+	<string name="special_skill_type_debuff">Snížení attributu</string>
+	<string name="special_skill_type_buff">Navýšení attributu</string>
+	<string name="special_skill_type_temp">(dočasně)</string>
+	<string name="cancel_temp">(zrušení)</string>
+	<string name="reset_condition">(zrušení z boje)</string>
+	<string name="special_skill_type_perm">(trvale)</string>
+	<string name="special_skill_type_attack">Specialní útok</string>
+	<string name="select_skill">Vyberte dovednost</string>	
 	<string name="name">Název</string>	
+	<string name="with_luck">se štestím</string>
+	<string name="special_skill_attempts">Použití</string>
+	<string name="always">Vždy</string>
+	<string name="base_attr_inc">(základ)</string>
+	
 </resources>

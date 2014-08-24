@@ -6,17 +6,21 @@ import java.util.Map;
 import android.util.Log;
 
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.attack.special.enemy.EnemyDefenseCondition;
-import com.nex.gamebook.attack.special.enemy.EnemyBleedingSkill;
-import com.nex.gamebook.attack.special.player.AttackBoost;
-import com.nex.gamebook.attack.special.player.AttackCondition;
-import com.nex.gamebook.attack.special.player.DefenseCondition;
-import com.nex.gamebook.attack.special.player.TwiceAttack;
+import com.nex.gamebook.attack.special.skill.AttackBoost;
+import com.nex.gamebook.attack.special.skill.AttackCondition;
+import com.nex.gamebook.attack.special.skill.BleedingSkill;
+import com.nex.gamebook.attack.special.skill.DefenseCondition;
+import com.nex.gamebook.attack.special.skill.Heal;
+import com.nex.gamebook.attack.special.skill.LethalStrike;
+import com.nex.gamebook.attack.special.skill.LifeLeech;
+import com.nex.gamebook.attack.special.skill.QuickReaction;
+import com.nex.gamebook.attack.special.skill.ReflectDamage;
+import com.nex.gamebook.attack.special.skill.TwiceAttack;
 
 public class SpecialSkillsMap {
 
-	private Map<String, SpecialSkill> playerAttacks = new HashMap<>();
-	private Map<String, Class<? extends SpecialSkill>> enemyAttacks = new HashMap<>();
+//	private Map<String, SpecialSkill> playerAttacks = new HashMap<>();
+	private Map<String, Class<? extends SpecialSkill>> skills = new HashMap<>();
 	private static SpecialSkillsMap instance;
 	static {
 		instance = new SpecialSkillsMap();
@@ -24,37 +28,25 @@ public class SpecialSkillsMap {
 	}
 
 	private void init() {
-		initEnemyAttacks();
-		initPlayerAttacks();
+		skills.put("twiceAttack", TwiceAttack.class);
+		skills.put("defenseCondition", DefenseCondition.class);
+		skills.put("attackCondition", AttackCondition.class);
+		skills.put("attackBoost", AttackBoost.class);
+		skills.put("healthCondition", BleedingSkill.class);
+		skills.put("reflectDamage", ReflectDamage.class);
+		skills.put("lethalStrike", LethalStrike.class);
+		skills.put("lifeLeech", LifeLeech.class);
+		skills.put("quickReaction", QuickReaction.class);
+		skills.put("heal", Heal.class);
 	}
 
-	private void initPlayerAttacks() {
-		playerAttacks.put("twiceAttack", new TwiceAttack());
-		playerAttacks.put("defenseCondition", new DefenseCondition());
-		playerAttacks.put("attackCondition", new AttackCondition());
-		playerAttacks.put("attackBoost", new AttackBoost());
+	public static Map<String, Class<? extends SpecialSkill>> getSkills() {
+		return instance.skills;
 	}
 
-	private void initEnemyAttacks() {
-		enemyAttacks.put("defenseCondition", EnemyDefenseCondition.class);
-		enemyAttacks.put("healthCondition", EnemyBleedingSkill.class);
-	}
-
-	public static Map<String, Class<? extends SpecialSkill>> getEnemyAttacks() {
-		return instance.enemyAttacks;
-	}
-
-	public static Map<String, SpecialSkill> getPlayerAttacks() {
-		return instance.playerAttacks;
-	}
-
-	public static SpecialSkill getPlayersAttack(String attackType) {
-		return instance.playerAttacks.get(attackType);
-	}
-
-	public static SpecialSkill getEnemiesAttack(String attackType) {
+	public static SpecialSkill get(String attackType) {
 		try {
-			Class<? extends SpecialSkill> skill = instance.enemyAttacks.get(attackType);
+			Class<? extends SpecialSkill> skill = instance.skills.get(attackType);
 			if(skill!=null)
 			return skill.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {

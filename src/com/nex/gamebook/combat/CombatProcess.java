@@ -16,64 +16,89 @@ public class CombatProcess {
 		this.enemy = enemy;
 	}
 
-	public ResultCombat attack(Character attackChar, Character attackedCharacter) {
+	public ResultCombat doNormalAttack(Character attacker, Character attacked, float modification) {
 		ResultCombat resultCombat = new ResultCombat();
-		resultCombat.setType(attackChar.getType());
-		resultCombat.setLuck(attackedCharacter.hasLuck());
+		resultCombat.setType(attacker.getType());
+		resultCombat.setLuck(attacked.hasLuck());
 		if (!resultCombat.isLuck()) {
-			resultCombat.setCritical(attackChar.isCriticalChance());
-			int attack = attackChar.getCurrentStats().getAttack()
-					* attackChar.getCurrentStats().getDamage();
-			int defense = attackedCharacter.getCurrentStats()
+			resultCombat.setCritical(attacker.isCriticalChance());
+			int attack = attacker.getCurrentStats().getAttack()
+					* attacker.getCurrentStats().getDamage();
+			int defense = attacked.getCurrentStats()
 					.getDefensePercentage();
 			int totalDamage = (attack - (int) (((double) attack / 100d) * defense));
+			totalDamage *= modification;
 			if (resultCombat.isCritical()) {
-				double criticalMultiplier = attackChar.hasLuck() ? 1 : 0.5;
+				double criticalMultiplier = attacker.hasLuck() ? 1 : 0.5;
 				resultCombat.setMultiply(criticalMultiplier);
 				totalDamage += totalDamage * criticalMultiplier;
 			}
 			resultCombat.setDamage(totalDamage);
-			int attackedHealth = attackedCharacter.getCurrentStats()
-					.getHealth();
-			attackedCharacter.getCurrentStats().setHealth(
-					attackedHealth - resultCombat.getDamage());
+			int attackedHealth = attacked.getCurrentStats().getHealth();
+			attacked.getCurrentStats().setHealth(attackedHealth - resultCombat.getDamage());
 		}
 		resultCombat.setEnemyName(enemy.getName());
 		return resultCombat;
 	}
+	
+	public ResultCombat doNormalAttack(Character attacker, Character attacked) {
+		return doNormalAttack(attacker, attacked, 1);
+	}
 
 	public void fight(AttackCallback callback) {
-		Player character = (Player) callback.getCharacter();
-		boolean enemyBegin = !character.hasLuck();
+		Player player = (Player) callback.getCharacter();
+		
+		int turn = 0;
 		while (enemy.getCurrentStats().getHealth() > 0) {
+			callback.divide(++turn);
+			boolean enemyBegin = !player.hasLuck();
 			if (enemyBegin) {
-				SpecialSkill plskill = character.getSpecialSkill();
-				if(plskill.isTriggerEnemy()) {
-					plskill.doAttack(enemy, character, callback);
-					if(enemy.isDefeated()) continue;
+				if(!doSpecialAttack(enemy, player, callback)) {
+					doSpecialAttack(player, enemy, callback);
 				}
-				SpecialSkill specialAttack = enemy.getSpecialSkill();
-				if (specialAttack != null) {
-					specialAttack.doAttack(enemy, character, callback);
-				}
-				callback.attackCallBack(attack(enemy, character));
 			} else {
-				SpecialSkill eskill = character.getSpecialSkill();
-				if(eskill.isTriggerEnemy()) {
-					eskill.doAttack(enemy, character, callback);
-					if(character.isDefeated()) {
-						break;
-					}
+				if(!doSpecialAttack(player,enemy, callback)) {
+					doSpecialAttack(enemy, player, callback);
 				}
-				character.getSpecialSkill().doAttack(enemy, character, callback);
-				callback.attackCallBack(attack(character, enemy));
-			}
-			enemyBegin = !enemyBegin;
-			if (character.isDefeated()) {
+			}			
+			if (player.isDefeated()) {
 				break;
 			}
 		}
-		character.getSpecialSkill().clean();
+		player.getSpecialSkill().clean();
 		callback.fightEnd();
+	}
+	
+	private boolean doSpecialAttack(Character attacker, Character attacked, AttackCallback callback) {
+		SpecialSkill skill = attacked.getSpecialSkill();
+		if(skill!=null && skill.isTriggerBeforeEnemyAttack()) {
+			skill.doAttack(attacked, attacker, callback, null);
+			if(attacker.isDefeated()) {
+				return true;
+			}
+		}
+		SpecialSkill attackerSkill = attacker.getSpecialSkill();
+		if(attackerSkill!=null && attackerSkill.afterNormalAttack()) {
+			ResultCombat result = doNormalAttack(attacker, attacked);
+			callback.logAttack(result);
+			attackerSkill.doAttack(attacker, attacked, callback, result);
+		} else {
+			boolean doAttack = true;
+			if (attackerSkill != null && !attackerSkill.isTriggerAfterEnemyAttack() && !attackerSkill.isTriggerBeforeEnemyAttack()) {
+				doAttack = attackerSkill.doAttack(attacker, attacked, callback, null);
+			}
+			if(doAttack) {
+				ResultCombat result = doNormalAttack(attacker, attacked);
+				callback.logAttack(result);
+				if(skill!=null && skill.isTriggerAfterEnemyAttack()) {
+					skill.doAttack(attacked, attacker, callback, result);
+					if(attacker.isDefeated()) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		return attacked.isDefeated();
 	}
 }

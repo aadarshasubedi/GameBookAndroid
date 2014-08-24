@@ -229,7 +229,7 @@ public class StorySection implements Serializable, Mergable {
 				Log.e("GamebookEnemeNotFound", enemyKey.getEnemyKey());
 				continue;
 			}
-			SpecialSkill skill = SpecialSkillsMap.getEnemiesAttack(enemyKey.getEnemySkill());
+			SpecialSkill skill = SpecialSkillsMap.get(enemyKey.getEnemySkill());
 			if(skill==null && enemy.getSpecialSkill()!=null) {
 				Class<? extends SpecialSkill> cls = enemy.getSpecialSkill().getClass();
 				try {

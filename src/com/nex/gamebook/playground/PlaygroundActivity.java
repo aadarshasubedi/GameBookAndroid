@@ -106,7 +106,7 @@ public class PlaygroundActivity extends Activity {
 		StoryXmlParser parser = new StoryXmlParser(this);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
 		Player character = story.getCharacter(getIntent().getExtras().getInt("character"));
-		character.setSpecialSkill(SpecialSkillsMap.getPlayersAttack(getIntent().getExtras().getString("skill")));
+		character.setSpecialSkill(SpecialSkillsMap.get(getIntent().getExtras().getString("skill")));
 		character.setCurrentStats(new Stats(character.getStats()));
 		return character;
 	}
@@ -121,7 +121,6 @@ public class PlaygroundActivity extends Activity {
 	
 	public void changeToBattle(StorySection section) {
 		setFighting(true);
-		characterFragment.setNewBattle(true);
 		getCharacterFragment().fight(section);
 		flipper.removeAllViews();
 		flipper.addView(characterFragment.create(flipper));
@@ -130,7 +129,6 @@ public class PlaygroundActivity extends Activity {
 	}
 	public void changeToStory() {
 		setFighting(false);
-		characterFragment.setNewBattle(false);
 		title.setText(_character.getStory().getName());
 		flipper.removeAllViews();
 		flipper.addView(storyFragment.create(flipper));
