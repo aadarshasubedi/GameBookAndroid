@@ -45,7 +45,7 @@
             <attack>3</attack>
         </enemy>
         <enemy name="e_dead_policeman" id="dead_policeman">
-            <specialAttack>healthCondition</specialAttack>
+            <specialAttack>bleeding</specialAttack>
             <health>5</health>
             <defense>1</defense>
             <skill>1</skill>

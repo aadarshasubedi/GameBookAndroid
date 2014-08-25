@@ -6,10 +6,10 @@ import java.util.Map;
 import android.util.Log;
 
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.attack.special.skill.AttackBoost;
-import com.nex.gamebook.attack.special.skill.AttackCondition;
-import com.nex.gamebook.attack.special.skill.BleedingSkill;
-import com.nex.gamebook.attack.special.skill.DefenseCondition;
+import com.nex.gamebook.attack.special.skill.Rage;
+import com.nex.gamebook.attack.special.skill.Disarm;
+import com.nex.gamebook.attack.special.skill.Bleeding;
+import com.nex.gamebook.attack.special.skill.CrushStrike;
 import com.nex.gamebook.attack.special.skill.Heal;
 import com.nex.gamebook.attack.special.skill.LethalStrike;
 import com.nex.gamebook.attack.special.skill.LifeLeech;
@@ -29,10 +29,10 @@ public class SpecialSkillsMap {
 
 	private void init() {
 		skills.put("twiceAttack", TwiceAttack.class);
-		skills.put("defenseCondition", DefenseCondition.class);
-		skills.put("attackCondition", AttackCondition.class);
-		skills.put("attackBoost", AttackBoost.class);
-		skills.put("healthCondition", BleedingSkill.class);
+		skills.put("crushStrike", CrushStrike.class);
+		skills.put("disarm", Disarm.class);
+		skills.put("rage", Rage.class);
+		skills.put("bleeding", Bleeding.class);
 		skills.put("reflectDamage", ReflectDamage.class);
 		skills.put("lethalStrike", LethalStrike.class);
 		skills.put("lifeLeech", LifeLeech.class);

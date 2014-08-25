@@ -4,37 +4,38 @@ import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
 import com.nex.gamebook.entity.Bonus.BonusType;
 
-public class DefenseCondition extends SpecialConditionalSkill {
-	private static final long serialVersionUID = -1804300495308316474L;
+public class Rage extends SpecialConditionalSkill {
 
+
+	private static final long serialVersionUID = -1804300495308316474L;
 	@Override
 	public int getTextId() {
-		return R.string.attr_defense;
+		return R.string.attr_attack;
 	}
 
 	@Override
 	public int getDescriptionId() {
-		return R.string.defense_condition_description;
+		return R.string.attack_boost_description;
 	}
 
 	@Override
 	public int getNameId() {
-		return R.string.defense_condition_name;
+		return R.string.attack_boost_name;
 	}
 
 	@Override
 	public BonusType getType() {
-		return BonusType.DEFENSE;
+		return BonusType.ATTACK;
 	}
 
 	@Override
 	public boolean isCondition() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public int attemptsPerFight() {
-		return 2;
+		return 1;
 	}
 	@Override
 	public boolean isPermanent() {
@@ -42,7 +43,7 @@ public class DefenseCondition extends SpecialConditionalSkill {
 	}
 	@Override
 	public int getTypeId() {
-		return R.string.special_skill_type_debuff;
+		return R.string.special_skill_type_buff;
 	}
 
 	@Override
@@ -56,4 +57,5 @@ public class DefenseCondition extends SpecialConditionalSkill {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 }

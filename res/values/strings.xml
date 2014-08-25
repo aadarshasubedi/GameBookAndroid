@@ -211,5 +211,9 @@
 	<string name="base_attr_inc">(základ)</string>
 	<string name="gain_experience">Získáváš %d zkušeností.</string>	
 	<string name="level_increased">Dosáhl jsi úrovně %d.</string>	
+	<string name="skill_info">Info</string>	
+	<string name="level">Úroveň</string>
+	<string name="experience">Zkušenosti</string>
+	
 	
 </resources>

@@ -17,7 +17,11 @@ public class LethalStrike extends SpecialAttackSkill {
 	public boolean doAttackOnce(Character attacker, Character attacked,
 			AttackCallback callback, ResultCombat resultCombat) {
 		ResultCombat result = createBasicResult(0, attacker.getType());
-		if (attacker.hasLuck(getModificator(attacker))) {
+		int modificator = getModificator(attacker);
+		if(attacker.hasLuck()) {
+			modificator = getModificator(attacker);
+		}
+		if (attacker.hasLuck(modificator)) {
 			int damage = attacked.getCurrentStats().getHealth() - 1;
 			result.setDamage(damage);
 			Bonus bonus = createSpecialAttack(-1, damage, BonusType.HEALTH);
@@ -30,6 +34,10 @@ public class LethalStrike extends SpecialAttackSkill {
 
 	private int getModificator(Character c) {
 		return (int) (Stats.TOTAL_LUCK_FOR_CALC - c.getCurrentStats().getSpecialSkillPower());
+	}
+	
+	private int getModificatorWhenLuck(Character c) {
+		return (int) (getModificator(c) * 1.5);
 	}
 	
 	@Override
@@ -59,7 +67,7 @@ public class LethalStrike extends SpecialAttackSkill {
 
 	@Override
 	public int getValueWhenLuck(Character character) {
-		return (int) (getValue(character) * 1.5);
+		return Stats.getPercentage(character.getCurrentStats().getLuck(), getModificatorWhenLuck(character));
 	}
 
 	@Override

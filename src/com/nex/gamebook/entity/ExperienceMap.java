@@ -20,10 +20,10 @@ public class ExperienceMap {
 		xpcoeffs.put(20, 1.7);
 		xpcoeffs.put(30, 1.8);
 		xpcoeffs.put(40, 1.9);
-		int basexp = 2;
+		int basexp = 50;
 		double xpcoeff = 1.5;
 		long xpRequiredToNextLevel = 0;
-		for(int i = 1; i <= 50; i++) {
+		for(int i = 1; i <= MAX_LEVEL; i++) {
 			xpRequiredToNextLevel =  (long) (xpRequiredToNextLevel + basexp * xpcoeff);
 			experienceMap.put(i, xpRequiredToNextLevel);
 			Double newCoeff = xpcoeffs.get(i);

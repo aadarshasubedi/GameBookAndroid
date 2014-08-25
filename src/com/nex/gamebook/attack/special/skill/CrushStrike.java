@@ -4,33 +4,27 @@ import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
 import com.nex.gamebook.entity.Bonus.BonusType;
 
-public class BleedingSkill extends SpecialConditionalSkill {
-	
-	private static final long serialVersionUID = 2040871476810819647L;
+public class CrushStrike extends SpecialConditionalSkill {
+	private static final long serialVersionUID = -1804300495308316474L;
 
 	@Override
-	public int getMinAttributeForStopAttack() {
-		return 5;
-	}
-	
-	@Override
 	public int getTextId() {
-		return R.string.attr_health;
+		return R.string.attr_defense;
 	}
 
 	@Override
 	public int getDescriptionId() {
-		return R.string.health_condition_description;
+		return R.string.defense_condition_description;
 	}
 
 	@Override
 	public int getNameId() {
-		return R.string.health_condition_name;
+		return R.string.defense_condition_name;
 	}
 
 	@Override
 	public BonusType getType() {
-		return BonusType.HEALTH;
+		return BonusType.DEFENSE;
 	}
 
 	@Override
@@ -40,14 +34,12 @@ public class BleedingSkill extends SpecialConditionalSkill {
 
 	@Override
 	public int attemptsPerFight() {
-		return -1;
+		return 2;
 	}
-	
 	@Override
 	public boolean isPermanent() {
-		return true;
+		return false;
 	}
-	
 	@Override
 	public int getTypeId() {
 		return R.string.special_skill_type_debuff;
@@ -55,11 +47,13 @@ public class BleedingSkill extends SpecialConditionalSkill {
 
 	@Override
 	public boolean isTriggerBeforeEnemyAttack() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isTriggerAfterEnemyAttack() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 }

@@ -80,6 +80,12 @@ public class CombatProcess {
 		if(attackerSkill!=null && attackerSkill.afterNormalAttack()) {
 			ResultCombat result = doNormalAttack(attacker, attacked);
 			callback.logAttack(result);
+			if(skill!=null && skill.isTriggerAfterEnemyAttack()) {
+				skill.doAttack(attacked, attacker, callback, result);
+				if(attacker.isDefeated()) {
+					return true;
+				}
+			}
 			attackerSkill.doAttack(attacker, attacked, callback, result);
 		} else {
 			boolean doAttack = true;

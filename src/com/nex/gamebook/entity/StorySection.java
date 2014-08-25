@@ -231,17 +231,9 @@ public class StorySection implements Serializable, Mergable {
 				Log.e("GamebookEnemeNotFound", enemyKey.getEnemyKey());
 				continue;
 			}
-			SpecialSkill skill = SpecialSkillsMap.get(enemyKey.getEnemySkill());
-			if (skill == null && enemy.getSpecialSkill() != null) {
-				Class<? extends SpecialSkill> cls = enemy.getSpecialSkill()
-						.getClass();
-				try {
-					skill = cls.newInstance();
-				} catch (InstantiationException | IllegalAccessException e) {
-					Log.e("EnemyAssing", "", e);
-				}
-			}
 			enemy = new Enemy(enemy);
+			if(enemyKey.getEnemySkill().length()>0)
+			enemy.setSkillName(enemyKey.getEnemySkill());
 			enemy.setLevel(getLevel());
 			ExperienceMap.getInstance().updateStatsByLevel(enemy);
 			this.enemies.add(enemy);

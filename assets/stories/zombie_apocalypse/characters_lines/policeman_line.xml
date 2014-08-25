@@ -12,7 +12,7 @@
         </section>
         <section position="48" text="section48_text" enemiesDefeatedText="section48_enemy_text" luckText="section48_luck_text">
             <enemies>
-                <ref value="dead_policeman" overrideSkill="defenseCondition"/>
+                <ref value="dead_policeman" overrideSkill="crushStrike"/>
                 <ref value="dead_policeman"/>
                 <ref value="dead_policeman"/>
             </enemies>

@@ -23,7 +23,7 @@
 	
 	<string name="health_condition_name">Krvácení</string>
 	<string name="health_condition_description">
-	    V boji postava snižuje každým útokem zdraví nepřítele, nikdy však neklesne pod 5.
+	    V boji postava snižuje každým útokem zdraví nepřítele.
 	</string>
 	
 	<string name="reflect_damage_name">Odražení poškození</string>

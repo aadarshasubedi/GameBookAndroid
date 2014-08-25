@@ -4,58 +4,67 @@ import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
 import com.nex.gamebook.entity.Bonus.BonusType;
 
-public class AttackBoost extends SpecialConditionalSkill {
+public class Bleeding extends SpecialConditionalSkill {
+	
+	private static final long serialVersionUID = 2040871476810819647L;
 
-
-	private static final long serialVersionUID = -1804300495308316474L;
+	@Override
+	public int getMinAttributeForStopAttack() {
+		return -1;
+	}
+	
 	@Override
 	public int getTextId() {
-		return R.string.attr_attack;
+		return R.string.attr_health;
 	}
 
 	@Override
 	public int getDescriptionId() {
-		return R.string.attack_boost_description;
+		return R.string.health_condition_description;
 	}
 
 	@Override
 	public int getNameId() {
-		return R.string.attack_boost_name;
+		return R.string.health_condition_name;
 	}
 
 	@Override
 	public BonusType getType() {
-		return BonusType.ATTACK;
+		return BonusType.HEALTH;
 	}
 
 	@Override
 	public boolean isCondition() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public int attemptsPerFight() {
-		return 1;
+		return -1;
 	}
+	
 	@Override
 	public boolean isPermanent() {
-		return false;
+		return true;
 	}
+	
 	@Override
 	public int getTypeId() {
-		return R.string.special_skill_type_buff;
+		return R.string.special_skill_type_debuff;
 	}
 
 	@Override
 	public boolean isTriggerBeforeEnemyAttack() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean isTriggerAfterEnemyAttack() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean afterNormalAttack() {
+		return true;
 	}
 	
+	@Override
+	public boolean isTriggerAfterEnemyAttack() {
+		return false;
+	}
 }

@@ -65,8 +65,9 @@ public class Heal extends SpecialAttackSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked,
 			AttackCallback callback, ResultCombat cm) {
-		Bonus bonus = createSpecialAttack(1, getValue(attacker), BonusType.HEALTH);
-		ResultCombat rc = createBasicResult(attacker.addBonus(bonus), attacker.getType());
+		ResultCombat rc = createBasicResult(0, attacker.getType());
+		Bonus bonus = createSpecialAttack(1, getRealValue(attacker), BonusType.HEALTH);
+		rc.setDamage(attacker.addBonus(bonus));
 		callback.logAttack(rc);
 		return true;
 	}

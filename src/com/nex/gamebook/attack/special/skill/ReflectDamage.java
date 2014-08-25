@@ -44,7 +44,7 @@ public class ReflectDamage extends SpecialAttackSkill {
 	}
 	@Override
 	public int getValue(Character character) {
-		return calcDynamicValue(40, 1.4f, character.getCurrentStats().getSpecialSkillPower());
+		return calcDynamicValue(30, 1.4f, character.getCurrentStats().getSpecialSkillPower());
 	}
 
 	@Override

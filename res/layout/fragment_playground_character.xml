@@ -43,6 +43,50 @@
         android:background="@drawable/_background_corners"
         android:padding="10dp" >
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_marginRight="5dp"
+                style="@style/attribute"
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/level" />
+
+            <TextView
+                 android:layout_marginRight="5dp"
+                android:id="@+id/level"
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/attribute"
+                android:layout_marginRight="5dp"
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/experience" />
+
+            <TextView
+                style="@style/number"
+                android:id="@+id/experience"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/number"
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="%" />
+
+        </LinearLayout>
+
         <TableRow
             android:id="@+id/tableRow0"
             android:layout_width="wrap_content"
@@ -243,14 +287,30 @@
                 android:text="@string/attr_value_zero" />
         </LinearLayout>
 
-        <Spinner
-            android:id="@+id/skills"
-            style="@style/spinner"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:dropDownVerticalOffset="-50dp"
-            android:popupBackground="@drawable/spinner"
-            android:spinnerMode="dropdown" />
+            android:layout_height="wrap_content" >
+
+            <Spinner
+                android:id="@+id/skills"
+                style="@style/spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:dropDownVerticalOffset="-50dp"
+                android:popupBackground="@drawable/spinner"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                style="@style/attribute"
+                android:id="@+id/skill_info"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
+                android:text="@string/skill_info" />
+
+        </LinearLayout>
 
     </TableLayout>
 

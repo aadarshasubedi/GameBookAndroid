@@ -77,7 +77,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			View enemyView = adapter.create(enemy, switcher);
 			TextView v = (TextView) enemyView.findViewById(R.id.enemy_name);
 			String name = enemy.getName();
-			name += " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode());
+			name += " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().
+					getString(R.string.level) + " " + enemy.getLevel();
 			v.setText(name);
 			switcher.addView(enemyView);
 		}
@@ -128,13 +129,32 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		actualAttrs.callOnClick();
 //		showSkill((TextView) view.findViewById(R.id.skill_name), _character);
 		showAvailableSkills();
+		TextView level = (TextView) view.findViewById(R.id.level);
+		TextView exp = (TextView) view.findViewById(R.id.experience);
+		level.setText(String.valueOf(_character.getLevel()));
+		exp.setText(String.valueOf(_character.getXpToLevelPercentage()));
 		masterView.findViewById(R.id.tableLayout1).invalidate();
+		
+		
+		
 	}
 
 	public void showAvailableSkills() {
 		Spinner skills = (Spinner) masterView.findViewById(R.id.skills);
+		int selected = skills.getSelectedItemPosition();
 		skills.setAdapter(new SkillsAdapter(getContext(), _character.getAvailableSkills()));
 		skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+		if(selected>=0)
+		skills.setSelection(selected);
+		TextView info = (TextView)  masterView.findViewById(R.id.skill_info);
+		info.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				SkillInfoDialog d = new SkillInfoDialog(getContext(), _character);
+				d.show();
+			}
+		});
+		decoreClickableTextView(getContext(), info, R.string.skill_info);
 	}
 	
 	public class CustomOnItemSelectedListener implements OnItemSelectedListener {
@@ -310,7 +330,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 		@Override
 		public void logLevelIncreased() {
-			addResultToLog(getContext().getString(R.string.level_increased, _character.getLevel()), getContext(), R.color.positive);
+			addResultToLog(getContext().getString(R.string.level_increased, _character.getLevel()), getContext(), R.color.temporal);
 		}
 		
 		@Override
@@ -398,7 +418,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		
 		@Override
 		public void fightEnd(long xp) {
-			addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.positive);
+			addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
 			_character.addExperience(this, xp);
 			_character.setFighting(false);
 			displayButtons();

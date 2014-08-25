@@ -4,7 +4,7 @@ import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
 import com.nex.gamebook.entity.Bonus.BonusType;
 
-public class AttackCondition extends SpecialConditionalSkill {
+public class Disarm extends SpecialConditionalSkill {
 	private static final long serialVersionUID = -1804300495308316474L;
 	
 	@Override

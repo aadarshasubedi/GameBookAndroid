@@ -93,7 +93,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 				realValue = _character.addBonus(bonus);
 			}
 			String marker = "+";
-			if(bonus.getCoeff() < 0) {
+			if (bonus.getCoeff() < 0) {
 				marker = "-";
 			}
 			TextView opt = new TextView(context);

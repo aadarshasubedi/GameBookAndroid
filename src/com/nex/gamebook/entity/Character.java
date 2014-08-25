@@ -240,4 +240,9 @@ public abstract class Character implements Serializable, Mergable {
 		return skills;
 	}
 	
+	public int getXpToLevelPercentage() {
+		long xpToLevel = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
+		return (int) (((double)experience / (double)xpToLevel) * 100d);
+	}
+	
 }

@@ -15,7 +15,7 @@ public class QuickReaction extends SpecialAttackSkill {
 	public boolean doAttackOnce(Character attacker, Character attacked,
 			AttackCallback callback, ResultCombat resultCombat) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
-		ResultCombat result = combat.doNormalAttack(attacker, attacked, getValue(attacker)/100f);
+		ResultCombat result = combat.doNormalAttack(attacker, attacked, getRealValue(attacker)/100f);
 		result.setSpecialAttack(this);
 		callback.logAttack(result);
 		return false;
