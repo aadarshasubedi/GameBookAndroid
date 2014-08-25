@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 import android.content.Context;
 import android.util.Log;
 
+import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.Bonus.BonusType;
@@ -44,9 +45,11 @@ public class StoryXmlParser {
 	private final String INCLUDE = "include";
 	private final String VERSION = "version";
 	private final String SPECIAL_ATTACK = "specialAttack";
+	private final String SKILLS = "skills";
 	private final String BACKGROUND = "background";
-
+	private final String LEVEL_REQUIRED = "levelRequired";
 	private final String LOSE_SECTION = "loseSection";
+	private final String LEVEL = "level";
 	private final String WIN_SECTION = "winSection";
 	private final String SCORE_MULTIPLIER = "scoreMultiplier";
 	
@@ -241,7 +244,7 @@ public class StoryXmlParser {
 		Enemy enemy = new Enemy();
 		enemy.setName(element.getAttribute(NAME));
 		String id = element.getAttribute(ID);
-		enemy.setLevel(EnemyLevel.getLevelByString(element.getAttribute(TYPE)));
+		enemy.setEnemyLevel(EnemyLevel.getLevelByString(element.getAttribute(TYPE)));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
@@ -283,7 +286,21 @@ public class StoryXmlParser {
 		} else if (node.getNodeName().equals(BASE_DAMAGE)) {
 			character.getStats().setDamage(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(SPECIAL_ATTACK)) {
-			character.setSpecialSkill(SpecialSkillsMap.get(node.getTextContent()));
+			//this is for enemies
+			character.setSkillName(node.getTextContent());
+		} else if (node.getNodeName().equals(SKILLS)) {
+			//this is for player
+			NodeList list = node.getChildNodes();
+			for(int i = 0; i < list.getLength(); i++) {
+				Node n = list.item(i);
+				if(n.getNodeName().equals(SKILL)) {
+					Element element = (Element) n;
+					String skillName = element.getAttribute(NAME);
+					int skillLevel = getInteger(element.getAttribute(LEVEL_REQUIRED));
+					character.getSpecialSkills().put(skillName, skillLevel);
+				}
+			}
+			
 		} else if (node.getNodeName().equals(SKILL_POWER)) {
 			character.getStats().setSkillPower(getInteger(node.getTextContent()));
 		}
@@ -298,6 +315,11 @@ public class StoryXmlParser {
 
 		StorySection section = new StorySection();
 		section.setStory(story);
+		int level = getIdentifier(element.getAttribute(LEVEL));
+		if(level==0) {
+			level = 1;
+		}
+		section.setLevel(level);
 		section.setLoseSection(getBoolean(element.getAttribute(LOSE_SECTION)));
 		section.setWinSection(getBoolean(element.getAttribute(WIN_SECTION)));
 		section.setScoreMultiplier(getFloat(element.getAttribute(SCORE_MULTIPLIER)));

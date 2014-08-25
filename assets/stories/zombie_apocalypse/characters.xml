@@ -2,23 +2,33 @@
 <story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../story.xsd">
     <characters>
-        <character position="1" id="1" name="ch_soldier" description="dsc_soldier">
-            <health>30</health>
-            <defense>11</defense>
-            <skill>4</skill>
-            <luck>2</luck>
-            <attack>7</attack>
-            <skillPower>1</skillPower>
-        </character>
-        <character position="" id="2" name="ch_doctor" description="dsc_doctor">
-            <health>70</health>
-            <defense>4</defense>
-            <skill>3</skill>
-            <luck>2</luck>
-            <attack>5</attack>
-            <skillPower>3</skillPower>
-        </character>
+<!--         <character position="1" id="1" name="ch_soldier" description="dsc_soldier"> -->
+<!--             <skills> -->
+<!--                 <skill name="healthCondition" levelRequired="1"/> -->
+<!--             </skills> -->
+<!--             <health>30</health> -->
+<!--             <defense>11</defense> -->
+<!--             <skill>4</skill> -->
+<!--             <luck>2</luck> -->
+<!--             <attack>7</attack> -->
+<!--             <skillPower>1</skillPower> -->
+<!--         </character> -->
+<!--         <character position="" id="2" name="ch_doctor" description="dsc_doctor"> -->
+<!--             <skills> -->
+<!--                 <skill name="healthCondition" levelRequired="1"/> -->
+<!--             </skills> -->
+<!--             <health>70</health> -->
+<!--             <defense>4</defense> -->
+<!--             <skill>3</skill> -->
+<!--             <luck>2</luck> -->
+<!--             <attack>5</attack> -->
+<!--             <skillPower>3</skillPower> -->
+<!--         </character> -->
         <character position="47" id="3" name="ch_policeman" description="dsc_policeman">
+            <skills>
+                <skill name="healthCondition" levelRequired="1"/>
+                <skill name="reflectDamage" levelRequired="2"/>
+            </skills>
             <health>30</health>
             <defense>4</defense>
             <skill>10</skill>
@@ -26,13 +36,16 @@
             <attack>6</attack>
             <skillPower>1</skillPower>
         </character>
-        <character position="" id="4" name="ch_homeless" description="dsc_homeless">
-            <health>25</health>
-            <defense>2</defense>
-            <skill>3</skill>
-            <luck>10</luck>
-            <attack>4</attack>
-            <skillPower>2</skillPower>
-        </character>
+<!--         <character position="" id="4" name="ch_homeless" description="dsc_homeless"> -->
+<!--             <skills> -->
+<!--                 <skill name="healthCondition" levelRequired="1"/> -->
+<!--             </skills> -->
+<!--             <health>25</health> -->
+<!--             <defense>2</defense> -->
+<!--             <skill>3</skill> -->
+<!--             <luck>10</luck> -->
+<!--             <attack>4</attack> -->
+<!--             <skillPower>2</skillPower> -->
+<!--         </character> -->
     </characters>
 </story>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.playground.AttackCallback;
 
 public class Player extends Character {
 
@@ -122,6 +123,15 @@ public class Player extends Character {
 		this.visitedSections++;
 	}
 
-	
+	public void addExperience(AttackCallback callback, long exp) {
+		setExperience(getExperience()+exp);
+		long requiredExperience = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
+		while(getExperience()> requiredExperience) {
+			setLevel(getLevel() + 1);
+			requiredExperience = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
+			callback.logLevelIncreased();
+			ExperienceMap.getInstance().updateStatsByLevel(this);
+		}		
+	}
 	
 }

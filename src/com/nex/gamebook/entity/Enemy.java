@@ -7,16 +7,24 @@ import com.nex.gamebook.entity.io.GameBookUtils;
 public class Enemy extends com.nex.gamebook.entity.Character {
 
 	public enum EnemyLevel {
-		CREATURE(R.string.enemy_creature), MINION(R.string.enemy_minion), BOSS(R.string.enemy_boss);
+		CREATURE(R.string.enemy_creature, 10), 
+		MINION(R.string.enemy_minion, 15), 
+		BOSS(R.string.enemy_boss, 20);
 		private int code;
-		private EnemyLevel(int code) {
+		private int baseXP;
+		private EnemyLevel(int code, int baseXP) {
 			this.code = code;
+			this.baseXP = baseXP;
 		}
 
 		public int getCode() {
 			return code;
 		}
 
+		public int getBaseXP() {
+			return baseXP;
+		}
+		
 		public static EnemyLevel getLevelByString(String s) {
 			if (s == null || "".equals(s)) {
 				return EnemyLevel.CREATURE;
@@ -29,20 +37,15 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	private String name;
 	private int index;
 	private boolean affectPlayer;
-	private EnemyLevel level;
+	private EnemyLevel enemyLevel;
 
 	public Enemy() {
 	}
 
-	public Enemy(Enemy enemy, SpecialSkill specialSkill) {
-		this(enemy);
-		setSpecialSkill(specialSkill);
-	}
-	
 	public Enemy(Enemy enemy) {
 		super(enemy);
 		this.name = enemy.name;
-		this.level = enemy.level;
+		this.enemyLevel = enemy.enemyLevel;
 	}
 
 	public String getName() {
@@ -74,12 +77,15 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 		this.index = index;
 	}
 
-	public EnemyLevel getLevel() {
-		return level;
+	public EnemyLevel getEnemyLevel() {
+		return enemyLevel;
 	}
 
-	public void setLevel(EnemyLevel level) {
-		this.level = level;
+	public void setEnemyLevel(EnemyLevel level) {
+		this.enemyLevel = level;
 	}
-
+	@Override
+	public long getExperience() {
+		return enemyLevel.baseXP * getLevel();
+	}
 }

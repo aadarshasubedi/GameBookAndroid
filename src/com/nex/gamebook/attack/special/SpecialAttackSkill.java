@@ -73,7 +73,7 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	}
 	
 	public String createConditionId(Character attacker) {
-		String conditionid = attacker.getSpecialSkill().getClass().getName() 
+		String conditionid = this.getClass().getName() 
 				+ "_" + attacker.getClass().getName();
 		return conditionid;
 	}

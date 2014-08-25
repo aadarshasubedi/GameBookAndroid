@@ -44,6 +44,14 @@ public class SpecialSkillsMap {
 		return instance.skills;
 	}
 
+	public static boolean isSpecialSkillEqualToName(Class<? extends SpecialSkill> skill, String name) {
+		Class<? extends SpecialSkill> cls = instance.skills.get(name);
+		if(cls!=null) {
+			return skill.equals(cls);
+		}
+		return false;
+	}
+	
 	public static SpecialSkill get(String attackType) {
 		try {
 			Class<? extends SpecialSkill> skill = instance.skills.get(attackType);

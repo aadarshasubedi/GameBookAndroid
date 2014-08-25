@@ -233,15 +233,7 @@
                 style="@style/attribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/power" android:layout_marginRight="5dip"/>
-
-            <TextView
-                style="@style/attribute"
-                android:id="@+id/skill_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dip"
-                android:text="@string/dsc_default" />
+                android:text="@string/attr_skill_power" android:layout_marginRight="5dip"/>
 
             <TextView
                 android:id="@+id/skill_power"
@@ -250,6 +242,15 @@
                 android:layout_height="wrap_content"
                 android:text="@string/attr_value_zero" />
         </LinearLayout>
+
+        <Spinner
+            android:id="@+id/skills"
+            style="@style/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:dropDownVerticalOffset="-50dp"
+            android:popupBackground="@drawable/spinner"
+            android:spinnerMode="dropdown" />
 
     </TableLayout>
 

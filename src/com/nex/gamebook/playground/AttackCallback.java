@@ -6,8 +6,8 @@ import com.nex.gamebook.entity.ResultCombat;
 public interface AttackCallback {
 	
 	Player getCharacter();
-	
 	void logAttack(ResultCombat resultCombat);
 	void divide(int turn);
-	void fightEnd();
+	void fightEnd(long xp);
+	void logLevelIncreased();
 }

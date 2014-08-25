@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import android.util.Log;
@@ -20,8 +22,11 @@ public abstract class Character implements Serializable, Mergable {
 	private boolean fighting;
 	private Story story;
 	private transient Stats temporalStatsHolder;
-	private SpecialSkill specialSkill;
+	private String skillName;
+	private Map<String, Integer> specialSkills = new HashMap<>();
 	private transient List<Bonus> conditions = new ArrayList<Bonus>();
+	private int level = 1;
+	private long experience = 0;
 
 	public Character() {
 		// TODO Auto-generated constructor stub
@@ -30,6 +35,7 @@ public abstract class Character implements Serializable, Mergable {
 	public Character(Character character) {
 		this.stats = new Stats(character.stats);
 		this.currentStats = new Stats(this.stats);
+		this.skillName = character.skillName;
 		this.story = character.story;
 	}
 
@@ -52,11 +58,13 @@ public abstract class Character implements Serializable, Mergable {
 	public boolean hasLuck() {
 		return hasLuck(Stats.TOTAL_LUCK_FOR_CALC);
 	}
+
 	public boolean hasLuck(int modificator) {
 		Random random = new Random();
 		int res = random.nextInt(modificator);
 		return getCurrentStats().getLuck() >= res;
 	}
+
 	public boolean isCriticalChance() {
 		Random random = new Random();
 		int res = random.nextInt(Stats.TOTAL_SKILL_FOR_CALC);
@@ -94,8 +102,12 @@ public abstract class Character implements Serializable, Mergable {
 	public int addBonus(Bonus bonus) {
 		int realValue = bonus.getValue();
 		try {
-			Method currentAttr = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
-			Method defaultAttr = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", bonus.getType().name().toLowerCase()), new Class[0]);
+			Method currentAttr = Stats.class.getDeclaredMethod(
+					GameBookUtils.createMethodName("get", bonus.getType()
+							.name().toLowerCase()), new Class[0]);
+			Method defaultAttr = Stats.class.getDeclaredMethod(
+					GameBookUtils.createMethodName("get", bonus.getType()
+							.name().toLowerCase()), new Class[0]);
 
 			int currentValue = (int) currentAttr.invoke(getCurrentStats(),
 					new Object[0]);
@@ -109,11 +121,11 @@ public abstract class Character implements Serializable, Mergable {
 					GameBookUtils.createMethodName("set", bonus.getType()
 							.name().toLowerCase()), int.class);
 			int setedValue = 0;
-			if(bonus.isBase()) {
+			if (bonus.isBase()) {
 				defaultAttr.invoke(this.stats, defaultValue + realValue);
 				return realValue;
 			} else if (total > defaultValue && !bonus.isOverflowed()) {
-				if(currentValue < defaultValue) {
+				if (currentValue < defaultValue) {
 					realValue = defaultValue - currentValue;
 					setedValue = (int) currentAttr.invoke(getCurrentStats(),
 							defaultValue);
@@ -135,7 +147,8 @@ public abstract class Character implements Serializable, Mergable {
 					this.temporalStatsHolder = new Stats();
 					this.temporalStatsHolder.nullAllAttributes();
 				}
-				Field tempAttr = Stats.class.getDeclaredField(bonus.getType().name().toLowerCase());
+				Field tempAttr = Stats.class.getDeclaredField(bonus.getType()
+						.name().toLowerCase());
 				tempAttr.setAccessible(true);
 				tempAttr.set(this.temporalStatsHolder, realValue);
 				tempAttr.setAccessible(false);
@@ -165,25 +178,66 @@ public abstract class Character implements Serializable, Mergable {
 		return releasedStats;
 	}
 
-	public SpecialSkill getSpecialSkill() {
-		return specialSkill;
-	}
-
-	public void setSpecialSkill(SpecialSkill specialAttack) {
-		this.specialSkill = specialAttack;
-	}
 	public List<Bonus> getConditions() {
 		if (conditions == null)
 			conditions = new ArrayList<Bonus>();
 		return conditions;
 	}
-	
+
 	public Bonus findConditionById(String id) {
-		for(Bonus b: conditions) {
-			if(b.getConditionId().equals(id)) {
+		for (Bonus b : conditions) {
+			if (b.getConditionId().equals(id)) {
 				return b;
 			}
 		}
 		return null;
 	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public long getExperience() {
+		return experience;
+	}
+
+	public void setExperience(long experience) {
+		this.experience = experience;
+	}
+
+	public Map<String, Integer> getSpecialSkills() {
+		return specialSkills;
+	}
+
+	public void setSpecialSkills(Map<String, Integer> specialSkills) {
+		this.specialSkills = specialSkills;
+	}
+	SpecialSkill skillTemp;
+	public SpecialSkill getSpecialSkill() {
+		if(skillTemp == null || !SpecialSkillsMap.isSpecialSkillEqualToName(skillTemp.getClass(), skillName)) {
+			skillTemp = SpecialSkillsMap.get(skillName);
+		}
+		if(skillTemp != null) {
+			skillTemp.clean();
+		}
+		return skillTemp;
+	}
+	public void setSkillName(String skillName) {
+		this.skillName = skillName;
+	}
+	
+	public List<String> getAvailableSkills() {
+		List<String> skills = new ArrayList<String>();
+		for(Map.Entry<String, Integer> entry: this.specialSkills.entrySet()) {
+			if(entry.getValue() <= getLevel()) {
+				skills.add(entry.getKey());
+			}
+		}
+		return skills;
+	}
+	
 }

@@ -106,7 +106,6 @@ public class PlaygroundActivity extends Activity {
 		StoryXmlParser parser = new StoryXmlParser(this);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
 		Player character = story.getCharacter(getIntent().getExtras().getInt("character"));
-		character.setSpecialSkill(SpecialSkillsMap.get(getIntent().getExtras().getString("skill")));
 		character.setCurrentStats(new Stats(character.getStats()));
 		return character;
 	}

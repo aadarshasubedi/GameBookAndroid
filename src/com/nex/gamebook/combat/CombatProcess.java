@@ -65,8 +65,7 @@ public class CombatProcess {
 				break;
 			}
 		}
-		player.getSpecialSkill().clean();
-		callback.fightEnd();
+		callback.fightEnd(enemy.getExperience());
 	}
 	
 	private boolean doSpecialAttack(Character attacker, Character attacked, AttackCallback callback) {

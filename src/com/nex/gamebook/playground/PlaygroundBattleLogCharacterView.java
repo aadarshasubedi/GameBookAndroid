@@ -10,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -27,6 +31,7 @@ import com.nex.gamebook.entity.CharacterType;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.ResultCombat;
+import com.nex.gamebook.entity.SpecialSkillsMap;
 import com.nex.gamebook.entity.StorySection;
 import com.nex.gamebook.util.SkillInfoDialog;
 public class PlaygroundBattleLogCharacterView extends AbstractFragment {
@@ -72,7 +77,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			View enemyView = adapter.create(enemy, switcher);
 			TextView v = (TextView) enemyView.findViewById(R.id.enemy_name);
 			String name = enemy.getName();
-			name += " " + getContext().getResources().getString(enemy.getLevel().getCode());
+			name += " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode());
 			v.setText(name);
 			switcher.addView(enemyView);
 		}
@@ -121,10 +126,69 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			}
 		});
 		actualAttrs.callOnClick();
-		showSkill((TextView) view.findViewById(R.id.skill_name), _character);
+//		showSkill((TextView) view.findViewById(R.id.skill_name), _character);
+		showAvailableSkills();
 		masterView.findViewById(R.id.tableLayout1).invalidate();
 	}
 
+	public void showAvailableSkills() {
+		Spinner skills = (Spinner) masterView.findViewById(R.id.skills);
+		skills.setAdapter(new SkillsAdapter(getContext(), _character.getAvailableSkills()));
+		skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+	}
+	
+	public class CustomOnItemSelectedListener implements OnItemSelectedListener {
+		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+				String i = (String) parent.getItemAtPosition(pos);
+				_character.setSkillName(i);
+		}
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+		}
+	}
+	
+	class SkillsAdapter extends ArrayAdapter<String> {
+		List<String> keys;
+		Context context;
+
+		public SkillsAdapter(Context context, List<String> keys) {
+			super(context, R.layout.list_item, keys);
+			this.context = context;
+			this.keys = keys;
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView,
+				ViewGroup parent) {
+			String key = keys.get(position);
+			if(key == null) {
+				return new LinearLayout(getContext());
+			}
+			return getCustomViewView(position, convertView, parent, R.layout.spinner_dropdown_item);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getCustomViewView(position, convertView, parent,
+					R.layout.spinner_single_item);
+		}
+
+		public View getCustomViewView(int position, View convertView, ViewGroup parent, int inflate) {
+			String key = keys.get(position);
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(inflate, parent, false);
+			TextView name = (TextView) rowView.findViewById(R.id.name);
+			if(key != null) {
+				SpecialSkill skill = SpecialSkillsMap.get(key);
+				rowView.setTag(key);
+				name.setText(context.getString(skill.getNameId()));
+			} else {
+				name.setText(R.string.select_skill);
+			}
+			return rowView;
+		}
+
+	}
 	public void showSkill(TextView view, final Character applicator) {
 		decoreClickableTextView(getContext(), view, applicator.getSpecialSkill().getNameId());
 		view.setOnClickListener(new OnClickListener() {
@@ -245,6 +309,11 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 
 		@Override
+		public void logLevelIncreased() {
+			addResultToLog(getContext().getString(R.string.level_increased, _character.getLevel()), getContext(), R.color.positive);
+		}
+		
+		@Override
 		public void divide(int turn) {
 			String text = turn + "." + getContext().getString(R.string.turn);
 			TextView textView = new TextView(getContext());
@@ -328,7 +397,9 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 		
 		@Override
-		public void fightEnd() {
+		public void fightEnd(long xp) {
+			addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.positive);
+			_character.addExperience(this, xp);
 			_character.setFighting(false);
 			displayButtons();
 			refresh();			

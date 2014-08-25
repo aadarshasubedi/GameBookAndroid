@@ -31,14 +31,14 @@ public class StorySection implements Serializable, Mergable {
 	private boolean hasLuck;
 	private boolean luckDefeatEnemies;
 	private float scoreMultiplier;
-
+	private int level;
 	private Story story;
 
 	private List<StorySectionOption> options = new ArrayList<>();
 	private List<Enemy> enemies = new ArrayList<>();
 	private List<Bonus> bonuses = new ArrayList<>();
 	private transient List<EnemyAssign> enemiesIds = new ArrayList<EnemyAssign>();
-	
+
 	public StorySection() {
 		super();
 	}
@@ -80,6 +80,7 @@ public class StorySection implements Serializable, Mergable {
 		}
 		return bon;
 	}
+
 	public List<Bonus> getTemporalBonuses() {
 		List<Bonus> bon = new ArrayList<Bonus>();
 		for (Bonus b : bonuses) {
@@ -89,6 +90,7 @@ public class StorySection implements Serializable, Mergable {
 		}
 		return bon;
 	}
+
 	public boolean isAllDefeated() {
 		for (Enemy enemy : this.enemies) {
 			if (!enemy.isDefeated()) {
@@ -221,26 +223,37 @@ public class StorySection implements Serializable, Mergable {
 	public List<EnemyAssign> getEnemiesIds() {
 		return enemiesIds;
 	}
-	
+
 	public void assignEnemies() {
-		for(EnemyAssign enemyKey: enemiesIds) {
+		for (EnemyAssign enemyKey : enemiesIds) {
 			Enemy enemy = story.findEnemy(enemyKey.getEnemyKey());
-			if(enemy == null) {
+			if (enemy == null) {
 				Log.e("GamebookEnemeNotFound", enemyKey.getEnemyKey());
 				continue;
 			}
 			SpecialSkill skill = SpecialSkillsMap.get(enemyKey.getEnemySkill());
-			if(skill==null && enemy.getSpecialSkill()!=null) {
-				Class<? extends SpecialSkill> cls = enemy.getSpecialSkill().getClass();
+			if (skill == null && enemy.getSpecialSkill() != null) {
+				Class<? extends SpecialSkill> cls = enemy.getSpecialSkill()
+						.getClass();
 				try {
 					skill = cls.newInstance();
 				} catch (InstantiationException | IllegalAccessException e) {
 					Log.e("EnemyAssing", "", e);
 				}
 			}
-			
-			this.enemies.add(new Enemy(enemy, skill));
+			enemy = new Enemy(enemy);
+			enemy.setLevel(getLevel());
+			ExperienceMap.getInstance().updateStatsByLevel(enemy);
+			this.enemies.add(enemy);
 		}
 	}
-	
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 }

@@ -32,7 +32,7 @@
     <string name="attr_baseDmg">Základní poškození</string>
     <string name="attr_defense">Obrana</string>
     <string name="attr_skill">Dovednost</string>
-    <string name="attr_skill_power">Síla speciální dovednosti</string>
+    <string name="attr_skill_power">Síla schopností</string>
     <string name="base_skill_power">Základní síla dovednosti</string>
     <string name="power">Síla</string>
     
@@ -209,5 +209,7 @@
 	<string name="special_skill_attempts">Použití</string>
 	<string name="always">Vždy</string>
 	<string name="base_attr_inc">(základ)</string>
+	<string name="gain_experience">Získáváš %d zkušeností.</string>	
+	<string name="level_increased">Dosáhl jsi úrovně %d.</string>	
 	
 </resources>
