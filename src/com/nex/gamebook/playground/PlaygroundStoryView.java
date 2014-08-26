@@ -20,22 +20,24 @@ import com.nex.gamebook.ScoreActivity;
 import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySection;
 import com.nex.gamebook.entity.StorySectionOption;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
-public class PlaygroundStoryView extends AbstractFragment {
+public class PlaygroundStoryView extends AbstractFragment implements BattleLogCallback {
 	public PlaygroundStoryView(Context context) {
 		super(context);
 	}
 
 	private boolean showOptions = false;
 	public Player _character;
-
+	private LinearLayout log;
 	public View create(ViewGroup container) {
 		View view = getPlayground().getLayoutInflater().inflate(R.layout.fragment_playground_story, container, false);
+		log = (LinearLayout) view.findViewById(R.id.log_layout);
 		setShowOptions(true);
 		_character = getPlayground().getCharacter();
 		this.prepareView(view);
@@ -52,6 +54,14 @@ public class PlaygroundStoryView extends AbstractFragment {
 		Story story = _character.getStory();
 		StorySection currentSection = story.getSection(_character.getPosition());
 		if (currentSection.isHasLuck()) {
+			long exp = currentSection.getExperienceByEnemies();
+			if(!currentSection.isAlreadyHasLuck())
+			if(currentSection.isLuckDefeatEnemies()) {
+				_character.addExperience(this, exp);
+			} else {
+				_character.addExperience(this, exp / 4);					
+			}
+			currentSection.setAlreadyHasLuck(true);
 			tw.setText(currentSection.getLuckText() + " " + getContext().getString(R.string.fight_aspect_luck));
 		} else if (currentSection.isEnemiesAlreadyKilled()) {
 			tw.setText(currentSection.getEnemiesDefeatedText());
@@ -202,6 +212,7 @@ public class PlaygroundStoryView extends AbstractFragment {
 			section.tryApplyLuckForBattle(_character);
 		}
 		if (section.isHasLuck()) {
+			
 			if (section.isLuckDefeatEnemies()) {
 				section.setEnemiesAlreadyKilled(true);
 			}
@@ -346,4 +357,40 @@ public class PlaygroundStoryView extends AbstractFragment {
 		showOptions = val;
 	}
 
+	@Override
+	public void logAttack(ResultCombat resultCombat) {
+		
+	}
+
+	@Override
+	public void divide(int turn) {
+		
+	}
+
+	@Override
+	public void fightEnd(long xp) {
+		
+	}
+
+	@Override
+	public void logLevelIncreased() {
+		addResultToLog(getContext().getString(R.string.level_increased, _character.getLevel()), getContext(), R.color.temporal);
+	}
+	private void addResultToLog(String text, Context context, int color) {
+		log.setVisibility(View.VISIBLE);
+		TextView battleText = new TextView(context);
+		battleText.setText(text);
+		battleText.setTextAppearance(context, R.style.attribute);
+		battleText.setTextColor(context.getResources().getColor(color));
+//		LayoutParams params = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+//		params.setMargins(0,0,0,0);
+//		battleText.setLayoutParams(params);
+		log.addView(battleText);
+		
+	}
+
+	@Override
+	public void logExperience(long xp) {
+		addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
+	}
 }

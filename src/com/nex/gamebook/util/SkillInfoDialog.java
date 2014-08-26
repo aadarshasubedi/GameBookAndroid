@@ -16,46 +16,56 @@ public class SkillInfoDialog {
 	private Dialog dialog;
 
 	public SkillInfoDialog(Context context, Character applicator) {
+		this(context, applicator, applicator.getSpecialSkill());
+		
+	}
+	public SkillInfoDialog(Context context, Character applicator, SpecialSkill skill) {
 		super();
 		dialog = new Dialog(context);
 //		dialog.
+		//View inflatedView = dialog.getLayoutInflater().inflate(R.layout.skill_info_layout, context);
 		dialog.setContentView(R.layout.skill_info_layout);
 		dialog.setCancelable(true);
-		SpecialSkill skill = applicator.getSpecialSkill();
+		
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-		TextView view = (TextView) dialog.findViewById(R.id.skill_name);
+		showSkillData(applicator, skill, dialog.findViewById(R.id.skill_data));
+		
+	}
+
+	public void showSkillData(Character applicator, SpecialSkill skill, View inflatedView) {
+		TextView view = (TextView) inflatedView.findViewById(R.id.skill_name);
 		view.setText(skill.getNameId());
 		
-		view = (TextView) dialog.findViewById(R.id.skill_description);
+		view = (TextView) inflatedView.findViewById(R.id.skill_description);
 		view.setText(skill.getDescriptionId());
 		
-		view = (TextView) dialog.findViewById(R.id.skill_type);
-		TextView aspect = (TextView) dialog.findViewById(R.id.skill_type_aspect);
+		view = (TextView) inflatedView.findViewById(R.id.skill_type);
+		TextView aspect = (TextView) inflatedView.findViewById(R.id.skill_type_aspect);
 		aspect.setVisibility(View.GONE);
 		if(!skill.isPermanent()) {
 			aspect.setVisibility(View.VISIBLE);
-			aspect.setText(context.getString(R.string.special_skill_type_temp));
+			aspect.setText(inflatedView.getContext().getString(R.string.special_skill_type_temp));
 		}
-		view.setText(context.getString(skill.getTypeId()));
+		view.setText(inflatedView.getContext().getString(skill.getTypeId()));
 		
 		int value = skill.getValue(applicator);
 		int luckValue = skill.getValueWhenLuck(applicator);
 		if(value < 0) {
-			View powerRow = dialog.findViewById(R.id.power_row);
+			View powerRow = inflatedView.findViewById(R.id.power_row);
 			powerRow.setVisibility(View.GONE);
 		}
-		view = (TextView) dialog.findViewById(R.id.skill_aspect);
+		view = (TextView) inflatedView.findViewById(R.id.skill_aspect);
 		view.setText(skill.getAspectId());
 		
-		TextView skillPower = (TextView) dialog.findViewById(R.id.skill_power);
-		TextView skillPowerLuck = (TextView) dialog.findViewById(R.id.skill_power_luck);
+		TextView skillPower = (TextView) inflatedView.findViewById(R.id.skill_power);
+		TextView skillPowerLuck = (TextView) inflatedView.findViewById(R.id.skill_power_luck);
 		String mark = "";
 		if(skill.showPercentage()) {
 			mark = "%";
 		}
 		skillPower.setText(String.valueOf(value) + mark);
 		skillPowerLuck.setText(String.valueOf(luckValue) + mark);
-		view = (TextView) dialog.findViewById(R.id.skill_trigger);
+		view = (TextView) inflatedView.findViewById(R.id.skill_trigger);
 		if(skill.isTriggerAfterEnemyAttack()) {
 			view.setText(R.string.special_skill_trigger_after_enemy);
 		} else if(skill.isTriggerBeforeEnemyAttack()) {
@@ -65,15 +75,14 @@ public class SkillInfoDialog {
 		} else{
 			view.setText(R.string.special_skill_trigger_normal);
 		}
-		view = (TextView) dialog.findViewById(R.id.attempts);
+		view = (TextView) inflatedView.findViewById(R.id.attempts);
 		view.setText(String.valueOf(skill.attemptsPerFight()));
 		if(skill.attemptsPerFight() < 0) {
 			view.setText(R.string.always);
-			dialog.findViewById(R.id.attempts_marker).setVisibility(View.GONE);
+			inflatedView.findViewById(R.id.attempts_marker).setVisibility(View.GONE);
 		}
-		
 	}
-
+	
 	public void show() {
 		this.dialog.show();
 		//Grab the window of the dialog, and change the width

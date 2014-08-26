@@ -23,7 +23,7 @@ public class StorySection implements Serializable, Mergable {
 
 	private boolean loseSection;
 	private boolean winSection;
-
+	private boolean alreadyHasLuck;
 	private boolean bonusesAlreadyGained;
 	private boolean enemiesAlreadyKilled;
 	private boolean completed;
@@ -248,4 +248,20 @@ public class StorySection implements Serializable, Mergable {
 		this.level = level;
 	}
 
+	public long getExperienceByEnemies() {
+		long exp = 0;
+		for(Enemy e: enemies) {
+			exp += e.getExperience();
+		}
+		return exp;
+	}
+
+	public boolean isAlreadyHasLuck() {
+		return alreadyHasLuck;
+	}
+
+	public void setAlreadyHasLuck(boolean alreadyHasLuck) {
+		this.alreadyHasLuck = alreadyHasLuck;
+	}
+	
 }

@@ -7,7 +7,7 @@ import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.entity.Bonus.BonusType;
 import com.nex.gamebook.entity.Stats;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public class LethalStrike extends SpecialAttackSkill {
 
@@ -15,7 +15,7 @@ public class LethalStrike extends SpecialAttackSkill {
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked,
-			AttackCallback callback, ResultCombat resultCombat) {
+			BattleLogCallback callback, ResultCombat resultCombat) {
 		ResultCombat result = createBasicResult(0, attacker.getType());
 		int modificator = getModificator(attacker);
 		if(attacker.hasLuck()) {

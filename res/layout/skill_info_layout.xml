@@ -4,9 +4,15 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" android:background="@drawable/corners_noopacity" android:padding="10dip">
 
+<LinearLayout
+    android:id="@+id/skill_data"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <TextView
             style="@style/title"
@@ -143,5 +149,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dsc_default" />
-
+</LinearLayout>
 </LinearLayout>

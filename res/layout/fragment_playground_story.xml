@@ -71,6 +71,7 @@
 	                
 	
 	            </LinearLayout>
+	            
 	      </LinearLayout>
 			<Button
                     android:id="@+id/fight_buton"
@@ -87,7 +88,19 @@
                 android:text="@string/dsc_default"
                 android:visibility="gone"
                 android:textColor="@color/negative" />
+
+            <LinearLayout
+	                android:background="@drawable/_background_corners" android:visibility="gone"
+	                android:layout_marginBottom="5dip"
+	                android:padding="5dp"
+	            	android:id="@+id/log_layout"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical">
+	            </LinearLayout>
+			
         </LinearLayout>
+        
     </ScrollView>
 
 <!--     <TextView -->

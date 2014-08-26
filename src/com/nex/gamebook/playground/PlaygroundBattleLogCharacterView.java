@@ -49,6 +49,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		masterView = getPlayground().getLayoutInflater().inflate(R.layout.fragment_playground_character, container, false);
 		switcher = (ViewFlipper) masterView.findViewById(R.id.viewSwitcher1);
 		_character = getPlayground().getCharacter();
+		_character.createActiveSkills();
 		showCurrentValues();
 		resultButton = (Button) masterView.findViewById(R.id.result_button);
 		resultButton.setVisibility(View.GONE);
@@ -312,7 +313,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	}
 	
 	@SuppressLint("NewApi")
-	class FightingLog implements AttackCallback, Runnable {
+	class FightingLog implements BattleLogCallback, Runnable {
 		private LinearLayout log;
 		private BattleLogAdapter adapter;
 		private Enemy enemy;
@@ -415,10 +416,12 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			log.addView(battleText);
 			
 		}
-		
+		@Override
+		public void logExperience(long xp) {
+			addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
+		}
 		@Override
 		public void fightEnd(long xp) {
-			addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
 			_character.addExperience(this, xp);
 			_character.setFighting(false);
 			displayButtons();

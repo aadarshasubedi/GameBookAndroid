@@ -38,7 +38,7 @@
 	
 	<string name="life_leech_name">Vysátí života</string>
 	<string name="life_leech_description">
-	    Po útoku vrátí určité množství zdraví z uštědřeného poškození. Nikdy však nemůžete vyléčit zdraví nad svůj základ.
+	    Po útoku vrátí určité množství zdraví z uštědřeného poškození. Nikdy nevyléčí zdraví nad základ.
 	</string>
 	<string name="quick_reaction_name">Rychlá reakce</string>
 	<string name="quick_reaction_description">
@@ -46,6 +46,10 @@
 	</string>
 	<string name="heal_name">Léčení</string>
 	<string name="heal_description">
+		Postava se po útoku vyléčí. Nikdy nevyléčí zdraví nad základ.
+	</string>
+	<string name="greater_heal_name">Lepší léčení</string>
+	<string name="greater_heal_description">
 		Postava se po útoku vyléčí. Nikdy nevyléčí zdraví nad základ.
 	</string>
 </resources>

@@ -6,14 +6,15 @@ import java.util.Map;
 import android.util.Log;
 
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.attack.special.skill.Rage;
-import com.nex.gamebook.attack.special.skill.Disarm;
 import com.nex.gamebook.attack.special.skill.Bleeding;
 import com.nex.gamebook.attack.special.skill.CrushStrike;
+import com.nex.gamebook.attack.special.skill.Disarm;
+import com.nex.gamebook.attack.special.skill.GreaterHeal;
 import com.nex.gamebook.attack.special.skill.Heal;
 import com.nex.gamebook.attack.special.skill.LethalStrike;
 import com.nex.gamebook.attack.special.skill.LifeLeech;
 import com.nex.gamebook.attack.special.skill.QuickReaction;
+import com.nex.gamebook.attack.special.skill.Rage;
 import com.nex.gamebook.attack.special.skill.ReflectDamage;
 import com.nex.gamebook.attack.special.skill.TwiceAttack;
 
@@ -38,6 +39,7 @@ public class SpecialSkillsMap {
 		skills.put("lifeLeech", LifeLeech.class);
 		skills.put("quickReaction", QuickReaction.class);
 		skills.put("heal", Heal.class);
+		skills.put("greaterHeal", GreaterHeal.class);
 	}
 
 	public static Map<String, Class<? extends SpecialSkill>> getSkills() {
@@ -52,9 +54,9 @@ public class SpecialSkillsMap {
 		return false;
 	}
 	
-	public static SpecialSkill get(String attackType) {
+	public static SpecialSkill get(String skillName) {
 		try {
-			Class<? extends SpecialSkill> skill = instance.skills.get(attackType);
+			Class<? extends SpecialSkill> skill = instance.skills.get(skillName);
 			if(skill!=null)
 			return skill.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public interface SpecialSkill extends Serializable {
 
@@ -16,7 +16,7 @@ public interface SpecialSkill extends Serializable {
 	 * @param resultCombat
 	 * @return
 	 */
-	boolean doAttack(Character attacker, Character attacked, AttackCallback callback, ResultCombat resultCombat);
+	boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat);
 	int getTextId();
 	int getDescriptionId();
 	int getNameId();

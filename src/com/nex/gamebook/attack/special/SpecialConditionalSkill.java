@@ -5,7 +5,7 @@ import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusType;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 
@@ -13,7 +13,7 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked,
-			AttackCallback callback, ResultCombat cm) {
+			BattleLogCallback callback, ResultCombat cm) {
 		Character applicationChar = resolveCharacterForApplication(attacked,
 				attacker);
 		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1,

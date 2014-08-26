@@ -24,7 +24,8 @@ public abstract class Character implements Serializable, Mergable {
 	private transient Stats temporalStatsHolder;
 	private String skillName;
 	private Map<String, Integer> specialSkills = new HashMap<>();
-	private transient List<Bonus> conditions = new ArrayList<Bonus>();
+	private transient List<SpecialSkill> activeSkills = new ArrayList<>();
+	private transient List<Bonus> conditions = new ArrayList<>();
 	private int level = 1;
 	private long experience = 0;
 
@@ -216,15 +217,13 @@ public abstract class Character implements Serializable, Mergable {
 	public void setSpecialSkills(Map<String, Integer> specialSkills) {
 		this.specialSkills = specialSkills;
 	}
-	SpecialSkill skillTemp;
 	public SpecialSkill getSpecialSkill() {
-		if(skillTemp == null || !SpecialSkillsMap.isSpecialSkillEqualToName(skillTemp.getClass(), skillName)) {
-			skillTemp = SpecialSkillsMap.get(skillName);
+		for(SpecialSkill skill: activeSkills) {
+			if(SpecialSkillsMap.getSkills().get(skillName).equals(skill.getClass())) {
+				return skill;
+			}
 		}
-		if(skillTemp != null) {
-			skillTemp.clean();
-		}
-		return skillTemp;
+		return null;
 	}
 	public void setSkillName(String skillName) {
 		this.skillName = skillName;
@@ -238,6 +237,19 @@ public abstract class Character implements Serializable, Mergable {
 			}
 		}
 		return skills;
+	}
+	
+	public void cleanActiveSkills() {
+		for(SpecialSkill skill: activeSkills){
+			skill.clean();
+		}
+	}
+	
+	public void createActiveSkills() {
+		this.activeSkills.clear();
+		for(String s: getAvailableSkills()) {
+			this.activeSkills.add(SpecialSkillsMap.get(s));
+		}
 	}
 	
 	public int getXpToLevelPercentage() {

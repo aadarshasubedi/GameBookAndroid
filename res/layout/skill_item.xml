@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:orientation="vertical" style="@style/button" android:layout_marginBottom="5dip">
+
+    <TextView
+        android:id="@+id/skill_name"
+        style="@style/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dsc_default"
+        android:textColor="@color/button_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginRight="10dp"
+            android:text="@string/level"
+            android:textColor="@color/button_color" />
+
+        <TextView
+            style="@style/attribute"
+            android:id="@+id/skill_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/button_color" 
+            android:text="0" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+    </LinearLayout>
+
+</LinearLayout>

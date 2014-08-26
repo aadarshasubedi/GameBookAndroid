@@ -5,7 +5,7 @@ import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.combat.CombatProcess;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public class QuickReaction extends SpecialAttackSkill {
 	
@@ -13,7 +13,7 @@ public class QuickReaction extends SpecialAttackSkill {
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked,
-			AttackCallback callback, ResultCombat resultCombat) {
+			BattleLogCallback callback, ResultCombat resultCombat) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
 		ResultCombat result = combat.doNormalAttack(attacker, attacked, getRealValue(attacker)/100f);
 		result.setSpecialAttack(this);

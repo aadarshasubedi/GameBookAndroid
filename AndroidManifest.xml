@@ -59,9 +59,14 @@
         </activity>
         <activity
             android:name=".GuideActivity"
+            android:label="@string/guide"
             android:screenOrientation="portrait"
-            android:theme="@style/GameBookActionBar"
-            android:label="@string/guide" >
+            android:theme="@style/GameBookActionBar" >
+        </activity>
+        <activity
+            android:name=".CharacterSkillsActivity"
+             android:screenOrientation="portrait"
+            android:theme="@style/FullscreenTheme" >
         </activity>
     </application>
 

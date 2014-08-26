@@ -263,14 +263,24 @@
         </LinearLayout>
     </ScrollView>
 
+    <Button
+        android:id="@+id/skill_list"
+        style="@style/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tableLayout1"
+        android:text="@string/skill_list" />
+
     <TextView
         android:id="@+id/textView1"
         style="@style/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tableLayout1"
-        android:layout_alignRight="@+id/tableLayout1"
-        android:layout_below="@+id/tableLayout1"
+        android:layout_alignLeft="@+id/scrollView2"
+        android:layout_alignRight="@+id/scrollView2"
+        android:layout_below="@+id/skill_list"
         android:text="@string/description" />
 
 </RelativeLayout>

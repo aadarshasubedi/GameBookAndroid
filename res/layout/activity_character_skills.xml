@@ -4,22 +4,22 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:padding="10dip"
-    tools:context="com.nex.gamebook.LoadGameActivity" >
+    tools:context="com.nex.gamebook.CharacterSkillsActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        style="@style/main_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/saved_games"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/saved_games"
-        android:padding="15dip"
-        android:layout_marginBottom="10dp"
-        android:text="@string/loadGame" />
+<TextView
+    android:id="@+id/textView1"
+    style="@style/main_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginBottom="10dp"
+    android:padding="15dip"
+    android:text="@string/skills" />
 
-    <ListView
-        android:id="@+id/saved_games"
+	<ListView
+        android:id="@+id/skills"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"

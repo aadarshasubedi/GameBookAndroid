@@ -9,7 +9,7 @@
             <health>30</health>
             <defense>11</defense>
             <skill>4</skill>
-            <luck>2</luck>
+            <luck>202</luck>
             <attack>7</attack>
             <skillPower>1</skillPower>
         </character>
@@ -26,13 +26,13 @@
         </character>
         <character position="47" id="3" name="ch_policeman" description="dsc_policeman">
             <skills>
-                <skill name="bleeding" levelRequired="1"/>
+                <skill name="greaterHeal" levelRequired="1"/>
                 <skill name="reflectDamage" levelRequired="2"/>
             </skills>
             <health>30</health>
             <defense>4</defense>
             <skill>10</skill>
-            <luck>2</luck>
+            <luck>30</luck>
             <attack>6</attack>
             <skillPower>1</skillPower>
         </character>

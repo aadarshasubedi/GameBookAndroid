@@ -6,7 +6,7 @@ import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusType;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public class LifeLeech extends SpecialAttackSkill {
 
@@ -14,7 +14,7 @@ public class LifeLeech extends SpecialAttackSkill {
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked,
-			AttackCallback callback, ResultCombat resultCombat) {
+			BattleLogCallback callback, ResultCombat resultCombat) {
 		int dmg = resultCombat.getDamage();
 		int leech = (int) ((float)dmg/100f * getRealValue(attacker));
 		Bonus bonus = createSpecialAttack(1, leech, BonusType.HEALTH);

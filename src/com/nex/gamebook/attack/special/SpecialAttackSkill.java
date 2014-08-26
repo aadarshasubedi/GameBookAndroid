@@ -8,7 +8,7 @@ import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.CharacterType;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public abstract class SpecialAttackSkill implements SpecialSkill {
 	private int cycles = 0;
@@ -39,14 +39,14 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	
 	@Override
 	public boolean doAttack(Character attacker, Character attacked,
-			AttackCallback callback, ResultCombat resultCombat) {
+			BattleLogCallback callback, ResultCombat resultCombat) {
 		int max = attemptsPerFight();
 		if (max > 0 && cycles >= max)
 			return true;
 		cycles++;
 		return doAttackOnce(attacker, attacked, callback, resultCombat);
 	}
-	public abstract boolean doAttackOnce(Character attacker, Character attacked, AttackCallback callback, ResultCombat cm);
+	public abstract boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm);
 	public void addTemporalBonus(Character applicationChar, Bonus bonus, String conditionid) {
 		List<Bonus> tattacks = applicationChar.getConditions();
 		Bonus b = applicationChar.findConditionById(conditionid);

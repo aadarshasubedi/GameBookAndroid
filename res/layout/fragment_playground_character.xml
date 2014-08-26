@@ -298,6 +298,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:dropDownVerticalOffset="-50dp"
+                android:divider="@android:color/transparent"
+  				android:dividerHeight="5sp"
                 android:popupBackground="@drawable/spinner"
                 android:spinnerMode="dropdown" />
 

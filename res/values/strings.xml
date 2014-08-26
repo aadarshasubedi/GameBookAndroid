@@ -5,6 +5,7 @@
     <string name="newGame">Nová hra</string>
     <string name="loadGame">Nahrát hru</string>
     <string name="scoreBoard">Scoreboard</string>
+    <string name="skills">Dovednosti</string>
     <string name="play">Hrát</string>
     <string name="endGame_lose">Prohra</string>
     <string name="endGame_win">Vítězství</string>
@@ -22,8 +23,8 @@
     <string name="enemies">Nepřátelé</string>
     <string name="keyword_from">z</string>
     <string name="dead">Mrtvý</string>
-	<string name="turn">Kolo</string>
-	
+    <string name="turn">Kolo</string>
+
     <!-- characters attributes -->
     <string name="attr_value_zero">0</string>
     <string name="attr_health">Zdraví</string>
@@ -35,26 +36,25 @@
     <string name="attr_skill_power">Síla schopností</string>
     <string name="base_skill_power">Základní síla dovednosti</string>
     <string name="power">Síla</string>
-    
     <string name="attr_critical">Krit.š.</string>
     <string name="dsc_default">Default</string>
     <string name="title_activity_story_selection">StorySelectionActivity</string>
     <string name="title_activity_playground">PlaygroundActivity</string>
     <string name="option_disabled">(Zablokováno)</string>
     <string name="option_cant_return">(Sem se již nebudeš moci vrátit)</string>
-<!-- 	<string name="temporal">(Dočasně)</string> -->
+    <!-- <string name="temporal">(Dočasně)</string> -->
     <string name="enemy_boss">(Boss)</string>
     <string name="enemy_minion">(Minion)</string>
     <string name="enemy_creature"></string>
-    
+
     <!-- Playground tab -->
     <string name="character">Postava</string>
     <string name="fight">Boj</string>
     <string name="story">Příběh</string>
     <string name="sg_continue">Pokračovat</string>
-	<string name="actual_stats">Aktualní</string>
-	<string name="base_stats">Základní</string>
-	  
+    <string name="actual_stats">Aktualní</string>
+    <string name="base_stats">Základní</string>
+
     <!-- log fighting strings -->
     <string name="damage">poškození</string>
     <string name="critical_chance">kritického</string>
@@ -64,7 +64,6 @@
     <string name="special_skill">Speciální dovednost</string>
     <string name="second_attack">(Druhý úder)</string>
     <string name="you_cause">Způsobuješ</string>
-    
     <string name="you_use">Používáš</string>
     <string name="enemy_use">používá</string>
     <string name="for_word">za</string>
@@ -92,60 +91,42 @@
     <string name="visitedSections">Navštívených sekcí</string>
     <string name="mainPage">Hlavní nabídka</string>
     <string name="guide">Příručka</string>
-
     <string name="drawer_open">Otevřít</string>
     <string name="drawer_close">Schovat</string>
 
     <!-- guide texts -->
-    
-    <string name="guide_health">
-        Zdraví je důležitým aspektem ve hře. 
+
+    <string name="guide_health">        Zdraví je důležitým aspektem ve hře. 
         Jakmile padne zdraví na 0 nebo níž, tak je hráč či nepřítel mrtvý.
-        Pro hráče tím končí hra a musí ji načíst nebo začít znovu.
-    </string>
-	<string name="guide_attack">
-        Útok ovlivňuje poškození při boji. Je to násobek základního poškození, které se zobrazuje za hodnotou útoku.
-        Základní poškození má pouze hráč. U nepřátel se celkové poškození bez kritického zranění a redukce rovná jejich útoku.
-    </string>
-	<string name="guide_defense">
-        Obrana redukuje poškození a to procentuelně. 
-        U každé postavy či nepřítele je vedle hodnoty obrany také zobrazeno procento redukce poškození.
-    </string>
-    <string name="guide_skill">
-        Dovednost má vliv na zobrazení některých možností v různých sekcí.
+        Pro hráče tím končí hra a musí ji načíst nebo začít znovu.</string>
+    <string name="guide_attack">        Útok ovlivňuje poškození při boji. Je to násobek základního poškození, které se zobrazuje za hodnotou útoku.
+        Základní poškození má pouze hráč. U nepřátel se celkové poškození bez kritického zranění a redukce rovná jejich útoku.</string>
+    <string name="guide_defense">        Obrana redukuje poškození a to procentuelně. 
+        U každé postavy či nepřítele je vedle hodnoty obrany také zobrazeno procento redukce poškození.</string>
+    <string name="guide_skill">        Dovednost má vliv na zobrazení některých možností v různých sekcí.
         Tzn. pokud hráč nemá dostatečnou dovednost, kterou daná možnost vyžaduje, tak se mu nezobrazí.
-        Z dovednosti se také vypočítává šance na kritické zranění, které je 1.5x útoku.
-    </string>
-    <string name="guide_luck">
-        Štěstí má širší vliv působnosti.\n
+        Z dovednosti se také vypočítává šance na kritické zranění, které je 1.5x útoku.</string>
+    <string name="guide_luck">        Štěstí má širší vliv působnosti.\n
         1) Ovlivňuje zobrazení některých možností, které vyžadují štěstí.\n\n
         2) Před bojem má vliv na úplné vyhnutí se boji, v některých sekcí uplně odstraní nepřátele.\n\n
         3) V boji pak má vliv na vyhnutí se útoku a při kritickém zranění šanci na dvojnásobný kritický úder.\n\n
-        4) Pokud máš štěstí začínáš boj, jinak ho vždy začíná nepřítel.\n\n
-    </string>
-    <string name="guide_option">
-       Možnost je možný výběr v sekci příběhu, tím se hráč rozhoduje kudy se vydá nebo co podnikne.
+        4) Pokud máš štěstí začínáš boj, jinak ho vždy začíná nepřítel.\n\n</string>
+    <string name="guide_option">       Možnost je možný výběr v sekci příběhu, tím se hráč rozhoduje kudy se vydá nebo co podnikne.
        Jinými slovy, ovlivňuje tím průběh děje. Možnosti mohou být ovlivněny atributem dovednosti, štěstím nebo obojím.
        U každé dovednosti, která vyžaduje štěstí nebo dovednost a je zobrazena, tak se u ní objeví indikátor daného atributu.
        Některé možnosti jsou aplikovatelné pouze jednou, či-li pokud se v příběhu vrátíte zpět do sekce, ve které jste použily unikátní možnost, tak ji již nelze použít.
-       Tyto možnosti nejsou nijak označeny.
-    </string>
+       Tyto možnosti nejsou nijak označeny.</string>
     <string name="game_saving">Ukládání hry</string>
-   	<string name="guide_save">
-      Ukládání hry se provádí po každé zvolené možnosti automaticky.
+    <string name="guide_save">      Ukládání hry se provádí po každé zvolené možnosti automaticky.
       Každá postava příběhu má pouze jednu úložnou pozici.
-      Uložené hry nelze mazat, přeuloží se buď novou hrou nebo se úplně smažou úspěšně dohranou hrou.
-    </string>
+      Uložené hry nelze mazat, přeuloží se buď novou hrou nebo se úplně smažou úspěšně dohranou hrou.</string>
     <string name="battle">Bitva</string>
-    <string name="guide_battle">
-		Boje nejsou automatické a pořadí nepřátel si určuje sám hráč.
+    <string name="guide_battle">		Boje nejsou automatické a pořadí nepřátel si určuje sám hráč.
 		Po každém boji s jedním nepřítelem se zobrazí průběh boje.
 		Pokračovat v příběhu může hráč pouze tehdy, porazí-li všechny nepřátele.
 		Pokud hráč v průbehu hry zemře, tak musí začít buď znovu nebo nahrát hru a boj zkusit znovu.
-		Každý boj může díky atributům štěstí a dovednosti probíhat pokaždé jinak.
-    </string>
-    <string name="guide_enemies">
-		Nepřátelé se dělí na tři druhy.
+		Každý boj může díky atributům štěstí a dovednosti probíhat pokaždé jinak.</string>
+    <string name="guide_enemies">		Nepřátelé se dělí na tři druhy.
 		\n\n1) Normální nepřátelé\n
 		Jsou nepřátelé kteří dávají pouze poškození, uplatňují štěstí a šanci na kritické zranění.
 		\n\n2) Minioni\n
@@ -155,18 +136,14 @@
 		Jsou nepřátelé kteří dávají poškození, uplatňují štěstí a šanci na kritické zranění a mají speciální útok.
 		Jejich speciální útok je, že hráči dočasně sníží jeden útok. Avšak hráčův útok nikdy neklesne pod hodnotu 4.
 		\n\n\n\n
-		Specialní útok se projeví pouze tehdy, pokud má nepřítel štěstí.
-	</string>
+		Specialní útok se projeví pouze tehdy, pokud má nepřítel štěstí.</string>
     <string name="section">Sekce</string>
-    <string name="guide_section">
-		Sekce je část příběhu, která má následující vlastnosti:\n
+    <string name="guide_section">		Sekce je část příběhu, která má následující vlastnosti:\n
 		Text příběhu\n
 		Možnosti\n
 		Bitvy\n
-		Modifikace\n
-    </string>
-    <string name="guide_modifications">
-		Modifikace ovlivňují atributy postavy hráče.
+		Modifikace\n</string>
+    <string name="guide_modifications">		Modifikace ovlivňují atributy postavy hráče.
 		Mohou být pozitivní i negativní.
 		\n\nDočasné modifikace:\n
 		Mohou být pouze pozitivní a jsou aplikovány před bojem a po boji jsou zase zrušeny.
@@ -174,46 +151,38 @@
 		
 		\n\nPermanentní modifikace:\n
 		Pokud je v sekci bitva, tak jsou některé modifikace aplikovány před bojem a některé po boji.
-		Některé modifikace mohou navýšit tvoje aktuální atributy nad základní.
-    </string>
-	<string name="guide_description">
-	    Gamebook je kniha, ve které ovlivňujete příběh svým vlastním rozhodováním.
+		Některé modifikace mohou navýšit tvoje aktuální atributy nad základní.</string>
+    <string name="guide_description">	    Gamebook je kniha, ve které ovlivňujete příběh svým vlastním rozhodováním.
 	    Příběhy jsou odlišné a každý má jiný styl prožívání příběhu.
 	    V některých příbězích je děj lineární a má jeden konec, například porazit posledního bosse.
 	    Jiné mají zase příběh dynamický a mají více možností jak hru ukončit, to se pak odvíjí na závěrečném skóre.\n\n
-		V postraním menu se dozvíte více o jednotlivých aspektech hry.
-	</string>
-	
-	
-	
-	<string name="special_skill_type">Typ</string>
-	<string name="special_skill_aspect_power">Síla</string>
-	<string name="special_skill_aspect_chance">Šance</string>
-	<string name="special_skill_aspect_reflect">Odražení</string>
-	<string name="special_skill_trigger">Spuštení</string>
-	<string name="special_skill_trigger_normal">Před normálním útokem</string>
-	<string name="special_skill_trigger_after">Po normálním útoku</string>
-	<string name="special_skill_trigger_before_enemy">Před útokem nepřítele</string>
-	<string name="special_skill_trigger_after_enemy">Po útoku nepřítele</string>
-	
-	<string name="special_skill_type_debuff">Snížení attributu</string>
-	<string name="special_skill_type_buff">Navýšení attributu</string>
-	<string name="special_skill_type_temp">(dočasně)</string>
-	<string name="cancel_temp">(zrušení)</string>
-	<string name="reset_condition">(zrušení z boje)</string>
-	<string name="special_skill_type_perm">(trvale)</string>
-	<string name="special_skill_type_attack">Specialní útok</string>
-	<string name="select_skill">Vyberte dovednost</string>	
-	<string name="name">Název</string>	
-	<string name="with_luck">se štestím</string>
-	<string name="special_skill_attempts">Použití</string>
-	<string name="always">Vždy</string>
-	<string name="base_attr_inc">(základ)</string>
-	<string name="gain_experience">Získáváš %d zkušeností.</string>	
-	<string name="level_increased">Dosáhl jsi úrovně %d.</string>	
-	<string name="skill_info">Info</string>	
-	<string name="level">Úroveň</string>
-	<string name="experience">Zkušenosti</string>
-	
-	
+		V postraním menu se dozvíte více o jednotlivých aspektech hry.</string>
+    <string name="special_skill_type">Typ</string>
+    <string name="special_skill_aspect_power">Síla</string>
+    <string name="special_skill_aspect_chance">Šance</string>
+    <string name="special_skill_aspect_reflect">Odražení</string>
+    <string name="special_skill_trigger">Spuštení</string>
+    <string name="special_skill_trigger_normal">Před normálním útokem</string>
+    <string name="special_skill_trigger_after">Po normálním útoku</string>
+    <string name="special_skill_trigger_before_enemy">Před útokem nepřítele</string>
+    <string name="special_skill_trigger_after_enemy">Po útoku nepřítele</string>
+    <string name="special_skill_type_debuff">Snížení attributu</string>
+    <string name="special_skill_type_buff">Navýšení attributu</string>
+    <string name="special_skill_type_temp">(dočasně)</string>
+    <string name="cancel_temp">(zrušení)</string>
+    <string name="reset_condition">(zrušení z boje)</string>
+    <string name="special_skill_type_perm">(trvale)</string>
+    <string name="special_skill_type_attack">Specialní útok</string>
+    <string name="select_skill">Vyberte dovednost</string>
+    <string name="name">Název</string>
+    <string name="with_luck">se štestím</string>
+    <string name="special_skill_attempts">Použití</string>
+    <string name="always">Vždy</string>
+    <string name="base_attr_inc">(základ)</string>
+    <string name="gain_experience">Získáváš %d zkušeností.</string>
+    <string name="level_increased">Dosáhl jsi úrovně %d.</string>
+    <string name="skill_info">Info</string>
+    <string name="level">Úroveň</string>
+    <string name="experience">Zkušenosti</string>
+    <string name="skill_list">Seznam dovedností</string>
 </resources>

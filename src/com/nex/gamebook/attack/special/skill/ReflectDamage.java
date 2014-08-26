@@ -5,14 +5,14 @@ import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.entity.Bonus.BonusType;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public class ReflectDamage extends SpecialAttackSkill {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, AttackCallback callback, ResultCombat resultCombat) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		int value = resultCombat.getDamage();
 		int percentage = getRealValue(attacker);
 		value = getResultValuePercentage(value, percentage);

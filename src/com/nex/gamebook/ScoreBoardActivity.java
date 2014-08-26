@@ -52,6 +52,7 @@ public class ScoreBoardActivity extends Activity {
 		}
 		ListView list = (ListView) findViewById(R.id.scores);
 		list.setAdapter(new ScoreItem(this));
+		
 	}
 	class ScoreItem extends ArrayAdapter<String> {
 		Context context;

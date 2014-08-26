@@ -1,16 +1,13 @@
 package com.nex.gamebook.attack.special.skill;
 
 import com.nex.gamebook.R;
-import com.nex.gamebook.attack.special.SpecialAttackSkill;
-import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Bonus.BonusType;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
 
-public class Heal extends SpecialAttackSkill {
+public class GreaterHeal extends Heal {
 
-	private static final long serialVersionUID = -5096382275794064276L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public int getTextId() {
@@ -19,12 +16,12 @@ public class Heal extends SpecialAttackSkill {
 
 	@Override
 	public int getDescriptionId() {
-		return R.string.heal_description;
+		return R.string.greater_heal_description;
 	}
 
 	@Override
 	public int getNameId() {
-		return R.string.heal_name;
+		return R.string.greater_heal_name;
 	}
 
 	@Override
@@ -34,12 +31,12 @@ public class Heal extends SpecialAttackSkill {
 
 	@Override
 	public int getValue(Character character) {
-		return character.getCurrentStats().getSpecialSkillPower() / 2;
+		return character.getCurrentStats().getSpecialSkillPower() * 4;
 	}
 
 	@Override
 	public int getValueWhenLuck(Character character) {
-		return getValue(character) * 2;
+		return (int) (getValue(character) * 1.5);
 	}
 
 	@Override
@@ -63,14 +60,19 @@ public class Heal extends SpecialAttackSkill {
 	}
 	
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked,
-			BattleLogCallback callback, ResultCombat cm) {
-		ResultCombat rc = createBasicResult(0, attacker.getType());
-		Bonus bonus = createSpecialAttack(1, getRealValue(attacker), BonusType.HEALTH);
-		bonus.setOverflowed(false);
-		rc.setDamage(attacker.addBonus(bonus));
-		callback.logAttack(rc);
+	public boolean doAttack(Character attacker, Character attacked,
+			BattleLogCallback callback, ResultCombat resultCombat) {
+		return doAttackOnce(attacker, attacked, callback, resultCombat);
+	}
+	@Override
+	public boolean isTriggerAfterEnemyAttack() {
 		return true;
 	}
+	@Override
+	public boolean doAttackOnce(Character attacker, Character attacked,
+			BattleLogCallback callback, ResultCombat cm) {
+		return super.doAttackOnce(attacker, attacked, callback, cm);
+	}
+
 
 }

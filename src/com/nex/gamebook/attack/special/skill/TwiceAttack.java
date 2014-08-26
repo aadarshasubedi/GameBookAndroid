@@ -5,14 +5,14 @@ import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.combat.CombatProcess;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public class TwiceAttack extends SpecialAttackSkill {
 	private static final long serialVersionUID = -1804300495308316474L;
 
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, AttackCallback callback, ResultCombat rm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat rm) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
 		ResultCombat result = combat.doNormalAttack(attacker, attacked);
 		result.setSpecialAttack(this);

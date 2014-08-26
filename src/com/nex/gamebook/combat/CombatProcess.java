@@ -5,7 +5,7 @@ import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.playground.AttackCallback;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public class CombatProcess {
 
@@ -45,7 +45,7 @@ public class CombatProcess {
 		return doNormalAttack(attacker, attacked, 1);
 	}
 
-	public void fight(AttackCallback callback) {
+	public void fight(BattleLogCallback callback) {
 		Player player = (Player) callback.getCharacter();
 		
 		int turn = 0;
@@ -65,10 +65,11 @@ public class CombatProcess {
 				break;
 			}
 		}
+		player.cleanActiveSkills();
 		callback.fightEnd(enemy.getExperience());
 	}
 	
-	private boolean doSpecialAttack(Character attacker, Character attacked, AttackCallback callback) {
+	private boolean doSpecialAttack(Character attacker, Character attacked, BattleLogCallback callback) {
 		SpecialSkill skill = attacked.getSpecialSkill();
 		if(skill!=null && skill.isTriggerBeforeEnemyAttack()) {
 			skill.doAttack(attacked, attacker, callback, null);
