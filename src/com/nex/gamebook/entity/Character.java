@@ -281,7 +281,7 @@ public abstract class Character implements Serializable, Mergable {
 					(mod==2 && currentVal<defaultVal)) {
 					GameBookUtils.setStatByType(this.currentStats, type, defaultVal);
 					int res = currentVal -  defaultVal;
-					GameBookUtils.setStatByType(s, type, res);
+					GameBookUtils.setStatByType(s, type, -res);
 				}
 			} catch (Exception e) {
 				Log.e("ResetOverwlowedAttributes", "", e);

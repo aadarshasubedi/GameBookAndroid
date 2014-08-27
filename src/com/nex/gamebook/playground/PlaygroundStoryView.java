@@ -69,13 +69,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		} else {
 			tw.setText(currentSection.getText());
 		}
-		if(currentSection.isResetAttributes()) {
-			resetAttributes(view, 0);
-		} else if(currentSection.isResetPositiveAttributes()) {
-			resetAttributes(view, 1);
-		} else if(currentSection.isResetNegativeAttributes()) {
-			resetAttributes(view, 2);
-		}
+		
 		if (currentSection.isLoseSection()) {
 			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.endGame_lose);
 		} else if (currentSection.isWinSection()) {
@@ -92,6 +86,13 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			} else if (isShowOptions()) {
 				prepareChooseSection(view.getContext(), layout, currentSection);
 			}
+		}
+		if(currentSection.isResetAttributes()) {
+			resetAttributes(view, 0);
+		} else if(currentSection.isResetPositiveAttributes()) {
+			resetAttributes(view, 1);
+		} else if(currentSection.isResetNegativeAttributes()) {
+			resetAttributes(view, 2);
 		}
 	}
 
@@ -199,6 +200,11 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		value = releasedStats.getDamage();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context));
+			show = true;
+		}
+		value = releasedStats.getSkillpower();
+		if (value != 0) {
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill_power, context));
 			show = true;
 		}
 		if (show) {
