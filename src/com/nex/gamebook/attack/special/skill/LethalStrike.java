@@ -19,7 +19,7 @@ public class LethalStrike extends SpecialAttackSkill {
 		ResultCombat result = createBasicResult(0, attacker.getType());
 		int modificator = getModificator(attacker);
 		if(attacker.hasLuck()) {
-			modificator = getModificator(attacker);
+			modificator = getModificatorWhenLuck(attacker);
 		}
 		if (attacker.hasLuck(modificator)) {
 			int damage = attacked.getCurrentStats().getHealth() - 1;
@@ -37,7 +37,7 @@ public class LethalStrike extends SpecialAttackSkill {
 	}
 	
 	private int getModificatorWhenLuck(Character c) {
-		return (int) (getModificator(c) * 0.8);
+		return (int) (getModificator(c) * 0.9);
 	}
 	
 	@Override

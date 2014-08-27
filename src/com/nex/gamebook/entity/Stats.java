@@ -164,6 +164,7 @@ public class Stats implements Serializable {
 		this.skill -= releaseStats.skill;
 		this.luck -= releaseStats.luck;
 		this.damage -= releaseStats.damage;
+		this.skillpower -= releaseStats.skillpower;
 	}
 
 	public void setHolder(Stats holder) {

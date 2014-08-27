@@ -46,10 +46,10 @@
 	</string>
 	<string name="heal_name">Léčení</string>
 	<string name="heal_description">
-		Postava se po útoku vyléčí. Nikdy nevyléčí zdraví nad základ.
+		Vyléčí sesílatele pokud mu chybí nějaké zdraví. Nikdy nevyléčí zdraví nad základ.
 	</string>
 	<string name="greater_heal_name">Lepší léčení</string>
 	<string name="greater_heal_description">
-		Postava se po útoku vyléčí. Nikdy nevyléčí zdraví nad základ.
+		Vyléčí sesílatele pokud mu chybí nějaké zdraví. Nikdy nevyléčí zdraví nad základ.
 	</string>
 </resources>

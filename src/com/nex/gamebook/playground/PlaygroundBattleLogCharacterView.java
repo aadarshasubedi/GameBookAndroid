@@ -50,8 +50,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		masterView = getPlayground().getLayoutInflater().inflate(R.layout.fragment_playground_character, container, false);
 		switcher = (ViewFlipper) masterView.findViewById(R.id.viewSwitcher1);
 		_character = getPlayground().getCharacter();
-		showCurrentValues();
 		_character.createActiveSkills();
+		showCurrentValues();
 		resultButton = (Button) masterView.findViewById(R.id.result_button);
 		resultButton.setVisibility(View.GONE);
 		if (section != null) {
@@ -253,7 +253,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 						});
 					}
 
-					if(enemy.isDefeated()) {
+					if(enemy.isDefeated() || _character.isDefeated()) {
 						final ScrollView sc = (ScrollView) rowView.findViewById(R.id.e_battleLogScrollView);
 						sc.post(new Runnable() {            
 						    @Override
@@ -424,7 +424,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			_character.addExperience(this, xp);
 			_character.setFighting(false);
 			displayButtons();
-			refresh();			
+			refresh();
 		}
 		
 		private void refresh() {

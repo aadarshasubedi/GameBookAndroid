@@ -13,6 +13,7 @@ public class ExperienceMap {
 
 	private Map<Integer, Long> experienceMap = new HashMap<>();
 	private Map<Integer, Double> xpcoeffs = new HashMap<>();
+	private Map<Integer, Double> gainedxpcoeffs = new HashMap<>();
 	private static ExperienceMap instance;
 	static {
 		instance = new ExperienceMap();
@@ -20,15 +21,20 @@ public class ExperienceMap {
 	}
 
 	private void init() {
-		xpcoeffs.put(10, 1.8);
-		xpcoeffs.put(20, 1.9);
-//		xpcoeffs.put(30, 1.7);
-//		xpcoeffs.put(40, 1.8);
-		double xpcoeff = 1.4;
-		long xpRequiredToNextLevel = 50;
+		xpcoeffs.put(10, 1.1);
+		double xpcoeff = 1.0;
+		double gcoeff = 0.5;
+		double gcoeffInc = 0.1;
+		long xpRequiredToNextLevel = 40;
 		for (int i = 1; i <= MAX_LEVEL; i++) {
-			xpRequiredToNextLevel = (long) (xpRequiredToNextLevel * xpcoeff);
+			if(i==11) {
+				gcoeffInc = 0.5;
+			}
+			gcoeff += gcoeffInc;
+			gainedxpcoeffs.put(i, gcoeff);
+			xpRequiredToNextLevel = xpRequiredToNextLevel / 2 + (long) (xpRequiredToNextLevel * xpcoeff);
 			Log.i("Experience", xpRequiredToNextLevel + " at level " + i);
+			Log.i("Experience gaining coefficient", gcoeff + " at level " + i);
 			experienceMap.put(i, xpRequiredToNextLevel);
 			Double newCoeff = xpcoeffs.get(i);
 			if (newCoeff != null) {
@@ -45,6 +51,13 @@ public class ExperienceMap {
 		return this.experienceMap.get(lvl);
 	}
 
+	public long getGainedExperienceFromEnemy(Enemy enemy) {
+		int enemyLevel = enemy.getLevel();
+		long experience = enemy.getEnemyLevel().getBaseXP() * enemyLevel;
+		double coeff = gainedxpcoeffs.get(enemyLevel);
+		return (long) (experience * coeff);
+	}
+	
 	public void updateStatsByLevel(Character character) {
 		for(StatType type: StatType.values()) {
 			try {

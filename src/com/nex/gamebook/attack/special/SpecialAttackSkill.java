@@ -11,9 +11,9 @@ import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public abstract class SpecialAttackSkill implements SpecialSkill {
-	private int cycles = 0;
 	private static final long serialVersionUID = -7422695719062137022L;
-	boolean used = false;
+	protected int cycles = 0;
+	protected boolean used = false;
 	public Enemy resolveEnemy(Character applicationChar, Character character) {
 		if(applicationChar instanceof Enemy) return (Enemy) applicationChar;
 		return (Enemy) character;

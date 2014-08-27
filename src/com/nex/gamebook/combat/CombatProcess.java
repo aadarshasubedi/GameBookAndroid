@@ -16,16 +16,13 @@ public class CombatProcess {
 		this.enemy = enemy;
 	}
 
-	public ResultCombat doNormalAttack(Character attacker, Character attacked,
-			float modification) {
+	public ResultCombat doNormalAttack(Character attacker, Character attacked, float modification) {
 		ResultCombat resultCombat = new ResultCombat();
 		resultCombat.setType(attacker.getType());
 		resultCombat.setLuck(attacked.hasLuck());
 		if (!resultCombat.isLuck()) {
 			resultCombat.setCritical(attacker.isCriticalChance());
-			int attack = attacker.getCurrentStats().getAttack()
-					* attacker.getCurrentStats().getDamage();
-			int levelTocalcDef = attacked.getLevel();
+			int attack = attacker.getCurrentStats().getAttack() * attacker.getCurrentStats().getDamage();
 			int defense = attacked.getCurrentStats().getDefensePercentage();
 			int totalDamage = (attack - (int) (((double) attack / 100d) * defense));
 			totalDamage *= modification;
@@ -36,8 +33,7 @@ public class CombatProcess {
 			}
 			resultCombat.setDamage(totalDamage);
 			int attackedHealth = attacked.getCurrentStats().getHealth();
-			attacked.getCurrentStats().setHealth(
-					attackedHealth - resultCombat.getDamage());
+			attacked.getCurrentStats().setHealth(attackedHealth - resultCombat.getDamage());
 		}
 		resultCombat.setEnemyName(enemy.getName());
 		return resultCombat;
@@ -49,8 +45,8 @@ public class CombatProcess {
 
 	public void fight(BattleLogCallback callback) {
 		Player player = (Player) callback.getCharacter();
-
 		int turn = 0;
+		long experience = enemy.getExperience();
 		while (enemy.getCurrentStats().getHealth() > 0) {
 			callback.divide(++turn);
 			boolean enemyBegin = !player.hasLuck();
@@ -64,15 +60,15 @@ public class CombatProcess {
 				}
 			}
 			if (player.isDefeated()) {
+				experience = 0;
 				break;
 			}
 		}
 		player.cleanActiveSkillsAfterFightEnd();
-		callback.fightEnd(enemy.getExperience());
+		callback.fightEnd(experience);
 	}
 
-	private boolean doSpecialAttack(Character attacker, Character attacked,
-			BattleLogCallback callback) {
+	private boolean doSpecialAttack(Character attacker, Character attacked, BattleLogCallback callback) {
 		SpecialSkill skill = attacked.getSpecialSkill();
 		if (skill != null && skill.isTriggerBeforeEnemyAttack()) {
 			skill.doAttack(attacked, attacker, callback, null);
@@ -93,11 +89,8 @@ public class CombatProcess {
 			attackerSkill.doAttack(attacker, attacked, callback, result);
 		} else {
 			boolean doAttack = true;
-			if (attackerSkill != null
-					&& !attackerSkill.isTriggerAfterEnemyAttack()
-					&& !attackerSkill.isTriggerBeforeEnemyAttack()) {
-				doAttack = attackerSkill.doAttack(attacker, attacked, callback,
-						null);
+			if (attackerSkill != null && !attackerSkill.isTriggerAfterEnemyAttack() && !attackerSkill.isTriggerBeforeEnemyAttack()) {
+				doAttack = attackerSkill.doAttack(attacker, attacked, callback, null);
 			}
 			if (doAttack) {
 				ResultCombat result = doNormalAttack(attacker, attacked);

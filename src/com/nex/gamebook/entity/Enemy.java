@@ -1,14 +1,15 @@
 package com.nex.gamebook.entity;
 
 import com.nex.gamebook.R;
+import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
 public class Enemy extends com.nex.gamebook.entity.Character {
 
 	public enum EnemyLevel {
 		CREATURE(R.string.enemy_creature, 10), 
-		MINION(R.string.enemy_minion, 15), 
-		BOSS(R.string.enemy_boss, 20);
+		MINION(R.string.enemy_minion, 30), 
+		BOSS(R.string.enemy_boss, 60);
 		private int code;
 		private int baseXP;
 		private EnemyLevel(int code, int baseXP) {
@@ -93,6 +94,13 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	}
 	@Override
 	public long getExperience() {
-		return enemyLevel.baseXP * getLevel();
+		return ExperienceMap.getInstance().getGainedExperienceFromEnemy(this);
+	}
+	public SpecialSkill getSpecialSkill() {
+		return getSpecialSkill(getSkillName());
+	}
+	@Override
+	public SpecialSkill getSpecialSkill(String skillName) {
+		return SpecialSkillsMap.get(skillName);
 	}
 }

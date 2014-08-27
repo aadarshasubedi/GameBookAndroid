@@ -88,7 +88,7 @@ public abstract class GameBookFragment {
 		} else if(StatType.LUCK.equals(character.getPrimaryStat())) {
 			((TextView)view.findViewById(R.id.sel_l_luck_d)).setTextColor(getContext().getResources().getColor(color));
 		} else if(StatType.SKILLPOWER.equals(character.getPrimaryStat())) {
-			((TextView)view.findViewById(R.id.sel_l_luck_d)).setTextColor(getContext().getResources().getColor(color));
+			((TextView)view.findViewById(R.id.sel_l_skillpower_d)).setTextColor(getContext().getResources().getColor(color));
 		}
 	}
 	

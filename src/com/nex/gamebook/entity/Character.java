@@ -25,7 +25,7 @@ public abstract class Character implements Serializable, Mergable {
 	private transient Stats temporalStatsHolder;
 	private String skillName;
 	private Map<String, Integer> specialSkills = new HashMap<>();
-	private transient Set<SpecialSkill> activeSkills = new HashSet<>();
+	private transient Set<SpecialSkill> activeSkills;
 	private transient List<Bonus> conditions = new ArrayList<>();
 	private int level = 1;
 	private long experience = 0;
@@ -101,30 +101,22 @@ public abstract class Character implements Serializable, Mergable {
 	 * @return
 	 */
 	public int addBonus(Bonus bonus) {
-		int realValue = bonus.getValue();
+		int realValue = 0;
 		try {
 			int currentValue = GameBookUtils.getStatByType(getCurrentStats(), bonus.getType());
 			int total = currentValue + (bonus.getCoeff() * bonus.getValue());
 			int defaultValue = GameBookUtils.getStatByType(getStats(), bonus.getType());
 			int setedValue = 0;
 			if (bonus.isBase()) {
-				GameBookUtils.setStatByType(this.stats, bonus.getType(), defaultValue + realValue);
-				return realValue;
-			} else if (!bonus.isOverflowed()) {
-				if(bonus.getCoeff()>0) {
-					if (currentValue < defaultValue) {
-						realValue = defaultValue - currentValue;
-						setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), defaultValue);
-					} else {
-						realValue = 0;
-					}
+				GameBookUtils.setStatByType(getStats(), bonus.getType(), defaultValue + bonus.getValue());
+				defaultValue = GameBookUtils.getStatByType(getStats(), bonus.getType());
+			} 
+			if (bonus.getCoeff() > 0 && total > defaultValue && !bonus.isOverflowed()) {
+				if (total > defaultValue && currentValue < defaultValue) {
+					realValue = defaultValue - currentValue;
+					setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), defaultValue);
 				} else {
-					if(total<defaultValue) {
-						realValue = currentValue - defaultValue;
-						setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), defaultValue);
-					} else {
-						setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), total);	
-					}
+					realValue = 0;
 				}
 				
 			} else {
@@ -151,6 +143,9 @@ public abstract class Character implements Serializable, Mergable {
 			}
 		} catch (Exception e) {
 			Log.e("GameBook", "", e);
+		}
+		if(bonus.isBase()) {
+			realValue = bonus.getValue();
 		}
 		return realValue;
 	}
@@ -246,7 +241,7 @@ public abstract class Character implements Serializable, Mergable {
 		}
 	}
 	public void createActiveSkills() {
-		this.activeSkills.clear();
+		this.activeSkills = new HashSet<>();
 		for (String s : getAvailableSkills()) {
 			this.activeSkills.add(SpecialSkillsMap.get(s));
 		}
@@ -274,16 +269,18 @@ public abstract class Character implements Serializable, Mergable {
 		this.primaryStat = primaryStat;
 	}
 	
-	public Stats resetOverflowedStats() {
+	public Stats resetStats(int mod) {
 		Stats s = new Stats();
 		s.nullAllAttributes();
 		for(StatType type: StatType.values()) {
 			try {
 				int defaultVal = GameBookUtils.getStatByType(this.stats, type);
 				int currentVal = GameBookUtils.getStatByType(this.currentStats, type);
-				if(currentVal>defaultVal) {
+				if( (mod==0 && currentVal!=defaultVal) ||
+					(mod==1 && currentVal>defaultVal)||
+					(mod==2 && currentVal<defaultVal)) {
 					GameBookUtils.setStatByType(this.currentStats, type, defaultVal);
-					int res = currentVal - defaultVal;
+					int res = currentVal -  defaultVal;
 					GameBookUtils.setStatByType(s, type, res);
 				}
 			} catch (Exception e) {
@@ -292,5 +289,7 @@ public abstract class Character implements Serializable, Mergable {
 		}
 		return s;
 	}
-	
+	public String getSkillName() {
+		return skillName;
+	}
 }

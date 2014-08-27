@@ -19,7 +19,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.content.Context;
-import android.net.sip.SipSession.State;
 import android.util.Log;
 
 import com.nex.gamebook.entity.Bonus;
@@ -52,8 +51,9 @@ public class StoryXmlParser {
 	private final String WIN_SECTION = "winSection";
 	private final String SCORE_MULTIPLIER = "scoreMultiplier";
 	private final String PRIMARY_STAT = "primaryStat";
-	private final String RESET_OVERFLOWED_STATS = "resetOverflowedStats";
-
+	private final String RESET_ATTRIBUTES = "resetAttributes";
+	private final String RESET_POSITIVE_ATTRIBUTES = "resetPositiveAttributes";
+	private final String RESET_NEGATIVE_ATTRIBUTES = "resetNegativeAttributes";
 	private final String STORY = "story";
 
 	private final String OPTIONS = "options";
@@ -332,8 +332,11 @@ public class StoryXmlParser {
 		section.setLevel(level);
 		section.setLoseSection(getBoolean(element.getAttribute(LOSE_SECTION)));
 		section.setWinSection(getBoolean(element.getAttribute(WIN_SECTION)));
-		section.setResetOverflowedStats(getBoolean(element.getAttribute(RESET_OVERFLOWED_STATS)));
+		section.setResetAttributes(getBoolean(element.getAttribute(RESET_ATTRIBUTES)));
+		section.setResetPositiveAttributes(getBoolean(element.getAttribute(RESET_POSITIVE_ATTRIBUTES)));
+		section.setResetNegativeAttributes(getBoolean(element.getAttribute(RESET_NEGATIVE_ATTRIBUTES)));
 		section.setScoreMultiplier(getFloat(element.getAttribute(SCORE_MULTIPLIER)));
+		
 		String text = element.getAttribute(TEXT);
 		section.setText(text);
 		section.setAlreadyVisitedText(text);
@@ -344,9 +347,10 @@ public class StoryXmlParser {
 		String enemiesDefeatedText = element
 				.getAttribute("enemiesDefeatedText");
 		String luckText = element.getAttribute(FIGHT_LUCK_TEXT_SECTION);
-		if (luckText !=null && luckText.trim().length() > 0)
+		if (luckText !=null && luckText.trim().length() > 0) {
+			section.setLuckPossible(true);
 			section.setLuckText(luckText);
-
+		}
 		String gameOverText = element.getAttribute(GAMEOVER_SECTION);
 		if (gameOverText!=null && gameOverText.trim().length()> 0)
 			section.setGameOverText(gameOverText);

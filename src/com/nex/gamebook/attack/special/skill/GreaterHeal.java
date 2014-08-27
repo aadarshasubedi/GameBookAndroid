@@ -36,9 +36,9 @@ public class GreaterHeal extends Heal {
 
 	@Override
 	public int getValueWhenLuck(Character character) {
-		return (int) (getValue(character) * 1.5);
+		return (int) (getValue(character) * 2);
 	}
-
+	
 	@Override
 	public boolean isPermanent() {
 		return true;
@@ -53,21 +53,13 @@ public class GreaterHeal extends Heal {
 	public boolean showPercentage() {
 		return false;
 	}
-	
-	@Override
-	public int attemptsPerFight() {
-		return 1;
-	}
-	
+
 	@Override
 	public boolean doAttack(Character attacker, Character attacked,
 			BattleLogCallback callback, ResultCombat resultCombat) {
 		return doAttackOnce(attacker, attacked, callback, resultCombat);
 	}
-	@Override
-	public boolean isTriggerAfterEnemyAttack() {
-		return true;
-	}
+
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked,
 			BattleLogCallback callback, ResultCombat cm) {

@@ -34,7 +34,7 @@ public class Heal extends SpecialAttackSkill {
 
 	@Override
 	public int getValue(Character character) {
-		return character.getCurrentStats().getSpecialSkillPower() / 2;
+		return character.getCurrentStats().getSpecialSkillPower();
 	}
 
 	@Override
@@ -61,10 +61,15 @@ public class Heal extends SpecialAttackSkill {
 	public int attemptsPerFight() {
 		return 1;
 	}
-	
+
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked,
 			BattleLogCallback callback, ResultCombat cm) {
+		if(attacker.getCurrentStats().getHealth() >= attacker.getStats().getHealth()) {
+			cycles--;
+			used=false;
+			return true;
+		}
 		ResultCombat rc = createBasicResult(0, attacker.getType());
 		Bonus bonus = createSpecialAttack(1, getRealValue(attacker), StatType.HEALTH);
 		bonus.setOverflowed(false);

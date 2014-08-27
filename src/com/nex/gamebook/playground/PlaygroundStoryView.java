@@ -69,8 +69,12 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		} else {
 			tw.setText(currentSection.getText());
 		}
-		if(currentSection.isResetOverflowedStats()) {
-			resetOverflowedStats(view);
+		if(currentSection.isResetAttributes()) {
+			resetAttributes(view, 0);
+		} else if(currentSection.isResetPositiveAttributes()) {
+			resetAttributes(view, 1);
+		} else if(currentSection.isResetNegativeAttributes()) {
+			resetAttributes(view, 2);
 		}
 		if (currentSection.isLoseSection()) {
 			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.endGame_lose);
@@ -91,8 +95,8 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		}
 	}
 
-	private void resetOverflowedStats(View view) {
-		Stats resetedOverflowedStats = _character.resetOverflowedStats();
+	private void resetAttributes(View view, int mod) {
+		Stats resetedOverflowedStats = _character.resetStats(mod);
 		showResetedStats(getContext(), view, resetedOverflowedStats);
 	}
 	
@@ -106,10 +110,9 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 				continue;
 			bonus.setAlreadyGained(true);
 			int realValue =_character.addBonus(bonus);
-			String marker = "+";
-			if (bonus.getCoeff() < 0) {
-				marker = "-";
-			}
+			String marker = "";
+			if(realValue>0)
+				marker = "+";
 			TextView opt = new TextView(context);
 			opt.setTextAppearance(context, R.style.number);
 			String suffix = " ";
@@ -205,10 +208,9 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 	}
 
 	private TextView getViewForReleasedTemporalAttribute(int value, int attrName, Context context) {
-		String prefix = "-";
-		if (value < 0) {
+		String prefix = "";
+		if (value > 0) {
 			prefix = "+";
-			value = -value;
 		}
 		TextView opt = new TextView(context);
 		opt.setTextAppearance(context, R.style.number);
@@ -220,11 +222,10 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 
 	private void startFight(Context context, StorySection section) {
 		section.setBonusesAlreadyGained(false);
-		if (!section.isEnemiesAlreadyKilled()) {
+		if (!section.isEnemiesAlreadyKilled() && section.isLuckPossible()) {
 			section.tryApplyLuckForBattle(_character);
 		}
 		if (section.isHasLuck()) {
-			
 			if (section.isLuckDefeatEnemies()) {
 				section.setEnemiesAlreadyKilled(true);
 			}

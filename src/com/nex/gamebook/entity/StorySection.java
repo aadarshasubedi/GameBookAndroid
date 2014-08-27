@@ -22,7 +22,9 @@ public class StorySection implements Serializable, Mergable {
 	private int unreturnableSection = -1;
 
 	private boolean loseSection;
-	private boolean resetOverflowedStats = false;
+	private boolean resetAttributes;
+	private boolean resetPositiveAttributes = false;
+	private boolean resetNegativeAttributes = false;
 	private boolean winSection;
 	private boolean alreadyHasLuck;
 	private boolean bonusesAlreadyGained;
@@ -34,7 +36,7 @@ public class StorySection implements Serializable, Mergable {
 	private float scoreMultiplier;
 	private int level;
 	private Story story;
-
+	private boolean luckPossible;
 	private List<StorySectionOption> options = new ArrayList<>();
 	private List<Enemy> enemies = new ArrayList<>();
 	private List<Bonus> bonuses = new ArrayList<>();
@@ -256,9 +258,11 @@ public class StorySection implements Serializable, Mergable {
 		}
 		return exp;
 	}
+
 	public long getExperienceByEnemiesWhenLuck() {
 		return getExperienceByEnemies() / 4;
 	}
+
 	public boolean isAlreadyHasLuck() {
 		return alreadyHasLuck;
 	}
@@ -267,12 +271,36 @@ public class StorySection implements Serializable, Mergable {
 		this.alreadyHasLuck = alreadyHasLuck;
 	}
 
-	public boolean isResetOverflowedStats() {
-		return resetOverflowedStats;
+	public boolean isResetAttributes() {
+		return resetAttributes;
 	}
 
-	public void setResetOverflowedStats(boolean resetOverflowedStats) {
-		this.resetOverflowedStats = resetOverflowedStats;
+	public void setResetAttributes(boolean resetAttributes) {
+		this.resetAttributes = resetAttributes;
+	}
+
+	public boolean isLuckPossible() {
+		return luckPossible;
+	}
+
+	public void setLuckPossible(boolean luckPossible) {
+		this.luckPossible = luckPossible;
+	}
+
+	public boolean isResetPositiveAttributes() {
+		return resetPositiveAttributes;
+	}
+
+	public void setResetPositiveAttributes(boolean resetPositiveAttributes) {
+		this.resetPositiveAttributes = resetPositiveAttributes;
+	}
+
+	public boolean isResetNegativeAttributes() {
+		return resetNegativeAttributes;
+	}
+
+	public void setResetNegativeAttributes(boolean resetNegativeAttributes) {
+		this.resetNegativeAttributes = resetNegativeAttributes;
 	}
 
 }

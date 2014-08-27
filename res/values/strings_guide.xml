@@ -21,7 +21,7 @@
     <string name="guide_luck">
         Štěstí má širší vliv působnosti.\n
         1) Ovlivňuje zobrazení některých možností, které vyžadují štěstí.\n
-        2) Před bojem má vliv na úplné vyhnutí se boji, v některých sekcí uplně odstraní nepřátele.\n
+        2) Pokud to sekce umožňuje, tak před bojem má vliv na úplnému vyhnutí se boji, v některých sekcí uplně odstraní nepřátele.\n
         3) V boji pak má vliv na vyhnutí se útoku a při kritickém zranění šanci na dvojnásobný kritický úder.\n
         4) Pokud máš štěstí začínáš boj, jinak ho vždy začíná nepřítel.\n	</string>
 	<string name="guide_skillpower">
@@ -86,10 +86,7 @@
      Schopnosti jsou speciální akce používané v boji. Každá schopnost má jiný učinek, chování, použití a spuštění.
      Někteří nepřátelé mohou mít schopnosti, každý nepřítel může mít však pouze jednu schopnost.
      Síla samotné schopnosti se vypočítává z atributů síla schoponstí a dovednost,
-     kde dovednost navyšuje sílu schopností procentuelně na základě síly schopnost.\n
-     Například:\n
-     síla schopnosti = 5
-     
+     kde dovednost navyšuje sílu schopností procentuelně na základě síly schopnosti.
      Postava hráče má více schopností, které se odemykají s úrovní. 
      Hráč si před bojem s každým nepřítelem může vybrat jakou schopnost má jeho postava v daném boji používat. 
      Proti každému nepříteli v jedné bitvě může použít jinou schopnost. 
