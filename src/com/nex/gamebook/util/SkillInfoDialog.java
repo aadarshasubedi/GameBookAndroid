@@ -77,7 +77,10 @@ public class SkillInfoDialog {
 		}
 		view = (TextView) inflatedView.findViewById(R.id.attempts);
 		view.setText(String.valueOf(skill.attemptsPerFight()));
-		if(skill.attemptsPerFight() < 0) {
+		if(!skill.inFight()) {
+			view.setText(R.string.once_in_battle);
+			inflatedView.findViewById(R.id.attempts_marker).setVisibility(View.GONE);
+		} else if(skill.attemptsPerFight() < 0) {
 			view.setText(R.string.always);
 			inflatedView.findViewById(R.id.attempts_marker).setVisibility(View.GONE);
 		}

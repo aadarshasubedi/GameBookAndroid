@@ -2,7 +2,7 @@ package com.nex.gamebook.attack.special.skill;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 
 public class CrushStrike extends SpecialConditionalSkill {
 	private static final long serialVersionUID = -1804300495308316474L;
@@ -23,8 +23,8 @@ public class CrushStrike extends SpecialConditionalSkill {
 	}
 
 	@Override
-	public BonusType getType() {
-		return BonusType.DEFENSE;
+	public StatType getType() {
+		return StatType.DEFENSE;
 	}
 
 	@Override

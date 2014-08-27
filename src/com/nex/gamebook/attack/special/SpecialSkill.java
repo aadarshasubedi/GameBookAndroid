@@ -34,11 +34,18 @@ public interface SpecialSkill extends Serializable {
 	 * 
 	 * @return
 	 */
-	void clean();
+	void cleanAfterFightEnd();
+	void cleanAfterBattleEnd();
 	/**
-	 * Return -1 if special attack is aplicable every turn.
+	 * Return -1 if special attack is applicable every turn.
 	 * @return int
 	 */
 	int attemptsPerFight();
 	boolean afterNormalAttack();
+	/**
+	 * when true then attemptsPerFight() is applicable per fight
+	 * when false then skill is used only once in battle
+	 * @return
+	 */
+	boolean inFight();
 }

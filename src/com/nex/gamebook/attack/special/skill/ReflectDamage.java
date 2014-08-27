@@ -4,7 +4,7 @@ import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public class ReflectDamage extends SpecialAttackSkill {
@@ -16,7 +16,7 @@ public class ReflectDamage extends SpecialAttackSkill {
 		int value = resultCombat.getDamage();
 		int percentage = getRealValue(attacker);
 		value = getResultValuePercentage(value, percentage);
-		attacked.addBonus(createSpecialAttack(-1, value, BonusType.HEALTH));
+		attacked.addBonus(createSpecialAttack(-1, value, StatType.HEALTH));
 		ResultCombat result = createBasicResult(value, attacker.getType());
 		result.setEnemyName(resolveEnemy(attacker, attacked).getName());
 		callback.logAttack(result);

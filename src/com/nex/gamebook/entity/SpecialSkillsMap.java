@@ -64,4 +64,12 @@ public class SpecialSkillsMap {
 		}
 		return null;
 	}
+	public static String getSkillId(Class<? extends SpecialSkill> cls) {
+		for(Map.Entry<String, Class<? extends SpecialSkill>> entry: instance.skills.entrySet()){
+			if(cls.equals(entry.getValue())) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
 }

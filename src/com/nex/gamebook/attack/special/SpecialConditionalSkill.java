@@ -2,7 +2,7 @@ package com.nex.gamebook.attack.special;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
@@ -39,7 +39,7 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 		return true;
 	}
 
-	public abstract BonusType getType();
+	public abstract StatType getType();
 
 	public abstract boolean isCondition();
 

@@ -19,17 +19,16 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.content.Context;
+import android.net.sip.SipSession.State;
 import android.util.Log;
 
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Bonus.BonusState;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.Enemy;
 import com.nex.gamebook.entity.Enemy.EnemyLevel;
 import com.nex.gamebook.entity.EnemyAssign;
 import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.SpecialSkillsMap;
 import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySection;
@@ -52,7 +51,8 @@ public class StoryXmlParser {
 	private final String LEVEL = "level";
 	private final String WIN_SECTION = "winSection";
 	private final String SCORE_MULTIPLIER = "scoreMultiplier";
-	
+	private final String PRIMARY_STAT = "primaryStat";
+	private final String RESET_OVERFLOWED_STATS = "resetOverflowedStats";
 
 	private final String STORY = "story";
 
@@ -265,8 +265,11 @@ public class StoryXmlParser {
 			Node node = element.getChildNodes().item(i);
 			putStats(character, node);
 		}
+		character.getStats().setPlayer(character);
+		character.getCurrentStats().setPlayer(character);
 		character.setStory(story);
 		story.getCharacters().add(character);
+		
 	}
 
 	private void putStats(com.nex.gamebook.entity.Character character, Node node) {
@@ -302,7 +305,14 @@ public class StoryXmlParser {
 			}
 			
 		} else if (node.getNodeName().equals(SKILL_POWER)) {
-			character.getStats().setSkillPower(getInteger(node.getTextContent()));
+			character.getStats().setSkillpower(getInteger(node.getTextContent()));
+		} else if(node.getNodeName().equals(PRIMARY_STAT)) {
+			StatType stat = StatType.valueOf(node.getTextContent().toUpperCase());
+			if(StatType.DAMAGE.equals(stat)) {
+				Log.w("StoryXMLParser", "damage cannot be primary attribute"); 
+			} else {
+				character.setPrimaryStat(stat);
+			}
 		}
 		character.setCurrentStats(new Stats(character.getStats()));
 	}
@@ -322,6 +332,7 @@ public class StoryXmlParser {
 		section.setLevel(level);
 		section.setLoseSection(getBoolean(element.getAttribute(LOSE_SECTION)));
 		section.setWinSection(getBoolean(element.getAttribute(WIN_SECTION)));
+		section.setResetOverflowedStats(getBoolean(element.getAttribute(RESET_OVERFLOWED_STATS)));
 		section.setScoreMultiplier(getFloat(element.getAttribute(SCORE_MULTIPLIER)));
 		String text = element.getAttribute(TEXT);
 		section.setText(text);
@@ -389,7 +400,7 @@ public class StoryXmlParser {
 			if (n instanceof Element) {
 				Element optionNode = (Element) n;
 				Bonus bonus = new Bonus();
-				bonus.setType(BonusType.valueOf(optionNode.getAttribute(TYPE)
+				bonus.setType(StatType.valueOf(optionNode.getAttribute(TYPE)
 						.toUpperCase()));
 				bonus.setValue(getInteger(optionNode.getAttribute(VALUE)));
 				bonus.setOverflowed(getBoolean(optionNode

@@ -2,7 +2,7 @@ package com.nex.gamebook.attack.special.skill;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 
 public class Disarm extends SpecialConditionalSkill {
 	private static final long serialVersionUID = -1804300495308316474L;
@@ -27,8 +27,8 @@ public class Disarm extends SpecialConditionalSkill {
 	}
 
 	@Override
-	public BonusType getType() {
-		return BonusType.ATTACK;
+	public StatType getType() {
+		return StatType.ATTACK;
 	}
 
 	@Override

@@ -20,24 +20,37 @@ public class Bonus implements Serializable, Mergable {
 		}
 	}
 
-	public enum BonusType implements Serializable {
-		HEALTH(R.string.attr_health), LUCK(R.string.attr_luck), SKILL(
-				R.string.attr_skill), DEFENSE(R.string.attr_defense), ATTACK(
-				R.string.attr_attack), DAMAGE(R.string.attr_baseDmg), SKILLPOWER(
-				R.string.attr_skill_power);
+	public enum StatType implements Serializable {
+		HEALTH(R.string.attr_health, 5, 1), 
+		LUCK(R.string.attr_luck, 1, 2), 
+		SKILL(R.string.attr_skill, 1, 2), 
+		DEFENSE(R.string.attr_defense, 1, 2), 
+		ATTACK(R.string.attr_attack, 1, 2), 
+		DAMAGE(R.string.attr_baseDmg, 1, 10), 
+		SKILLPOWER(R.string.attr_skill_power, 1, 5);
 		public int text;
-
-		private BonusType(int text) {
+		public int baseValue;
+		public int increaseByLevel;
+		private StatType(int text, int baseValue, int incBylvl) {
 			this.text = text;
+			this.baseValue = baseValue;
+			this.increaseByLevel = incBylvl;
+		}
+
+		public int getBaseValue() {
+			return baseValue;
 		}
 
 		public int getText() {
 			return text;
 		}
+		public int getIncreaseByLevel() {
+			return increaseByLevel;
+		}
 	}
 
 	private BonusState state;
-	private BonusType type;
+	private StatType type;
 	private int value;
 	private boolean overflowed;
 	private int coeff;
@@ -46,11 +59,11 @@ public class Bonus implements Serializable, Mergable {
 	private boolean condition;
 	private boolean base;
 
-	public BonusType getType() {
+	public StatType getType() {
 		return type;
 	}
 
-	public void setType(BonusType type) {
+	public void setType(StatType type) {
 		this.type = type;
 	}
 

@@ -2,21 +2,22 @@ package com.nex.gamebook.entity;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import android.util.Log;
 
 import com.nex.gamebook.attack.special.SpecialSkill;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
 public abstract class Character implements Serializable, Mergable {
 	private static final long serialVersionUID = 214922718575334896L;
-
 	private Stats stats = new Stats();
 	private Stats currentStats = new Stats(stats);
 	private boolean fighting;
@@ -24,10 +25,12 @@ public abstract class Character implements Serializable, Mergable {
 	private transient Stats temporalStatsHolder;
 	private String skillName;
 	private Map<String, Integer> specialSkills = new HashMap<>();
-	private transient List<SpecialSkill> activeSkills = new ArrayList<>();
+	private transient Set<SpecialSkill> activeSkills = new HashSet<>();
 	private transient List<Bonus> conditions = new ArrayList<>();
 	private int level = 1;
 	private long experience = 0;
+
+	private StatType primaryStat;
 
 	public Character() {
 		// TODO Auto-generated constructor stub
@@ -55,20 +58,17 @@ public abstract class Character implements Serializable, Mergable {
 	public void setCurrentStats(Stats currentStats) {
 		this.currentStats = currentStats;
 	}
-
-	public boolean hasLuck() {
-		return hasLuck(Stats.TOTAL_LUCK_FOR_CALC);
-	}
-
+	public abstract boolean hasLuck();
+	public abstract boolean isCriticalChance();
 	public boolean hasLuck(int modificator) {
 		Random random = new Random();
 		int res = random.nextInt(modificator);
 		return getCurrentStats().getLuck() >= res;
 	}
 
-	public boolean isCriticalChance() {
+	public boolean isCriticalChance(int modificator) {
 		Random random = new Random();
-		int res = random.nextInt(Stats.TOTAL_SKILL_FOR_CALC);
+		int res = random.nextInt(modificator);
 		return getCurrentStats().getSkill() >= res;
 	}
 
@@ -103,44 +103,40 @@ public abstract class Character implements Serializable, Mergable {
 	public int addBonus(Bonus bonus) {
 		int realValue = bonus.getValue();
 		try {
-			Method currentAttr = Stats.class.getDeclaredMethod(
-					GameBookUtils.createMethodName("get", bonus.getType()
-							.name().toLowerCase()), new Class[0]);
-			Method defaultAttr = Stats.class.getDeclaredMethod(
-					GameBookUtils.createMethodName("get", bonus.getType()
-							.name().toLowerCase()), new Class[0]);
-
-			int currentValue = (int) currentAttr.invoke(getCurrentStats(),
-					new Object[0]);
+			int currentValue = GameBookUtils.getStatByType(getCurrentStats(), bonus.getType());
 			int total = currentValue + (bonus.getCoeff() * bonus.getValue());
-			int defaultValue = (int) defaultAttr.invoke(getStats(),
-					new Object[0]);
-			currentAttr = Stats.class.getDeclaredMethod(
-					GameBookUtils.createMethodName("set", bonus.getType()
-							.name().toLowerCase()), int.class);
-			defaultAttr = Stats.class.getDeclaredMethod(
-					GameBookUtils.createMethodName("set", bonus.getType()
-							.name().toLowerCase()), int.class);
+			int defaultValue = GameBookUtils.getStatByType(getStats(), bonus.getType());
 			int setedValue = 0;
 			if (bonus.isBase()) {
-				defaultAttr.invoke(this.stats, defaultValue + realValue);
+				GameBookUtils.setStatByType(this.stats, bonus.getType(), defaultValue + realValue);
 				return realValue;
-			} else if (total > defaultValue && !bonus.isOverflowed()) {
-				if (currentValue < defaultValue) {
-					realValue = defaultValue - currentValue;
-					setedValue = (int) currentAttr.invoke(getCurrentStats(),
-							defaultValue);
+			} else if (!bonus.isOverflowed()) {
+				if(bonus.getCoeff()>0) {
+					if (currentValue < defaultValue) {
+						realValue = defaultValue - currentValue;
+						setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), defaultValue);
+					} else {
+						realValue = 0;
+					}
 				} else {
-					realValue = 0;
+					if(total<defaultValue) {
+						realValue = currentValue - defaultValue;
+						setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), defaultValue);
+					} else {
+						setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), total);	
+					}
 				}
+				
 			} else {
 				if (total < 0) {
 					realValue = currentValue;
 					total = 0;
 				}
-				setedValue = (int) currentAttr.invoke(getCurrentStats(), total);
+				setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), total);
 			}
-			if ((currentValue + realValue) != setedValue) {
+			if(setedValue==0) {
+				realValue = 0;
+			} else if ((currentValue + realValue) != setedValue) {
 				realValue = setedValue - currentValue;
 			}
 			if (!bonus.isPermanent()) {
@@ -148,8 +144,7 @@ public abstract class Character implements Serializable, Mergable {
 					this.temporalStatsHolder = new Stats();
 					this.temporalStatsHolder.nullAllAttributes();
 				}
-				Field tempAttr = Stats.class.getDeclaredField(bonus.getType()
-						.name().toLowerCase());
+				Field tempAttr = Stats.class.getDeclaredField(bonus.getType().name().toLowerCase());
 				tempAttr.setAccessible(true);
 				tempAttr.set(this.temporalStatsHolder, realValue);
 				tempAttr.setAccessible(false);
@@ -158,10 +153,6 @@ public abstract class Character implements Serializable, Mergable {
 			Log.e("GameBook", "", e);
 		}
 		return realValue;
-	}
-
-	public Stats getTemporalStatsHolder() {
-		return temporalStatsHolder;
 	}
 
 	public void holdCurrentStatsToTemporal() {
@@ -217,9 +208,14 @@ public abstract class Character implements Serializable, Mergable {
 	public void setSpecialSkills(Map<String, Integer> specialSkills) {
 		this.specialSkills = specialSkills;
 	}
+
 	public SpecialSkill getSpecialSkill() {
-		for(SpecialSkill skill: activeSkills) {
-			if(SpecialSkillsMap.getSkills().get(skillName).equals(skill.getClass())) {
+		return getSpecialSkill(skillName);
+	}
+	public SpecialSkill getSpecialSkill(String skillName) {
+		if(skillName!=null && skillName.length()>0)
+		for (SpecialSkill skill : activeSkills) {
+			if (SpecialSkillsMap.getSkills().get(skillName).equals(skill.getClass())) {
 				return skill;
 			}
 		}
@@ -228,33 +224,73 @@ public abstract class Character implements Serializable, Mergable {
 	public void setSkillName(String skillName) {
 		this.skillName = skillName;
 	}
-	
+
 	public List<String> getAvailableSkills() {
 		List<String> skills = new ArrayList<String>();
-		for(Map.Entry<String, Integer> entry: this.specialSkills.entrySet()) {
-			if(entry.getValue() <= getLevel()) {
+		for (Map.Entry<String, Integer> entry : this.specialSkills.entrySet()) {
+			if (entry.getValue() <= getLevel()) {
 				skills.add(entry.getKey());
 			}
 		}
 		return skills;
 	}
-	
-	public void cleanActiveSkills() {
-		for(SpecialSkill skill: activeSkills){
-			skill.clean();
+
+	public void cleanActiveSkillsAfterFightEnd() {
+		for (SpecialSkill skill : activeSkills) {
+			skill.cleanAfterFightEnd();
 		}
 	}
-	
+	public void cleanActiveSkillsAfterBattleEnd() {
+		for (SpecialSkill skill : activeSkills) {
+			skill.cleanAfterBattleEnd();
+		}
+	}
 	public void createActiveSkills() {
 		this.activeSkills.clear();
-		for(String s: getAvailableSkills()) {
+		for (String s : getAvailableSkills()) {
+			this.activeSkills.add(SpecialSkillsMap.get(s));
+		}
+	}
+	public void updateActiveSkills() {
+//		this.activeSkills.clear();
+		for (String s : getAvailableSkills()) {
+			SpecialSkill skill = getSpecialSkill(s);
+			if(skill==null)
 			this.activeSkills.add(SpecialSkillsMap.get(s));
 		}
 	}
 	
+	
 	public int getXpToLevelPercentage() {
 		long xpToLevel = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
-		return (int) (((double)experience / (double)xpToLevel) * 100d);
+		return (int) (((double) experience / (double) xpToLevel) * 100d);
+	}
+
+	public StatType getPrimaryStat() {
+		return primaryStat;
+	}
+
+	public void setPrimaryStat(StatType primaryStat) {
+		this.primaryStat = primaryStat;
+	}
+	
+	public Stats resetOverflowedStats() {
+		Stats s = new Stats();
+		s.nullAllAttributes();
+		for(StatType type: StatType.values()) {
+			try {
+				int defaultVal = GameBookUtils.getStatByType(this.stats, type);
+				int currentVal = GameBookUtils.getStatByType(this.currentStats, type);
+				if(currentVal>defaultVal) {
+					GameBookUtils.setStatByType(this.currentStats, type, defaultVal);
+					int res = currentVal - defaultVal;
+					GameBookUtils.setStatByType(s, type, res);
+				}
+			} catch (Exception e) {
+				Log.e("ResetOverwlowedAttributes", "", e);
+			}
+		}
+		return s;
 	}
 	
 }

@@ -22,6 +22,7 @@ public class StorySection implements Serializable, Mergable {
 	private int unreturnableSection = -1;
 
 	private boolean loseSection;
+	private boolean resetOverflowedStats = false;
 	private boolean winSection;
 	private boolean alreadyHasLuck;
 	private boolean bonusesAlreadyGained;
@@ -232,8 +233,8 @@ public class StorySection implements Serializable, Mergable {
 				continue;
 			}
 			enemy = new Enemy(enemy);
-			if(enemyKey.getEnemySkill().length()>0)
-			enemy.setSkillName(enemyKey.getEnemySkill());
+			if (enemyKey.getEnemySkill().length() > 0)
+				enemy.setSkillName(enemyKey.getEnemySkill());
 			enemy.setLevel(getLevel());
 			ExperienceMap.getInstance().updateStatsByLevel(enemy);
 			this.enemies.add(enemy);
@@ -250,12 +251,14 @@ public class StorySection implements Serializable, Mergable {
 
 	public long getExperienceByEnemies() {
 		long exp = 0;
-		for(Enemy e: enemies) {
+		for (Enemy e : enemies) {
 			exp += e.getExperience();
 		}
 		return exp;
 	}
-
+	public long getExperienceByEnemiesWhenLuck() {
+		return getExperienceByEnemies() / 4;
+	}
 	public boolean isAlreadyHasLuck() {
 		return alreadyHasLuck;
 	}
@@ -263,5 +266,13 @@ public class StorySection implements Serializable, Mergable {
 	public void setAlreadyHasLuck(boolean alreadyHasLuck) {
 		this.alreadyHasLuck = alreadyHasLuck;
 	}
-	
+
+	public boolean isResetOverflowedStats() {
+		return resetOverflowedStats;
+	}
+
+	public void setResetOverflowedStats(boolean resetOverflowedStats) {
+		this.resetOverflowedStats = resetOverflowedStats;
+	}
+
 }

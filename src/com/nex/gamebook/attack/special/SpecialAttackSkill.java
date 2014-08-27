@@ -3,7 +3,7 @@ package com.nex.gamebook.attack.special;
 import java.util.List;
 
 import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.CharacterType;
 import com.nex.gamebook.entity.Enemy;
@@ -13,7 +13,7 @@ import com.nex.gamebook.playground.BattleLogCallback;
 public abstract class SpecialAttackSkill implements SpecialSkill {
 	private int cycles = 0;
 	private static final long serialVersionUID = -7422695719062137022L;
-
+	boolean used = false;
 	public Enemy resolveEnemy(Character applicationChar, Character character) {
 		if(applicationChar instanceof Enemy) return (Enemy) applicationChar;
 		return (Enemy) character;
@@ -26,7 +26,7 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 		result.setType(type);
 		return result;
 	}
-	public Bonus createSpecialAttack(int coeff , int value, BonusType type) {
+	public Bonus createSpecialAttack(int coeff , int value, StatType type) {
 		Bonus bonus = new Bonus();
 		bonus.setValue(value);
 		bonus.setType(type);
@@ -40,10 +40,14 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	@Override
 	public boolean doAttack(Character attacker, Character attacked,
 			BattleLogCallback callback, ResultCombat resultCombat) {
+		
 		int max = attemptsPerFight();
-		if (max > 0 && cycles >= max)
+		if((used && !inFight()))
+			return true;
+		if ((max > 0 && cycles >= max))
 			return true;
 		cycles++;
+		used = true;
 		return doAttackOnce(attacker, attacked, callback, resultCombat);
 	}
 	public abstract boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm);
@@ -93,8 +97,12 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 		return false;
 	}
 	@Override
-	public void clean() {
+	public void cleanAfterFightEnd() {
 		this.cycles = 0;
+	}
+	@Override
+	public void cleanAfterBattleEnd() {
+		this.used = false;
 	}
 	@Override
 	public int attemptsPerFight() {
@@ -104,5 +112,13 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	public int calcDynamicValue(int base, float coeff, int specialSkillPower) {
 		return (int) (base * (coeff + specialSkillPower / 100));
 	}
-	
+	@Override
+	public boolean inFight() {
+		return true;
+	}
+	@Override
+	public int hashCode() {
+		Integer i = getNameId();
+		return i.hashCode();
+	}
 }

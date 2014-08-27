@@ -5,16 +5,15 @@ import java.lang.reflect.Method;
 
 import android.util.Log;
 
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
 public class Stats implements Serializable {
 	private static final long serialVersionUID = 5967013219649795912L;
-	
-	public static int MAX_LUCK_OF_CHARACTER = 23;//66%
-	public static int MAX_SKILL_OF_CHARACTER = 23;//65%
-	public static int MAX_DEFENSE_OF_CHARACTER = 24;//68%
-	
+	public static int MAX_SKILL_PERCENTAGE = 70;
+	public static int MAX_LUCK_PERCENTAGE = 55;
+	public static int MAX_DEFENSE_PERCENTAGE = 75;
+
 	public static int TOTAL_LUCK_FOR_CALC = 35;
 	public static int TOTAL_SKILL_FOR_CALC = 35;
 	public static int TOTAL_ARMOR_FOR_CALC = 35;
@@ -24,10 +23,10 @@ public class Stats implements Serializable {
 	private int luck;
 	private int attack;
 	private int damage = 1;
-	private int skillPower = 1;
-	
+	private int skillpower = 1;
+	private Player player;
 	private transient Stats holder;
-	
+
 	public Stats() {
 	}
 
@@ -38,7 +37,7 @@ public class Stats implements Serializable {
 		this.luck = stats.luck;
 		this.attack = stats.attack;
 		this.damage = stats.damage;
-		this.skillPower = stats.skillPower;
+		this.skillpower = stats.skillpower;
 	}
 
 	public int getHealth() {
@@ -53,29 +52,33 @@ public class Stats implements Serializable {
 		return defense;
 	}
 
-	public int getSkillPower() {
-		return skillPower;
+	public int getSkillpower() {
+		return skillpower;
 	}
-	
-	public void setSkillPower(int skillPower) {
-		this.skillPower = skillPower;
+
+	public int setSkillpower(int skillpower) {
+		return this.skillpower = skillpower;
 	}
-	
+
 	public int setDefense(int defense) {
-		if (defense > MAX_DEFENSE_OF_CHARACTER)
-			defense = MAX_DEFENSE_OF_CHARACTER;
+		int total = getTotalStat(TOTAL_ARMOR_FOR_CALC);
+		int perc = Stats.getPercentage(defense, total);
+		if (perc > MAX_DEFENSE_PERCENTAGE) {
+			defense = getValuePerc(total, MAX_DEFENSE_PERCENTAGE);
+		}
 		return this.defense = defense;
 	}
 
-	
-	
 	public int getSkill() {
 		return skill;
 	}
 
 	public int setSkill(int skill) {
-		if (skill > MAX_SKILL_OF_CHARACTER)
-			skill = MAX_SKILL_OF_CHARACTER;
+		int total = getTotalStat(TOTAL_SKILL_FOR_CALC);
+		int perc = Stats.getPercentage(skill, total);
+		if (perc > MAX_DEFENSE_PERCENTAGE) {
+			skill = getValuePerc(total, MAX_SKILL_PERCENTAGE);
+		}
 		return this.skill = skill;
 	}
 
@@ -84,21 +87,35 @@ public class Stats implements Serializable {
 	}
 
 	public int setLuck(int luck) {
-		if (luck > MAX_LUCK_OF_CHARACTER)
-			luck = MAX_LUCK_OF_CHARACTER;
+		int total = getTotalStat(TOTAL_LUCK_FOR_CALC);
+		int perc = Stats.getPercentage(luck, total);
+		if (perc > MAX_DEFENSE_PERCENTAGE) {
+			luck = getValuePerc(total, MAX_LUCK_PERCENTAGE);
+		}
 		return this.luck = luck;
 	}
 
 	public int getLuckPercentage() {
-		return Stats.getPercentage(luck, TOTAL_LUCK_FOR_CALC);
+		return Stats.getPercentage(luck, getTotalStat(TOTAL_LUCK_FOR_CALC));
 	}
 
 	public int getSkillPercentage() {
-		return Stats.getPercentage(skill, TOTAL_SKILL_FOR_CALC);
+		return Stats.getPercentage(skill, getTotalStat(TOTAL_SKILL_FOR_CALC));
 	}
 
 	public int getDefensePercentage() {
-		return Stats.getPercentage(defense, TOTAL_ARMOR_FOR_CALC);
+		return Stats.getPercentage(defense, getTotalStat(TOTAL_ARMOR_FOR_CALC));
+	}
+
+	private int getTotalStat(int stat) {
+		if (player != null) {
+			stat += player.getLevel();
+		}
+		return stat;
+	}
+
+	private int getValuePerc(int cap, int perc) {
+		return (int) (((float) cap / 100f) * perc);
 	}
 
 	public static int getPercentage(int value, int what) {
@@ -122,7 +139,7 @@ public class Stats implements Serializable {
 		return this.damage = damage;
 	}
 
-	public int getValueByBonusType(BonusType type) {
+	public int getValueByBonusType(StatType type) {
 		Method currentAttr;
 		try {
 			currentAttr = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", type.name().toLowerCase()), new Class[0]);
@@ -133,15 +150,14 @@ public class Stats implements Serializable {
 		}
 		return 0;
 	}
-	
+
 	public void releaseTemporalStats(Stats releaseStats) {
 		int damage = releaseStats.holder.health - this.health;
 		int resultHealth = releaseStats.health - damage;
-		if(resultHealth < 0) {
+		if (resultHealth < 0) {
 			resultHealth = 0;
 		}
 		releaseStats.setHealth(resultHealth);
-		
 		this.health -= releaseStats.health;
 		this.attack -= releaseStats.attack;
 		this.defense -= releaseStats.defense;
@@ -149,29 +165,37 @@ public class Stats implements Serializable {
 		this.luck -= releaseStats.luck;
 		this.damage -= releaseStats.damage;
 	}
+
 	public void setHolder(Stats holder) {
 		this.holder = holder;
 	}
-	
+
 	public int getSpecialSkillPower() {
-		int skillPower = getSkillPower();
+		int skillPower = getSkillpower();
 		float one = (float) skillPower / 100f;
 		int percCalc = TOTAL_SKILL_FOR_CALC - skillPower;
-		if(percCalc <= 0) {
+		if (percCalc <= 0) {
 			percCalc = 1;
 		}
-		int addition = (int)  (skillPower + one * Stats.getPercentage(skill, percCalc));
+		int addition = (int) (skillPower + one * Stats.getPercentage(skill, percCalc));
 		return skillPower + addition;
 	}
-	
+
 	public void nullAllAttributes() {
 		this.health = 0;
 		this.skill = 0;
-		this.skillPower = 0;
+		this.skillpower = 0;
 		this.damage = 0;
 		this.defense = 0;
 		this.luck = 0;
 		this.attack = 0;
 	}
-	
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 }

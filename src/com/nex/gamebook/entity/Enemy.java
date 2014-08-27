@@ -1,7 +1,6 @@
 package com.nex.gamebook.entity;
 
 import com.nex.gamebook.R;
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
 public class Enemy extends com.nex.gamebook.entity.Character {
@@ -48,6 +47,14 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 		this.enemyLevel = enemy.enemyLevel;
 	}
 
+	public boolean hasLuck() {
+		return hasLuck(Stats.TOTAL_LUCK_FOR_CALC);
+	}
+	
+	public boolean isCriticalChance() {
+		return isCriticalChance(Stats.TOTAL_SKILL_FOR_CALC);
+	}
+	
 	public String getName() {
 		return GameBookUtils.getInstance().getText(name, getStory());
 	}

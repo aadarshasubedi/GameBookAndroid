@@ -2,7 +2,7 @@ package com.nex.gamebook.attack.special.skill;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 
 public class Bleeding extends SpecialConditionalSkill {
 	
@@ -29,8 +29,8 @@ public class Bleeding extends SpecialConditionalSkill {
 	}
 
 	@Override
-	public BonusType getType() {
-		return BonusType.HEALTH;
+	public StatType getType() {
+		return StatType.HEALTH;
 	}
 
 	@Override

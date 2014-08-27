@@ -45,12 +45,13 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	private Button resultButton;
 	private ViewFlipper switcher;
 	private View masterView;
+	
 	public View create(ViewGroup container) {
 		masterView = getPlayground().getLayoutInflater().inflate(R.layout.fragment_playground_character, container, false);
 		switcher = (ViewFlipper) masterView.findViewById(R.id.viewSwitcher1);
 		_character = getPlayground().getCharacter();
-		_character.createActiveSkills();
 		showCurrentValues();
+		_character.createActiveSkills();
 		resultButton = (Button) masterView.findViewById(R.id.result_button);
 		resultButton.setVisibility(View.GONE);
 		if (section != null) {
@@ -135,18 +136,16 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		level.setText(String.valueOf(_character.getLevel()));
 		exp.setText(String.valueOf(_character.getXpToLevelPercentage()));
 		masterView.findViewById(R.id.tableLayout1).invalidate();
-		
-		
-		
 	}
 
 	public void showAvailableSkills() {
 		Spinner skills = (Spinner) masterView.findViewById(R.id.skills);
-		int selected = skills.getSelectedItemPosition();
+		
 		skills.setAdapter(new SkillsAdapter(getContext(), _character.getAvailableSkills()));
 		skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-		if(selected>=0)
-		skills.setSelection(selected);
+		SpecialSkill selected = _character.getSpecialSkill();
+		if(selected!=null)
+		skills.setSelection(_character.getAvailableSkills().indexOf(SpecialSkillsMap.getSkillId(selected.getClass())));
 		TextView info = (TextView)  masterView.findViewById(R.id.skill_info);
 		info.setOnClickListener(new OnClickListener() {
 			@Override
@@ -286,7 +285,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 						TextView skillname = (TextView) layout.findViewById(R.id.enemy_skill_name);
 						showSkill(skillname, enemy);
 						TextView skillPower = (TextView) layout.findViewById(R.id.enemy_skill_power);
-						skillPower.setText(String.valueOf(enemy.getCurrentStats().getSkillPower()));
+						skillPower.setText(String.valueOf(enemy.getCurrentStats().getSkillpower()));
 						
 					}
 				}
@@ -433,6 +432,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			for(LinearLayoutRefreshable layout: this.adapter.views) {
 				layout.refresh();
 			}
+			_character.updateActiveSkills();
 		}
 		
 		@Override
@@ -486,6 +486,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		activity.changeToStory();
 		section = null;
 		resultButton.setVisibility(View.GONE);
+		_character.cleanActiveSkillsAfterBattleEnd();
 	}
 	
 	public boolean isFighting() {

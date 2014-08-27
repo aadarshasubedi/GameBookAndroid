@@ -3,6 +3,7 @@ package com.nex.gamebook.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.playground.BattleLogCallback;
 
@@ -124,15 +125,26 @@ public class Player extends Character {
 	}
 
 	public void addExperience(BattleLogCallback callback, long exp) {
-		setExperience(getExperience()+exp);
-		long requiredExperience = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
+		setExperience(getExperience() + exp);
+		long requiredExperience = ExperienceMap.getInstance()
+				.getExperienceByLevel(getLevel());
 		callback.logExperience(exp);
-		while(getExperience()> requiredExperience) {
+		while (getExperience() > requiredExperience) {
 			setLevel(getLevel() + 1);
-			requiredExperience = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
+			requiredExperience = ExperienceMap.getInstance()
+					.getExperienceByLevel(getLevel());
 			callback.logLevelIncreased();
 			ExperienceMap.getInstance().updateStatsByLevel(this);
-		}		
+		}
 	}
 	
+	@Override
+	public boolean hasLuck() {
+		return hasLuck(Stats.TOTAL_LUCK_FOR_CALC + getLevel());
+	}
+	
+	@Override
+	public boolean isCriticalChance() {
+		return isCriticalChance(Stats.TOTAL_SKILL_FOR_CALC + getLevel());
+	}
 }

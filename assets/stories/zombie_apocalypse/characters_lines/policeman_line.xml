@@ -50,6 +50,9 @@
             </options>
         </section>
         <section position="53" text="section53_text">
+            <bonuses>
+                <bonus type="attack" value="5" debuff="true" />
+            </bonuses>
             <options>
                 <option section="54" text="section53_option1_text"/>
             </options>

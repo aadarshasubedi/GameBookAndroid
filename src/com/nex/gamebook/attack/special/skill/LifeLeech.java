@@ -3,7 +3,7 @@ package com.nex.gamebook.attack.special.skill;
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
@@ -17,7 +17,7 @@ public class LifeLeech extends SpecialAttackSkill {
 			BattleLogCallback callback, ResultCombat resultCombat) {
 		int dmg = resultCombat.getDamage();
 		int leech = (int) ((float)dmg/100f * getRealValue(attacker));
-		Bonus bonus = createSpecialAttack(1, leech, BonusType.HEALTH);
+		Bonus bonus = createSpecialAttack(1, leech, StatType.HEALTH);
 		bonus.setCondition(false);
 		bonus.setOverflowed(false);
 		ResultCombat rs = createBasicResult(leech, attacker.getType());

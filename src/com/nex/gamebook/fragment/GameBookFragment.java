@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.nex.gamebook.R;
 import com.nex.gamebook.entity.Player;
 import com.nex.gamebook.entity.Stats;
+import com.nex.gamebook.entity.Bonus.StatType;
 
 public abstract class GameBookFragment {
 	private Context context;
@@ -48,7 +49,7 @@ public abstract class GameBookFragment {
 		final Player _character = getCharacter();
 		TextView attr = (TextView) view.findViewById(R.id.sel_attr_health_d);
 		attr.setText(String.valueOf(_character.getStats().getHealth()));
-
+		
 		attr = (TextView) view.findViewById(R.id.sel_attr_attack_d);
 		attr.setText(String.valueOf(_character.getStats().getAttack()));
 		attr = (TextView) view.findViewById(R.id.sel_attr_defense_d);
@@ -64,59 +65,71 @@ public abstract class GameBookFragment {
 		attr.setText(String.valueOf(_character.getStats().getSkillPercentage()));
 
 		attr = (TextView) view.findViewById(R.id.sel_l_def_perc_d);
-		attr.setText(String.valueOf(_character.getStats()
-				.getDefensePercentage()));
+		attr.setText(String.valueOf(_character.getStats().getDefensePercentage()));
 
 		attr = (TextView) view.findViewById(R.id.sel_l_baseDmg_d);
 		attr.setText(String.valueOf(_character.getStats().getDamage()));
-		
-		
+
 		attr = (TextView) view.findViewById(R.id.skill_power);
-		attr.setText(String.valueOf(_character.getCurrentStats().getSkillPower()));
+		attr.setText(String.valueOf(_character.getCurrentStats().getSkillpower()));
+		highlightPrimaryAttribute(view);
 	}
 
+	private void highlightPrimaryAttribute(View view) {
+		int color = R.color.temporal;
+		if(StatType.HEALTH.equals(character.getPrimaryStat())) {
+			((TextView)view.findViewById(R.id.sel_l_health_d)).setTextColor(getContext().getResources().getColor(color));
+		} else if(StatType.ATTACK.equals(character.getPrimaryStat())) {
+			((TextView)view.findViewById(R.id.sel_l_attack_d)).setTextColor(getContext().getResources().getColor(color));
+		} else if(StatType.DEFENSE.equals(character.getPrimaryStat())) {
+			((TextView)view.findViewById(R.id.sel_l_defense_d)).setTextColor(getContext().getResources().getColor(color));
+		} else if(StatType.SKILL.equals(character.getPrimaryStat())) {
+			((TextView)view.findViewById(R.id.sel_l_skill_d)).setTextColor(getContext().getResources().getColor(color));
+		} else if(StatType.LUCK.equals(character.getPrimaryStat())) {
+			((TextView)view.findViewById(R.id.sel_l_luck_d)).setTextColor(getContext().getResources().getColor(color));
+		} else if(StatType.SKILLPOWER.equals(character.getPrimaryStat())) {
+			((TextView)view.findViewById(R.id.sel_l_luck_d)).setTextColor(getContext().getResources().getColor(color));
+		}
+	}
+	
 	protected void showStats(View view, Stats stats, Stats defaultStats, boolean colorify) {
-		final Player _character = getCharacter();
+		highlightPrimaryAttribute(view);
 		TextView attr = (TextView) view.findViewById(R.id.sel_attr_health);
 		attr.setText(String.valueOf(stats.getHealth()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-		if(colorify)
-		changeAttributeColor(view.getContext(), attr, defaultStats.getHealth(), stats.getHealth());
+		if (colorify)
+			changeAttributeColor(view.getContext(), attr, defaultStats.getHealth(), stats.getHealth());
 
 		attr = (TextView) view.findViewById(R.id.sel_attr_luck);
 		attr.setText(String.valueOf(stats.getLuckPercentage()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-		
-		if(colorify)
-		changeAttributeColor(view.getContext(), attr, defaultStats
-				.getLuck(), stats.getLuck());
-		if(colorify)
-		changeAttributeColor(view.getContext(),
-				(TextView) view.findViewById(R.id.luck_perc), defaultStats.getLuck(), stats
-						.getLuck());
+		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
+		((TextView) view.findViewById(R.id.luck_perc)).setTextColor(getContext().getResources().getColor(R.color.number_color));
+		if (colorify)
+			changeAttributeColor(view.getContext(), attr, defaultStats.getLuck(), stats.getLuck());
+		if (colorify)
+			changeAttributeColor(view.getContext(), (TextView) view.findViewById(R.id.luck_perc), defaultStats.getLuck(), stats.getLuck());
 
 		attr = (TextView) view.findViewById(R.id.sel_attr_defense);
 		attr.setText(String.valueOf(stats.getDefense()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-		
-		if(colorify)
-		changeAttributeColor(view.getContext(), attr, defaultStats
-				.getDefense(), stats.getDefense());
+
+		if (colorify)
+			changeAttributeColor(view.getContext(), attr, defaultStats.getDefense(), stats.getDefense());
 
 		attr = (TextView) view.findViewById(R.id.sel_attr_skill);
 		attr.setText(String.valueOf(stats.getSkill()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-		
-		if(colorify)
-		changeAttributeColor(view.getContext(), attr, defaultStats.getSkill(), stats.getSkill());
+
+		if (colorify)
+			changeAttributeColor(view.getContext(), attr, defaultStats.getSkill(), stats.getSkill());
 
 		attr = (TextView) view.findViewById(R.id.sel_attr_attack);
 		attr.setText(String.valueOf(stats.getAttack()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-		
-		if(colorify)
-		changeAttributeColor(view.getContext(), attr, defaultStats
-				.getAttack(), stats.getAttack());
+
+		if (colorify)
+			changeAttributeColor(view.getContext(), attr, defaultStats.getAttack(), stats.getAttack());
 
 		attr = (TextView) view.findViewById(R.id.critical);
 		attr.setText(String.valueOf(stats.getSkillPercentage()));
@@ -129,22 +142,20 @@ public abstract class GameBookFragment {
 		attr = (TextView) view.findViewById(R.id.sel_attr_baseDmg_d);
 		attr.setText(String.valueOf(stats.getDamage()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-		
-		if(colorify)
-		changeAttributeColor(view.getContext(), attr, defaultStats
-				.getDamage(), stats.getDamage());
-		
+
+		if (colorify)
+			changeAttributeColor(view.getContext(), attr, defaultStats.getDamage(), stats.getDamage());
+
 		attr = (TextView) view.findViewById(R.id.skill_power);
-		attr.setText(String.valueOf(stats.getSkillPower()));
+		attr.setText(String.valueOf(stats.getSkillpower()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-		
-		if(colorify)
-		changeAttributeColor(view.getContext(), attr, defaultStats.getSkillPower(), stats.getSkillPower());
+
+		if (colorify)
+			changeAttributeColor(view.getContext(), attr, defaultStats.getSkillpower(), stats.getSkillpower());
 	}
 
 	@SuppressLint("ResourceAsColor")
-	private void changeAttributeColor(Context ctx, TextView text,
-			int defaultValue, int currentvalue) {
+	private void changeAttributeColor(Context ctx, TextView text, int defaultValue, int currentvalue) {
 		if (currentvalue > defaultValue) {
 			text.setTextColor(ctx.getResources().getColor(R.color.positive));
 		} else if (currentvalue < defaultValue) {

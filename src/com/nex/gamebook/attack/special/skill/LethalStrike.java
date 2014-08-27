@@ -5,7 +5,7 @@ import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.entity.Bonus;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.playground.BattleLogCallback;
 
@@ -24,7 +24,7 @@ public class LethalStrike extends SpecialAttackSkill {
 		if (attacker.hasLuck(modificator)) {
 			int damage = attacked.getCurrentStats().getHealth() - 1;
 			result.setDamage(damage);
-			Bonus bonus = createSpecialAttack(-1, damage, BonusType.HEALTH);
+			Bonus bonus = createSpecialAttack(-1, damage, StatType.HEALTH);
 			attacked.addBonus(bonus);
 			addTemporalBonus(attacked, bonus, createConditionId(attacker));
 		}
@@ -33,11 +33,11 @@ public class LethalStrike extends SpecialAttackSkill {
 	}
 
 	private int getModificator(Character c) {
-		return (int) (Stats.TOTAL_LUCK_FOR_CALC - c.getCurrentStats().getSpecialSkillPower());
+		return (int) (Stats.TOTAL_LUCK_FOR_CALC + c.getLevel() - c.getCurrentStats().getSpecialSkillPower());
 	}
 	
 	private int getModificatorWhenLuck(Character c) {
-		return (int) (getModificator(c) * 1.5);
+		return (int) (getModificator(c) * 0.8);
 	}
 	
 	@Override

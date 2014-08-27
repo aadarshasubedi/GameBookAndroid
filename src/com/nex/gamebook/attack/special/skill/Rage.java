@@ -2,7 +2,10 @@ package com.nex.gamebook.attack.special.skill;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Character;
+import com.nex.gamebook.entity.ResultCombat;
+import com.nex.gamebook.entity.Bonus.StatType;
+import com.nex.gamebook.playground.BattleLogCallback;
 
 public class Rage extends SpecialConditionalSkill {
 
@@ -24,8 +27,8 @@ public class Rage extends SpecialConditionalSkill {
 	}
 
 	@Override
-	public BonusType getType() {
-		return BonusType.ATTACK;
+	public StatType getType() {
+		return StatType.ATTACK;
 	}
 
 	@Override
@@ -51,10 +54,15 @@ public class Rage extends SpecialConditionalSkill {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public boolean isTriggerAfterEnemyAttack() {
 		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean inFight() {
 		return false;
 	}
 	

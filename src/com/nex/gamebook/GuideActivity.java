@@ -1,5 +1,10 @@
 package com.nex.gamebook;
 
+import java.util.Map;
+
+import com.nex.gamebook.entity.ExperienceMap;
+import com.nex.gamebook.entity.Bonus.StatType;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -32,42 +37,37 @@ public class GuideActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_guide);
-
 		mTitle = getString(R.string.guide);
 		getActionBar().setTitle(mTitle);
-
 		// Getting reference to the DrawerLayout
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
 		mDrawerList = (ListView) findViewById(R.id.drawer_list);
 
 		// Getting reference to the ActionBarDrawerToggle
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
-				R.string.drawer_close) {
-
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 			/** Called when drawer is closed */
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
-
 			}
-
 			/** Called when a drawer is opened */
 			public void onDrawerOpened(View drawerView) {
 				getActionBar().setTitle(getString(R.string.guide));
 			}
-
 		};
 
 		// Setting DrawerToggle on DrawerLayout
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+		String[] names = new String[getTexts().length];
+		for(int i = 0; i < getTexts().length; i++) {
+			Object[] o = getTexts()[i];
+			Object[] texts = (Object[]) o[0];
+			names[i] = (String) texts[0];
+		}
 		// Creating an ArrayAdapter to add items to the listview mDrawerList
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), 
-				R.layout.guide_item, getMenuItems());
+				R.layout.guide_item, names);
 
 		// Setting the adapter on mDrawerList
 		mDrawerList.setAdapter(adapter);
@@ -83,11 +83,13 @@ public class GuideActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				String[] menuItems = getMenuItems();
-				mTitle = menuItems[position];
-				int text = getTexts()[position];
+				Object[] row = getTexts()[position];
+				Object[] texts = (Object[]) row[0];
+				mTitle = (String) texts[0];
+				int text = (int) texts[1];
+				Object[] args = (Object[]) row[1];
 				TextView textView = (TextView) findViewById(R.id.guideText);
-				textView.setText(text);
+				textView.setText(getString(text, args));
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		});
@@ -107,34 +109,30 @@ public class GuideActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
-	
-	private String[] getMenuItems() {
-		return new String[]{
-				getString(R.string.attr_health),
-				getString(R.string.attr_attack),
-				getString(R.string.attr_defense),
-				getString(R.string.attr_skill),
-				getString(R.string.attr_luck),
-				getString(R.string.section),
-				getString(R.string.options),
-				getString(R.string.enemies),
-				getString(R.string.battle),
-				getString(R.string.modifications),
-				getString(R.string.game_saving)};
-	}
-	private int[] getTexts() {
-		return new int[]{
-				R.string.guide_health, 
-				R.string.guide_attack, 
-				R.string.guide_defense, 
-				R.string.guide_skill, 
-				R.string.guide_luck, 
-				R.string.guide_section, 
-				R.string.guide_option, 
-				R.string.guide_enemies,
-				R.string.guide_battle, 
-				R.string.guide_modifications,
-				R.string.guide_save,};
+	private Object[][] getTexts() {
+		return new Object[][]{
+			{new Object[]{getString(R.string.level), R.string.guide_levels}, new Object[]{
+				String.valueOf(StatType.HEALTH.getIncreaseByLevel()),
+				String.valueOf(StatType.ATTACK.getIncreaseByLevel()),
+				String.valueOf(StatType.DEFENSE.getIncreaseByLevel()),
+				String.valueOf(StatType.SKILL.getIncreaseByLevel()),
+				String.valueOf(StatType.LUCK.getIncreaseByLevel()),
+				String.valueOf(StatType.DAMAGE.getIncreaseByLevel()),
+				String.valueOf(StatType.SKILLPOWER.getIncreaseByLevel()),
+				String.valueOf(ExperienceMap.MAX_LEVEL)
+			}},
+			{new Object[]{getString(R.string.skills),R.string.guide_skills}, null},
+			{new Object[]{getString(R.string.section),R.string.guide_section}, null},
+			{new Object[]{getString(R.string.options),R.string.guide_option}, null},
+			{new Object[]{getString(R.string.enemies),R.string.guide_enemies}, null},
+			{new Object[]{getString(R.string.battle),R.string.guide_battle}, null},
+			{new Object[]{getString(R.string.modifications),R.string.guide_modifications}, null},
+			{new Object[]{getString(R.string.attr_health),R.string.guide_health}, null},
+			{new Object[]{getString(R.string.attr_attack),R.string.guide_attack}, null},
+			{new Object[]{getString(R.string.attr_defense),R.string.guide_defense}, null},
+			{new Object[]{getString(R.string.attr_skill),R.string.guide_skill}, null},
+			{new Object[]{getString(R.string.attr_luck),R.string.guide_luck}, null},
+			{new Object[]{getString(R.string.attr_skill_power), R.string.guide_skillpower}, null},
+			{new Object[]{getString(R.string.game_saving),R.string.guide_save}, null}};
 	}
 }

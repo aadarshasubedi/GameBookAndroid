@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +25,9 @@ import android.content.SharedPreferences.Editor;
 import android.os.Environment;
 import android.util.Log;
 
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
 
 public class GameBookUtils {
@@ -196,5 +199,13 @@ public class GameBookUtils {
 		String secondPart = fieldName.substring(1);
 		return type + firstPart + secondPart;
 	}
-
+	
+	public static int setStatByType(Stats destination, StatType type, int value) throws Exception {
+		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("set", type.name().toLowerCase()), int.class);
+		return (int) m.invoke(destination, value);
+	}
+	public static int getStatByType(Stats destination, StatType type) throws Exception {
+		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", type.name().toLowerCase()), new Class<?>[0]);
+		return (int) m.invoke(destination, new Object[0]);
+	}
 }

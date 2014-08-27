@@ -3,7 +3,7 @@ package com.nex.gamebook.attack.special.skill;
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Bonus.BonusType;
+import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.Character;
 import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
@@ -66,7 +66,7 @@ public class Heal extends SpecialAttackSkill {
 	public boolean doAttackOnce(Character attacker, Character attacked,
 			BattleLogCallback callback, ResultCombat cm) {
 		ResultCombat rc = createBasicResult(0, attacker.getType());
-		Bonus bonus = createSpecialAttack(1, getRealValue(attacker), BonusType.HEALTH);
+		Bonus bonus = createSpecialAttack(1, getRealValue(attacker), StatType.HEALTH);
 		bonus.setOverflowed(false);
 		rc.setDamage(attacker.addBonus(bonus));
 		callback.logAttack(rc);
