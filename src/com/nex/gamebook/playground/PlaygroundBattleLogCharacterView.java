@@ -238,21 +238,22 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			final LinearLayoutRefreshable changeableView = new LinearLayoutRefreshable(context) {
 				public void refresh() {
 					final View startFight = rowView.findViewById(R.id.fight);
+					LinearLayout log = (LinearLayout) rowView.findViewById(R.id.e_battle_log);
 					if (enemy.isDefeated() || _character.isDefeated() || _character.isFighting() || section.isHasLuck()) {
 						startFight.setVisibility(View.GONE);
-						
 					} else {
-						final FightingLog log = new FightingLog(BattleLogAdapter.this, enemy,
-								(LinearLayout) rowView.findViewById(R.id.e_battle_log));
+						final FightingLog fl = new FightingLog(BattleLogAdapter.this, enemy, log);
 						startFight.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								_character.setFighting(true);
-								parent.post(log);
+								parent.post(fl);
 							}
 						});
 					}
-
+					if(log.getChildCount() == 0) {
+						addResultToLog(log, getContext().getString(R.string.dead), getContext(), R.color.title_color, R.style.title);
+					}
 					if(enemy.isDefeated() || _character.isDefeated()) {
 						final ScrollView sc = (ScrollView) rowView.findViewById(R.id.e_battleLogScrollView);
 						sc.post(new Runnable() {            
@@ -330,7 +331,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 		@Override
 		public void logLevelIncreased() {
-			addResultToLog(getContext().getString(R.string.level_increased, _character.getLevel()), getContext(), R.color.temporal);
+			addResultToLog(log, getContext().getString(R.string.level_increased, _character.getLevel()), getContext(), R.color.temporal);
 		}
 		
 		@Override
@@ -363,14 +364,14 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 				text += " " + context.getString(R.string.for_word);
 				text += " " + resultCombat.getDamage();
 				text += " " + context.getString(skill.getTextId()).toLowerCase();
-				addResultToLog(text, context, R.color.negative);
+				addResultToLog(log, text, context, R.color.negative);
 			} else {
 				String text = context.getString(R.string.you_use);
 				text += " " + context.getString(skill.getNameId()).toLowerCase();
 				text += " " + context.getString(R.string.for_word);
 				text += " " + resultCombat.getDamage();
 				text += " " + context.getString(skill.getTextId()).toLowerCase();
-				addResultToLog(text, context, R.color.positive);
+				addResultToLog(log, text, context, R.color.positive);
 			}
 		}
 		
@@ -401,23 +402,13 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					text += " ("+ resultCombat.getMultiplyAsText() + ") ";
 				}
 			}
-			addResultToLog(text, context, color);
+			addResultToLog(log, text, context, color);
 		}
 		
-		private void addResultToLog(String text, Context context, int color) {
-			TextView battleText = new TextView(context);
-			battleText.setText(text);
-			battleText.setTextAppearance(context, R.style.attribute);
-			battleText.setTextColor(context.getResources().getColor(color));
-//			LayoutParams params = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-//			params.setMargins(0,0,0,0);
-//			battleText.setLayoutParams(params);
-			log.addView(battleText);
-			
-		}
+
 		@Override
 		public void logExperience(long xp) {
-			addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
+			addResultToLog(log, getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
 		}
 		@Override
 		public void fightEnd(long xp) {
@@ -447,6 +438,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		if (_character.isDefeated()) {
 			displayGameOverButton();
 		} else if (section.isAllDefeated()) {
+			_character.cleanActiveSkillsAfterBattleEnd();
 			section.setEnemiesAlreadyKilled(true);
 			displayContinueButton();
 		}
@@ -483,13 +475,26 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 	private void redirectToStoryBoard() {
 		PlaygroundActivity activity = getPlayground();
-		activity.changeToStory();
+		activity.changeToStory(section);
 		section = null;
 		resultButton.setVisibility(View.GONE);
-		_character.cleanActiveSkillsAfterBattleEnd();
 	}
 	
 	public boolean isFighting() {
-		return getPlayground().isFighting();
+		return section.isFighting();
+	}
+	private void addResultToLog(LinearLayout log, String text, Context context, int color, int style) {
+		TextView battleText = new TextView(context);
+		battleText.setText(text);
+		battleText.setTextAppearance(context, style);
+		battleText.setTextColor(context.getResources().getColor(color));
+//		LayoutParams params = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+//		params.setMargins(0,0,0,0);
+//		battleText.setLayoutParams(params);
+		log.addView(battleText);
+	}
+	private void addResultToLog(LinearLayout log, String text, Context context, int color) {
+		addResultToLog(log, text, context, color, R.style.attribute);
+		
 	}
 }

@@ -41,9 +41,6 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		setShowOptions(true);
 		_character = getPlayground().getCharacter();
 		this.prepareView(view);
-		if (getPlayground().isFighting()) {
-			startFight(view.getContext(), _character.getCurrentSection());
-		}
 		view.setTag(this);
 		return view;
 	}
@@ -53,12 +50,16 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		TextView tw = (TextView) layout.findViewById(R.id.story_view);
 		Story story = _character.getStory();
 		StorySection currentSection = story.getSection(_character.getPosition());
+		if (currentSection.isFighting()) {
+			startFight(view.getContext(), _character.getCurrentSection());
+			return;
+		}
 		if (currentSection.isHasLuck()) {
 			if(!currentSection.isAlreadyHasLuck())
 			if(currentSection.isLuckDefeatEnemies()) {
-				_character.addExperience(this, currentSection.getExperienceByEnemies());
+				_character.addExperience(this, currentSection.getExperienceByEnemies(_character.getLevel()));
 			} else {
-				_character.addExperience(this, currentSection.getExperienceByEnemiesWhenLuck());					
+				_character.addExperience(this, currentSection.getExperienceByEnemiesWhenLuck(_character.getLevel()));					
 			}
 			currentSection.setAlreadyHasLuck(true);
 			tw.setText(currentSection.getLuckText() + " " + getContext().getString(R.string.fight_aspect_luck));
@@ -69,7 +70,9 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		} else {
 			tw.setText(currentSection.getText());
 		}
-		
+		if(currentSection.isXpGiver()) {
+			_character.addExperience(this, currentSection.getExperience(_character.getLevel()));
+		}
 		if (currentSection.isLoseSection()) {
 			displayEndGameButton(view.getContext(), view.findViewById(R.id.playground_story), R.string.endGame_lose);
 		} else if (currentSection.isWinSection()) {
@@ -88,27 +91,25 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			}
 		}
 		if(currentSection.isResetAttributes()) {
-			resetAttributes(view, 0);
+			resetAttributes(view, 0, R.string.reset_all);
 		} else if(currentSection.isResetPositiveAttributes()) {
-			resetAttributes(view, 1);
+			resetAttributes(view, 1, R.string.lose_gear);
 		} else if(currentSection.isResetNegativeAttributes()) {
-			resetAttributes(view, 2);
+			resetAttributes(view, 2, R.string.resting);
 		}
 	}
 
-	private void resetAttributes(View view, int mod) {
+	private void resetAttributes(View view, int mod, int text) {
 		Stats resetedOverflowedStats = _character.resetStats(mod);
-		showResetedStats(getContext(), view, resetedOverflowedStats);
+		showResetedStats(getContext(), view, resetedOverflowedStats, R.color.reset, text);
 	}
 	
 	private void prepareBonusSection(Context context, View view, StorySection section, List<Bonus> bonuses) {
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.bonuses);
-		if (!bonuses.isEmpty() && !section.isBonusesAlreadyGained()) {
-			view.findViewById(R.id.modification).setVisibility(View.VISIBLE);
-		}
 		for (Bonus bonus : bonuses) {
-			if (bonus.isAlreadyGained() && section.isVisited() || (!bonus.isPermanent() && !BonusState.NORMAL.equals(bonus.getState())))
+			if (bonus.isAlreadyGained())
 				continue;
+			view.findViewById(R.id.modification).setVisibility(View.VISIBLE);
 			bonus.setAlreadyGained(true);
 			int realValue =_character.addBonus(bonus);
 			String marker = "";
@@ -165,46 +166,46 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 	}
 	private void removeTemporalBonuses(Context context, View view) {
 		Stats releasedStats = _character.releaseTemporalStats();
-		showResetedStats(context, view, releasedStats);
+		showResetedStats(context, view, releasedStats, R.color.temporal, R.string.cancel_temp);
 	}
-	private void showResetedStats(Context context, View view, Stats releasedStats) {
+	private void showResetedStats(Context context, View view, Stats releasedStats, int color, int text) {
 		if (releasedStats == null)
 			return;
 		boolean show = false;
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.bonuses);
 		int value = releasedStats.getHealth();
 		if (value != 0) {
-			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_health, context));
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_health, context, color, text));
 			show = true;
 		}
 		value = releasedStats.getAttack();
 		if (value != 0) {
-			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_attack, context));
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_attack, context, color, text));
 			show = true;
 		}
 		value = releasedStats.getDefense();
 		if (value != 0) {
-			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_defense, context));
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_defense, context, color, text));
 			show = true;
 		}
 		value = releasedStats.getSkill();
 		if (value != 0) {
-			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill, context));
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill, context, color, text));
 			show = true;
 		}
 		value = releasedStats.getLuck();
 		if (value != 0) {
-			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_luck, context));
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_luck, context, color, text));
 			show = true;
 		}
 		value = releasedStats.getDamage();
 		if (value != 0) {
-			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context));
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context, color, text));
 			show = true;
 		}
 		value = releasedStats.getSkillpower();
 		if (value != 0) {
-			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill_power, context));
+			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill_power, context, color, text));
 			show = true;
 		}
 		if (show) {
@@ -213,16 +214,16 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		}
 	}
 
-	private TextView getViewForReleasedTemporalAttribute(int value, int attrName, Context context) {
+	private TextView getViewForReleasedTemporalAttribute(int value, int attrName, Context context, int color, int additionaltext) {
 		String prefix = "";
 		if (value > 0) {
 			prefix = "+";
 		}
 		TextView opt = new TextView(context);
 		opt.setTextAppearance(context, R.style.number);
-		opt.setTextColor(context.getResources().getColor(R.color.temporal));
+		opt.setTextColor(context.getResources().getColor(color));
 		String s = getContext().getResources().getString(attrName).toLowerCase();
-		opt.setText(prefix + value + " " + s + " " + context.getString(R.string.cancel_temp));
+		opt.setText(prefix + value + " " + s + " " + context.getString(additionaltext));
 		return opt;
 	}
 
@@ -236,7 +237,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 				section.setEnemiesAlreadyKilled(true);
 			}
 			PlaygroundActivity activity = getPlayground();
-			activity.changeToStory();
+			activity.changeToStory(section);
 		} else {
 			PlaygroundActivity activity = getPlayground();
 			activity.changeToBattle(section);
@@ -244,9 +245,10 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 	}
 
 	private void prepareAfterFight(Context context, LinearLayout layout, StorySection section) {
-		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.AFTER_FIGHT));
 		removeTemporalBonuses(context, layout);
 		prepareBonusSection(context, layout, section, _character.getConditions());
+		_character.getConditions().clear();
+		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.AFTER_FIGHT));
 		_character.getConditions().clear();
 		section.setBonusesAlreadyGained(true);
 		setShowOptions(true);
@@ -310,7 +312,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 				if (text == R.string.endGame_win) {
 					try {
 						GameBookUtils.getInstance().removeSavedGame(_character);
-						String fileName = GameBookUtils.getInstance().saveCharacterForScore(_character);
+						String fileName = GameBookUtils.getInstance().saveScore(_character);
 						Intent intent = new Intent(v.getContext(), ScoreActivity.class);
 						Bundle b = new Bundle();
 						b.putString("fileName", fileName);
@@ -355,17 +357,12 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			if (option.isDisabled()) {
 				nextSection.setUnreturnableSection(sectionId);
 			}
-			try {
-				GameBookUtils.getInstance().saveCharacter(PlaygroundStoryView.this._character);
-			} catch (Exception e) {
-				Log.e("GameBookSaver", "", e);
-			}
 			PlaygroundStoryView.this.refresh();
 		}
 	}
 
 	public void refresh() {
-		getPlayground().changeToStory();
+		getPlayground().changeToStory(_character.getCurrentSection());
 	}
 
 	public boolean isShowOptions() {

@@ -55,7 +55,8 @@ public class StoryXmlParser {
 	private final String RESET_POSITIVE_ATTRIBUTES = "resetPositiveAttributes";
 	private final String RESET_NEGATIVE_ATTRIBUTES = "resetNegativeAttributes";
 	private final String STORY = "story";
-
+	private final String XPCOEFF = "xpcoeff";
+	
 	private final String OPTIONS = "options";
 	private final String BASE = "base";
 	private final String ENEMIES = "enemies";
@@ -108,7 +109,7 @@ public class StoryXmlParser {
 		List<Story> stories = new ArrayList<Story>();
 		InputStream stream = null;
 		try {
-			stream = new FileInputStream(GameBookUtils.getInstance().getApplicationFolder("stories.xml"));
+			stream = new FileInputStream(GameBookUtils.getInstance().getStoriesFolder("stories.xml"));
 			Document document = getDocument(stream);
 			NodeList nList = document.getElementsByTagName(STORY);
 			for (int temp = 0; temp < nList.getLength(); temp++) {
@@ -138,7 +139,7 @@ public class StoryXmlParser {
 			throws Exception {
 		Story story = new Story();
 		story.saveXmlPath(xml);
-		GameBookUtils.getInstance().loadPropties(story);
+		GameBookUtils.getInstance().loadProperties(story);
 		loadStory(story, story.getXml(), sections, characters);
 		story.assignEnemiesToSections();
 		return story;
@@ -152,7 +153,7 @@ public class StoryXmlParser {
 
 		InputStream stream = null;
 		try {
-			File storiesFolder = GameBookUtils.getInstance().getApplicationFolder(story.getPath()
+			File storiesFolder = GameBookUtils.getInstance().getStoriesFolder(story.getPath()
 					+ File.separator + xml);
 			stream = new FileInputStream(storiesFolder);
 			Document document = getDocument(stream);
@@ -245,6 +246,7 @@ public class StoryXmlParser {
 		enemy.setName(element.getAttribute(NAME));
 		String id = element.getAttribute(ID);
 		enemy.setEnemyLevel(EnemyLevel.getLevelByString(element.getAttribute(TYPE)));
+		enemy.setXpcoeff(getDouble(element.getAttribute(XPCOEFF), Enemy.DEFAULT_COEFF));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
@@ -335,8 +337,8 @@ public class StoryXmlParser {
 		section.setResetAttributes(getBoolean(element.getAttribute(RESET_ATTRIBUTES)));
 		section.setResetPositiveAttributes(getBoolean(element.getAttribute(RESET_POSITIVE_ATTRIBUTES)));
 		section.setResetNegativeAttributes(getBoolean(element.getAttribute(RESET_NEGATIVE_ATTRIBUTES)));
-		section.setScoreMultiplier(getFloat(element.getAttribute(SCORE_MULTIPLIER)));
-		
+		section.setScoreMultiplier(getDouble(element.getAttribute(SCORE_MULTIPLIER)));
+		section.setXpcoeff(getDouble(element.getAttribute(XPCOEFF)));
 		String text = element.getAttribute(TEXT);
 		section.setText(text);
 		section.setAlreadyVisitedText(text);
@@ -390,7 +392,7 @@ public class StoryXmlParser {
 			Node n = optionsList.item(i);
 			if (n instanceof Element) {
 				Element enemyNode = (Element) n;
-				section.getEnemiesIds().add(new EnemyAssign(enemyNode.getAttribute(VALUE), enemyNode.getAttribute(OVERRIDE_SKILL)));
+				section.getEnemiesIds().add(new EnemyAssign(enemyNode.getAttribute(VALUE), enemyNode.getAttribute(OVERRIDE_SKILL), getDouble(enemyNode.getAttribute(XPCOEFF))));
 			}
 		}
 	}
@@ -471,8 +473,11 @@ public class StoryXmlParser {
 	private int getInteger(String s) {
 		return s != null && !"".equals(s) ? Integer.valueOf(s.trim()) : 0;
 	}
-	private float getFloat(String s) {
-		return s != null && !"".equals(s) ? Float.valueOf(s.trim()) : 0;
+	private double getDouble(String s) {
+		return getDouble(s, 0f);
+	}
+	private double getDouble(String s, double defaultvalue) {
+		return s != null && !"".equals(s) ? Double.valueOf(s.trim()) : defaultvalue;
 	}
 	
 

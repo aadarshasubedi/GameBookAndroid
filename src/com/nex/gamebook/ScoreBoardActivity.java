@@ -24,13 +24,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.Score;
+import com.nex.gamebook.entity.SerializationMetadata;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class ScoreBoardActivity extends Activity {
-	private Map<String, Set<String>> savedGames;
-	private List<String> keys;
+//	private Map<String, Set<String>> savedGames;
+	private List<SerializationMetadata> keys;
 	private StoryXmlParser parser;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +40,8 @@ public class ScoreBoardActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_score_board);
-		savedGames = new HashMap<String, Set<String>>();
-		this.keys = new ArrayList<String>();
+		this.keys = GameBookUtils.getInstance().getScores();
 		parser = new StoryXmlParser(this);
-		SharedPreferences prefs = GameBookUtils.getInstance().getPreferences();
-		for(Map.Entry<String, ?> entry: prefs.getAll().entrySet()) {
-			Set<String> value = (Set<String>) entry.getValue();
-			String key = entry.getKey();
-			if(key.startsWith(GameBookUtils.SCORE_GAME_PREFIX)) {
-				savedGames.put(key,value);
-				keys.add(key);
-			}
-		}
 		ListView list = (ListView) findViewById(R.id.scores);
 		list.setAdapter(new ScoreItem(this));
 		
@@ -63,22 +55,22 @@ public class ScoreBoardActivity extends Activity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			final String fileName = keys.get(position);
-			Set<String> values = savedGames.get(fileName);
+			final SerializationMetadata saveGame = keys.get(position);
+			final String fileName = saveGame.getFile();
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.list_item, parent, false);
 			TextView storyName = (TextView) rowView.findViewById(R.id.story_name);
-			String charId = GameBookUtils.getInstance().getValue(GameBookUtils.CHARACTER, values);
-			String timeInString = GameBookUtils.getInstance().getValue(GameBookUtils.TIME, values);
-			String xml = GameBookUtils.getInstance().getValue(GameBookUtils.STORY, values);
+			int charId = saveGame.getCharacter();
+			long timeInString = saveGame.getTime();
+			String xml = saveGame.getStory();
 			TextView characterName = (TextView) rowView.findViewById(R.id.character);
 			TextView time = (TextView) rowView.findViewById(R.id.time);
 			DateFormat df = DateFormat.getDateTimeInstance();
-			String formatedTime = df.format(new Date(Long.valueOf(timeInString)));
+			String formatedTime = df.format(new Date(timeInString));
 			time.setText(formatedTime);
 			try {
 				final Story story = parser.loadStory(xml, false, true);
-				final Player _character = story.getCharacter(Integer.valueOf(charId));
+				final Player _character = story.getCharacter(charId);
 				rowView.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {

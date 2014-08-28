@@ -76,6 +76,7 @@ public abstract class GameBookFragment {
 	}
 
 	private void highlightPrimaryAttribute(View view) {
+		if(character==null) return;
 		int color = R.color.temporal;
 		if(StatType.HEALTH.equals(character.getPrimaryStat())) {
 			((TextView)view.findViewById(R.id.sel_l_health_d)).setTextColor(getContext().getResources().getColor(color));

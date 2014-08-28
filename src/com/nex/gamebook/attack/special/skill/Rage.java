@@ -2,10 +2,7 @@ package com.nex.gamebook.attack.special.skill;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
-import com.nex.gamebook.entity.Character;
-import com.nex.gamebook.entity.ResultCombat;
 import com.nex.gamebook.entity.Bonus.StatType;
-import com.nex.gamebook.playground.BattleLogCallback;
 
 public class Rage extends SpecialConditionalSkill {
 

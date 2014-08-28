@@ -106,6 +106,9 @@
     <string name="special_skill_type_debuff">Snížení attributu</string>
     <string name="special_skill_type_buff">Navýšení attributu</string>
     <string name="special_skill_type_temp">(dočasně)</string>
+    <string name="resting">(odpočinek)</string>
+    <string name="lose_gear">(ztráta bonusů)</string>
+    <string name="reset_all">(vyrovnání)</string>
     <string name="cancel_temp">(zrušení)</string>
     <string name="reset_condition">(zrušení z boje)</string>
     <string name="special_skill_type_perm">(trvale)</string>

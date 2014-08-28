@@ -57,7 +57,6 @@ public class Story implements Serializable, Mergable {
 		return GameBookUtils.getInstance().getText("name", this);
 	}
 
-
 	public String getDescription() {
 		return GameBookUtils.getInstance().getText("description", this);
 	}

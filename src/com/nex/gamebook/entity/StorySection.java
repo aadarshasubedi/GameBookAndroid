@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.entity.Bonus.BonusState;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
@@ -20,8 +19,10 @@ public class StorySection implements Serializable, Mergable {
 	private String gameOverText = "main_gameover_text";
 
 	private int unreturnableSection = -1;
-
+	private boolean xpAlreadyGained;
 	private boolean loseSection;
+	private boolean fighting;
+	private double xpcoeff;
 	private boolean resetAttributes;
 	private boolean resetPositiveAttributes = false;
 	private boolean resetNegativeAttributes = false;
@@ -33,7 +34,7 @@ public class StorySection implements Serializable, Mergable {
 	private boolean visited;
 	private boolean hasLuck;
 	private boolean luckDefeatEnemies;
-	private float scoreMultiplier;
+	private double scoreMultiplier;
 	private int level;
 	private Story story;
 	private boolean luckPossible;
@@ -207,11 +208,11 @@ public class StorySection implements Serializable, Mergable {
 		this.winSection = winSection;
 	}
 
-	public float getScoreMultiplier() {
+	public double getScoreMultiplier() {
 		return scoreMultiplier;
 	}
 
-	public void setScoreMultiplier(float scoreMultiplier) {
+	public void setScoreMultiplier(double scoreMultiplier) {
 		this.scoreMultiplier = scoreMultiplier;
 	}
 
@@ -237,6 +238,9 @@ public class StorySection implements Serializable, Mergable {
 			enemy = new Enemy(enemy);
 			if (enemyKey.getEnemySkill().length() > 0)
 				enemy.setSkillName(enemyKey.getEnemySkill());
+			if (enemyKey.getXpcoeff() > 0d) {
+				enemy.setXpcoeff(enemyKey.getXpcoeff());
+			}
 			enemy.setLevel(getLevel());
 			ExperienceMap.getInstance().updateStatsByLevel(enemy);
 			this.enemies.add(enemy);
@@ -251,16 +255,16 @@ public class StorySection implements Serializable, Mergable {
 		this.level = level;
 	}
 
-	public long getExperienceByEnemies() {
+	public long getExperienceByEnemies(int playerlevel) {
 		long exp = 0;
 		for (Enemy e : enemies) {
-			exp += e.getExperience();
+			exp += e.getXp(playerlevel);
 		}
 		return exp;
 	}
 
-	public long getExperienceByEnemiesWhenLuck() {
-		return getExperienceByEnemies() / 4;
+	public long getExperienceByEnemiesWhenLuck(int playerlevel) {
+		return getExperienceByEnemies(playerlevel) / 4;
 	}
 
 	public boolean isAlreadyHasLuck() {
@@ -301,6 +305,35 @@ public class StorySection implements Serializable, Mergable {
 
 	public void setResetNegativeAttributes(boolean resetNegativeAttributes) {
 		this.resetNegativeAttributes = resetNegativeAttributes;
+	}
+
+	public double getXpcoeff() {
+		return xpcoeff;
+	}
+
+	public void setXpcoeff(double xpcoeff) {
+		this.xpcoeff = xpcoeff;
+	}
+
+	public boolean isXpGiver() {
+		return this.xpcoeff > 0d && !xpAlreadyGained;
+	}
+
+	public long getExperience(int playerlevel) {
+		xpAlreadyGained = true;
+		return ExperienceMap.getInstance().getXpFromSection(this, playerlevel);
+	}
+
+	public boolean isXpAlreadyGained() {
+		return xpAlreadyGained;
+	}
+
+	public boolean isFighting() {
+		return fighting;
+	}
+
+	public void setFighting(boolean fighting) {
+		this.fighting = fighting;
 	}
 
 }

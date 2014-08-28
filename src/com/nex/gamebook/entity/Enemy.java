@@ -5,13 +5,12 @@ import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.entity.io.GameBookUtils;
 
 public class Enemy extends com.nex.gamebook.entity.Character {
-
+	public static final double DEFAULT_COEFF = 0.1;
 	public enum EnemyLevel {
-		CREATURE(R.string.enemy_creature, 10), 
-		MINION(R.string.enemy_minion, 30), 
-		BOSS(R.string.enemy_boss, 60);
+		CREATURE(R.string.enemy_creature, 10), MINION(R.string.enemy_minion, 30), BOSS(R.string.enemy_boss, 60);
 		private int code;
 		private int baseXP;
+
 		private EnemyLevel(int code, int baseXP) {
 			this.code = code;
 			this.baseXP = baseXP;
@@ -24,7 +23,7 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 		public int getBaseXP() {
 			return baseXP;
 		}
-		
+
 		public static EnemyLevel getLevelByString(String s) {
 			if (s == null || "".equals(s)) {
 				return EnemyLevel.CREATURE;
@@ -37,6 +36,7 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	private String name;
 	private int index;
 	private boolean affectPlayer;
+	private double xpcoeff = DEFAULT_COEFF;
 	private EnemyLevel enemyLevel;
 
 	public Enemy() {
@@ -46,16 +46,17 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 		super(enemy);
 		this.name = enemy.name;
 		this.enemyLevel = enemy.enemyLevel;
+		this.xpcoeff = enemy.getXpcoeff();
 	}
 
 	public boolean hasLuck() {
 		return hasLuck(Stats.TOTAL_LUCK_FOR_CALC);
 	}
-	
+
 	public boolean isCriticalChance() {
 		return isCriticalChance(Stats.TOTAL_SKILL_FOR_CALC);
 	}
-	
+
 	public String getName() {
 		return GameBookUtils.getInstance().getText(name, getStory());
 	}
@@ -92,15 +93,26 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	public void setEnemyLevel(EnemyLevel level) {
 		this.enemyLevel = level;
 	}
-	@Override
-	public long getExperience() {
-		return ExperienceMap.getInstance().getGainedExperienceFromEnemy(this);
+
+	public long getXp(int playerLevel) {
+		return ExperienceMap.getInstance().getGainedExperienceFromEnemy(this, playerLevel);
 	}
+
 	public SpecialSkill getSpecialSkill() {
 		return getSpecialSkill(getSkillName());
 	}
+
 	@Override
 	public SpecialSkill getSpecialSkill(String skillName) {
 		return SpecialSkillsMap.get(skillName);
 	}
+
+	public double getXpcoeff() {
+		return xpcoeff;
+	}
+
+	public void setXpcoeff(double xpcoeff) {
+		this.xpcoeff = xpcoeff;
+	}
+
 }

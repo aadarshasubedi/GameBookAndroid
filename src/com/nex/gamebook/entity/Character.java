@@ -22,11 +22,12 @@ public abstract class Character implements Serializable, Mergable {
 	private Stats currentStats = new Stats(stats);
 	private boolean fighting;
 	private Story story;
-	private transient Stats temporalStatsHolder;
+	private boolean overideHolderStats = false;
+	private Stats temporalStatsHolder;
 	private String skillName;
 	private Map<String, Integer> specialSkills = new HashMap<>();
-	private transient Set<SpecialSkill> activeSkills;
-	private transient List<Bonus> conditions = new ArrayList<>();
+	private Set<SpecialSkill> activeSkills;
+	private List<Bonus> conditions = new ArrayList<>();
 	private int level = 1;
 	private long experience = 0;
 
@@ -133,6 +134,7 @@ public abstract class Character implements Serializable, Mergable {
 			}
 			if (!bonus.isPermanent()) {
 				if (this.temporalStatsHolder == null) {
+					overideHolderStats = true;
 					this.temporalStatsHolder = new Stats();
 					this.temporalStatsHolder.nullAllAttributes();
 				}
@@ -151,8 +153,9 @@ public abstract class Character implements Serializable, Mergable {
 	}
 
 	public void holdCurrentStatsToTemporal() {
-		if (this.temporalStatsHolder != null) {
+		if (this.temporalStatsHolder != null && overideHolderStats) {
 			this.temporalStatsHolder.setHolder(new Stats(getCurrentStats()));
+			overideHolderStats = false;
 		}
 	}
 
@@ -160,7 +163,7 @@ public abstract class Character implements Serializable, Mergable {
 		if (this.temporalStatsHolder == null)
 			return null;
 		getCurrentStats().releaseTemporalStats(this.temporalStatsHolder);
-		Stats releasedStats = new Stats(this.temporalStatsHolder);
+		Stats releasedStats = new Stats(this.temporalStatsHolder, -1);
 		this.temporalStatsHolder = null;
 		return releasedStats;
 	}
@@ -258,7 +261,10 @@ public abstract class Character implements Serializable, Mergable {
 	
 	public int getXpToLevelPercentage() {
 		long xpToLevel = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
-		return (int) (((double) experience / (double) xpToLevel) * 100d);
+		long previousXp = ExperienceMap.getInstance().getExperienceByLevel(getLevel()-1);
+		long res1 = xpToLevel - previousXp;
+		long res2 = experience - previousXp;
+		return (int) (((float) res2 / (float) res1) * 100d);
 	}
 
 	public StatType getPrimaryStat() {

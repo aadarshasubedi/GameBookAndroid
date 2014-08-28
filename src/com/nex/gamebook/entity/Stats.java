@@ -25,19 +25,21 @@ public class Stats implements Serializable {
 	private int damage = 1;
 	private int skillpower = 1;
 	private Player player;
-	private transient Stats holder;
+	private Stats holder;
 
 	public Stats() {
 	}
-
+	public Stats(Stats stats,int positive) {
+		this.health = positive*stats.health;
+		this.defense = positive*stats.defense;
+		this.skill = positive*stats.skill;
+		this.luck = positive*stats.luck;
+		this.attack = positive*stats.attack;
+		this.damage = positive*stats.damage;
+		this.skillpower = positive*stats.skillpower;
+	}
 	public Stats(Stats stats) {
-		this.health = stats.health;
-		this.defense = stats.defense;
-		this.skill = stats.skill;
-		this.luck = stats.luck;
-		this.attack = stats.attack;
-		this.damage = stats.damage;
-		this.skillpower = stats.skillpower;
+		this(stats, 1);
 	}
 
 	public int getHealth() {

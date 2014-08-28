@@ -19,8 +19,6 @@ import android.widget.ViewFlipper;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
 import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.SpecialSkillsMap;
-import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.entity.StorySection;
 import com.nex.gamebook.entity.io.GameBookUtils;
@@ -37,6 +35,7 @@ public class PlaygroundActivity extends Activity {
 	private PlaygroundStoryView storyFragment;
 	private ViewFlipListener listener;
 	private static List<View> battleLog = new ArrayList<>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,32 +53,32 @@ public class PlaygroundActivity extends Activity {
 			flipper.addView(characterFragment.create(flipper));
 			storyFragment = new PlaygroundStoryView(this);
 			storyFragment.setCharacter(_character);
-			changeToStory();
+			changeToStory(_character.getCurrentSection());
 		} catch (Exception e) {
 			Log.e("GameBook", "", e);
 		}
 
 	}
-	
+
 	private void createListener() {
 		listener = new ViewFlipListener(left, right, flipper, title) {
-			
+
 			@Override
 			public void viewChanged(View currentView) {
-				if(currentView.getTag().getClass().equals(PlaygroundStoryView.class)) {
+				if (currentView.getTag().getClass().equals(PlaygroundStoryView.class)) {
 					title.setText(_character.getStory().getName());
 				} else {
 					title.setText(_character.getName());
 				}
 			}
-			
+
 			@Override
 			public Context getContext() {
 				return PlaygroundActivity.this;
 			}
 		};
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -92,15 +91,15 @@ public class PlaygroundActivity extends Activity {
 		storyFragment = null;
 		listener = null;
 	}
-	
+
 	public Player getCharacter() {
 		return _character;
 	}
-	
+
 	private Player load() throws Exception {
-		
+
 		String loadedGame = getIntent().getExtras().getString("load_game");
-		if(loadedGame!=null && !"".equals(loadedGame)) {
+		if (loadedGame != null && !"".equals(loadedGame)) {
 			return GameBookUtils.getInstance().loadCharacter(loadedGame);
 		}
 		StoryXmlParser parser = new StoryXmlParser(this);
@@ -116,17 +115,18 @@ public class PlaygroundActivity extends Activity {
 	public PlaygroundStoryView getStoryFragment() {
 		return storyFragment;
 	}
-	
+
 	public void changeToBattle(StorySection section) {
-		setFighting(true);
+		section.setFighting(true);
 		getCharacterFragment().fight(section);
 		flipper.removeAllViews();
 		flipper.addView(characterFragment.create(flipper));
 		listener = characterFragment.createListener(left, right, title);
 		characterFragment.getSwitcher().setVisibility(View.VISIBLE);
 	}
-	public void changeToStory() {
-		setFighting(false);
+
+	public void changeToStory(StorySection section) {
+		section.setFighting(false);
 		title.setText(_character.getStory().getName());
 		flipper.removeAllViews();
 		flipper.addView(storyFragment.create(flipper));
@@ -134,56 +134,54 @@ public class PlaygroundActivity extends Activity {
 		createListener();
 		characterFragment.getSwitcher().setVisibility(View.GONE);
 	}
-	boolean fighting;
-	public void setFighting(boolean val) {
-		fighting = val;
-	}
-	public boolean isFighting() {
-		return fighting;
-	}
+
+
 	public List<View> getBattleLog() {
 		return battleLog;
 	}
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if(this.listener==null) return false;
+		if (this.listener == null)
+			return false;
 		return this.listener.onTouchEvent(event);
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    //Handle the back button
-	    if(keyCode == KeyEvent.KEYCODE_BACK) {
-	        //Ask the user if they want to quit
-	    	final DialogBuilder dialog = new DialogBuilder(this)
-	    	.setTitle(R.string.close_book)
-	    	.setText(R.string.close_book_description)
-	        .setNegativeButton(R.string.no, null);
-	    	dialog.setPositiveButton(R.string.yes, new OnClickListener() {
+		// Handle the back button
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// Ask the user if they want to quit
+			final DialogBuilder dialog = new DialogBuilder(this).setTitle(R.string.close_book).setText(R.string.close_book_description).setNegativeButton(R.string.no, null);
+			dialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//Intent intent = new Intent(PlaygroundActivity.this, MainScreenActivity.class);
-					//PlaygroundActivity.this.startActivity(intent);
+					// Intent intent = new Intent(PlaygroundActivity.this,
+					// MainScreenActivity.class);
+					// PlaygroundActivity.this.startActivity(intent);
+
+					try {
+						GameBookUtils.getInstance().saveGame(PlaygroundActivity.this._character);
+					} catch (Exception e) {
+						Log.e("GameBookSaver", "", e);
+					}
+
 					dialog.dismiss();
 					PlaygroundActivity.this.finish();
 				}
 			}).show();
 
-
-	        return true;
-	    }
-	    else {
-	        return super.onKeyDown(keyCode, event);
-	    }
+			return true;
+		} else {
+			return super.onKeyDown(keyCode, event);
+		}
 
 	}
-	
-	
-	
-//	@Override
-//	public boolean dispatchTouchEvent(MotionEvent ev){
-//	    super.dispatchTouchEvent(ev);
-//	    if(this.listener==null) return false;
-//	    return listener.onTouchEvent(ev);
-//	}
+
+	// @Override
+	// public boolean dispatchTouchEvent(MotionEvent ev){
+	// super.dispatchTouchEvent(ev);
+	// if(this.listener==null) return false;
+	// return listener.onTouchEvent(ev);
+	// }
 }

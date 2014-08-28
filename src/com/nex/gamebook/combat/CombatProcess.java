@@ -46,7 +46,7 @@ public class CombatProcess {
 	public void fight(BattleLogCallback callback) {
 		Player player = (Player) callback.getCharacter();
 		int turn = 0;
-		long experience = enemy.getExperience();
+		long experience = enemy.getXp(player.getLevel());
 		while (enemy.getCurrentStats().getHealth() > 0) {
 			callback.divide(++turn);
 			boolean enemyBegin = !player.hasLuck();

@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -27,14 +25,18 @@ import android.util.Log;
 
 import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.entity.Score;
+import com.nex.gamebook.entity.SerializationMetadata;
 import com.nex.gamebook.entity.Stats;
 import com.nex.gamebook.entity.Story;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class GameBookUtils {
 	public static final String FOLDER = "stories";
 	public static final String SAVE_GAME_PREFIX = "gb_story_";
 	public static final String SCORE_GAME_PREFIX = "gb_score_";
-	
+
 	public static final String TIME = "time_";
 	public static final String CHARACTER = "char_";
 	public static final String STORY = "story_";
@@ -52,8 +54,7 @@ public class GameBookUtils {
 	}
 
 	public SharedPreferences getPreferences() {
-		SharedPreferences prefs = context.getSharedPreferences(
-				"com.nex.gamebook", Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences("com.nex.gamebook", Context.MODE_PRIVATE);
 		return prefs;
 	}
 
@@ -66,11 +67,15 @@ public class GameBookUtils {
 		return null;
 	}
 
-	public void loadPropties(Story story) throws IOException {
+	public void loadProperties(Story story) throws IOException {
+		Properties prop = loadProperties(story.getPath());
+		story.setProperties(prop);
+	}
+	public Properties loadProperties(String storypath) throws IOException {
 
-		List<String> fileList = getRelevantLocalizedFiles(story);
+		List<String> fileList = getRelevantLocalizedFiles(storypath);
 		Properties prop = new Properties();
-//		prop.
+		// prop.
 		for (String file : fileList) {
 			try {
 				InputStream fileStream = new FileInputStream(file);
@@ -78,13 +83,11 @@ public class GameBookUtils {
 				prop.load(reader);
 				fileStream.close();
 			} catch (FileNotFoundException e) {
-				Log.d("GameBookXmlParser", "Ignoring missing property file "
-						+ file);
+				Log.d("GameBookXmlParser", "Ignoring missing property file " + file);
 			}
 		}
-		story.setProperties(prop);
+		return prop;
 	}
-
 	public String getText(String name, Story story) {
 		if ("".equals(name) || name == null)
 			return null;
@@ -92,9 +95,9 @@ public class GameBookUtils {
 		return text == null ? "_" + name + "_" : text;
 	}
 
-	private List<String> getRelevantLocalizedFiles(Story story) {
+	private List<String> getRelevantLocalizedFiles(String storypath) {
 		List<String> texts = new ArrayList<>();
-		addTexts(story.getPath(), texts);
+		addTexts(storypath, texts);
 		addTexts("main", texts);
 		return texts;
 	}
@@ -102,12 +105,10 @@ public class GameBookUtils {
 	private void addTexts(String path, List<String> texts) {
 		String defaultLang = "cs";
 		String lang = Locale.getDefault().getLanguage();
-		File root = getApplicationFolder(path + File.separator + "texts"
-				+ File.separator + lang + File.separator);
+		File root = getStoriesFolder(path + File.separator + "texts" + File.separator + lang + File.separator);
 		boolean exist = root.exists();
 		if (!exist) {
-			getApplicationFolder(path + File.separator + "texts"
-					+ File.separator + defaultLang + File.separator);
+			getStoriesFolder(path + File.separator + "texts" + File.separator + defaultLang + File.separator);
 		}
 		if (exist && root.isDirectory()) {
 			for (String file : root.list()) {
@@ -121,64 +122,109 @@ public class GameBookUtils {
 		}
 	}
 
-	public File getApplicationFolder(String subFolder) {
-		return new File(getGamebookStorage(context) + File.separator + FOLDER
-				+ File.separator + subFolder);
+	public File getStoriesFolder(String subFolder) {
+		return new File(getGamebookStorage(context) + File.separator + FOLDER + File.separator + subFolder);
 	}
 
-	
-	public Set<String> getFileNames(String prefix) {
-		Set<String> keys = new HashSet<>();
-		for(Map.Entry<String, ?> entry: getPreferences().getAll().entrySet()) {
-			String key = entry.getKey();
-			if(key.startsWith(prefix)) {
-				keys.add(key);
-			}
+	public File getSavesFolder(String subfolder, String fileName, boolean createSubfolders) {
+		File f = new File(getGamebookStorage(context) + File.separator + "saves" + File.separator + subfolder + File.separator + fileName);
+		if(!f.exists() && createSubfolders) {
+			f.mkdirs();
 		}
-		return keys;
+		return f;
+	}
+	public File getScoreFolder(String subfolder, String fileName, boolean createSubfolders) {
+		File f = new File(getGamebookStorage(context) + File.separator + "scores" + File.separator + subfolder + File.separator + fileName);
+		if(!f.exists() && createSubfolders) {
+			f.mkdirs();
+		}
+		return f;
 	}
 	
-	public String saveCharacterForScore(Player character) throws Exception {
-		int index = getFileNames(SCORE_GAME_PREFIX).size() + 1;
-		String fileName = SCORE_GAME_PREFIX + character.getId() + "_" + character.getStory().getId() + "_"+index+".sav";
-		save(character, fileName);
+
+	public String saveScore(Player character) throws Exception {
+		File file = getScoreFolder("", "", true);
+		File metaFile = getScoreFolder("meta", "", true);
+		int index = metaFile.list().length + 1;
+		String fileName = SCORE_GAME_PREFIX + character.getId() + "_" + character.getStory().getId() + "_" + index + ".sav";
+		file = getScoreFolder("", fileName, false);
+		metaFile = getScoreFolder("meta", "meta-" + fileName, false);
+		file.createNewFile();
+		metaFile.createNewFile();
+		saveMetada(character, metaFile, fileName);
+		Score score = new Score();
+		score.saveScoreData(character);
+		FileOutputStream fos = new FileOutputStream(file);
+		XStream xStream = createXStream();
+		xStream.toXML(score, fos);
+		fos.close();
 		return fileName;
 	}
-	public void saveCharacter(Player character) throws Exception {
-		save(character, createSaveGameFileName(character));
+
+	public void saveGame(Player character) throws Exception {
+		String fileName = createSaveGameFileName(character);
+		File file = getSavesFolder("", "", true);
+		File metaFile = getSavesFolder("meta", "", true);
+		file = getSavesFolder("", fileName, false);
+		metaFile = getSavesFolder("meta", "meta-" + fileName, false);
+		file.createNewFile();
+		metaFile.createNewFile();
+		saveMetada(character, metaFile, fileName);
+		FileOutputStream fos = new FileOutputStream(file);
+		XStream xStream = createXStream();
+		xStream.toXML(character, fos);
+		fos.close();
 	}
+
 	private String createSaveGameFileName(Player character) {
-		String fileName = SAVE_GAME_PREFIX + character.getId() + "_"
-				+ character.getStory().getId() + ".sav";
+		String fileName = SAVE_GAME_PREFIX + character.getId() + "_" + character.getStory().getId() + ".sav";
 		return fileName;
+	}
+	public List<SerializationMetadata> getScores() {
+		return loadMetadata(getScoreFolder("meta", "", false));
+	}
+	public List<SerializationMetadata> getSavedGames() {
+		return loadMetadata(getSavesFolder("meta", "", false));
+	}
+	
+	private List<SerializationMetadata> loadMetadata(File metaFolder) {
+		List<SerializationMetadata> ls = new ArrayList<>();
+		XStream stream = createXStream();
+		for(String metaFile:metaFolder.list()) {
+			ls.add((SerializationMetadata) stream.fromXML(new File(metaFolder.getAbsoluteFile() + File.separator + metaFile)));
+		}
+		return ls;
+	}
+	public Score loadScore(String filename) throws Exception {
+		File file = getScoreFolder("", filename, false);
+		FileInputStream fis = new FileInputStream(file);
+		XStream xStream = new XStream(new DomDriver());
+		Score simpleClass = (Score) xStream.fromXML(fis);
+		simpleClass.setProperties(GameBookUtils.getInstance().loadProperties(simpleClass.getStoryPath()));
+		fis.close();
+		return simpleClass;
 	}
 	public Player loadCharacter(String filename) throws Exception {
-		FileInputStream fis = context.openFileInput(filename);
-		ObjectInputStream is = new ObjectInputStream(fis);
-		Player simpleClass = (Player) is.readObject();
-		loadPropties(simpleClass.getStory());
-		is.close();
+		File file = getSavesFolder("", filename, false);
+		FileInputStream fis = new FileInputStream(file);
+		XStream xStream = new XStream(new DomDriver());
+		Player simpleClass = (Player) xStream.fromXML(fis);
+		loadProperties(simpleClass.getStory());
+		fis.close();
 		return simpleClass;
 	}
 
-	
-
-	private void save(Player character, String fileName) throws Exception {
-		SharedPreferences prefs = getPreferences();
-		
-		FileOutputStream fos = context.openFileOutput(fileName,
-				Context.MODE_PRIVATE);
-		ObjectOutputStream os = new ObjectOutputStream(fos);
-		os.writeObject(character);
-		os.close();
-		Editor editor = prefs.edit();
-		Set<String> values = new HashSet<>();
-		values.add(TIME + String.valueOf(System.currentTimeMillis()));
-		values.add(STORY + character.getStory().getFullpath());
-		values.add(CHARACTER + String.valueOf(character.getId()));
-		values.add(VERSION + String.valueOf(character.getStory().getVersion()));
-		editor.putStringSet(fileName, values);
-		editor.apply();
+	private void saveMetada(Player character, File metaFile, String saveFile) throws Exception {
+		FileOutputStream fos = new FileOutputStream(metaFile);
+		XStream xStream = createXStream();
+		SerializationMetadata sg = new SerializationMetadata();
+		sg.setTime(System.currentTimeMillis());
+		sg.setFile(saveFile);
+		sg.setStory(character.getStory().getFullpath());
+		sg.setCharacter(character.getId());
+		sg.setVersion(character.getStory().getVersion());
+		xStream.toXML(sg, fos);
+		fos.close();
 	}
 	
 	public void removeSavedGame(Player player) {
@@ -188,10 +234,9 @@ public class GameBookUtils {
 		editor.remove(fileName);
 		editor.commit();
 	}
-	
+
 	public static String getGamebookStorage(Context ctx) {
-		return Environment.getExternalStorageDirectory().getAbsolutePath()
-				+ File.separator + "com.nex.gamebook";
+		return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "com.nex.gamebook";
 	}
 
 	public static String createMethodName(String type, String fieldName) {
@@ -199,11 +244,17 @@ public class GameBookUtils {
 		String secondPart = fieldName.substring(1);
 		return type + firstPart + secondPart;
 	}
-	
+
+	private XStream createXStream() {
+		XStream xstream = new XStream(new DomDriver());
+		return xstream;
+	}
+
 	public static int setStatByType(Stats destination, StatType type, int value) throws Exception {
 		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("set", type.name().toLowerCase()), int.class);
 		return (int) m.invoke(destination, value);
 	}
+
 	public static int getStatByType(Stats destination, StatType type) throws Exception {
 		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", type.name().toLowerCase()), new Class<?>[0]);
 		return (int) m.invoke(destination, new Object[0]);

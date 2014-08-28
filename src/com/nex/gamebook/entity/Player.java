@@ -1,9 +1,5 @@
 package com.nex.gamebook.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.nex.gamebook.entity.Bonus.StatType;
 import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.playground.BattleLogCallback;
 
@@ -42,7 +38,9 @@ public class Player extends Character {
 	public String getName() {
 		return GameBookUtils.getInstance().getText(name, getStory());
 	}
-
+	public String getRawName() {
+		return name;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -72,33 +70,7 @@ public class Player extends Character {
 		return getStory().getSection(this.position);
 	}
 
-	public int getScore() {
-		int score = 0;
-		int health = getCurrentStats().getHealth() - getStats().getHealth();
-		if (health > 0)
-			score += health;
-		int attack = getCurrentStats().getAttack() - getStats().getAttack();
-		if (attack > 0)
-			score += attack;
-		int defense = getCurrentStats().getDefense() - getStats().getDefense();
-		if (defense > 0)
-			score += defense;
-		int skill = getCurrentStats().getSkill() - getStats().getSkill();
-		if (skill > 0)
-			score += skill;
-		int luck = getCurrentStats().getLuck() - getStats().getLuck();
-		if (luck > 0)
-			score += luck;
-		int sectionsMultiplier = getSections() - getVisitedSections();
-		if (sectionsMultiplier == 0)
-			sectionsMultiplier = 1;
-		score += getSections() * sectionsMultiplier;
-		float multiplier = getStory().getSection(position).getScoreMultiplier();
-		if (multiplier > 1f) {
-			score *= multiplier;
-		}
-		return score;
-	}
+	
 
 	public int getSections() {
 		return sections;
@@ -125,6 +97,9 @@ public class Player extends Character {
 	}
 
 	public void addExperience(BattleLogCallback callback, long exp) {
+		if(getLevel() == ExperienceMap.getInstance().getMaxLevel()) {
+			return;
+		}
 		setExperience(getExperience() + exp);
 		long requiredExperience = ExperienceMap.getInstance()
 				.getExperienceByLevel(getLevel());
