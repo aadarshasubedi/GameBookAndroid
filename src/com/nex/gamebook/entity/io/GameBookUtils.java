@@ -148,7 +148,7 @@ public class GameBookUtils {
 		int index = metaFile.list().length + 1;
 		String fileName = SCORE_GAME_PREFIX + character.getId() + "_" + character.getStory().getId() + "_" + index + ".sav";
 		file = getScoreFolder("", fileName, false);
-		metaFile = getScoreFolder("meta", "meta-" + fileName, false);
+		metaFile = getScoreFolder("meta", fileName, false);
 		file.createNewFile();
 		metaFile.createNewFile();
 		saveMetada(character, metaFile, fileName);
@@ -166,7 +166,7 @@ public class GameBookUtils {
 		File file = getSavesFolder("", "", true);
 		File metaFile = getSavesFolder("meta", "", true);
 		file = getSavesFolder("", fileName, false);
-		metaFile = getSavesFolder("meta", "meta-" + fileName, false);
+		metaFile = getSavesFolder("meta", fileName, false);
 		file.createNewFile();
 		metaFile.createNewFile();
 		saveMetada(character, metaFile, fileName);
@@ -190,6 +190,7 @@ public class GameBookUtils {
 	private List<SerializationMetadata> loadMetadata(File metaFolder) {
 		List<SerializationMetadata> ls = new ArrayList<>();
 		XStream stream = createXStream();
+		if(metaFolder!=null && metaFolder.list()!=null)
 		for(String metaFile:metaFolder.list()) {
 			ls.add((SerializationMetadata) stream.fromXML(new File(metaFolder.getAbsoluteFile() + File.separator + metaFile)));
 		}
@@ -198,7 +199,7 @@ public class GameBookUtils {
 	public Score loadScore(String filename) throws Exception {
 		File file = getScoreFolder("", filename, false);
 		FileInputStream fis = new FileInputStream(file);
-		XStream xStream = new XStream(new DomDriver());
+		XStream xStream = createXStream();
 		Score simpleClass = (Score) xStream.fromXML(fis);
 		simpleClass.setProperties(GameBookUtils.getInstance().loadProperties(simpleClass.getStoryPath()));
 		fis.close();
@@ -207,7 +208,7 @@ public class GameBookUtils {
 	public Player loadCharacter(String filename) throws Exception {
 		File file = getSavesFolder("", filename, false);
 		FileInputStream fis = new FileInputStream(file);
-		XStream xStream = new XStream(new DomDriver());
+		XStream xStream = createXStream();
 		Player simpleClass = (Player) xStream.fromXML(fis);
 		loadProperties(simpleClass.getStory());
 		fis.close();
@@ -228,11 +229,11 @@ public class GameBookUtils {
 	}
 	
 	public void removeSavedGame(Player player) {
-		Editor editor = getPreferences().edit();
 		String fileName = createSaveGameFileName(player);
-		context.deleteFile(fileName);
-		editor.remove(fileName);
-		editor.commit();
+		File delete = getSavesFolder("meta", fileName, false);
+		delete.delete();
+		delete = getSavesFolder("", fileName, false);
+		delete.delete();
 	}
 
 	public static String getGamebookStorage(Context ctx) {

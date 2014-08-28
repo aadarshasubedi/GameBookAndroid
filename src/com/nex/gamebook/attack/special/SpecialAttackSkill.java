@@ -110,7 +110,7 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	}
 	
 	public int calcDynamicValue(int base, float coeff, int specialSkillPower) {
-		return (int) (base * (coeff + specialSkillPower / 100));
+		return (int) (base * (coeff + specialSkillPower / 10));
 	}
 	@Override
 	public boolean inFight() {

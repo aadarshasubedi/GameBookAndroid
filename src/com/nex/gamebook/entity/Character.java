@@ -26,7 +26,7 @@ public abstract class Character implements Serializable, Mergable {
 	private Stats temporalStatsHolder;
 	private String skillName;
 	private Map<String, Integer> specialSkills = new HashMap<>();
-	private Set<SpecialSkill> activeSkills;
+	private transient Set<SpecialSkill> activeSkills;
 	private List<Bonus> conditions = new ArrayList<>();
 	private int level = 1;
 	private long experience = 0;

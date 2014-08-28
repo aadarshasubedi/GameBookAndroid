@@ -17,15 +17,15 @@
         Dovednost má vliv na zobrazení některých možností v různých sekcí.
         Tzn. pokud hráč nemá dostatečnou dovednost, kterou daná možnost vyžaduje, tak se mu nezobrazí.
         Z dovednosti se také vypočítává šance na kritické zranění, které je 1.5x útoku.
-        V kombinaci s atributem síla schopností zvušuje sílu schopností characteru.	</string>
+        V kombinaci s atributem síla schopností zvyšuje sílu schopností postavy.	</string>
     <string name="guide_luck">
         Štěstí má širší vliv působnosti.\n
         1) Ovlivňuje zobrazení některých možností, které vyžadují štěstí.\n
         2) Pokud to sekce umožňuje, tak před bojem má vliv na úplnému vyhnutí se boji, v některých sekcí uplně odstraní nepřátele.\n
         3) V boji pak má vliv na vyhnutí se útoku a při kritickém zranění šanci na dvojnásobný kritický úder.\n
-        4) Pokud máš štěstí začínáš boj, jinak ho vždy začíná nepřítel.\n	</string>
+        4) V boji, pokud bude mít hráč štěstí, tak má v daném kole jednoho boje první úder, jinak ho má vždu nepřítel.\n	</string>
 	<string name="guide_skillpower">
-        Síla schopností má přímý vliv sílu jednotlivých schopností charakteru (hráče i nepřátel).
+        Síla schopností má přímý vliv na sílu jednotlivých schopností postavy.
         Čím vetší síla schopností tím je daná schopnost v boji silnější. Například léčení uzdravuje více zdraví.
 	</string>
     <string name="guide_option">
@@ -36,8 +36,8 @@
        Tyto možnosti nejsou nijak označeny.	</string>
     <string name="game_saving">Ukládání hry</string>
     <string name="guide_save">
-      Ukládání hry se provádí po každé zvolené možnosti automaticky.
-      Každá postava příběhu má pouze jednu úložnou pozici.
+      Ukládání hry se provádí automaticky před bojem a při zavření knihy.
+      Každá postava v příběhu má pouze jednu úložnou pozici.
       Uložené hry nelze mazat, přeuloží se buď novou hrou nebo se úplně smažou úspěšně dohranou hrou.	</string>
     <string name="battle">Bitva</string>
     <string name="guide_battle">
@@ -45,7 +45,7 @@
 		Po každém boji s jedním nepřítelem se zobrazí průběh boje.
 		Pokračovat v příběhu může hráč pouze tehdy, porazí-li všechny nepřátele.
 		Pokud hráč v průbehu hry zemře, tak musí začít buď znovu nebo nahrát hru a boj zkusit znovu.
-		Každý boj může díky atributům štěstí a dovednosti probíhat pokaždé jinak.	</string>
+		Každý boj může díky schopnostem a atributům štěstí a dovednosti probíhat pokaždé jinak.	</string>
     <string name="guide_enemies">
         Nepřátelé se dělí na tři druhy.
         \n\n
@@ -64,18 +64,28 @@
         Sekce je část příběhu, která má následující vlastnosti:\n
 		Text příběhu\n
 		Možnosti\n
-		Bitvy\n
-		Modifikace\n	</string>
+		Boj\n
+		Modifikace\n
+		Některé sekce mohou dát hráči zkušenosti nebo mohou resetovat aktuální atributy na základní.	</string>
     <string name="guide_modifications">
 		Modifikace ovlivňují atributy postavy hráče.
-		Mohou být pozitivní i negativní.
-		\n\nDočasné modifikace:\n
-		Mohou být pouze pozitivní a jsou aplikovány před bojem a po boji jsou zase zrušeny.
-		Hráči při jejich odečtení nesníží attributy pod původní hodnotu před aplikací modifikace. 
+		Každá modifikace má dva stavy, pozitivní nebo negativní.
+		\n&lt;Druhy modifikací.&gt;\n
+		Dočasné modifikace:\n
+		Jsou aplikovány před bojem a po boji jsou zase zrušeny. Ve hře jsou označeny modrou barvou.\n\n
 		
-		\n\nPermanentní modifikace:\n
-		Pokud je v sekci bitva, tak jsou některé modifikace aplikovány před bojem a některé po boji.
-		Některé modifikace mohou navýšit tvoje aktuální atributy nad základní.	</string>
+		Permanentní modifikace:\n
+		Jsou aplikovány před bojem nebo po boji, pokud je v sekci boj, jinak se aplikují při zobrazení příběhu.
+		Mohou ovlivňovat buď aktualní atributy nebo základní atributy.
+		Pokud je ovlivněn atribut základní je označen světle zelenou barvou.
+		Pokud je ovlivněn atribut aktuální je označen zelenou barvou.
+		Pozitivní modifikace aktuálních atributů mohou navýšit hodnotu nad tu základní.\n\n
+		
+		Modifikace z boje:\n
+		Jsou takové modifikace, které hráč obdržel v boji. Po skončení boje se tyto modifikace zruší. Ve hře jsou označeny fialovou barvou.\n\n
+		
+		Modifikace sekce:\n
+		Jsou takové modifikace, které vám aktuální atributy nastaví na základní. Ve hře jsou označeny oranžovou barvou.	</string>
     <string name="guide_description">
         Gamebook je kniha, ve které ovlivňujete příběh svým vlastním rozhodováním.
 	    Příběhy jsou odlišné a každý má jiný styl prožívání příběhu.
@@ -85,7 +95,7 @@
     <string name="guide_skills">
      Schopnosti jsou speciální akce používané v boji. Každá schopnost má jiný učinek, chování, použití a spuštění.
      Někteří nepřátelé mohou mít schopnosti, každý nepřítel může mít však pouze jednu schopnost.
-     Síla samotné schopnosti se vypočítává z atributů síla schoponstí a dovednost,
+     Síla samotné schopnosti se vypočítává z atributů síla schopno|stí a dovednost,
      kde dovednost navyšuje sílu schopností procentuelně na základě síly schopnosti.
      Postava hráče má více schopností, které se odemykají s úrovní. 
      Hráč si před bojem s každým nepřítelem může vybrat jakou schopnost má jeho postava v daném boji používat. 
@@ -98,7 +108,7 @@
      Za každou novou úroveň se hráči zvýší základní atributy.
      Každá postava má svůj vlastní primární atribut (na kartě postavy je barevně vyznačen), který se s každou úrovní zvyšuje více než ostatní atributy.
      Úrovně také odemykají schopnosti postavy hráče, viz kapitola schopnosti.
-     Úroveň se zvyšuje poražením nepřátel, čí štěstím před bojem. 
+     Úroveň se zvyšuje zkušenostmi, které se získavají z bojů nebo ze sekcí (viz sekce).
      Pokud štěstí zničí všechny nepřátele v sekci, tak hráč dostane plný počet zkušeností za každého nepřítele, jinak dostane hráč 1/4 zkušeností a to pouze jednou.
      Atributy se zvyšují jen na některých úrovních.\n
      Zdraví - každá %1$s úroveň\n

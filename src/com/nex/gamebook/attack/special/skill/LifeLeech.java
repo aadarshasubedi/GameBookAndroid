@@ -48,7 +48,7 @@ public class LifeLeech extends SpecialAttackSkill {
 
 	@Override
 	public int getValue(Character character) {
-		return calcDynamicValue(35, 1.2f, character.getCurrentStats().getSpecialSkillPower());
+		return calcDynamicValue(30, 1.2f, character.getCurrentStats().getSpecialSkillPower());
 	}
 
 	@Override

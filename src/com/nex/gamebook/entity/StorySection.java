@@ -33,6 +33,7 @@ public class StorySection implements Serializable, Mergable {
 	private boolean completed;
 	private boolean visited;
 	private boolean hasLuck;
+	private boolean tryluck = true;
 	private boolean luckDefeatEnemies;
 	private double scoreMultiplier;
 	private int level;
@@ -125,7 +126,9 @@ public class StorySection implements Serializable, Mergable {
 	}
 
 	public void tryApplyLuckForBattle(Player character) {
+		if(tryluck)
 		hasLuck = character.hasLuck();
+		tryluck = false;
 	}
 
 	public boolean isVisited() {
@@ -335,5 +338,8 @@ public class StorySection implements Serializable, Mergable {
 	public void setFighting(boolean fighting) {
 		this.fighting = fighting;
 	}
-
+	public void canTryLuck() {
+		this.tryluck = true;
+		this.hasLuck = false;
+	}
 }

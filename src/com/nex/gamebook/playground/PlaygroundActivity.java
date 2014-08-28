@@ -105,6 +105,7 @@ public class PlaygroundActivity extends Activity {
 		StoryXmlParser parser = new StoryXmlParser(this);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
 		Player character = story.getCharacter(getIntent().getExtras().getInt("character"));
+		character.save();
 		return character;
 	}
 
@@ -149,22 +150,23 @@ public class PlaygroundActivity extends Activity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		final boolean fighting = PlaygroundActivity.this._character.getCurrentSection().isFighting();
 		// Handle the back button
+		int text = R.string.close_book_description;
+		if(fighting) {
+			text = R.string.close_book_when_fighting_description;
+		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			// Ask the user if they want to quit
-			final DialogBuilder dialog = new DialogBuilder(this).setTitle(R.string.close_book).setText(R.string.close_book_description).setNegativeButton(R.string.no, null);
+			final DialogBuilder dialog = new DialogBuilder(this).setTitle(R.string.close_book).setText(text).setNegativeButton(R.string.no, null);
 			dialog.setPositiveButton(R.string.yes, new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					// Intent intent = new Intent(PlaygroundActivity.this,
 					// MainScreenActivity.class);
 					// PlaygroundActivity.this.startActivity(intent);
-
-					try {
-						GameBookUtils.getInstance().saveGame(PlaygroundActivity.this._character);
-					} catch (Exception e) {
-						Log.e("GameBookSaver", "", e);
-					}
+					if(!fighting)
+					PlaygroundActivity.this._character.save();
 
 					dialog.dismiss();
 					PlaygroundActivity.this.finish();

@@ -251,9 +251,9 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 							}
 						});
 					}
-					if(log.getChildCount() == 0) {
-						addResultToLog(log, getContext().getString(R.string.dead), getContext(), R.color.title_color, R.style.title);
-					}
+//					if(log.getChildCount() == 0) {
+//						addResultToLog(log, getContext().getString(R.string.dead), getContext(), R.color.title_color, R.style.title);
+//					}
 					if(enemy.isDefeated() || _character.isDefeated()) {
 						final ScrollView sc = (ScrollView) rowView.findViewById(R.id.e_battleLogScrollView);
 						sc.post(new Runnable() {            

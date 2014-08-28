@@ -1,7 +1,10 @@
 package com.nex.gamebook.entity;
 
+import android.util.Log;
+
 import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.playground.BattleLogCallback;
+import com.nex.gamebook.playground.PlaygroundActivity;
 
 public class Player extends Character {
 
@@ -104,7 +107,7 @@ public class Player extends Character {
 		long requiredExperience = ExperienceMap.getInstance()
 				.getExperienceByLevel(getLevel());
 		callback.logExperience(exp);
-		while (getExperience() > requiredExperience) {
+		while (getExperience() >= requiredExperience) {
 			setLevel(getLevel() + 1);
 			requiredExperience = ExperienceMap.getInstance()
 					.getExperienceByLevel(getLevel());
@@ -121,5 +124,12 @@ public class Player extends Character {
 	@Override
 	public boolean isCriticalChance() {
 		return isCriticalChance(Stats.TOTAL_SKILL_FOR_CALC + getLevel());
+	}
+	public void save() {
+		try {
+			GameBookUtils.getInstance().saveGame(this);
+		} catch (Exception e) {
+			Log.e("SaveGame", "", e);
+		}
 	}
 }

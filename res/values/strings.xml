@@ -75,7 +75,8 @@
     <string name="previous">Previous</string>
     <string name="log">Log</string>
     <string name="close_book">Zavřít knihu</string>
-    <string name="close_book_description">Pokud bojujete přijdete tím o aktualní stav boje.\nOpravdu chcete zavřít knihu?</string>
+    <string name="close_book_when_fighting_description">Právě bojujete. \nOpravdu chcete zavřít knihu?</string>
+    <string name="close_book_description">Před zavřením knihy bude hra uložena. \nChcete pokračovat?</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="confirm">Potvrdit</string>

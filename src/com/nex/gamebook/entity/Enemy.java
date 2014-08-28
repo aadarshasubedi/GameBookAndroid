@@ -38,7 +38,7 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	private boolean affectPlayer;
 	private double xpcoeff = DEFAULT_COEFF;
 	private EnemyLevel enemyLevel;
-
+	private transient SpecialSkill specialSkill;
 	public Enemy() {
 	}
 
@@ -101,10 +101,12 @@ public class Enemy extends com.nex.gamebook.entity.Character {
 	public SpecialSkill getSpecialSkill() {
 		return getSpecialSkill(getSkillName());
 	}
-
 	@Override
 	public SpecialSkill getSpecialSkill(String skillName) {
-		return SpecialSkillsMap.get(skillName);
+		if(specialSkill == null) {
+			specialSkill =  SpecialSkillsMap.get(skillName);
+		}
+		return specialSkill;
 	}
 
 	public double getXpcoeff() {

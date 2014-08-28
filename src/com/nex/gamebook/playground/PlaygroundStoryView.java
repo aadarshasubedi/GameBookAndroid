@@ -232,6 +232,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		if (!section.isEnemiesAlreadyKilled() && section.isLuckPossible()) {
 			section.tryApplyLuckForBattle(_character);
 		}
+		_character.save();
 		if (section.isHasLuck()) {
 			if (section.isLuckDefeatEnemies()) {
 				section.setEnemiesAlreadyKilled(true);
@@ -239,6 +240,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			PlaygroundActivity activity = getPlayground();
 			activity.changeToStory(section);
 		} else {
+			
 			PlaygroundActivity activity = getPlayground();
 			activity.changeToBattle(section);
 		}
@@ -348,7 +350,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 				_character.addVisitedSection();
 			}
 			this.section.setVisited(true);
-			this.section.setHasLuck(false);
+			this.section.canTryLuck();
 			_character.addSection();
 			option.setDisabled(option.isDisableWhenSelected());
 			int sectionId = _character.getPosition();
