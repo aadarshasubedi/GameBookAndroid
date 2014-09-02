@@ -2,8 +2,8 @@ package com.nex.gamebook;
 
 import java.util.Map;
 
-import com.nex.gamebook.entity.ExperienceMap;
-import com.nex.gamebook.entity.Bonus.StatType;
+import com.nex.gamebook.game.ExperienceMap;
+import com.nex.gamebook.game.Bonus.StatType;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

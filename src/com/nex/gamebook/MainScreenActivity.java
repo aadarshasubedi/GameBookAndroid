@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.util.GameBookUtils;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

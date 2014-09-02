@@ -1,4 +1,4 @@
-package com.nex.gamebook.entity.io;
+package com.nex.gamebook.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,12 +23,13 @@ import android.content.SharedPreferences.Editor;
 import android.os.Environment;
 import android.util.Log;
 
-import com.nex.gamebook.entity.Bonus.StatType;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.Score;
-import com.nex.gamebook.entity.SerializationMetadata;
-import com.nex.gamebook.entity.Stats;
-import com.nex.gamebook.entity.Story;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.Score;
+import com.nex.gamebook.game.SerializationMetadata;
+import com.nex.gamebook.game.Stats;
+import com.nex.gamebook.game.Story;
+import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -170,9 +171,10 @@ public class GameBookUtils {
 		file.createNewFile();
 		metaFile.createNewFile();
 		saveMetada(character, metaFile, fileName);
+		SaveGameState state = character.createSaveGameState();
 		FileOutputStream fos = new FileOutputStream(file);
 		XStream xStream = createXStream();
-		xStream.toXML(character, fos);
+		xStream.toXML(state, fos);
 		fos.close();
 	}
 
@@ -192,10 +194,16 @@ public class GameBookUtils {
 		XStream stream = createXStream();
 		if(metaFolder!=null && metaFolder.list()!=null)
 		for(String metaFile:metaFolder.list()) {
-			ls.add((SerializationMetadata) stream.fromXML(new File(metaFolder.getAbsoluteFile() + File.separator + metaFile)));
+			ls.add(loadSingleMetadata(stream, new File(metaFolder.getAbsoluteFile() + File.separator + metaFile)));
 		}
 		return ls;
 	}
+	public SerializationMetadata loadSingleMetadata(XStream stream, File file) {
+		SerializationMetadata m = (SerializationMetadata) stream.fromXML(file);
+		m.setMetaFile(file.getAbsolutePath());
+		return m;
+	}
+	
 	public Score loadScore(String filename) throws Exception {
 		File file = getScoreFolder("", filename, false);
 		FileInputStream fis = new FileInputStream(file);
@@ -205,14 +213,17 @@ public class GameBookUtils {
 		fis.close();
 		return simpleClass;
 	}
-	public Player loadCharacter(String filename) throws Exception {
-		File file = getSavesFolder("", filename, false);
+	public Player loadCharacter(SerializationMetadata metadata) throws Exception {
+		File file = getSavesFolder("", metadata.getFile(), false);
 		FileInputStream fis = new FileInputStream(file);
+		StoryXmlParser parser = new StoryXmlParser(context);
 		XStream xStream = createXStream();
-		Player simpleClass = (Player) xStream.fromXML(fis);
-		loadProperties(simpleClass.getStory());
+		SaveGameState simpleClass = (SaveGameState) xStream.fromXML(fis);
+		Story story = parser.loadStory(metadata.getStory(), true);
+		Player pl = story.getCharacter(metadata.getCharacter());
+		pl.updateSavedGameStates(simpleClass);
 		fis.close();
-		return simpleClass;
+		return pl;
 	}
 
 	private void saveMetada(Player character, File metaFile, String saveFile) throws Exception {
@@ -246,7 +257,7 @@ public class GameBookUtils {
 		return type + firstPart + secondPart;
 	}
 
-	private XStream createXStream() {
+	public XStream createXStream() {
 		XStream xstream = new XStream(new DomDriver());
 		return xstream;
 	}

@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.Story;
 import com.nex.gamebook.fragment.FragmentTab;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class CharacterSelectionActivity extends Activity {

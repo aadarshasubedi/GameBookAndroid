@@ -1,11 +1,11 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.util.Properties;
 
 import android.util.Log;
 
-import com.nex.gamebook.entity.Bonus.StatType;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class Score {
 	private Stats stats;

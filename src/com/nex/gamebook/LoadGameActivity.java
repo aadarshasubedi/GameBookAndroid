@@ -24,13 +24,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.SerializationMetadata;
-import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.SerializationMetadata;
+import com.nex.gamebook.game.Story;
 import com.nex.gamebook.playground.PlaygroundActivity;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.util.DialogBuilder;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class LoadGameActivity extends Activity {
 	private List<SerializationMetadata> keys;
@@ -57,7 +57,7 @@ public class LoadGameActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final SerializationMetadata saveGame = keys.get(position);
 //			Set<String> values = savedGames.get(fileName);
-			final String fileName = saveGame.getFile();
+//			final String fileName = saveGame.getFile();
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.list_item, parent, false);
@@ -111,7 +111,7 @@ public class LoadGameActivity extends Activity {
 					public void load() {
 						Intent intent = new Intent(LoadGameActivity.this, PlaygroundActivity.class);
 						Bundle bundle = new Bundle();
-						bundle.putString("load_game", fileName);
+						bundle.putString("metadata", saveGame.getMetaFile());
 						bundle.putBoolean("load", true);
 						intent.putExtras(bundle);
 						startActivity(intent);

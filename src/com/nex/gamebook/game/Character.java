@@ -1,4 +1,4 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -13,8 +13,8 @@ import java.util.Set;
 import android.util.Log;
 
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.entity.Bonus.StatType;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.util.GameBookUtils;
 
 public abstract class Character implements Serializable, Mergable {
 	private static final long serialVersionUID = 214922718575334896L;
@@ -42,6 +42,7 @@ public abstract class Character implements Serializable, Mergable {
 		this.currentStats = new Stats(this.stats);
 		this.skillName = character.skillName;
 		this.story = character.story;
+		this.specialSkills = new HashMap<>(character.getSpecialSkills());
 	}
 
 	public Stats getStats() {
@@ -298,4 +299,6 @@ public abstract class Character implements Serializable, Mergable {
 	public String getSkillName() {
 		return skillName;
 	}
+
+	public abstract void chooseBestSkill(Character c);
 }

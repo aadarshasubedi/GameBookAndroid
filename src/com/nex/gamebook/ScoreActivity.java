@@ -13,11 +13,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.Score;
-import com.nex.gamebook.entity.io.GameBookUtils;
 import com.nex.gamebook.fragment.GameBookFragment;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.Score;
 import com.nex.gamebook.playground.AbstractFragment;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class ScoreActivity extends Activity {
 

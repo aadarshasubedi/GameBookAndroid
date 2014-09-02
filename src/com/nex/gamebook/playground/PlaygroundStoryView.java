@@ -17,15 +17,15 @@ import android.widget.TextView;
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ScoreActivity;
-import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Bonus.BonusState;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.ResultCombat;
-import com.nex.gamebook.entity.Stats;
-import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.StorySection;
-import com.nex.gamebook.entity.StorySectionOption;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Bonus;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.ResultCombat;
+import com.nex.gamebook.game.Stats;
+import com.nex.gamebook.game.Story;
+import com.nex.gamebook.game.StorySection;
+import com.nex.gamebook.game.StorySectionOption;
+import com.nex.gamebook.game.Bonus.BonusState;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class PlaygroundStoryView extends AbstractFragment implements BattleLogCallback {
 	public PlaygroundStoryView(Context context) {
@@ -81,6 +81,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			if (!currentSection.getEnemies().isEmpty()) {
 				prepareFightSection(view.getContext(), layout, currentSection);
 			} else if (!currentSection.getBonuses().isEmpty()) {
+				if(!currentSection.isBonusesAlreadyGained())
 				prepareBonusSection(view.getContext(), view, currentSection, currentSection.getBonuses());
 				currentSection.setBonusesAlreadyGained(true);
 			}
@@ -107,8 +108,6 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 	private void prepareBonusSection(Context context, View view, StorySection section, List<Bonus> bonuses) {
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.bonuses);
 		for (Bonus bonus : bonuses) {
-			if (bonus.isAlreadyGained())
-				continue;
 			view.findViewById(R.id.modification).setVisibility(View.VISIBLE);
 			bonus.setAlreadyGained(true);
 			int realValue =_character.addBonus(bonus);
@@ -148,7 +147,9 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 	}
 
 	private void prepareBeforeFight(final Context context, LinearLayout layout, final StorySection section) {
+		if(!section.isBonusesBeforeFightAlreadyGained())
 		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.BEFORE_FIGHT));
+		section.setBonusesBeforeFightAlreadyGained(true);
 		prepareBonusSection(context, layout, section, section.getTemporalBonuses());
 		_character.holdCurrentStatsToTemporal();
 		if (!_character.isDefeated()) {
@@ -228,7 +229,6 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 	}
 
 	private void startFight(Context context, StorySection section) {
-		section.setBonusesAlreadyGained(false);
 		if (!section.isEnemiesAlreadyKilled() && section.isLuckPossible()) {
 			section.tryApplyLuckForBattle(_character);
 		}
@@ -250,9 +250,11 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		removeTemporalBonuses(context, layout);
 		prepareBonusSection(context, layout, section, _character.getConditions());
 		_character.getConditions().clear();
-		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.AFTER_FIGHT));
 		_character.getConditions().clear();
-		section.setBonusesAlreadyGained(true);
+		if(!section.isBonusesAfterFightAlreadyGained())
+		prepareBonusSection(context, layout, section, section.getBonuses(BonusState.AFTER_FIGHT));
+		section.setBonusesAfterFightAlreadyGained(true);
+		
 		setShowOptions(true);
 	}
 

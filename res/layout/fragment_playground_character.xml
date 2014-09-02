@@ -29,7 +29,8 @@
         android:layout_above="@+id/result_button"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tableLayout1"
-        android:padding="10dip" >
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip">
 
     </ViewFlipper>
 
@@ -41,6 +42,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/actualStats"
         android:background="@drawable/_background_corners"
+        android:layout_marginBottom="1dp"
         android:padding="10dp" >
 
         <LinearLayout
@@ -286,32 +288,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/attr_value_zero" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <Spinner
-                android:id="@+id/skills"
-                style="@style/spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:dropDownVerticalOffset="-50dp"
-                android:divider="@android:color/transparent"
-  				android:dividerHeight="5sp"
-                android:popupBackground="@drawable/spinner"
-                android:spinnerMode="dropdown" />
-
-            <TextView
-                style="@style/attribute"
-                android:id="@+id/skill_info"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical"
-                android:text="@string/skill_info" />
+                android:layout_height="wrap_content" >
+
+                <com.nex.gamebook.playground.SkillsSpinner
+                    android:id="@+id/skills"
+                    style="@style/spinner_skills"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="5sp"
+                    android:dropDownVerticalOffset="-50dp"
+                    android:popupBackground="@drawable/spinner"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
 
         </LinearLayout>
 

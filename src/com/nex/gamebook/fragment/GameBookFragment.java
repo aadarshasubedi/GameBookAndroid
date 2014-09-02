@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nex.gamebook.R;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.Stats;
-import com.nex.gamebook.entity.Bonus.StatType;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.Stats;
+import com.nex.gamebook.game.Bonus.StatType;
 
 public abstract class GameBookFragment {
 	private Context context;

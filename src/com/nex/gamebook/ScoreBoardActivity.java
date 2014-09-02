@@ -23,12 +23,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.Score;
-import com.nex.gamebook.entity.SerializationMetadata;
-import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.Score;
+import com.nex.gamebook.game.SerializationMetadata;
+import com.nex.gamebook.game.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class ScoreBoardActivity extends Activity {
 //	private Map<String, Set<String>> savedGames;

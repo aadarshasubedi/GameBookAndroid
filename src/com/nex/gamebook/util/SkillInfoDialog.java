@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.entity.Character;
+import com.nex.gamebook.game.Character;
 public class SkillInfoDialog {
 
 	private Dialog dialog;

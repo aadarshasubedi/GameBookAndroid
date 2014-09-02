@@ -1,7 +1,7 @@
 package com.nex.gamebook.playground;
 
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.ResultCombat;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.ResultCombat;
 
 public interface BattleLogCallback {
 	

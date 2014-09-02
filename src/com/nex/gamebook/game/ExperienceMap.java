@@ -1,13 +1,13 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
 
-import com.nex.gamebook.entity.Bonus.StatType;
-import com.nex.gamebook.entity.Enemy.EnemyLevel;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.Enemy.EnemyLevel;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class ExperienceMap {
 	public static final int MAX_LEVEL = 20;

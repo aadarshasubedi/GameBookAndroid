@@ -19,10 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.entity.Character;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.SpecialSkillsMap;
-import com.nex.gamebook.entity.Story;
+import com.nex.gamebook.game.Character;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.SpecialSkillsMap;
+import com.nex.gamebook.game.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.util.SkillInfoDialog;
 

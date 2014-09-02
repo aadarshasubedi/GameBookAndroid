@@ -1,8 +1,8 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.io.Serializable;
 
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class StorySectionOption implements Serializable, Mergable {
 

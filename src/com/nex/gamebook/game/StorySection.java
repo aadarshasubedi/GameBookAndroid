@@ -1,4 +1,4 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,8 +6,8 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.nex.gamebook.entity.Bonus.BonusState;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Bonus.BonusState;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class StorySection implements Serializable, Mergable {
 
@@ -29,6 +29,9 @@ public class StorySection implements Serializable, Mergable {
 	private boolean winSection;
 	private boolean alreadyHasLuck;
 	private boolean bonusesAlreadyGained;
+	private boolean bonusesBeforeFightAlreadyGained;
+	private boolean bonusesAfterFightAlreadyGained;
+
 	private boolean enemiesAlreadyKilled;
 	private boolean completed;
 	private boolean visited;
@@ -70,6 +73,22 @@ public class StorySection implements Serializable, Mergable {
 
 	public boolean isEnemiesAlreadyKilled() {
 		return enemiesAlreadyKilled;
+	}
+
+	public boolean isBonusesBeforeFightAlreadyGained() {
+		return bonusesBeforeFightAlreadyGained;
+	}
+
+	public void setBonusesBeforeFightAlreadyGained(boolean bonusesBeforeFightAlreadyGained) {
+		this.bonusesBeforeFightAlreadyGained = bonusesBeforeFightAlreadyGained;
+	}
+
+	public boolean isBonusesAfterFightAlreadyGained() {
+		return bonusesAfterFightAlreadyGained;
+	}
+
+	public void setBonusesAfterFightAlreadyGained(boolean bonusesAfterFightAlreadyGained) {
+		this.bonusesAfterFightAlreadyGained = bonusesAfterFightAlreadyGained;
 	}
 
 	public void setEnemiesAlreadyKilled(boolean enemiesAlreadyKilled) {
@@ -126,8 +145,8 @@ public class StorySection implements Serializable, Mergable {
 	}
 
 	public void tryApplyLuckForBattle(Player character) {
-		if(tryluck)
-		hasLuck = character.hasLuck();
+		if (tryluck)
+			hasLuck = character.hasLuck();
 		tryluck = false;
 	}
 
@@ -239,12 +258,11 @@ public class StorySection implements Serializable, Mergable {
 				continue;
 			}
 			enemy = new Enemy(enemy);
-			if (enemyKey.getEnemySkill().length() > 0)
-				enemy.setSkillName(enemyKey.getEnemySkill());
 			if (enemyKey.getXpcoeff() > 0d) {
 				enemy.setXpcoeff(enemyKey.getXpcoeff());
 			}
 			enemy.setLevel(getLevel());
+			enemy.createActiveSkills();
 			ExperienceMap.getInstance().updateStatsByLevel(enemy);
 			this.enemies.add(enemy);
 		}
@@ -338,8 +356,21 @@ public class StorySection implements Serializable, Mergable {
 	public void setFighting(boolean fighting) {
 		this.fighting = fighting;
 	}
+
 	public void canTryLuck() {
 		this.tryluck = true;
 		this.hasLuck = false;
+	}
+
+	public boolean isTryluck() {
+		return tryluck;
+	}
+
+	public void setTryluck(boolean tryluck) {
+		this.tryluck = tryluck;
+	}
+
+	public void setXpAlreadyGained(boolean xpAlreadyGained) {
+		this.xpAlreadyGained = xpAlreadyGained;
 	}
 }

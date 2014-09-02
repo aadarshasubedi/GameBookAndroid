@@ -3,8 +3,8 @@ package com.nex.gamebook.attack.special.skill;
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.combat.CombatProcess;
-import com.nex.gamebook.entity.Character;
-import com.nex.gamebook.entity.ResultCombat;
+import com.nex.gamebook.game.Character;
+import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public class QuickReaction extends SpecialAttackSkill {

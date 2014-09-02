@@ -1,10 +1,10 @@
 package com.nex.gamebook.attack.special;
 
 import com.nex.gamebook.R;
-import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Bonus.StatType;
-import com.nex.gamebook.entity.Character;
-import com.nex.gamebook.entity.ResultCombat;
+import com.nex.gamebook.game.Bonus;
+import com.nex.gamebook.game.Character;
+import com.nex.gamebook.game.ResultCombat;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public abstract class SpecialConditionalSkill extends SpecialAttackSkill {

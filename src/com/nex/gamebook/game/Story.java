@@ -1,4 +1,4 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class Story implements Serializable, Mergable {
 	private static final long serialVersionUID = -4844842607652119895L;

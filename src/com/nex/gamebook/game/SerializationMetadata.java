@@ -1,11 +1,11 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.io.Serializable;
-
 
 public class SerializationMetadata implements Serializable {
 	private static final long serialVersionUID = -1051986476253620055L;
 	private long time;
+	private String metaFile;
 	private String file;
 	private String story;
 	private int character;
@@ -49,6 +49,14 @@ public class SerializationMetadata implements Serializable {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	public String getMetaFile() {
+		return metaFile;
+	}
+
+	public void setMetaFile(String metaFile) {
+		this.metaFile = metaFile;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.util.HashMap;
 import java.util.Map;

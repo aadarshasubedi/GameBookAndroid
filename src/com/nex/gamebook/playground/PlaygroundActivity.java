@@ -1,5 +1,6 @@
 package com.nex.gamebook.playground;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +19,14 @@ import android.widget.ViewFlipper;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.StorySection;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.SerializationMetadata;
+import com.nex.gamebook.game.Story;
+import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.util.DialogBuilder;
+import com.nex.gamebook.util.GameBookUtils;
+import com.thoughtworks.xstream.XStream;
 
 public class PlaygroundActivity extends Activity {
 	private Player _character;
@@ -97,10 +100,13 @@ public class PlaygroundActivity extends Activity {
 	}
 
 	private Player load() throws Exception {
-
-		String loadedGame = getIntent().getExtras().getString("load_game");
-		if (loadedGame != null && !"".equals(loadedGame)) {
-			return GameBookUtils.getInstance().loadCharacter(loadedGame);
+		XStream stream = GameBookUtils.getInstance().createXStream();
+		String metadata = getIntent().getExtras().getString("metadata");
+		if(metadata!=null && metadata.length()>0) {
+			SerializationMetadata loadedGame = GameBookUtils.getInstance().loadSingleMetadata(stream, new File(metadata));
+			if (loadedGame != null) {
+				return GameBookUtils.getInstance().loadCharacter(loadedGame);
+			}
 		}
 		StoryXmlParser parser = new StoryXmlParser(this);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);

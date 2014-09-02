@@ -1,12 +1,12 @@
-package com.nex.gamebook.entity;
+package com.nex.gamebook.game;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import android.util.Log;
 
-import com.nex.gamebook.entity.Bonus.StatType;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class Stats implements Serializable {
 	private static final long serialVersionUID = 5967013219649795912L;
@@ -24,8 +24,8 @@ public class Stats implements Serializable {
 	private int attack;
 	private int damage = 1;
 	private int skillpower = 1;
-	private Player player;
-	private Stats holder;
+	private transient Player player;
+	private transient Stats holder;
 
 	public Stats() {
 	}

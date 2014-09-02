@@ -1,16 +1,16 @@
 package com.nex.gamebook.combat;
 
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.entity.Character;
-import com.nex.gamebook.entity.Enemy;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.ResultCombat;
+import com.nex.gamebook.game.Character;
+import com.nex.gamebook.game.Enemy;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public class CombatProcess {
 
 	private Enemy enemy;
-
+	int turn = 0;
 	public CombatProcess(Enemy enemy) {
 		super();
 		this.enemy = enemy;
@@ -45,30 +45,39 @@ public class CombatProcess {
 
 	public void fight(BattleLogCallback callback) {
 		Player player = (Player) callback.getCharacter();
-		int turn = 0;
+		
 		long experience = enemy.getXp(player.getLevel());
-		while (enemy.getCurrentStats().getHealth() > 0) {
-			callback.divide(++turn);
-			boolean enemyBegin = !player.hasLuck();
-			if (enemyBegin) {
-				if (!doSpecialAttack(enemy, player, callback)) {
-					doSpecialAttack(player, enemy, callback);
-				}
-			} else {
-				if (!doSpecialAttack(player, enemy, callback)) {
-					doSpecialAttack(enemy, player, callback);
-				}
+		callback.divide(++turn);
+		boolean enemyBegin = !player.hasLuck();
+		if (enemyBegin) {
+			if (!doSpecialAttack(enemy, player, callback)) {
+				doSpecialAttack(player, enemy, callback);
 			}
-			if (player.isDefeated()) {
-				experience = 0;
-				break;
+		} else {
+			if (!doSpecialAttack(player, enemy, callback)) {
+				doSpecialAttack(enemy, player, callback);
 			}
 		}
-		player.cleanActiveSkillsAfterFightEnd();
-		callback.fightEnd(experience);
+		if (player.isDefeated()) {
+			experience = 0;
+		}
+		if(enemy.isDefeated() || player.isDefeated()) {
+			player.cleanActiveSkillsAfterFightEnd();
+			callback.fightEnd(experience);
+		}
 	}
-
+	
+	private void choseSkillForAI(Character attacker, Character attacked) {
+		if(attacker instanceof Enemy) {
+			attacker.chooseBestSkill(attacked);
+		} else {
+			attacked.chooseBestSkill(attacker);
+		}
+	}
+	
 	private boolean doSpecialAttack(Character attacker, Character attacked, BattleLogCallback callback) {
+		choseSkillForAI(attacker, attacked);
+		SpecialSkill attackerSkill = attacker.getSpecialSkill();
 		SpecialSkill skill = attacked.getSpecialSkill();
 		if (skill != null && skill.isTriggerBeforeEnemyAttack()) {
 			skill.doAttack(attacked, attacker, callback, null);
@@ -76,7 +85,7 @@ public class CombatProcess {
 				return true;
 			}
 		}
-		SpecialSkill attackerSkill = attacker.getSpecialSkill();
+		
 		if (attackerSkill != null && attackerSkill.afterNormalAttack()) {
 			ResultCombat result = doNormalAttack(attacker, attacked);
 			callback.logAttack(result);

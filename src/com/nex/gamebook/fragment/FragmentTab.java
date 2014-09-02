@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.nex.gamebook.CharacterSkillsActivity;
 import com.nex.gamebook.R;
-import com.nex.gamebook.entity.Player;
+import com.nex.gamebook.game.Player;
 import com.nex.gamebook.playground.PlaygroundActivity;
 public class FragmentTab extends GameBookFragment {
 	Button button;

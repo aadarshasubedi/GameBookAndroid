@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nex.gamebook.entity.Story;
+import com.nex.gamebook.game.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class StorySelectionActivity extends Activity {

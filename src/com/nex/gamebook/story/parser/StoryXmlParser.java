@@ -21,18 +21,18 @@ import org.xml.sax.SAXException;
 import android.content.Context;
 import android.util.Log;
 
-import com.nex.gamebook.entity.Bonus;
-import com.nex.gamebook.entity.Bonus.BonusState;
-import com.nex.gamebook.entity.Bonus.StatType;
-import com.nex.gamebook.entity.Enemy;
-import com.nex.gamebook.entity.Enemy.EnemyLevel;
-import com.nex.gamebook.entity.EnemyAssign;
-import com.nex.gamebook.entity.Player;
-import com.nex.gamebook.entity.Stats;
-import com.nex.gamebook.entity.Story;
-import com.nex.gamebook.entity.StorySection;
-import com.nex.gamebook.entity.StorySectionOption;
-import com.nex.gamebook.entity.io.GameBookUtils;
+import com.nex.gamebook.game.Bonus;
+import com.nex.gamebook.game.Enemy;
+import com.nex.gamebook.game.EnemyAssign;
+import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.Stats;
+import com.nex.gamebook.game.Story;
+import com.nex.gamebook.game.StorySection;
+import com.nex.gamebook.game.StorySectionOption;
+import com.nex.gamebook.game.Bonus.BonusState;
+import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.Enemy.EnemyLevel;
+import com.nex.gamebook.util.GameBookUtils;
 
 public class StoryXmlParser {
 
@@ -86,7 +86,7 @@ public class StoryXmlParser {
 
 	private final String TYPE = "type";
 	private final String VALUE = "value";
-	private final String OVERRIDE_SKILL = "overrideSkill";
+//	private final String OVERRIDE_SKILL = "overrideSkill";
 	private final String OVERFLOWED = "overflowed";
 	private final String PERMANENT = "permanent";
 	
@@ -274,7 +274,7 @@ public class StoryXmlParser {
 		
 	}
 
-	private void putStats(com.nex.gamebook.entity.Character character, Node node) {
+	private void putStats(com.nex.gamebook.game.Character character, Node node) {
 		if (node.getNodeName().equals(HEALTH)) {
 			character.getStats().setHealth(
 					getInteger(node.getTextContent()));
@@ -327,7 +327,7 @@ public class StoryXmlParser {
 
 		StorySection section = new StorySection();
 		section.setStory(story);
-		int level = getIdentifier(element.getAttribute(LEVEL));
+		int level = getInteger(element.getAttribute(LEVEL));
 		if(level==0) {
 			level = 1;
 		}
@@ -392,7 +392,7 @@ public class StoryXmlParser {
 			Node n = optionsList.item(i);
 			if (n instanceof Element) {
 				Element enemyNode = (Element) n;
-				section.getEnemiesIds().add(new EnemyAssign(enemyNode.getAttribute(VALUE), enemyNode.getAttribute(OVERRIDE_SKILL), getDouble(enemyNode.getAttribute(XPCOEFF))));
+				section.getEnemiesIds().add(new EnemyAssign(enemyNode.getAttribute(VALUE), getDouble(enemyNode.getAttribute(XPCOEFF))));
 			}
 		}
 	}

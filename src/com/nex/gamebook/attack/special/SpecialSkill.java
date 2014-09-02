@@ -2,8 +2,8 @@ package com.nex.gamebook.attack.special;
 
 import java.io.Serializable;
 
-import com.nex.gamebook.entity.Character;
-import com.nex.gamebook.entity.ResultCombat;
+import com.nex.gamebook.game.Character;
+import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public interface SpecialSkill extends Serializable {
