@@ -65,6 +65,7 @@ public class StorySelectionActivity extends Activity {
 			
 //			imagerounding.bringToFront();
 			ImageView image = (ImageView) rowView.findViewById(R.id.story_image);
+			if(story.getBackground()>0)
 			image.setBackground(context.getResources().getDrawable(story.getBackground()));
 			Button button = (Button) storyInfo.findViewById(R.id.play_button);
 			button.setTag(story);

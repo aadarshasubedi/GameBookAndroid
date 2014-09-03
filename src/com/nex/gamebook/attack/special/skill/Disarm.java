@@ -61,4 +61,8 @@ public class Disarm extends SpecialConditionalSkill {
 		return true;
 	}
 
+	@Override
+	public boolean isTriggerBeforeEnemySpecialAttack() {
+		return true;
+	}
 }

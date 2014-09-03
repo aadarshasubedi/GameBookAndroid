@@ -127,9 +127,12 @@ public abstract class Character implements Serializable, Mergable {
 				if (total < 0) {
 					realValue = currentValue;
 					total = 0;
+				} else {
+					realValue = bonus.getValue();
 				}
 				setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), total);
 			}
+			if(bonus.getCoeff() > 0)
 			if(setedValue==0) {
 				realValue = 0;
 			} else if ((currentValue + realValue) != setedValue) {

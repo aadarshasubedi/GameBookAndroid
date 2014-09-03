@@ -94,13 +94,15 @@
     <string name="guide">Příručka</string>
     <string name="drawer_open">Otevřít</string>
     <string name="drawer_close">Schovat</string>
-
+    <string name="and">a</string>
+    <string name="or">nebo</string>
     <string name="special_skill_type">Typ</string>
     <string name="special_skill_aspect_power">Síla</string>
     <string name="special_skill_aspect_chance">Šance</string>
     <string name="special_skill_aspect_reflect">Odražení</string>
     <string name="special_skill_trigger">Spuštení</string>
     <string name="special_skill_trigger_normal">Před normálním útokem</string>
+    <string name="special_skill_trigger_before_skill">Před schopností nepřítele</string>
     <string name="special_skill_trigger_after">Po normálním útoku</string>
     <string name="special_skill_trigger_before_enemy">Před útokem nepřítele</string>
     <string name="special_skill_trigger_after_enemy">Po útoku nepřítele</string>

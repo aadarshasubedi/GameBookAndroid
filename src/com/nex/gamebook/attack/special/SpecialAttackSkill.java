@@ -61,7 +61,7 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 		List<Bonus> tattacks = applicationChar.getConditions();
 		Bonus b = applicationChar.findConditionById(conditionid);
 		if (b==null) {
-			b = createSpecialAttack(bonus.getCoeff()*-1, bonus.getValue(), bonus.getType());
+			b = createSpecialAttack(1, (bonus.getCoeff()*-1)*bonus.getValue(), bonus.getType());
 			b.setConditionId(conditionid);
 			tattacks.add(b);
 		} else {
@@ -142,5 +142,9 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 
 	public int getCountOfUsed() {
 		return cycles;
+	}
+	@Override
+	public boolean isTriggerBeforeEnemySpecialAttack() {
+		return false;
 	}
 }

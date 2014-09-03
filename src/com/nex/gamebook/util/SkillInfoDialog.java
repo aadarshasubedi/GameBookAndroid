@@ -14,13 +14,13 @@ import com.nex.gamebook.game.Character;
 public class SkillInfoDialog {
 
 	private Dialog dialog;
-
+	private Context ctx;
 	public SkillInfoDialog(Context context, Character applicator) {
 		this(context, applicator, applicator.getSpecialSkill());
-		
 	}
 	public SkillInfoDialog(Context context, Character applicator, SpecialSkill skill) {
 		super();
+		this.ctx = context;
 		dialog = new Dialog(context);
 //		dialog.
 		//View inflatedView = dialog.getLayoutInflater().inflate(R.layout.skill_info_layout, context);
@@ -74,6 +74,11 @@ public class SkillInfoDialog {
 			view.setText(R.string.special_skill_trigger_after);
 		} else{
 			view.setText(R.string.special_skill_trigger_normal);
+		}
+		if(skill.isTriggerBeforeEnemySpecialAttack()) {
+			String t = String.valueOf(view.getText());
+			t += " " + ctx.getString(R.string.or) + " " + ctx.getString(R.string.special_skill_trigger_before_skill);
+			view.setText(t);
 		}
 		view = (TextView) inflatedView.findViewById(R.id.attempts);
 		view.setText(String.valueOf(skill.attemptsPerFight()));

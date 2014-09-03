@@ -19,7 +19,7 @@ public class QuickReaction extends SpecialAttackSkill {
 	public boolean doAttackOnce(Character attacker, Character attacked,
 			BattleLogCallback callback, ResultCombat resultCombat) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
-		ResultCombat result = combat.doNormalAttack(attacker, attacked, getRealValue(attacker)/100f);
+		ResultCombat result = combat.doNormalAttack(attacker, attacked, getRealValue(attacker)/100f, false);
 		result.setSpecialAttack(this);
 		callback.logAttack(result);
 		return false;
@@ -93,21 +93,19 @@ public class QuickReaction extends SpecialAttackSkill {
 	public int attemptsPerFight() {
 		return 1;
 	}
+	
 	@Override
 	public List<String> getBestAgainstSkill() {
 		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.REFLECT_DAMAGE);
-		s.add(SpecialSkillsMap.GREATER_HEAL);
-		s.add(SpecialSkillsMap.LIFE_LEECH);
-		s.add(SpecialSkillsMap.HEAL);
+		s.add(SpecialSkillsMap.DISARM);
 		return s;
 	}
 	
 	@Override
 	public List<String> getBestInterceptSkills() {
 		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.RAGE);
 		s.add(SpecialSkillsMap.CRUSH_STRIKE);
+		s.add(SpecialSkillsMap.RAGE);
 		return s;
 	}
 }

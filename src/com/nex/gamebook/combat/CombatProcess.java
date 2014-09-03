@@ -16,9 +16,13 @@ public class CombatProcess {
 		this.enemy = enemy;
 	}
 
-	public ResultCombat doNormalAttack(Character attacker, Character attacked, float modification) {
+//	public ResultCombat doNormalAttack(Character attacker, Character attacked, float modification, boolean allowLuck) {
+//		doNormalAttack(attacker, attacked, modification, true);
+//	}
+	public ResultCombat doNormalAttack(Character attacker, Character attacked, float modification, boolean allowLuck) {
 		ResultCombat resultCombat = new ResultCombat();
 		resultCombat.setType(attacker.getType());
+		if(allowLuck)
 		resultCombat.setLuck(attacked.hasLuck());
 		if (!resultCombat.isLuck()) {
 			resultCombat.setCritical(attacker.isCriticalChance());
@@ -38,9 +42,9 @@ public class CombatProcess {
 		resultCombat.setEnemyName(enemy.getName());
 		return resultCombat;
 	}
-
-	public ResultCombat doNormalAttack(Character attacker, Character attacked) {
-		return doNormalAttack(attacker, attacked, 1);
+	
+	public ResultCombat doNormalAttack(Character attacker, Character attacked, boolean allowLuck) {
+		return doNormalAttack(attacker, attacked, 1, allowLuck);
 	}
 
 	public void fight(BattleLogCallback callback) {
@@ -80,15 +84,21 @@ public class CombatProcess {
 		choseSkillForAI(attacker, attacked);
 		SpecialSkill attackerSkill = attacker.getSpecialSkill();
 		SpecialSkill skill = attacked.getSpecialSkill();
-		if (skill != null && skill.isTriggerBeforeEnemyAttack()) {
+		boolean usedBeforeSkill = false;
+		boolean doAttack = true;
+		if (skill != null && (skill.isTriggerBeforeEnemyAttack() || skill.isTriggerBeforeEnemySpecialAttack())) {
+			if(attackerSkill!=null && attackerSkill.isTriggerBeforeEnemySpecialAttack() && !skill.isTriggerBeforeEnemySpecialAttack()) {
+				doAttack = attackerSkill.doAttack(attacker, attacked, callback, null);
+				usedBeforeSkill = true;
+			}
 			skill.doAttack(attacked, attacker, callback, null);
 			if (attacker.isDefeated()) {
 				return true;
 			}
 		}
 		
-		if (attackerSkill != null && attackerSkill.afterNormalAttack()) {
-			ResultCombat result = doNormalAttack(attacker, attacked);
+		if (!usedBeforeSkill && attackerSkill != null && attackerSkill.afterNormalAttack()) {
+			ResultCombat result = doNormalAttack(attacker, attacked, true);
 			callback.logAttack(result);
 			if (skill != null && skill.isTriggerAfterEnemyAttack()) {
 				skill.doAttack(attacked, attacker, callback, result);
@@ -98,12 +108,12 @@ public class CombatProcess {
 			}
 			attackerSkill.doAttack(attacker, attacked, callback, result);
 		} else {
-			boolean doAttack = true;
-			if (attackerSkill != null && !attackerSkill.isTriggerAfterEnemyAttack() && !attackerSkill.isTriggerBeforeEnemyAttack()) {
+			
+			if (!usedBeforeSkill && attackerSkill != null && !attackerSkill.isTriggerAfterEnemyAttack() && !attackerSkill.isTriggerBeforeEnemyAttack()) {
 				doAttack = attackerSkill.doAttack(attacker, attacked, callback, null);
 			}
 			if (doAttack) {
-				ResultCombat result = doNormalAttack(attacker, attacked);
+				ResultCombat result = doNormalAttack(attacker, attacked, true);
 				callback.logAttack(result);
 				if (skill != null && skill.isTriggerAfterEnemyAttack()) {
 					skill.doAttack(attacked, attacker, callback, result);

@@ -91,6 +91,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 				prepareChooseSection(view.getContext(), layout, currentSection);
 			}
 		}
+		if(currentSection.getEnemies().isEmpty() || !currentSection.isEnemiesAlreadyKilled())
 		if(currentSection.isResetAttributes()) {
 			resetAttributes(view, 0, R.string.reset_all);
 		} else if(currentSection.isResetPositiveAttributes()) {

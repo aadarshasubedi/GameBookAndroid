@@ -29,6 +29,8 @@ public interface SpecialSkill extends Serializable {
 	boolean isPermanent();
 	boolean isTriggerBeforeEnemyAttack();
 	boolean isTriggerAfterEnemyAttack();
+	boolean isTriggerBeforeEnemySpecialAttack();
+	
 	int getAspectId();
 	boolean showPercentage();
 	/**
@@ -53,7 +55,15 @@ public interface SpecialSkill extends Serializable {
 	boolean canUse();
 	StatType getType();
 	boolean isDebuff();
+	/**
+	 * This list is used by bosses and minions
+	 * @return
+	 */
 	List<String> getBestAgainstSkill();
+	/**
+	 * This list is used only by bosses
+	 * @return
+	 */
 	List<String> getBestInterceptSkills();
 	int getCountOfUsed();
 }

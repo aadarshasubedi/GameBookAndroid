@@ -55,12 +55,6 @@ public class GreaterHeal extends Heal {
 	}
 
 	@Override
-	public boolean doAttack(Character attacker, Character attacked,
-			BattleLogCallback callback, ResultCombat resultCombat) {
-		return doAttackOnce(attacker, attacked, callback, resultCombat);
-	}
-
-	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked,
 			BattleLogCallback callback, ResultCombat cm) {
 		return super.doAttackOnce(attacker, attacked, callback, cm);

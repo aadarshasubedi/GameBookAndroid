@@ -28,7 +28,7 @@ public class TwiceAttack extends SpecialAttackSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat rm) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
-		ResultCombat result = combat.doNormalAttack(attacker, attacked);
+		ResultCombat result = combat.doNormalAttack(attacker, attacked, false);
 		result.setSpecialAttack(this);
 		callback.logAttack(result);
 		return true;
@@ -83,5 +83,17 @@ public class TwiceAttack extends SpecialAttackSkill {
 	public int attemptsPerFight() {
 		return 1;
 	}
-
+	@Override
+	public List<String> getBestAgainstSkill() {
+		List<String> s = new ArrayList<>();
+		s.add(SpecialSkillsMap.DISARM);
+		return s;
+	}
+	@Override
+	public List<String> getBestInterceptSkills() {
+		List<String> s = new ArrayList<>();
+		s.add(SpecialSkillsMap.CRUSH_STRIKE);
+		s.add(SpecialSkillsMap.RAGE);
+		return s;
+	}
 }

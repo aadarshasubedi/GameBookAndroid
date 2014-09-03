@@ -20,13 +20,14 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getRealValue(attacker), getType());
 		int value = applicationChar.getCurrentStats().getValueByBonusType(getType());
 		int res = value - bonus.getValue();
-		if (res <= getMinAttributeForStopAttack()) {
+		if (isCondition() && res <= getMinAttributeForStopAttack()) {
 			int bonusValue = value - getMinAttributeForStopAttack();
 			if (bonusValue < 0)
 				bonusValue = 0;
 			bonus.setValue(bonusValue);
 		}
-		applicationChar.addBonus(bonus);
+		int realValue = applicationChar.addBonus(bonus);
+		bonus.setValue(realValue);
 		if (!isPermanent()) {
 			addTemporalBonus(applicationChar, bonus, createConditionId(attacker));
 		}

@@ -127,4 +127,5 @@ public class Enemy extends com.nex.gamebook.game.Character {
 	public void chooseBestSkill(Character c, boolean enemyBegin) {
 		setSkillName(AISpecialSkillsUsage.getBestSpecialSkill((Player) c, this, enemyBegin));
 	}
+
 }

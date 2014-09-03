@@ -69,12 +69,19 @@ public class Rage extends SpecialConditionalSkill {
 	public boolean inFight() {
 		return false;
 	}
-	
+
 	@Override
 	public List<String> getBestInterceptSkills() {
 		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.REFLECT_DAMAGE);
 		s.add(SpecialSkillsMap.CRUSH_STRIKE);
+		return s;
+	}
+	
+	@Override
+	public List<String> getBestAgainstSkill() {
+		List<String> s = new ArrayList<>();
+		s.add(SpecialSkillsMap.QUICK_REACTION);
+		s.add(SpecialSkillsMap.REFLECT_DAMAGE);
 		return s;
 	}
 	
