@@ -1,9 +1,15 @@
 package com.nex.gamebook.attack.special.skill;
 
+import static com.nex.gamebook.game.SpecialSkillsMap.QUICK_REACTION;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
+import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.game.Bonus.StatType;
-
+import static com.nex.gamebook.game.SpecialSkillsMap.*;
 public class Disarm extends SpecialConditionalSkill {
 	private static final long serialVersionUID = -1804300495308316474L;
 	
@@ -55,10 +61,4 @@ public class Disarm extends SpecialConditionalSkill {
 		return true;
 	}
 
-	@Override
-	public boolean isTriggerAfterEnemyAttack() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 }

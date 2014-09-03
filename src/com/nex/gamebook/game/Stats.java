@@ -201,4 +201,8 @@ public class Stats implements Serializable {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+
+	public Integer getTotalPureDamage() {
+		return attack * damage;
+	}
 }

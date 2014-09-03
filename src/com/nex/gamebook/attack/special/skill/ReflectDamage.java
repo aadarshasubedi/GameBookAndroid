@@ -1,9 +1,13 @@
 package com.nex.gamebook.attack.special.skill;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
+import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
 
@@ -16,10 +20,20 @@ public class ReflectDamage extends SpecialAttackSkill {
 		int value = resultCombat.getDamage();
 		int percentage = getRealValue(attacker);
 		value = getResultValuePercentage(value, percentage);
-		attacked.addBonus(createSpecialAttack(-1, value, StatType.HEALTH));
-		ResultCombat result = createBasicResult(value, attacker.getType());
+		attacked.addBonus(createSpecialAttack(-1, value, getType()));
+		ResultCombat result = createBasicResult(value, attacker.getType(), resolveEnemy(attacker, attacked));
 		result.setEnemyName(resolveEnemy(attacker, attacked).getName());
 		callback.logAttack(result);
+		return true;
+	}
+
+	@Override
+	public StatType getType() {
+		return StatType.HEALTH;
+	}
+
+	@Override
+	public boolean isDebuff() {
 		return true;
 	}
 
@@ -42,6 +56,7 @@ public class ReflectDamage extends SpecialAttackSkill {
 	public int getTypeId() {
 		return R.string.special_skill_type_attack;
 	}
+
 	@Override
 	public int getValue(Character character) {
 		return calcDynamicValue(30, 1.4f, character.getCurrentStats().getSpecialSkillPower());
@@ -51,7 +66,7 @@ public class ReflectDamage extends SpecialAttackSkill {
 	public int getValueWhenLuck(Character character) {
 		return (int) (getValue(character) * 1.5);
 	}
-	
+
 	@Override
 	public boolean isPermanent() {
 		return true;
@@ -66,10 +81,12 @@ public class ReflectDamage extends SpecialAttackSkill {
 	public boolean isTriggerAfterEnemyAttack() {
 		return true;
 	}
+
 	@Override
 	public boolean showPercentage() {
 		return true;
 	}
+
 	@Override
 	public int getAspectId() {
 		return R.string.special_skill_aspect_reflect;

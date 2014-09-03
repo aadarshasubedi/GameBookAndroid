@@ -1,6 +1,8 @@
 package com.nex.gamebook.game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.util.Log;
@@ -19,7 +21,20 @@ import com.nex.gamebook.attack.special.skill.ReflectDamage;
 import com.nex.gamebook.attack.special.skill.TwiceAttack;
 
 public class SpecialSkillsMap {
-
+	public static String NO_SKILL = "no_skill";
+	
+	public static String TWICE_ATTACK = "twiceAttack";
+	public static String CRUSH_STRIKE="crushStrike";
+	public static String DISARM="disarm";
+	public static String RAGE="rage";
+	public static String BLEEDING="bleeding";
+	public static String REFLECT_DAMAGE="reflectDamage";
+	public static String LETHAL_STRIKE="lethalStrike";
+	public static String LIFE_LEECH="lifeLeech";
+	public static String QUICK_REACTION="quickReaction";
+	public static String HEAL="heal";
+	public static String GREATER_HEAL="greaterHeal";
+	
 //	private Map<String, SpecialSkill> playerAttacks = new HashMap<>();
 	private Map<String, Class<? extends SpecialSkill>> skills = new HashMap<>();
 	private static SpecialSkillsMap instance;
@@ -29,17 +44,17 @@ public class SpecialSkillsMap {
 	}
 
 	private void init() {
-		skills.put("twiceAttack", TwiceAttack.class);
-		skills.put("crushStrike", CrushStrike.class);
-		skills.put("disarm", Disarm.class);
-		skills.put("rage", Rage.class);
-		skills.put("bleeding", Bleeding.class);
-		skills.put("reflectDamage", ReflectDamage.class);
-		skills.put("lethalStrike", LethalStrike.class);
-		skills.put("lifeLeech", LifeLeech.class);
-		skills.put("quickReaction", QuickReaction.class);
-		skills.put("heal", Heal.class);
-		skills.put("greaterHeal", GreaterHeal.class);
+		skills.put(TWICE_ATTACK, TwiceAttack.class);
+		skills.put(CRUSH_STRIKE, CrushStrike.class);
+		skills.put(DISARM, Disarm.class);
+		skills.put(RAGE, Rage.class);
+		skills.put(BLEEDING, Bleeding.class);
+		skills.put(REFLECT_DAMAGE, ReflectDamage.class);
+		skills.put(LETHAL_STRIKE, LethalStrike.class);
+		skills.put(LIFE_LEECH, LifeLeech.class);
+		skills.put(QUICK_REACTION, QuickReaction.class);
+		skills.put(HEAL, Heal.class);
+		skills.put(GREATER_HEAL, GreaterHeal.class);
 	}
 
 	public static Map<String, Class<? extends SpecialSkill>> getSkills() {
@@ -71,5 +86,13 @@ public class SpecialSkillsMap {
 			}
 		}
 		return null;
+	}
+
+	public static List<SpecialSkill> getSkills(List<String> names) {
+		List<SpecialSkill> s = new ArrayList<SpecialSkill>();
+		for(String n:names) {
+			s.add(get(n));
+		}
+		return s;
 	}
 }

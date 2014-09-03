@@ -1,13 +1,16 @@
 package com.nex.gamebook.attack.special.skill;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.game.Bonus;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.playground.BattleLogCallback;
-
 public class LifeLeech extends SpecialAttackSkill {
 
 	private static final long serialVersionUID = -7676824496024693983L;
@@ -20,7 +23,7 @@ public class LifeLeech extends SpecialAttackSkill {
 		Bonus bonus = createSpecialAttack(1, leech, StatType.HEALTH);
 		bonus.setCondition(false);
 		bonus.setOverflowed(false);
-		ResultCombat rs = createBasicResult(leech, attacker.getType());
+		ResultCombat rs = createBasicResult(leech, attacker.getType(), resolveEnemy(attacker, attacked));
 		rs.setDamage(attacker.addBonus(bonus));
 		callback.logAttack(rs);
 		return false;
@@ -85,4 +88,9 @@ public class LifeLeech extends SpecialAttackSkill {
 	public boolean afterNormalAttack() {
 		return true;
 	}
+	@Override
+	public StatType getType() {
+		return StatType.HEALTH;
+	}
+
 }

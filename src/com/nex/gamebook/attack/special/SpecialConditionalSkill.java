@@ -1,5 +1,8 @@
 package com.nex.gamebook.attack.special;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.game.Bonus;
 import com.nex.gamebook.game.Character;
@@ -12,14 +15,10 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked,
-			BattleLogCallback callback, ResultCombat cm) {
-		Character applicationChar = resolveCharacterForApplication(attacked,
-				attacker);
-		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1,
-				getRealValue(attacker), getType());
-		int value = applicationChar.getCurrentStats().getValueByBonusType(
-				getType());
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+		Character applicationChar = resolveCharacterForApplication(attacked, attacker);
+		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getRealValue(attacker), getType());
+		int value = applicationChar.getCurrentStats().getValueByBonusType(getType());
 		int res = value - bonus.getValue();
 		if (res <= getMinAttributeForStopAttack()) {
 			int bonusValue = value - getMinAttributeForStopAttack();
@@ -29,26 +28,27 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 		}
 		applicationChar.addBonus(bonus);
 		if (!isPermanent()) {
-			addTemporalBonus(applicationChar, bonus,
-					createConditionId(attacker));
+			addTemporalBonus(applicationChar, bonus, createConditionId(attacker));
 		}
-		ResultCombat result = createBasicResult(bonus.getValue(),
-				attacker.getType());
-		result.setEnemyName(resolveEnemy(attacker, attacked).getName());
+		ResultCombat result = createBasicResult(bonus.getValue(), attacker.getType(), resolveEnemy(attacker, attacked));
 		callback.logAttack(result);
 		return true;
 	}
 
-	public abstract StatType getType();
+	// public abstract StatType getType();
 
 	public abstract boolean isCondition();
+
+	@Override
+	public boolean isDebuff() {
+		return isCondition();
+	}
 
 	public int getMinAttributeForStopAttack() {
 		return -1;
 	}
 
-	public Character resolveCharacterForApplication(Character attacked,
-			Character attacker) {
+	public Character resolveCharacterForApplication(Character attacked, Character attacker) {
 		if (isCondition()) {
 			return attacked;
 		}
@@ -78,4 +78,5 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 	public boolean afterNormalAttack() {
 		return false;
 	}
+
 }

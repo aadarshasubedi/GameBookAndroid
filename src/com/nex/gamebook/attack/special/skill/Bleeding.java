@@ -1,12 +1,18 @@
 package com.nex.gamebook.attack.special.skill;
 
+import static com.nex.gamebook.game.SpecialSkillsMap.GREATER_HEAL;
+import static com.nex.gamebook.game.SpecialSkillsMap.HEAL;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.playground.BattleLogCallback;
-
 public class Bleeding extends SpecialConditionalSkill {
 	
 	private static final long serialVersionUID = 2040871476810819647L;
@@ -71,4 +77,5 @@ public class Bleeding extends SpecialConditionalSkill {
 	public boolean isTriggerAfterEnemyAttack() {
 		return false;
 	}
+
 }

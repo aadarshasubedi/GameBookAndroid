@@ -1,15 +1,29 @@
 package com.nex.gamebook.attack.special.skill;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.combat.CombatProcess;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
+import com.nex.gamebook.game.SpecialSkillsMap;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public class TwiceAttack extends SpecialAttackSkill {
 	private static final long serialVersionUID = -1804300495308316474L;
 
+	@Override
+	public StatType getType() {
+		return StatType.HEALTH;
+	}
+
+	@Override
+	public boolean isDebuff() {
+		return true;
+	}
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat rm) {
@@ -19,7 +33,7 @@ public class TwiceAttack extends SpecialAttackSkill {
 		callback.logAttack(result);
 		return true;
 	}
-	
+
 	@Override
 	public int getTextId() {
 		return R.string.damage;
@@ -44,26 +58,30 @@ public class TwiceAttack extends SpecialAttackSkill {
 	public boolean isPermanent() {
 		return true;
 	}
-	
+
 	@Override
 	public int getValue(Character character) {
 		return -1;
 	}
+
 	@Override
 	public int getValueWhenLuck(Character character) {
 		return getValue(character);
 	}
+
 	@Override
 	public boolean showPercentage() {
 		return false;
 	}
+
 	@Override
 	public int getAspectId() {
 		return R.string.special_skill_aspect_power;
 	}
-	
+
 	@Override
 	public int attemptsPerFight() {
 		return 1;
 	}
+
 }

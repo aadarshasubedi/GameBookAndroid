@@ -111,7 +111,9 @@ public abstract class Character implements Serializable, Mergable {
 			int setedValue = 0;
 			if (bonus.isBase()) {
 				GameBookUtils.setStatByType(getStats(), bonus.getType(), defaultValue + bonus.getValue());
+				int difference = currentValue - defaultValue;
 				defaultValue = GameBookUtils.getStatByType(getStats(), bonus.getType());
+				defaultValue += difference;
 			} 
 			if (bonus.getCoeff() > 0 && total > defaultValue && !bonus.isOverflowed()) {
 				if (total > defaultValue && currentValue < defaultValue) {
@@ -299,6 +301,8 @@ public abstract class Character implements Serializable, Mergable {
 	public String getSkillName() {
 		return skillName;
 	}
-
-	public abstract void chooseBestSkill(Character c);
+	public Set<SpecialSkill> getActiveSkills() {
+		return activeSkills;
+	}
+	public abstract void chooseBestSkill(Character c, boolean enemyBegin);
 }

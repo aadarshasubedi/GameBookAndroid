@@ -114,7 +114,8 @@
     <string name="reset_condition">(zrušení z boje)</string>
     <string name="special_skill_type_perm">(trvale)</string>
     <string name="special_skill_type_attack">Specialní útok</string>
-    <string name="select_skill">Vyberte dovednost</string>
+    <string name="select_skill">Vyberte schopnost</string>
+    <string name="no_skill">Žádná</string>
     <string name="name">Název</string>
     <string name="with_luck">se štestím</string>
     <string name="special_skill_attempts">Použití</string>
@@ -127,5 +128,5 @@
     <string name="level">Úroveň</string>
     <string name="experience">Zkušenosti</string>
     <string name="skill_list">Seznam dovedností</string>
-
+    
 </resources>

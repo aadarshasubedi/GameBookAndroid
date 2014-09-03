@@ -1,5 +1,7 @@
 package com.nex.gamebook.attack.special;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.nex.gamebook.game.Bonus;
@@ -9,7 +11,6 @@ import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
-
 public abstract class SpecialAttackSkill implements SpecialSkill {
 	private static final long serialVersionUID = -7422695719062137022L;
 	protected int cycles = 0;
@@ -18,12 +19,21 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 		if(applicationChar instanceof Enemy) return (Enemy) applicationChar;
 		return (Enemy) character;
 	}
-	
-	public ResultCombat createBasicResult(int value, CharacterType type) {
+	@Override
+	public boolean canUse() {
+		int max = attemptsPerFight();
+		if((used && !inFight()))
+			return false;
+		if ((max > 0 && cycles >= max))
+			return false;
+		return true;
+	}
+	public ResultCombat createBasicResult(int value, CharacterType type, Enemy enemy) {
 		ResultCombat result = new ResultCombat();
 		result.setSpecialAttack(this);
 		result.setDamage(value);
 		result.setType(type);
+		result.setEnemyName(enemy.getName());
 		return result;
 	}
 	public Bonus createSpecialAttack(int coeff , int value, StatType type) {
@@ -41,11 +51,7 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	public boolean doAttack(Character attacker, Character attacked,
 			BattleLogCallback callback, ResultCombat resultCombat) {
 		
-		int max = attemptsPerFight();
-		if((used && !inFight()))
-			return true;
-		if ((max > 0 && cycles >= max))
-			return true;
+		if(!canUse()) return true;
 		cycles++;
 		used = true;
 		return doAttackOnce(attacker, attacked, callback, resultCombat);
@@ -120,5 +126,21 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	public int hashCode() {
 		Integer i = getNameId();
 		return i.hashCode();
+	}
+	@Override
+	public boolean isDebuff() {
+		return false;
+	}
+	@Override
+	public List<String> getBestAgainstSkill() {
+		return Collections.emptyList();
+	}
+	@Override
+	public List<String> getBestInterceptSkills() {
+		return Collections.emptyList();
+	}
+
+	public int getCountOfUsed() {
+		return cycles;
 	}
 }

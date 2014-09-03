@@ -206,7 +206,7 @@ public class Player extends Character {
 	}
 
 	@Override
-	public void chooseBestSkill(Character c) {
+	public void chooseBestSkill(Character c, boolean enemyBegin) {
 	}
 
 	public Enemy getCurrentEnemy() {

@@ -1,9 +1,16 @@
 package com.nex.gamebook.attack.special.skill;
 
+import static com.nex.gamebook.game.SpecialSkillsMap.BLEEDING;
+import static com.nex.gamebook.game.SpecialSkillsMap.GREATER_HEAL;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
+import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.game.Bonus.StatType;
-
+import static com.nex.gamebook.game.SpecialSkillsMap.*;
 public class Rage extends SpecialConditionalSkill {
 
 
@@ -61,6 +68,14 @@ public class Rage extends SpecialConditionalSkill {
 	@Override
 	public boolean inFight() {
 		return false;
+	}
+	
+	@Override
+	public List<String> getBestInterceptSkills() {
+		List<String> s = new ArrayList<>();
+		s.add(SpecialSkillsMap.REFLECT_DAMAGE);
+		s.add(SpecialSkillsMap.CRUSH_STRIKE);
+		return s;
 	}
 	
 }

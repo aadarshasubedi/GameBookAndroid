@@ -1,7 +1,9 @@
 package com.nex.gamebook.attack.special;
 
 import java.io.Serializable;
+import java.util.List;
 
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
@@ -48,4 +50,11 @@ public interface SpecialSkill extends Serializable {
 	 * @return
 	 */
 	boolean inFight();
+	boolean canUse();
+	StatType getType();
+	boolean isDebuff();
+	List<String> getBestAgainstSkill();
+	List<String> getBestInterceptSkills();
+	int getCountOfUsed();
 }
+

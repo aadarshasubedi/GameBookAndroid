@@ -1,9 +1,13 @@
 package com.nex.gamebook.attack.special.skill;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
+import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.game.Bonus.StatType;
-
+import static com.nex.gamebook.game.SpecialSkillsMap.*;
 public class CrushStrike extends SpecialConditionalSkill {
 	private static final long serialVersionUID = -1804300495308316474L;
 
@@ -45,15 +49,4 @@ public class CrushStrike extends SpecialConditionalSkill {
 		return R.string.special_skill_type_debuff;
 	}
 
-	@Override
-	public boolean isTriggerBeforeEnemyAttack() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isTriggerAfterEnemyAttack() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

@@ -22,7 +22,7 @@ public class CombatProcess {
 		resultCombat.setLuck(attacked.hasLuck());
 		if (!resultCombat.isLuck()) {
 			resultCombat.setCritical(attacker.isCriticalChance());
-			int attack = attacker.getCurrentStats().getAttack() * attacker.getCurrentStats().getDamage();
+			int attack = attacker.getCurrentStats().getTotalPureDamage();
 			int defense = attacked.getCurrentStats().getDefensePercentage();
 			int totalDamage = (attack - (int) (((double) attack / 100d) * defense));
 			totalDamage *= modification;
@@ -50,12 +50,12 @@ public class CombatProcess {
 		callback.divide(++turn);
 		boolean enemyBegin = !player.hasLuck();
 		if (enemyBegin) {
-			if (!doSpecialAttack(enemy, player, callback)) {
-				doSpecialAttack(player, enemy, callback);
+			if (!doSpecialAttack(enemy, player, callback, true)) {
+				doSpecialAttack(player, enemy, callback, false);
 			}
 		} else {
-			if (!doSpecialAttack(player, enemy, callback)) {
-				doSpecialAttack(enemy, player, callback);
+			if (!doSpecialAttack(player, enemy, callback, true)) {
+				doSpecialAttack(enemy, player, callback, false);
 			}
 		}
 		if (player.isDefeated()) {
@@ -69,13 +69,14 @@ public class CombatProcess {
 	
 	private void choseSkillForAI(Character attacker, Character attacked) {
 		if(attacker instanceof Enemy) {
-			attacker.chooseBestSkill(attacked);
+			attacker.chooseBestSkill(attacked, true);
 		} else {
-			attacked.chooseBestSkill(attacker);
+			attacked.chooseBestSkill(attacker, false);
 		}
 	}
 	
-	private boolean doSpecialAttack(Character attacker, Character attacked, BattleLogCallback callback) {
+	private boolean doSpecialAttack(Character attacker, Character attacked, BattleLogCallback callback, boolean canChooseAISkill) {
+		if(canChooseAISkill)
 		choseSkillForAI(attacker, attacked);
 		SpecialSkill attackerSkill = attacker.getSpecialSkill();
 		SpecialSkill skill = attacked.getSpecialSkill();
