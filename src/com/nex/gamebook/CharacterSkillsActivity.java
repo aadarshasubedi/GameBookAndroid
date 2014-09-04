@@ -21,13 +21,14 @@ import android.widget.TextView;
 import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.SkillRequiredLevel;
 import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.util.SkillInfoDialog;
 
 public class CharacterSkillsActivity extends Activity {
-	private List<String> keys;
+	private List<SkillRequiredLevel> keys;
 	private Player _character;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +41,10 @@ public class CharacterSkillsActivity extends Activity {
 			_character = story.getCharacter(getIntent().getExtras().getInt("character"));
 			ListView list = (ListView) findViewById(R.id.skills);
 			keys = new ArrayList<>(_character.getSpecialSkills().keySet());
-			Collections.sort(keys, new Comparator<String>() {
+			Collections.sort(keys, new Comparator<SkillRequiredLevel>() {
 				@Override
-				public int compare(String lhs, String rhs) {
-					Integer ls = _character.getSpecialSkills().get(lhs);
-					Integer rs = _character.getSpecialSkills().get(rhs);
-					return ls.compareTo(rs);
+				public int compare(SkillRequiredLevel lhs, SkillRequiredLevel rhs) {
+					return lhs.getLevel().compareTo(rhs.getLevel());
 				}
 			});
 			list.setAdapter(new SkillsAdapter(this));
@@ -64,9 +63,9 @@ public class CharacterSkillsActivity extends Activity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			final String skillName = keys.get(position);
-			int level = _character.getSpecialSkills().get(skillName);
-			final SpecialSkill skill = SpecialSkillsMap.get(skillName);
+			final SkillRequiredLevel sk = keys.get(position);
+			int level = sk.getLevel();
+			final SpecialSkill skill = _character.getSpecialSkills().get(sk);
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.skill_item, parent, false);
 			rowView.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +78,7 @@ public class CharacterSkillsActivity extends Activity {
 			TextView text = (TextView) rowView.findViewById(R.id.skill_level);
 			text.setText(String.valueOf(level));
 			text = (TextView) rowView.findViewById(R.id.skill_name);
-			text.setText(_character.getStory().getProperties().getProperty(skill.getSkillNameKey()));
+			text.setText(_character.getStory().getProperties().getProperty(skill.getName()));
 			return rowView;
 		}
 	}

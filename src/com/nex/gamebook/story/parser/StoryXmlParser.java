@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,13 @@ import org.xml.sax.SAXException;
 import android.content.Context;
 import android.util.Log;
 
+import com.nex.gamebook.attack.special.SkillProperties;
 import com.nex.gamebook.game.Bonus;
 import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.EnemyAssign;
 import com.nex.gamebook.game.Player;
+import com.nex.gamebook.game.SkillAssign;
+import com.nex.gamebook.game.SkillBased;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.game.StorySection;
@@ -35,17 +39,22 @@ import com.nex.gamebook.game.Enemy.EnemyLevel;
 import com.nex.gamebook.util.GameBookUtils;
 
 public class StoryXmlParser {
-
+	private final String INCREASE = "increase";
 	private final String CHARACTER = "character";
 	private final String SECTION = "section";
 	private final String TEXT = "text";
+	private final String SPECIAL_SKILL = "specialSkill";
 	private final String ALREADY_VISITED_TEXT = "alreadyVisitedText";
 	private final String INCLUDE = "include";
 	private final String VERSION = "version";
-	private final String SPECIAL_ATTACK = "specialAttack";
 	private final String SKILLS = "skills";
 	private final String BACKGROUND = "background";
 	private final String LEVEL_REQUIRED = "levelRequired";
+	private final String RESETATBATTLEEND = "resetAtBattleEnd";
+	private final String SKILL_NAME = "skillName";
+	private final String ATTEMPTS = "attempts";
+	private final String TURNS = "turns";
+	private final String PROPRIETARY_SKILL = "proprietarySkill";
 	private final String LOSE_SECTION = "loseSection";
 	private final String LEVEL = "level";
 	private final String WIN_SECTION = "winSection";
@@ -56,6 +65,7 @@ public class StoryXmlParser {
 	private final String RESET_NEGATIVE_ATTRIBUTES = "resetNegativeAttributes";
 	private final String STORY = "story";
 	private final String XPCOEFF = "xpcoeff";
+	private final String COEFF = "coeff";
 	
 	private final String OPTIONS = "options";
 	private final String BASE = "base";
@@ -85,6 +95,7 @@ public class StoryXmlParser {
 	private final String ID = "id";
 
 	private final String TYPE = "type";
+	
 	private final String VALUE = "value";
 //	private final String OVERRIDE_SKILL = "overrideSkill";
 	private final String OVERFLOWED = "overflowed";
@@ -92,9 +103,12 @@ public class StoryXmlParser {
 	
 	private final String DEBUFF = "debuff";
 	private final String STATE = "state";
+	private final String SKILL_BASED = "skillBased";
 	
-	
-//	private final String REF = "ref";
+	private final String BEFOREENEMYSKILL="beforeEnemySkill";
+	private final String BEFOREENEMYATTACK="beforeEnemyAttack";
+	private final String AFTERENEMYATTACK="afterEnemyAttack";
+	private final String AFTERNORMALATTACK="afterNormalAttack";
 	
 	Context context;
 
@@ -142,6 +156,7 @@ public class StoryXmlParser {
 		GameBookUtils.getInstance().loadProperties(story);
 		loadStory(story, story.getXml(), sections, characters);
 		story.assignEnemiesToSections();
+		story.assignSkillsToCharacters();
 		return story;
 	}
 
@@ -202,8 +217,10 @@ public class StoryXmlParser {
 			loadSections(document, story);
 			loadEnemies(document, story);
 		}
-		if (characters)
+		if (characters) {
 			loadCharacters(document, story);
+			loadSkills(document, story);
+		}
 
 	}
 
@@ -241,12 +258,24 @@ public class StoryXmlParser {
 		}
 	}
 	
+	private void loadSkills(Document document, Story story) {
+		NodeList nList = document.getElementsByTagName(SPECIAL_SKILL);
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node node = nList.item(temp);
+			if (node instanceof Element) {
+				Element el = (Element) node;
+				loadSkill(story, el);
+			}
+		}
+	}
+	
 	private void loadEnemy(Story story, Element element) {
 		Enemy enemy = new Enemy();
 		enemy.setName(element.getAttribute(NAME));
 		String id = element.getAttribute(ID);
 		enemy.setEnemyLevel(EnemyLevel.getLevelByString(element.getAttribute(TYPE)));
-		enemy.setXpcoeff(getDouble(element.getAttribute(XPCOEFF), Enemy.DEFAULT_COEFF));
+		enemy.setXpcoeff(getFloat(element.getAttribute(XPCOEFF), Enemy.DEFAULT_COEFF));
+		enemy.setSkillBased(SkillBased.valueOf(element.getAttribute(SKILL_BASED)));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
@@ -255,13 +284,37 @@ public class StoryXmlParser {
 		enemy.setStory(story);
 		story.getEnemies().put(id, enemy);
 	}
+	
+	private void loadSkill(Story story, Element element) {
+		SkillProperties skill = new SkillProperties();
+		String id = element.getAttribute(ID);
+		skill.setSkillName(element.getAttribute(SKILL_NAME));
+		skill.setProprietarySkill(element.getAttribute(PROPRIETARY_SKILL));
+		skill.setAttempts(getInteger(element.getAttribute(ATTEMPTS)));
+		skill.setTurns(getInteger(element.getAttribute(TURNS)));
+		skill.setLevelRequired(getInteger(element.getAttribute(LEVEL_REQUIRED)));
+		String type = element.getAttribute(TYPE);
+		if(type!=null && type.length()>0)
+		skill.setType(StatType.valueOf(type.toUpperCase()));
+		skill.setIncrease(getBoolean(element.getAttribute(INCREASE)));
+		skill.setCoeff(getFloat(element.getAttribute(COEFF)));
+		skill.setResetAtBattleEnd(getBoolean(element.getAttribute(RESETATBATTLEEND)));
+		
+		skill.setBeforeEnemyAttack(getBoolean(element.getAttribute(BEFOREENEMYATTACK)));
+		skill.setBeforeEnemySkill(getBoolean(element.getAttribute(BEFOREENEMYSKILL)));
+		skill.setAfterEnemyAttack(getBoolean(element.getAttribute(AFTERENEMYATTACK)));
+		skill.setAfterNormalAttack(getBoolean(element.getAttribute(AFTERNORMALATTACK)));
+		skill.setPermanent(getBoolean(element.getAttribute(PERMANENT)));
+		skill.setId(id);
+		story.getSkills().put(id, skill);
+	}
 	private void loadCharacter(Story story, Element element) throws Exception {
 		Player character = new Player();
 		character.setName(element.getAttribute(NAME));
 		character.setDescription(element.getAttribute(DESCRIPTION));
 		character.setId(getInteger(element.getAttribute(ID)));
 		character.setPosition(getInteger(element.getAttribute(POSITION)));
-
+		character.setSkillBased(SkillBased.valueOf(element.getAttribute(SKILL_BASED)));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
@@ -290,22 +343,16 @@ public class StoryXmlParser {
 			character.getStats().setAttack(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(BASE_DAMAGE)) {
 			character.getStats().setDamage(getInteger(node.getTextContent()));
-		} else if (node.getNodeName().equals(SPECIAL_ATTACK)) {
-			//this is for enemies
-			character.setSkillName(node.getTextContent());
 		} else if (node.getNodeName().equals(SKILLS)) {
-			//this is for player
-			NodeList list = node.getChildNodes();
-			for(int i = 0; i < list.getLength(); i++) {
-				Node n = list.item(i);
-				if(n.getNodeName().equals(SKILL)) {
+			NodeList optionsList = node.getChildNodes();
+			for (int i = 0; i < optionsList.getLength(); i++) {
+				Node n = optionsList.item(i);
+				if (n instanceof Element) {
 					Element element = (Element) n;
-					String skillName = element.getAttribute(NAME);
-					int skillLevel = getInteger(element.getAttribute(LEVEL_REQUIRED));
-					character.getSpecialSkills().put(skillName, skillLevel);
+					String skillKey = element.getAttribute(VALUE);
+					character.getAssignedSkills().add(new SkillAssign(skillKey));
 				}
-			}
-			
+			}			
 		} else if (node.getNodeName().equals(SKILL_POWER)) {
 			character.getStats().setSkillpower(getInteger(node.getTextContent()));
 		} else if(node.getNodeName().equals(PRIMARY_STAT)) {
@@ -337,8 +384,8 @@ public class StoryXmlParser {
 		section.setResetAttributes(getBoolean(element.getAttribute(RESET_ATTRIBUTES)));
 		section.setResetPositiveAttributes(getBoolean(element.getAttribute(RESET_POSITIVE_ATTRIBUTES)));
 		section.setResetNegativeAttributes(getBoolean(element.getAttribute(RESET_NEGATIVE_ATTRIBUTES)));
-		section.setScoreMultiplier(getDouble(element.getAttribute(SCORE_MULTIPLIER)));
-		section.setXpcoeff(getDouble(element.getAttribute(XPCOEFF)));
+		section.setScoreMultiplier(getFloat(element.getAttribute(SCORE_MULTIPLIER)));
+		section.setXpcoeff(getFloat(element.getAttribute(XPCOEFF)));
 		String text = element.getAttribute(TEXT);
 		section.setText(text);
 		section.setAlreadyVisitedText(text);
@@ -392,7 +439,7 @@ public class StoryXmlParser {
 			Node n = optionsList.item(i);
 			if (n instanceof Element) {
 				Element enemyNode = (Element) n;
-				section.getEnemiesIds().add(new EnemyAssign(enemyNode.getAttribute(VALUE), getDouble(enemyNode.getAttribute(XPCOEFF))));
+				section.getEnemiesIds().add(new EnemyAssign(enemyNode.getAttribute(VALUE), getFloat(enemyNode.getAttribute(XPCOEFF))));
 			}
 		}
 	}
@@ -473,11 +520,11 @@ public class StoryXmlParser {
 	private int getInteger(String s) {
 		return s != null && !"".equals(s) ? Integer.valueOf(s.trim()) : 0;
 	}
-	private double getDouble(String s) {
-		return getDouble(s, 0f);
+	private float getFloat(String s) {
+		return getFloat(s, 0f);
 	}
-	private double getDouble(String s, double defaultvalue) {
-		return s != null && !"".equals(s) ? Double.valueOf(s.trim()) : defaultvalue;
+	private float getFloat(String s, float defaultvalue) {
+		return s != null && !"".equals(s) ? Float.valueOf(s.trim()) : defaultvalue;
 	}
 	
 

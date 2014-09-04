@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.nex.gamebook.attack.special.SkillProperties;
 import com.nex.gamebook.util.GameBookUtils;
 
 public class Story implements Serializable, Mergable {
@@ -19,8 +20,8 @@ public class Story implements Serializable, Mergable {
 	private int version;
 	private Map<Integer, StorySection> sections = new HashMap<>();
 	private List<Player> characters = new ArrayList<Player>();
-	private Map<String, Enemy> enemies = new HashMap<String, Enemy>();
-	
+	private Map<String, Enemy> enemies = new HashMap<>();
+	private Map<String, SkillProperties> skills = new HashMap<>();
 	private transient Properties properties;
 
 	public long getId() {
@@ -115,19 +116,34 @@ public class Story implements Serializable, Mergable {
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
+
 	public Enemy findEnemy(String id) {
 		return this.enemies.get(id);
 	}
+
 	public Map<String, Enemy> getEnemies() {
 		return enemies;
 	}
-	
+
 	public void assignEnemiesToSections() {
-		if(enemies.isEmpty()) return;
-		for(Map.Entry<Integer, StorySection> entry: sections.entrySet()) {
+		if (enemies.isEmpty())
+			return;
+		for (Map.Entry<Integer, StorySection> entry : sections.entrySet()) {
 			entry.getValue().assignEnemies();
 		}
 		enemies.clear();
 	}
-	
+
+	public void assignSkillsToCharacters() {
+		if (skills.isEmpty())
+			return;
+		for (Character c : this.characters) {
+			c.createSkills(this.skills);
+		}
+		skills.clear();
+	}
+
+	public Map<String, SkillProperties> getSkills() {
+		return skills;
+	}
 }

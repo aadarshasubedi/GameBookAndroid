@@ -144,12 +144,12 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 	public void showAvailableSkills() {
 		SkillsSpinner skills = (SkillsSpinner) masterView.findViewById(R.id.skills);
-		List<String> availableSkills = new ArrayList<>();
+		List<SpecialSkill> availableSkills = new ArrayList<>();
 		availableSkills.add(null);
-		availableSkills.addAll(_character.getAvailableSkills());
+		availableSkills.addAll(_character.getActiveSkills());
 		skills.setAdapter(new SkillsAdapter(getContext(), _character, availableSkills, skills));
 		skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-		String selected = _character.getSkillName();
+		SpecialSkill selected = _character.getSelectedSkill();
 		if (selected != null) {
 			int index = availableSkills.indexOf(selected);
 			skills.setSelection(index);
@@ -158,8 +158,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 	public class CustomOnItemSelectedListener implements OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			String i = (String) parent.getItemAtPosition(pos);
-			_character.setSkillName(i);
+			SpecialSkill i = (SpecialSkill) parent.getItemAtPosition(pos);
+			_character.setSelectedSkill(i);
 		}
 
 		@Override
@@ -167,13 +167,13 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 	}
 
-	class SkillsAdapter extends ArrayAdapter<String> {
+	class SkillsAdapter extends ArrayAdapter<SpecialSkill> {
 		SkillsSpinner owner;
-		List<String> keys;
+		List<SpecialSkill> keys;
 		Context context;
 		Character applicator;
 
-		public SkillsAdapter(Context context, Character applicator, List<String> keys, SkillsSpinner owner) {
+		public SkillsAdapter(Context context, Character applicator, List<SpecialSkill> keys, SkillsSpinner owner) {
 			super(context, R.layout.list_item, keys);
 			this.context = context;
 			this.keys = keys;
@@ -196,15 +196,13 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 
 		public View getCustomViewView(final int position, final View convertView, final ViewGroup parent, int inflate, boolean isDropdown) {
-			final String key = keys.get(position);
+			final SpecialSkill skill = keys.get(position);
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(inflate, parent, false);
 			TextView name = (TextView) rowView.findViewById(R.id.name);
-			if (key != null) {
-				SpecialSkill skill = applicator.getSpecialSkill(key);
-				rowView.setTag(key);
-				name.setText(_character.getStory().getProperties().getProperty(skill.getSkillNameKey()));
-
+			if (skill != null) {
+				rowView.setTag(skill);
+				name.setText(skill.getName());
 				if (skill.canUse()) {
 					if (R.layout.spinner_dropdown_item == inflate)
 						name.setTextColor(getContext().getResources().getColor(R.color.button_color));
@@ -224,9 +222,9 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 					@Override
 					public boolean onLongClick(View arg0) {
-						if (key == null)
+						if (skill == null)
 							return false;
-						SkillInfoDialog dialog = new SkillInfoDialog(context, applicator, SpecialSkillsMap.get(key));
+						SkillInfoDialog dialog = new SkillInfoDialog(context, applicator, skill);
 						dialog.show();
 						return false;
 					}
@@ -249,7 +247,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	}
 
 	public void showSkill(TextView view, final Character applicator) {
-		decoreClickableTextView(getContext(), view, _character.getStory().getProperties().getProperty(applicator.getSpecialSkill().getSkillNameKey()));
+		decoreClickableTextView(getContext(), view, applicator.getSelectedSkill().getName());
 		view.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -335,9 +333,9 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					int healthPercentage = (int) (((double)cs.getHealth() / (double)s.getHealth()) * 100);
 					bar.setProgress(healthPercentage);
 					bar.setText(cs.getHealth()+"/"+s.getHealth());
-					List<String> sk = new ArrayList<>();
+					List<SpecialSkill> sk = new ArrayList<>();
 					sk.add(null);
-					sk.addAll(enemy.getAvailableSkills());
+					sk.addAll(enemy.getActiveSkills());
 					if (!sk.isEmpty()) {
 						skills.setAdapter(new SkillsAdapter(getContext(), enemy, sk, skills));
 						skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
@@ -425,7 +423,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			}
 			String text = enemyName;
 			text += " " + context.getString(who);
-			text += " " + _character.getStory().getProperties().getProperty(skill.getSkillNameKey()).toLowerCase();
+			text += " " + skill.getName().toLowerCase();
 			if(skill.causeDamage()) {
 				text += " " + context.getString(R.string.for_word);		
 				text += " " + resultCombat.getDamage();

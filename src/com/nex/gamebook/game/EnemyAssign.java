@@ -3,9 +3,9 @@ package com.nex.gamebook.game;
 public class EnemyAssign {
 
 	private String enemyKey;
-	private double xpcoeff = 0f;
+	private float xpcoeff = 0f;
 
-	public EnemyAssign(String enemyKey, double xpcoeff) {
+	public EnemyAssign(String enemyKey, float xpcoeff) {
 		super();
 		this.enemyKey = enemyKey;
 		this.xpcoeff = xpcoeff;

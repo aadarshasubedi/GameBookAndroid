@@ -1,19 +1,19 @@
 package com.nex.gamebook.game;
 
 import com.nex.gamebook.R;
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.util.GameBookUtils;
 
 public class Enemy extends com.nex.gamebook.game.Character {
-	public static final double DEFAULT_COEFF = 0.1;
+	public static final float DEFAULT_COEFF = 0.1f;
+
 	public enum EnemyLevel {
-		CREATURE(R.string.enemy_creature, 10, new StatType[0]), 
-		MINION(R.string.enemy_minion, 30, new StatType[]{StatType.HEALTH}), 
-		BOSS(R.string.enemy_boss, 60, new StatType[]{StatType.HEALTH, StatType.ATTACK});
+		CREATURE(R.string.enemy_creature, 10, new StatType[0]), MINION(R.string.enemy_minion, 30, new StatType[] { StatType.HEALTH }), BOSS(R.string.enemy_boss, 60, new StatType[] { StatType.HEALTH,
+				StatType.ATTACK });
 		private int code;
 		private int baseXP;
 		private StatType[] primaryAttributes;
+
 		private EnemyLevel(int code, int baseXP, StatType[] attr) {
 			this.code = code;
 			this.baseXP = baseXP;
@@ -23,7 +23,7 @@ public class Enemy extends com.nex.gamebook.game.Character {
 		public StatType[] getPrimaryAttributes() {
 			return primaryAttributes;
 		}
-		
+
 		public int getCode() {
 			return code;
 		}
@@ -46,7 +46,7 @@ public class Enemy extends com.nex.gamebook.game.Character {
 	private boolean affectPlayer;
 	private double xpcoeff = DEFAULT_COEFF;
 	private EnemyLevel enemyLevel;
-//	private transient SpecialSkill specialSkill;
+
 	public Enemy() {
 	}
 
@@ -105,22 +105,14 @@ public class Enemy extends com.nex.gamebook.game.Character {
 	public long getXp(int playerLevel) {
 		return ExperienceMap.getInstance().getGainedExperienceFromEnemy(this, playerLevel);
 	}
-	
-	
-	@Override
-	public SpecialSkill getSpecialSkill() {
-		return getSpecialSkill(getSkillName());
-	}
-	
-	
-	
-//	@Override
-//	public SpecialSkill getSpecialSkill(String skillName) {
-//		if(specialSkill == null) {
-//			specialSkill =  SpecialSkillsMap.get(skillName);
-//		}
-//		return specialSkill;
-//	}
+
+	// @Override
+	// public SpecialSkill getSpecialSkill(String skillName) {
+	// if(specialSkill == null) {
+	// specialSkill = SpecialSkillsMap.get(skillName);
+	// }
+	// return specialSkill;
+	// }
 
 	public double getXpcoeff() {
 		return xpcoeff;
@@ -129,10 +121,10 @@ public class Enemy extends com.nex.gamebook.game.Character {
 	public void setXpcoeff(double xpcoeff) {
 		this.xpcoeff = xpcoeff;
 	}
-	
+
 	@Override
 	public void chooseBestSkill(Character c, boolean enemyBegin) {
-		setSkillName(AISpecialSkillsUsage.getBestSpecialSkill((Player) c, this, enemyBegin));
+		setSelectedSkill(AISpecialSkillsUsage.getBestSpecialSkill((Player) c, this, enemyBegin));
 	}
 
 }

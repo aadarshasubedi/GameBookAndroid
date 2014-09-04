@@ -262,6 +262,7 @@ public class StorySection implements Serializable, Mergable {
 				enemy.setXpcoeff(enemyKey.getXpcoeff());
 			}
 			int level = getLevel();
+			enemy.createSkills(story.getSkills());
 			
 			enemy.createActiveSkills();
 			for(int i = 1; i <= level; i++) {

@@ -1,19 +1,20 @@
 package com.nex.gamebook.attack.special.skill.attack;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
 import com.nex.gamebook.combat.CombatProcess;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SpecialSkillsMap;
-import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public class TwiceAttack extends SpecialAttackSkill {
-	private static final long serialVersionUID = -1804300495308316474L;
+
+	public TwiceAttack() {
+		super(NO_VALUE);
+	}
 
 	@Override
 	public StatType getType() {
@@ -21,7 +22,7 @@ public class TwiceAttack extends SpecialAttackSkill {
 	}
 
 	@Override
-	public boolean isDebuff() {
+	public boolean isCondition() {
 		return true;
 	}
 
@@ -35,8 +36,8 @@ public class TwiceAttack extends SpecialAttackSkill {
 	}
 
 	@Override
-	public int getDescriptionId() {
-		return R.string.twice_attack_description;
+	public String getDescription(Context context) {
+		return context.getString(R.string.twice_attack_description);
 	}
 
 	@Override
@@ -46,12 +47,7 @@ public class TwiceAttack extends SpecialAttackSkill {
 
 	@Override
 	public int getValue(Character character) {
-		return -1;
-	}
-
-	@Override
-	public int getValueWhenLuck(Character character) {
-		return getValue(character);
+		return NO_VALUE;
 	}
 
 	@Override
@@ -67,20 +63,5 @@ public class TwiceAttack extends SpecialAttackSkill {
 	@Override
 	public int attemptsPerFight() {
 		return 1;
-	}
-
-	@Override
-	public List<String> getBestAgainstSkill() {
-		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.DECREASE_ATTACK);
-		return s;
-	}
-
-	@Override
-	public List<String> getBestInterceptSkills() {
-		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.DECREASE_DEFENSE);
-		s.add(SpecialSkillsMap.INCREASE_ATTACK);
-		return s;
 	}
 }

@@ -1,6 +1,5 @@
 package com.nex.gamebook.attack.special;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.nex.gamebook.game.Bonus;
@@ -9,13 +8,24 @@ import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.CharacterType;
 import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SpecialSkillsMap;
+import com.nex.gamebook.game.SkillBased;
+import com.nex.gamebook.game.Story;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public abstract class SpecialAttackSkill implements SpecialSkill {
-	
+
+	public static int NO_VALUE = -1;
 	protected int cycles = 0;
-//	protected boolean used = false;
+	protected int constantValue;
+	protected SkillProperties properties = new SkillProperties();
+	protected String skillName;
+
+	public SpecialAttackSkill(int constantValue) {
+		super();
+		this.constantValue = constantValue;
+	}
+
+	// protected boolean used = false;
 
 	public Enemy resolveEnemy(Character applicationChar, Character character) {
 		if (applicationChar instanceof Enemy)
@@ -59,7 +69,7 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 		cycles++;
 		return doAttackOnce(attacker, attacked, callback, resultCombat);
 	}
-	
+
 	public abstract boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm);
 
 	public void addTemporalBonus(Character applicationChar, Bonus bonus, String conditionid) {
@@ -79,14 +89,6 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 		return (int) (res * perc);
 	}
 
-	public int getRealValue(Character c) {
-		int value = getValue(c);
-		if (c.hasLuck()) {
-			value = getValueWhenLuck(c);
-		}
-		return value;
-	}
-
 	public String createConditionId(Character attacker) {
 		String conditionid = this.getClass().getName() + "_" + attacker.getClass().getName();
 		return conditionid;
@@ -94,23 +96,33 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 
 	@Override
 	public boolean isTriggerBeforeEnemyAttack() {
-		return false;
+		return properties.isBeforeEnemyAttack();
 	}
 
 	@Override
 	public boolean isTriggerAfterEnemyAttack() {
-		return false;
+		return properties.isAfterEnemyAttack();
 	}
 
 	@Override
 	public boolean afterNormalAttack() {
-		return false;
+		return properties.isAfterNormalAttack();
+	}
+
+	@Override
+	public boolean isTriggerBeforeEnemySpecialAttack() {
+		return properties.isBeforeEnemySkill();
+	}
+
+	@Override
+	public boolean isPermanent() {
+		return properties.isPermanent();
 	}
 
 	@Override
 	public void cleanAfterFightEnd() {
-		if(inFight())
-		this.cycles = 0;
+		if (!resetAtBattleEnd())
+			cleanAfterBattleEnd();
 	}
 
 	@Override
@@ -120,31 +132,12 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 
 	@Override
 	public int attemptsPerFight() {
-		return -1;
-	}
-
-	public int calcDynamicValue(int base, float coeff, int specialSkillPower) {
-		return (int) (base * (coeff + specialSkillPower / 10));
+		return properties.getAttempts();
 	}
 
 	@Override
-	public boolean inFight() {
-		return true;
-	}
-
-	@Override
-	public boolean isDebuff() {
-		return false;
-	}
-
-	@Override
-	public List<String> getBestAgainstSkill() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public List<String> getBestInterceptSkills() {
-		return Collections.emptyList();
+	public boolean resetAtBattleEnd() {
+		return properties.isResetAtBattleEnd();
 	}
 
 	public int getCountOfUsed() {
@@ -152,29 +145,57 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	}
 
 	@Override
-	public boolean isTriggerBeforeEnemySpecialAttack() {
+	public boolean doSomething(Character attacked, Character attacker) {
+		return true;
+	}
+
+	@Override
+	public boolean isOverTime() {
 		return false;
 	}
 
 	@Override
-	public boolean doSomething(Character attacked, Character attacker) {
-		return true;
-	}
-	@Override
-	public boolean isOverTime() {
-		return true;
-	}
-	@Override
-	public String getSkillNameKey() {
-		return SpecialSkillsMap.getSkillNameKey(getClass());
-	}
-	
-	@Override
 	public int getOvertimeTurns() {
-		return -1;
+		return this.properties.getTurns();
 	}
+
 	@Override
 	public boolean causeDamage() {
 		return true;
+	}
+
+	@Override
+	public int getValue(Character character) {
+		if (constantValue != NO_VALUE)
+			return constantValue;
+		if (character.getSkillBased().equals(SkillBased.SKILL_POWER)) {
+			return getValueBasedOnSkillPower(character);
+		} else if (character.getSkillBased().equals(SkillBased.ATTACK)) {
+			return getValueBasedOnAttack(character);
+		} else if (character.getSkillBased().equals(SkillBased.SKILL)) {
+			return getValueBasedOnSkill(character);
+		}
+		throw new IllegalArgumentException("Wrong skill based type");
+	}
+
+	public int getValueBasedOnAttack(Character c) {
+		return (int) (c.getCurrentStats().getAttack() + (c.getCurrentStats().getAttack() * properties.getCoeff()));
+	}
+
+	public int getValueBasedOnSkillPower(Character c) {
+		return (int) (c.getCurrentStats().getSkillpower() + (c.getCurrentStats().getSkillpower() * properties.getCoeff()));
+	}
+
+	public int getValueBasedOnSkill(Character c) {
+		return (int) (c.getCurrentStats().getSkill() + (c.getCurrentStats().getSkill() * properties.getCoeff()));
+	}
+
+	public String getName() {
+		return skillName;
+	}
+
+	public void setData(SkillProperties properties, String translatedSkillName) {
+		this.properties = properties;
+		this.skillName = translatedSkillName;
 	}
 }

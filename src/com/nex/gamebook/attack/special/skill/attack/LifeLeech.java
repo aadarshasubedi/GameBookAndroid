@@ -1,7 +1,6 @@
 package com.nex.gamebook.attack.special.skill.attack;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
@@ -9,17 +8,18 @@ import com.nex.gamebook.game.Bonus;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.playground.BattleLogCallback;
+
 public class LifeLeech extends SpecialAttackSkill {
 
-	private static final long serialVersionUID = -7676824496024693983L;
+	public LifeLeech() {
+		super(NO_VALUE);
+	}
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked,
-			BattleLogCallback callback, ResultCombat resultCombat) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		int dmg = resultCombat.getDamage();
-		int leech = (int) ((float)dmg/100f * getRealValue(attacker));
+		int leech = (int) ((float) dmg / 100f * getValue(attacker));
 		Bonus bonus = createSpecialAttack(1, leech, StatType.HEALTH);
 		bonus.setCondition(false);
 		bonus.setOverflowed(false);
@@ -28,20 +28,13 @@ public class LifeLeech extends SpecialAttackSkill {
 		callback.logAttack(rs);
 		return false;
 	}
-
+//	@Override
+//	public int getValue(Character character) {
+//		return calcDynamicValue(30, 1.2f, character.getCurrentStats().getSpecialSkillPower());
+//	}
 	@Override
-	public int getDescriptionId() {
-		return R.string.life_leech_description;
-	}
-
-	@Override
-	public int getValue(Character character) {
-		return calcDynamicValue(30, 1.2f, character.getCurrentStats().getSpecialSkillPower());
-	}
-
-	@Override
-	public int getValueWhenLuck(Character character) {
-		return (int) (getValue(character) * 1.2);
+	public String getDescription(Context context) {
+		return context.getString(R.string.life_leech_description);
 	}
 
 	@Override
@@ -60,11 +53,6 @@ public class LifeLeech extends SpecialAttackSkill {
 	}
 
 	@Override
-	public int getAspectId() {
-		return R.string.special_skill_aspect_power;
-	}
-
-	@Override
 	public boolean showPercentage() {
 		return true;
 	}
@@ -73,9 +61,18 @@ public class LifeLeech extends SpecialAttackSkill {
 	public boolean afterNormalAttack() {
 		return true;
 	}
+
 	@Override
 	public StatType getType() {
 		return StatType.HEALTH;
 	}
 
+	@Override
+	public int getAspectId() {
+		return ASPECT_POWER;
+	}
+	@Override
+	public boolean isCondition() {
+		return true;
+	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- no special function skills -->
+    <!-- proprietary skills -->
 	<string name="twice_attack_description">
 	    Provede útok dvakrát.
 	</string>
@@ -18,51 +18,29 @@
 		Zruší nějaký pozitivní bonus na nepříteli.
 	</string>
 	<string name="cancel_negative_description">
-		Zruší nějaký negativní bonus na postavě.
+		Zruší nějaký negativní bonus na sesílateli.
 	</string>
+	
 	<!-- overtime skills -->
 	<string name="increase_health_overtime">
 		Postupně léčí zdraví. Nikdy nevyléčí zdraví nad základ.
 	</string>
 	<string name="increase_health_overtime_greater">
-		Okamžitě vylečí zdraví a poté léčí zdraví postupně. Nikdy nevyléčí zdraví nad základ.
+		Okamžitě přidá %s a poté léčí zdraví postupně. Nikdy nevyléčí zdraví nad základ.
 	</string>
 	<string name="decrease_health_overtime">
 		Postupně snižuje zdraví. Nikdy nevyléčí zdraví nad základ.
 	</string>
 	<string name="decrease_health_overtime_greater">
-		Okamžitě sníží zdraví a poté snižuje zdraví postupně. Nikdy nevyléčí zdraví nad základ.
+		Okamžitě sníží %s a poté snižuje zdraví postupně.
 	</string>
+	
 	<!-- conditional skills -->
-	<string name="decrease_defense">
-	    Sníží obranu nepříteli.
+	<string name="decrease_attribute">
+	    Sníží %s nepříteli.
 	</string>
-	<string name="increase_defense">
-		Zvýší obranu.
-	</string>
-	<string name="decrease_attack">
-	    Sníží útok nepřítele, nikdy však neklesne pod 1.
-	</string>
-	<string name="increase_attack">
-	    Zvýší útok.
-	</string>
-	<string name="decrease_skillpower">
-	    Sníží sílu schopností, nikdy však neklesne pod 1.
-	</string>
-	<string name="increase_skillpower">
-	    Zvýší sílu schopností.
-	</string>
-	<string name="decrease_skill">
-	    Sníží dovednost.
-	</string>
-	<string name="increase_skill">
-	    Zvýší dovednost.
-	</string>
-	<string name="increase_health">
-		Vyléčí sesílatele pokud mu chybí nějaké zdraví. Nikdy nevyléčí zdraví nad základ.
-	</string>
-	<string name="decrease_health">
-		Postava způsobí dodatečné poškození.
+	<string name="increase_attribute">
+	    Zvýší %s nepříteli.
 	</string>
 	
 </resources>

@@ -7,14 +7,14 @@ import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public abstract class SpecialCancelationSkill extends SpecialAttackSkill {
-	@Override
-	public int getValue(Character character) {
-		return -1;
+
+	public SpecialCancelationSkill() {
+		super(NO_VALUE);
 	}
 
 	@Override
-	public int getValueWhenLuck(Character character) {
-		return getValue(character);
+	public int getValue(Character character) {
+		return NO_VALUE;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public abstract class SpecialCancelationSkill extends SpecialAttackSkill {
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
 		ActiveOvertimeSkill releasedSkill = null;
 		for (ActiveOvertimeSkill s : attacked.getOvertimeSkills()) {
-			if ((isCancelPositive() && !s.getTargetSkill().isDebuff()) || (!isCancelPositive() && s.getTargetSkill().isDebuff())) {
+			if ((isCancelPositive() && !s.getTargetSkill().isCondition()) || (!isCancelPositive() && s.getTargetSkill().isCondition())) {
 				releasedSkill = s;
 				break;
 			}
@@ -62,12 +62,12 @@ public abstract class SpecialCancelationSkill extends SpecialAttackSkill {
 	public boolean isTriggerAfterEnemyAttack() {
 		return true;
 	}
-	
+
 	@Override
 	public int attemptsPerFight() {
 		return 1;
 	}
-	
+
 	@Override
 	public boolean causeDamage() {
 		return false;

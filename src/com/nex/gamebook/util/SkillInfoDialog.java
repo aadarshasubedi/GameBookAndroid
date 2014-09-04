@@ -16,7 +16,7 @@ public class SkillInfoDialog {
 	private Dialog dialog;
 	private Context ctx;
 	public SkillInfoDialog(Context context, Character applicator) {
-		this(context, applicator, applicator.getSpecialSkill());
+		this(context, applicator, applicator.getSelectedSkill());
 	}
 	public SkillInfoDialog(Context context, Character applicator, SpecialSkill skill) {
 		super();
@@ -34,10 +34,10 @@ public class SkillInfoDialog {
 
 	public void showSkillData(Character applicator, SpecialSkill skill, View inflatedView) {
 		TextView view = (TextView) inflatedView.findViewById(R.id.skill_name);
-		view.setText(applicator.getStory().getProperties().getProperty(skill.getSkillNameKey()));
+		view.setText(skill.getName());
 		
 		view = (TextView) inflatedView.findViewById(R.id.skill_description);
-		view.setText(skill.getDescriptionId());
+		view.setText(skill.getDescription(ctx));
 		
 		view = (TextView) inflatedView.findViewById(R.id.skill_type);
 		TextView aspect = (TextView) inflatedView.findViewById(R.id.skill_type_aspect);
@@ -49,7 +49,7 @@ public class SkillInfoDialog {
 //		view.setText(inflatedView.getContext().getString(skill.getTypeId()));
 		
 		int value = skill.getValue(applicator);
-		int luckValue = skill.getValueWhenLuck(applicator);
+		
 		if(value < 0) {
 			View powerRow = inflatedView.findViewById(R.id.power_row);
 			powerRow.setVisibility(View.GONE);
@@ -58,13 +58,12 @@ public class SkillInfoDialog {
 		view.setText(skill.getAspectId());
 		
 		TextView skillPower = (TextView) inflatedView.findViewById(R.id.skill_power);
-		TextView skillPowerLuck = (TextView) inflatedView.findViewById(R.id.skill_power_luck);
 		String mark = "";
 		if(skill.showPercentage()) {
 			mark = "%";
 		}
 		skillPower.setText(String.valueOf(value) + mark);
-		skillPowerLuck.setText(String.valueOf(luckValue) + mark);
+		
 		view = (TextView) inflatedView.findViewById(R.id.skill_trigger);
 		if(skill.isTriggerAfterEnemyAttack()) {
 			view.setText(R.string.special_skill_trigger_after_enemy);
@@ -82,7 +81,7 @@ public class SkillInfoDialog {
 		}
 		view = (TextView) inflatedView.findViewById(R.id.attempts);
 		view.setText(String.valueOf(skill.attemptsPerFight()));
-		if(!skill.inFight()) {
+		if(skill.resetAtBattleEnd()) {
 			view.setText(R.string.once_in_battle);
 			inflatedView.findViewById(R.id.attempts_marker).setVisibility(View.GONE);
 		} else if(skill.attemptsPerFight() < 0) {

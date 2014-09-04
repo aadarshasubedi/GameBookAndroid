@@ -3,8 +3,8 @@ package com.nex.gamebook.attack.special;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nex.gamebook.R;
 import com.nex.gamebook.game.Bonus;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
@@ -14,10 +14,14 @@ import com.nex.gamebook.playground.BattleLogCallback;
 
 public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 
+	public SpecialConditionalSkill(int constantValue) {
+		super(constantValue);
+	}
+
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
 		Character applicationChar = resolveCharacterForApplication(attacked, attacker);
-		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getRealValue(attacker), getType());
+		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getValue(attacker), getType());
 		int value = applicationChar.getCurrentStats().getValueByBonusType(getType());
 		int res = value - bonus.getValue();
 		if (isCondition() && res <= getMinAttributeForStopAttack()) {
@@ -42,12 +46,10 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 
 	public abstract boolean isCondition();
 
-	@Override
-	public boolean isDebuff() {
-		return isCondition();
-	}
-
 	public int getMinAttributeForStopAttack() {
+		if(properties.getType().equals(StatType.ATTACK)) {
+			return 1;
+		}
 		return -1;
 	}
 
@@ -56,15 +58,6 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 			return attacked;
 		}
 		return attacker;
-	}
-
-	public int getValue(Character c) {
-		return c.getCurrentStats().getSpecialSkillPower();
-	}
-
-	@Override
-	public int getValueWhenLuck(Character character) {
-		return getValue(character) * 2;
 	}
 
 	@Override
@@ -84,27 +77,14 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 
 	@Override
 	public boolean doSomething(Character attacked, Character attacker) {
-		if(isDebuff()) {
+		if(isCondition()) {
 			Player test = new Player();
 			test.setCurrentStats(new Stats(attacked.getCurrentStats()));
 			test.setStats(new Stats(attacked.getCurrentStats()));
-			Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getRealValue(attacker), getType());
+			Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getValue(attacker), getType());
 			int realValue = test.addBonus(bonus);
 			if(realValue==0) return false;
 		}
 		return true;
-	}
-	
-	@Override
-	public List<String> getBestInterceptSkills() {
-		List<String> s = new ArrayList<String>();
-		s.add(SpecialSkillsMap.INCREASE_SKILLPOWER);
-		return s;
-	}
-	@Override
-	public List<String> getBestAgainstSkill() {
-		List<String> s = new ArrayList<String>();
-		s.add(SpecialSkillsMap.DECREASE_SKILLPOWER);
-		return s;
 	}
 }

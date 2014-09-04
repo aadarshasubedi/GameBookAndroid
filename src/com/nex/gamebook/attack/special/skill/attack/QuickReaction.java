@@ -1,7 +1,6 @@
 package com.nex.gamebook.attack.special.skill.attack;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialAttackSkill;
@@ -9,17 +8,18 @@ import com.nex.gamebook.combat.CombatProcess;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public class QuickReaction extends SpecialAttackSkill {
 
-	private static final long serialVersionUID = -7126895421549658686L;
+	public QuickReaction() {
+		super(NO_VALUE);
+	}
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
-		ResultCombat result = combat.doNormalAttack(attacker, attacked, getRealValue(attacker) / 100f, false);
+		ResultCombat result = combat.doNormalAttack(attacker, attacked, getValue(attacker) / 100f, false);
 		result.setSpecialAttack(this);
 		callback.logAttack(result);
 		return false;
@@ -31,23 +31,13 @@ public class QuickReaction extends SpecialAttackSkill {
 	}
 
 	@Override
-	public boolean isDebuff() {
+	public boolean isCondition() {
 		return true;
 	}
 
 	@Override
-	public int getDescriptionId() {
-		return R.string.quick_reaction_description;
-	}
-
-	@Override
-	public int getValue(Character character) {
-		return calcDynamicValue(40, 1.3f, character.getCurrentStats().getSpecialSkillPower());
-	}
-
-	@Override
-	public int getValueWhenLuck(Character character) {
-		return (int) (getValue(character) * 1.5);
+	public String getDescription(Context context) {
+		return context.getString(R.string.quick_reaction_description);
 	}
 
 	@Override
@@ -67,7 +57,7 @@ public class QuickReaction extends SpecialAttackSkill {
 
 	@Override
 	public int getAspectId() {
-		return R.string.special_skill_aspect_power;
+		return ASPECT_POWER;
 	}
 
 	@Override
@@ -80,18 +70,4 @@ public class QuickReaction extends SpecialAttackSkill {
 		return 1;
 	}
 
-	@Override
-	public List<String> getBestAgainstSkill() {
-		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.DECREASE_ATTACK);
-		return s;
-	}
-
-	@Override
-	public List<String> getBestInterceptSkills() {
-		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.DECREASE_DEFENSE);
-		s.add(SpecialSkillsMap.INCREASE_ATTACK);
-		return s;
-	}
 }

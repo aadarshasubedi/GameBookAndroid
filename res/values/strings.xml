@@ -121,7 +121,7 @@
     <string name="with_luck">se štestím</string>
     <string name="special_skill_attempts">Použití</string>
     <string name="always">Vždy</string>
-    <string name="once_in_battle">Pouze jednou v celé bitvě</string>
+    <string name="once_in_battle">Použití v celé bitvě</string>
     <string name="base_attr_inc">(základ)</string>
     <string name="gain_experience">Získáváš %d zkušeností.</string>
     <string name="level_increased">Dosáhl jsi úrovně %d.</string>

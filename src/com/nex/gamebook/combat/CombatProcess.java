@@ -76,6 +76,7 @@ public class CombatProcess {
 		if (enemy.isDefeated() || player.isDefeated()) {
 			player.cleanActiveSkillsAfterFightEnd();
 			callback.fightEnd(experience);
+			player.clearOvertimeSkills();
 		}
 	}
 
@@ -107,8 +108,8 @@ public class CombatProcess {
 	private boolean doSpecialAttack(Character attacker, Character attacked, BattleLogCallback callback, boolean canChooseAISkill) {
 		if (canChooseAISkill)
 			choseSkillForAI(attacker, attacked);
-		SpecialSkill attackerSkill = attacker.getSpecialSkill();
-		SpecialSkill skill = attacked.getSpecialSkill();
+		SpecialSkill attackerSkill = attacker.getSelectedSkill();
+		SpecialSkill skill = attacked.getSelectedSkill();
 		boolean usedBeforeSkill = false;
 		boolean doAttack = true;
 		if (skill != null && (skill.isTriggerBeforeEnemyAttack() || skill.isTriggerBeforeEnemySpecialAttack())) {

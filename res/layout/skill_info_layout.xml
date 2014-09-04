@@ -124,21 +124,6 @@
             android:layout_marginRight="5dp"
             android:text="@string/dsc_default" />
 
-        <TextView
-            style="@style/attribute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="@string/with_luck" />
-
-        <TextView
-            android:id="@+id/skill_power_luck"
-            style="@style/attribute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="@string/dsc_default" />
-
     </LinearLayout>
 
 
