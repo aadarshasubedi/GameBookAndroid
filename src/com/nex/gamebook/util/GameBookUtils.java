@@ -75,7 +75,7 @@ public class GameBookUtils {
 	public Properties loadProperties(String storypath) throws IOException {
 
 		List<String> fileList = getRelevantLocalizedFiles(storypath);
-		Properties prop = new Properties();
+		Properties prop = new StoryProperties();
 		// prop.
 		for (String file : fileList) {
 			try {

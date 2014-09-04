@@ -6,12 +6,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.playground.TextProgressBar;
 
 public abstract class GameBookFragment {
 	private Context context;
@@ -95,13 +97,7 @@ public abstract class GameBookFragment {
 	
 	protected void showStats(View view, Stats stats, Stats defaultStats, boolean colorify) {
 		highlightPrimaryAttribute(view);
-		TextView attr = (TextView) view.findViewById(R.id.sel_attr_health);
-		attr.setText(String.valueOf(stats.getHealth()));
-		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-		if (colorify)
-			changeAttributeColor(view.getContext(), attr, defaultStats.getHealth(), stats.getHealth());
-
-		attr = (TextView) view.findViewById(R.id.sel_attr_luck);
+		TextView attr = (TextView) view.findViewById(R.id.sel_attr_luck);
 		attr.setText(String.valueOf(stats.getLuckPercentage()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
@@ -150,13 +146,16 @@ public abstract class GameBookFragment {
 		attr = (TextView) view.findViewById(R.id.skill_power);
 		attr.setText(String.valueOf(stats.getSkillpower()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
-
+		int healthPercentage = (int) (((double)stats.getHealth() / (double)defaultStats.getHealth()) * 100);
+		TextProgressBar progress = (TextProgressBar) view.findViewById(R.id.p_health_progress);
+		progress.setProgress(healthPercentage);
+		progress.setText(stats.getHealth() + "/"+defaultStats.getHealth());
 		if (colorify)
 			changeAttributeColor(view.getContext(), attr, defaultStats.getSkillpower(), stats.getSkillpower());
 	}
 
 	@SuppressLint("ResourceAsColor")
-	private void changeAttributeColor(Context ctx, TextView text, int defaultValue, int currentvalue) {
+	protected void changeAttributeColor(Context ctx, TextView text, int defaultValue, int currentvalue) {
 		if (currentvalue > defaultValue) {
 			text.setTextColor(ctx.getResources().getColor(R.color.positive));
 		} else if (currentvalue < defaultValue) {

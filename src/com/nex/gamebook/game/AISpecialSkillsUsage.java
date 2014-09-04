@@ -8,8 +8,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.nex.gamebook.attack.special.SpecialCancelationSkill;
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.attack.special.skill.QuickReaction;
+import com.nex.gamebook.attack.special.skill.attack.QuickReaction;
 import com.nex.gamebook.game.Enemy.EnemyLevel;
 
 public class AISpecialSkillsUsage {
@@ -28,34 +29,38 @@ public class AISpecialSkillsUsage {
 		}
 		for (String s : candidates) {
 			for (SpecialSkill activeSkill : enemyActiveSkills) {
-				if (enemyBegin && activeSkill instanceof QuickReaction)
+				// if (enemyBegin && activeSkill instanceof QuickReaction)
+				// continue;
+				if (!canUseSkill(activeSkill, player, enemy))
 					continue;
 				if (SpecialSkillsMap.isSpecialSkillEqualToName(activeSkill.getClass(), s) && activeSkill.canUse()) {
-					return findInterceptAndReturnCorrectSkill(enemy, activeSkill, enemyActiveSkills);
+					return findInterceptAndReturnCorrectSkill(enemy, player, activeSkill, enemyActiveSkills);
 				}
 			}
 		}
 		return null;
 	}
-	
-	private static String findInterceptAndReturnCorrectSkill(Enemy enemy, SpecialSkill specialSkill, List<SpecialSkill> activeSkills) {
-		if(!enemy.getEnemyLevel().equals(EnemyLevel.BOSS)) return SpecialSkillsMap.getSkillId(specialSkill.getClass());
-		for(String interceptor: specialSkill.getBestInterceptSkills()) {
-			String skill = findInterceptSkill(interceptor, activeSkills);
-			if(skill!=null) return skill;
+
+	private static String findInterceptAndReturnCorrectSkill(Enemy enemy, Player pl, SpecialSkill specialSkill, List<SpecialSkill> activeSkills) {
+		if (!enemy.getEnemyLevel().equals(EnemyLevel.BOSS))
+			return SpecialSkillsMap.getSkillId(specialSkill.getClass());
+		for (String interceptor : specialSkill.getBestInterceptSkills()) {
+			String skill = findInterceptSkill(pl, enemy, interceptor, activeSkills);
+			if (skill != null)
+				return skill;
 		}
 		return SpecialSkillsMap.getSkillId(specialSkill.getClass());
 	}
-	
-	private static String findInterceptSkill(String interceptSkill, List<SpecialSkill> activeSkills) {
-		for(SpecialSkill a:activeSkills) {
+
+	private static String findInterceptSkill(Player player, Enemy enemy, String interceptSkill, List<SpecialSkill> activeSkills) {
+		for (SpecialSkill a : activeSkills) {
 			String aId = SpecialSkillsMap.getSkillId(a.getClass());
-			if(aId.equals(interceptSkill) && a.canUse())
+			if (aId.equals(interceptSkill) && canUseSkill(a, player, enemy))
 				return aId;
 		}
 		return null;
 	}
-	
+
 	private static void sortByUsage(List<SpecialSkill> skills) {
 		Collections.sort(skills, new Comparator<SpecialSkill>() {
 			@Override
@@ -89,12 +94,34 @@ public class AISpecialSkillsUsage {
 					if (SpecialSkillsMap.isSpecialSkillEqualToName(plSkill.getClass(), a) && plSkill.canUse())
 						continue;
 				}
-			int missingHP = b.getHealth() - c.getHealth();
-			if (!s.canUse() || (s.getType().equals(HEALTH) && !s.isDebuff() && s.getValue(enemy) <= missingHP))
+
+			if (!canUseSkill(s, player, enemy))
 				continue;
-			return findInterceptAndReturnCorrectSkill(enemy, s, sortedSkills);
+			return findInterceptAndReturnCorrectSkill(enemy, player, s, sortedSkills);
 		}
 		return null;
+	}
+
+	private static boolean canUseSkill(SpecialSkill skill, Player player, Enemy enemy) {
+		Stats c = enemy.getCurrentStats();
+		Stats b = enemy.getStats();
+		SpecialSkill plSkill = player.getSpecialSkill();
+		if (skill.canUse())
+			return true;
+		if (skill instanceof SpecialCancelationSkill) {
+			SpecialCancelationSkill cancel = (SpecialCancelationSkill) skill;
+			if(cancel.isCancelPositive() && player.hasOvertimeBuff()) {
+				return true;
+			}
+			if(!cancel.isCancelPositive() && enemy.hasOvertimeDebuff()) {
+				return true;
+			}
+		}
+		if (skill.doSomething(player, enemy) && !enemy.getEnemyLevel().equals(EnemyLevel.CREATURE))
+			return true;
+		int missingHP = b.getHealth() - c.getHealth();
+		boolean skip = (skill.getType() != null && skill.getType().equals(HEALTH) && !skill.isDebuff() && skill.getValue(enemy) > missingHP) && !enemy.getEnemyLevel().equals(EnemyLevel.CREATURE);
+		return !skip;
 	}
 
 	public static List<SpecialSkill> separateLimitedSkills(List<SpecialSkill> sortedSkills) {
@@ -128,16 +155,19 @@ public class AISpecialSkillsUsage {
 					return 1;
 				if (arg1.attemptsPerFight() == -1 && arg0.attemptsPerFight() > 0)
 					return -1;
-				if(arg0.getType().equals(HEALTH) && !arg0.isDebuff())  {
+				if (arg0.getType() != null && arg0.getType().equals(HEALTH) && !arg0.isDebuff()) {
 					int totalDmg = playerStats.getTotalPureDamage();
-					if((currentStats.getHealth()-totalDmg)<=0) return -1;
+					if ((currentStats.getHealth() - totalDmg) <= 0)
+						return -1;
 					return 1;
 				}
-				if(!enemy.getEnemyLevel().equals(EnemyLevel.CREATURE))
-				if(arg0.getType().equals(ATTACK) && arg0.isDebuff()) return -1;
-//				if (!arg0.isDebuff() && arg1.isDebuff() && !arg0.getType().equals(HEALTH)) {
-//					return -1;
-//				}
+				if (!enemy.getEnemyLevel().equals(EnemyLevel.CREATURE))
+					if (arg0.getType().equals(ATTACK) && arg0.isDebuff())
+						return -1;
+				// if (!arg0.isDebuff() && arg1.isDebuff() &&
+				// !arg0.getType().equals(HEALTH)) {
+				// return -1;
+				// }
 				return 1;
 			}
 		});

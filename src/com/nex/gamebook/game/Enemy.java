@@ -2,21 +2,28 @@ package com.nex.gamebook.game;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialSkill;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.util.GameBookUtils;
-import com.nex.gamebook.util.SkillInfoDialog;
 
 public class Enemy extends com.nex.gamebook.game.Character {
 	public static final double DEFAULT_COEFF = 0.1;
 	public enum EnemyLevel {
-		CREATURE(R.string.enemy_creature, 10), MINION(R.string.enemy_minion, 30), BOSS(R.string.enemy_boss, 60);
+		CREATURE(R.string.enemy_creature, 10, new StatType[0]), 
+		MINION(R.string.enemy_minion, 30, new StatType[]{StatType.HEALTH}), 
+		BOSS(R.string.enemy_boss, 60, new StatType[]{StatType.HEALTH, StatType.ATTACK});
 		private int code;
 		private int baseXP;
-
-		private EnemyLevel(int code, int baseXP) {
+		private StatType[] primaryAttributes;
+		private EnemyLevel(int code, int baseXP, StatType[] attr) {
 			this.code = code;
 			this.baseXP = baseXP;
+			this.primaryAttributes = attr;
 		}
 
+		public StatType[] getPrimaryAttributes() {
+			return primaryAttributes;
+		}
+		
 		public int getCode() {
 			return code;
 		}

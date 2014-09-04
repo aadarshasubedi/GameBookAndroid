@@ -99,7 +99,6 @@
     <string name="special_skill_type">Typ</string>
     <string name="special_skill_aspect_power">Síla</string>
     <string name="special_skill_aspect_chance">Šance</string>
-    <string name="special_skill_aspect_reflect">Odražení</string>
     <string name="special_skill_trigger">Spuštení</string>
     <string name="special_skill_trigger_normal">Před normálním útokem</string>
     <string name="special_skill_trigger_before_skill">Před schopností nepřítele</string>

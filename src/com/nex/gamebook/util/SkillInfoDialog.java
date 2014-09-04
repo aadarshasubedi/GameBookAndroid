@@ -34,7 +34,7 @@ public class SkillInfoDialog {
 
 	public void showSkillData(Character applicator, SpecialSkill skill, View inflatedView) {
 		TextView view = (TextView) inflatedView.findViewById(R.id.skill_name);
-		view.setText(skill.getNameId());
+		view.setText(applicator.getStory().getProperties().getProperty(skill.getSkillNameKey()));
 		
 		view = (TextView) inflatedView.findViewById(R.id.skill_description);
 		view.setText(skill.getDescriptionId());
@@ -46,7 +46,7 @@ public class SkillInfoDialog {
 			aspect.setVisibility(View.VISIBLE);
 			aspect.setText(inflatedView.getContext().getString(R.string.special_skill_type_temp));
 		}
-		view.setText(inflatedView.getContext().getString(skill.getTypeId()));
+//		view.setText(inflatedView.getContext().getString(skill.getTypeId()));
 		
 		int value = skill.getValue(applicator);
 		int luckValue = skill.getValueWhenLuck(applicator);

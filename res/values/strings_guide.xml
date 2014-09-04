@@ -41,8 +41,9 @@
       Uložené hry nelze mazat, přeuloží se buď novou hrou nebo se úplně smažou úspěšně dohranou hrou.	</string>
     <string name="battle">Bitva</string>
     <string name="guide_battle">
-        Boje nejsou automatické a pořadí nepřátel si určuje sám hráč.
-		Po každém boji s jedním nepřítelem se zobrazí průběh boje.
+        V bitvách hráč bojuje s nepřáteli, každá bitva může mít různý počet nepřátel.
+        Jejich pořadí si hráč vybírá sám. Každý boj probíhá po kolech a před každým kolem si hráč může vybrat jakou dovednost použije.
+        U některých nepřátel kteří mají také shcopnosti, je třeba volit v každém kole schopnosti moudře (viz. nepřátelé).
 		Pokračovat v příběhu může hráč pouze tehdy, porazí-li všechny nepřátele.
 		Pokud hráč v průbehu hry zemře, tak musí začít buď znovu nebo nahrát hru a boj zkusit znovu.
 		Každý boj může díky schopnostem a atributům štěstí a dovednosti probíhat pokaždé jinak.	</string>
@@ -50,15 +51,15 @@
         Nepřátelé se dělí na tři druhy.
         \n\n
 		1) Normální nepřátelé\n
-		Jsou nepřátelé kteří dávají pouze poškození, uplatňují štěstí a šanci na kritické zranění.
+		Nepoužívají schopnosti takticky. Dávají nejméně zkušeností a celkově jsou nejslabší.
 		\n\n
 		2) Minioni\n
-		Jsou nepřátelé kteří dávají poškození, uplatňují štěstí a šanci na kritické zranění. 
-		Jsou silnější než normální nepřátelé, ale dávají více zkušeností.
+		Používají schopnosti chytřeji, například nepoužijí schopnosti léčení pokud jim chybí méně zdraví než daná schopnost může vyléčit.
+		Davájí střední zkušenosti a jsou celkově silnější.
 		\n\n
 		3) Bossové\n
-		Jsou nepřátelé kteří dávají poškození, uplatňují štěstí a šanci na kritické zranění.
-		Jsou silnější než minioni, ale dávají více zkušeností.	</string>
+		Používají schopnosti nejchytřeji, například dokáží zvolit správnou schopnost v závisloti na zvolené schopnosti hráče.
+		Dávají nejvíce zkušeností a celkově jsou nejsilnější.	</string>
     <string name="section">Sekce</string>
     <string name="guide_section">
         Sekce je část příběhu, která má následující vlastnosti:\n

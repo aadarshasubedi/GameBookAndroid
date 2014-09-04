@@ -80,8 +80,17 @@ public class ExperienceMap {
 		for (StatType type : StatType.values()) {
 			try {
 				int val = type.getBaseValue();
-				if (type.equals(character.getPrimaryStat())) {
-					val = val * 2;
+				if(character instanceof Enemy) {
+					for(StatType attr: ((Enemy) character).getEnemyLevel().getPrimaryAttributes()) {
+						if(type.equals(attr)) {
+							val = val * 2;
+							break;
+						}
+					}
+				} else {
+					if (type.equals(character.getPrimaryStat())) {
+						val = val * 2;
+					}
 				}
 				if (character.getLevel() % type.getIncreaseByLevel() != 0) {
 					val = 0;

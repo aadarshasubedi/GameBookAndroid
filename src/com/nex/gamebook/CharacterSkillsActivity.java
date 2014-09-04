@@ -79,7 +79,7 @@ public class CharacterSkillsActivity extends Activity {
 			TextView text = (TextView) rowView.findViewById(R.id.skill_level);
 			text.setText(String.valueOf(level));
 			text = (TextView) rowView.findViewById(R.id.skill_name);
-			text.setText(skill.getNameId());
+			text.setText(_character.getStory().getProperties().getProperty(skill.getSkillNameKey()));
 			return rowView;
 		}
 	}

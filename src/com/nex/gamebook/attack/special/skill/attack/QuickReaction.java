@@ -1,4 +1,4 @@
-package com.nex.gamebook.attack.special.skill;
+package com.nex.gamebook.attack.special.skill.attack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +11,15 @@ import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.playground.BattleLogCallback;
+
 public class QuickReaction extends SpecialAttackSkill {
-	
+
 	private static final long serialVersionUID = -7126895421549658686L;
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked,
-			BattleLogCallback callback, ResultCombat resultCombat) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
-		ResultCombat result = combat.doNormalAttack(attacker, attacked, getRealValue(attacker)/100f, false);
+		ResultCombat result = combat.doNormalAttack(attacker, attacked, getRealValue(attacker) / 100f, false);
 		result.setSpecialAttack(this);
 		callback.logAttack(result);
 		return false;
@@ -29,29 +29,15 @@ public class QuickReaction extends SpecialAttackSkill {
 	public StatType getType() {
 		return StatType.HEALTH;
 	}
-	
+
 	@Override
 	public boolean isDebuff() {
 		return true;
-	}
-	@Override
-	public int getTextId() {
-		return R.string.attr_health;
 	}
 
 	@Override
 	public int getDescriptionId() {
 		return R.string.quick_reaction_description;
-	}
-
-	@Override
-	public int getNameId() {
-		return R.string.quick_reaction_name;
-	}
-
-	@Override
-	public int getTypeId() {
-		return R.string.special_skill_type_attack;
 	}
 
 	@Override
@@ -93,19 +79,19 @@ public class QuickReaction extends SpecialAttackSkill {
 	public int attemptsPerFight() {
 		return 1;
 	}
-	
+
 	@Override
 	public List<String> getBestAgainstSkill() {
 		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.DISARM);
+		s.add(SpecialSkillsMap.DECREASE_ATTACK);
 		return s;
 	}
-	
+
 	@Override
 	public List<String> getBestInterceptSkills() {
 		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.CRUSH_STRIKE);
-		s.add(SpecialSkillsMap.RAGE);
+		s.add(SpecialSkillsMap.DECREASE_DEFENSE);
+		s.add(SpecialSkillsMap.INCREASE_ATTACK);
 		return s;
 	}
 }

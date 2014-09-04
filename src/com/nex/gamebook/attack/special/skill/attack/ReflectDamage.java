@@ -1,4 +1,4 @@
-package com.nex.gamebook.attack.special.skill;
+package com.nex.gamebook.attack.special.skill.attack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,23 +38,8 @@ public class ReflectDamage extends SpecialAttackSkill {
 	}
 
 	@Override
-	public int getTextId() {
-		return R.string.attr_health;
-	}
-
-	@Override
 	public int getDescriptionId() {
 		return R.string.reflect_damage_description;
-	}
-
-	@Override
-	public int getNameId() {
-		return R.string.reflect_damage_name;
-	}
-
-	@Override
-	public int getTypeId() {
-		return R.string.special_skill_type_attack;
 	}
 
 	@Override
@@ -89,6 +74,6 @@ public class ReflectDamage extends SpecialAttackSkill {
 
 	@Override
 	public int getAspectId() {
-		return R.string.special_skill_aspect_reflect;
+		return ASPECT_POWER;
 	}
 }

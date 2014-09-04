@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -32,6 +33,7 @@ import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.game.SpecialSkillsMap;
+import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.util.SkillInfoDialog;
 
@@ -133,9 +135,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		// showSkill((TextView) view.findViewById(R.id.skill_name), _character);
 		showAvailableSkills();
 		TextView level = (TextView) view.findViewById(R.id.level);
-		TextView exp = (TextView) view.findViewById(R.id.experience);
+		ProgressBar progress = (ProgressBar) view.findViewById(R.id.experience_bar);
+
 		level.setText(String.valueOf(_character.getLevel()));
-		exp.setText(String.valueOf(_character.getXpToLevelPercentage()));
+		progress.setProgress(_character.getXpToLevelPercentage());
 		masterView.findViewById(R.id.tableLayout1).invalidate();
 	}
 
@@ -180,10 +183,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 		@Override
 		public View getDropDownView(int position, View convertView, ViewGroup parent) {
-//			String key = keys.get(position);
-//			if (key == null) {
-//				return new LinearLayout(getContext());
-//			}
+			// String key = keys.get(position);
+			// if (key == null) {
+			// return new LinearLayout(getContext());
+			// }
 			return getCustomViewView(position, convertView, parent, R.layout.spinner_dropdown_item, true);
 		}
 
@@ -200,20 +203,20 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			if (key != null) {
 				SpecialSkill skill = applicator.getSpecialSkill(key);
 				rowView.setTag(key);
-				name.setText(context.getString(skill.getNameId()));
-				
-				if(skill.canUse()) {
-					if(R.layout.spinner_dropdown_item==inflate)
+				name.setText(_character.getStory().getProperties().getProperty(skill.getSkillNameKey()));
+
+				if (skill.canUse()) {
+					if (R.layout.spinner_dropdown_item == inflate)
 						name.setTextColor(getContext().getResources().getColor(R.color.button_color));
 					else
 						name.setTextColor(getContext().getResources().getColor(R.color.condition));
 				} else {
-					name.setTextColor(getContext().getResources().getColor(R.color.negative));	
+					name.setTextColor(getContext().getResources().getColor(R.color.negative));
 				}
 			} else {
-				if(!isDropdown)
+				if (!isDropdown)
 					name.setText(R.string.skills);
-				else 
+				else
 					name.setText(R.string.no_skill);
 			}
 			if (inflate == R.layout.spinner_dropdown_item) {
@@ -221,7 +224,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 					@Override
 					public boolean onLongClick(View arg0) {
-						if(key==null) return false;
+						if (key == null)
+							return false;
 						SkillInfoDialog dialog = new SkillInfoDialog(context, applicator, SpecialSkillsMap.get(key));
 						dialog.show();
 						return false;
@@ -245,7 +249,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	}
 
 	public void showSkill(TextView view, final Character applicator) {
-		decoreClickableTextView(getContext(), view, applicator.getSpecialSkill().getNameId());
+		decoreClickableTextView(getContext(), view, _character.getStory().getProperties().getProperty(applicator.getSpecialSkill().getSkillNameKey()));
 		view.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -301,29 +305,41 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 							sc.fullScroll(View.FOCUS_DOWN);
 						}
 					});
+					Stats cs = enemy.getCurrentStats();
+					Stats s = enemy.getStats();
 					TextView attack = (TextView) rowView.findViewById(R.id.enemy_attr_attack);
-					attack.setText(String.valueOf(enemy.getCurrentStats().getAttack()));
-					attack = (TextView) rowView.findViewById(R.id.enemy_attr_health);
-					attack.setText(String.valueOf(enemy.getCurrentStats().getHealth()));
+					attack.setText(String.valueOf(cs.getAttack()));
+					changeAttributeColor(getContext(), attack, s.getAttack(), cs.getAttack());
+					attack = (TextView) rowView.findViewById(R.id.enemy_sel_attr_baseDmg_d);
+					attack.setText(String.valueOf(cs.getDamage()));
+					changeAttributeColor(getContext(), attack, s.getDamage(), cs.getDamage());
 					attack = (TextView) rowView.findViewById(R.id.enemy_attr_luck);
 					attack.setText(String.valueOf(enemy.getCurrentStats().getLuckPercentage()));
+					changeAttributeColor(getContext(), attack, s.getLuck(), cs.getLuck());
 					attack = (TextView) rowView.findViewById(R.id.enemy_attr_skill);
 					attack.setText(String.valueOf(enemy.getCurrentStats().getSkill()));
+					changeAttributeColor(getContext(), attack, s.getSkill(), cs.getSkill());
 					attack = (TextView) rowView.findViewById(R.id.enemy_attr_defense);
 					attack.setText(String.valueOf(enemy.getCurrentStats().getDefense()));
+					changeAttributeColor(getContext(), attack, s.getDefense(), cs.getDefense());
 					attack = (TextView) rowView.findViewById(R.id.enemy_critical);
 					attack.setText(String.valueOf(enemy.getCurrentStats().getSkillPercentage()));
 					attack = (TextView) rowView.findViewById(R.id.enemy_l_def_perc);
 					attack.setText(String.valueOf(enemy.getCurrentStats().getDefensePercentage()));
 					attack = (TextView) rowView.findViewById(R.id.enemy_skill_power);
 					attack.setText(String.valueOf(enemy.getCurrentStats().getSkillpower()));
+					changeAttributeColor(getContext(), attack, s.getSkillpower(), cs.getSkillpower());
 					final SkillsSpinner skills = (SkillsSpinner) rowView.findViewById(R.id.enemy_skills);
-
-					List<String> s = new ArrayList<>();
-					s.add(null);
-					s.addAll(enemy.getAvailableSkills());
-					if (!s.isEmpty()) {
-						skills.setAdapter(new SkillsAdapter(getContext(), enemy, s, skills));
+					
+					TextProgressBar bar = (TextProgressBar) rowView.findViewById(R.id.enemy_health_bar);
+					int healthPercentage = (int) (((double)cs.getHealth() / (double)s.getHealth()) * 100);
+					bar.setProgress(healthPercentage);
+					bar.setText(cs.getHealth()+"/"+s.getHealth());
+					List<String> sk = new ArrayList<>();
+					sk.add(null);
+					sk.addAll(enemy.getAvailableSkills());
+					if (!sk.isEmpty()) {
+						skills.setAdapter(new SkillsAdapter(getContext(), enemy, sk, skills));
 						skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 					} else {
 						skills.setVisibility(View.GONE);
@@ -399,22 +415,22 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		private void logSpecialAttack(ResultCombat resultCombat) {
 			Context context = adapter.context;
 			SpecialSkill skill = resultCombat.getSpecialAttack();
+			String enemyName = "";
+			int who = R.string.you_use;
+			int color = R.color.positive;
 			if (CharacterType.ENEMY.equals(resultCombat.getType())) {
-				String text = resultCombat.getEnemyName();
-				text += " " + context.getString(R.string.enemy_use);
-				text += " " + context.getString(skill.getNameId()).toLowerCase();
-				text += " " + context.getString(R.string.for_word);
-				text += " " + resultCombat.getDamage();
-				text += " " + context.getString(skill.getTextId()).toLowerCase();
-				addResultToLog(log, text, context, R.color.negative);
-			} else {
-				String text = context.getString(R.string.you_use);
-				text += " " + context.getString(skill.getNameId()).toLowerCase();
-				text += " " + context.getString(R.string.for_word);
-				text += " " + resultCombat.getDamage();
-				text += " " + context.getString(skill.getTextId()).toLowerCase();
-				addResultToLog(log, text, context, R.color.positive);
+				who = R.string.enemy_use;
+				color = R.color.negative;
+				enemyName = resultCombat.getEnemyName();
 			}
+			String text = enemyName;
+			text += " " + context.getString(who);
+			text += " " + _character.getStory().getProperties().getProperty(skill.getSkillNameKey()).toLowerCase();
+			if(skill.causeDamage()) {
+				text += " " + context.getString(R.string.for_word);		
+				text += " " + resultCombat.getDamage();
+			}
+			addResultToLog(log, text, context, color);
 		}
 
 		private void logNormalAttack(ResultCombat resultCombat) {

@@ -1,4 +1,4 @@
-package com.nex.gamebook.attack.special.skill;
+package com.nex.gamebook.attack.special.skill.attack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,23 +30,8 @@ public class LifeLeech extends SpecialAttackSkill {
 	}
 
 	@Override
-	public int getTextId() {
-		return R.string.attr_health;
-	}
-
-	@Override
 	public int getDescriptionId() {
 		return R.string.life_leech_description;
-	}
-
-	@Override
-	public int getNameId() {
-		return R.string.life_leech_name;
-	}
-
-	@Override
-	public int getTypeId() {
-		return R.string.special_skill_type_attack;
 	}
 
 	@Override

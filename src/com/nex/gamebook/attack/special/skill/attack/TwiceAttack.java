@@ -1,4 +1,4 @@
-package com.nex.gamebook.attack.special.skill;
+package com.nex.gamebook.attack.special.skill.attack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,23 +35,8 @@ public class TwiceAttack extends SpecialAttackSkill {
 	}
 
 	@Override
-	public int getTextId() {
-		return R.string.damage;
-	}
-
-	@Override
 	public int getDescriptionId() {
 		return R.string.twice_attack_description;
-	}
-
-	@Override
-	public int getNameId() {
-		return R.string.twice_attack_name;
-	}
-
-	@Override
-	public int getTypeId() {
-		return R.string.special_skill_type_attack;
 	}
 
 	@Override
@@ -83,17 +68,19 @@ public class TwiceAttack extends SpecialAttackSkill {
 	public int attemptsPerFight() {
 		return 1;
 	}
+
 	@Override
 	public List<String> getBestAgainstSkill() {
 		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.DISARM);
+		s.add(SpecialSkillsMap.DECREASE_ATTACK);
 		return s;
 	}
+
 	@Override
 	public List<String> getBestInterceptSkills() {
 		List<String> s = new ArrayList<>();
-		s.add(SpecialSkillsMap.CRUSH_STRIKE);
-		s.add(SpecialSkillsMap.RAGE);
+		s.add(SpecialSkillsMap.DECREASE_DEFENSE);
+		s.add(SpecialSkillsMap.INCREASE_ATTACK);
 		return s;
 	}
 }

@@ -18,24 +18,44 @@
        android:background="@drawable/_background_corners"
        android:padding="10dp" >
 
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" >
+
+           <TextView
+               style="@style/attribute"
+               android:id="@+id/textView1"
+               android:layout_marginRight="5dip"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/attr_health" />
+
+           <com.nex.gamebook.playground.TextProgressBar
+               android:id="@+id/enemy_health_bar"
+               style="?android:attr/progressBarStyleHorizontal"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+
+       </LinearLayout>
+
        <TableRow
            android:id="@+id/tableRow0"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content" >
 
            <TextView
-               android:id="@+id/enemy_l_health"
+               android:id="@+id/sel_l_skillpower_d"
                style="@style/attribute"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="@string/attr_health" />
+               android:layout_marginRight="5dip"
+               android:text="@string/attr_skill_power" />
 
            <TextView
-               android:id="@+id/enemy_attr_health"
+               android:id="@+id/enemy_skill_power"
                style="@style/number"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_marginLeft="5dp"
                android:text="@string/attr_value_zero" />
 
            <TextView
@@ -58,6 +78,24 @@
                android:layout_height="wrap_content"
                android:layout_marginLeft="5dp"
                android:text="@string/attr_value_zero" />
+            <TextView
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(" />
+
+            <TextView
+                android:id="@+id/enemy_sel_attr_baseDmg_d"
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=")" />
        </TableRow>
 
        <TableRow
@@ -184,21 +222,6 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:orientation="horizontal" android:layout_marginBottom="10dip">
-
-           <TextView
-               android:id="@+id/sel_l_skillpower_d"
-               style="@style/attribute"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginRight="5dip"
-               android:text="@string/attr_skill_power" />
-
-           <TextView
-               android:id="@+id/enemy_skill_power"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/attr_value_zero" />
 
            <LinearLayout
                android:layout_width="wrap_content"

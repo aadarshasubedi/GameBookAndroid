@@ -6,13 +6,13 @@ import java.util.List;
 import com.nex.gamebook.R;
 import com.nex.gamebook.game.Bonus;
 import com.nex.gamebook.game.Character;
+import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.SpecialSkillsMap;
+import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
-
-	private static final long serialVersionUID = 1L;
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
@@ -27,6 +27,8 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 			bonus.setValue(bonusValue);
 		}
 		int realValue = applicationChar.addBonus(bonus);
+		if(realValue<0)
+			realValue *= -1;
 		bonus.setValue(realValue);
 		if (!isPermanent()) {
 			addTemporalBonus(applicationChar, bonus, createConditionId(attacker));
@@ -67,7 +69,7 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 
 	@Override
 	public int getAspectId() {
-		return R.string.special_skill_aspect_power;
+		return ASPECT_POWER;
 	}
 
 	@Override
@@ -80,4 +82,29 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 		return false;
 	}
 
+	@Override
+	public boolean doSomething(Character attacked, Character attacker) {
+		if(isDebuff()) {
+			Player test = new Player();
+			test.setCurrentStats(new Stats(attacked.getCurrentStats()));
+			test.setStats(new Stats(attacked.getCurrentStats()));
+			Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getRealValue(attacker), getType());
+			int realValue = test.addBonus(bonus);
+			if(realValue==0) return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public List<String> getBestInterceptSkills() {
+		List<String> s = new ArrayList<String>();
+		s.add(SpecialSkillsMap.INCREASE_SKILLPOWER);
+		return s;
+	}
+	@Override
+	public List<String> getBestAgainstSkill() {
+		List<String> s = new ArrayList<String>();
+		s.add(SpecialSkillsMap.DECREASE_SKILLPOWER);
+		return s;
+	}
 }
