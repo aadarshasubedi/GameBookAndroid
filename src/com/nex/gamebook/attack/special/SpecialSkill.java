@@ -10,9 +10,6 @@ import com.nex.gamebook.game.Story;
 import com.nex.gamebook.playground.BattleLogCallback;
 
 public interface SpecialSkill {
-	int ASPECT_POWER = R.string.special_skill_aspect_power;
-	int ASPECT_CHANCE = R.string.special_skill_aspect_chance;
-	int NO_ASPECT = -1;
 	/**
 	 * return true if can proceed normal attack, only used when
 	 * afterNormalAttack is false a triggers are disabled
@@ -24,14 +21,12 @@ public interface SpecialSkill {
 	 * @return
 	 */
 	boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat);
-	String getDescription(Context context);
+	String getDescription(Context ctx, Character attacker);
 	int getValue(Character character);
 	boolean isPermanent();
 	boolean isTriggerBeforeEnemyAttack();
 	boolean isTriggerAfterEnemyAttack();
 	boolean isTriggerBeforeEnemySpecialAttack();
-	int getAspectId();
-	boolean showPercentage();
 	/**
 	 * Called after fight ends
 	 * 
@@ -61,6 +56,9 @@ public interface SpecialSkill {
 	boolean causeDamage();
 	int getCountOfUsed();
 	boolean doSomething(Character attacked, Character attacker);
-	public String getName();
-	public void setData(SkillProperties properties, String translatedSkillName);
+	String getName();
+	void setData(SkillProperties properties, String translatedSkillName);
+	
+	void setCombatTextDispatcher(CombatTextDispatcher dispatcher);
+	CombatTextDispatcher getCombatTextDispatcher();
 }

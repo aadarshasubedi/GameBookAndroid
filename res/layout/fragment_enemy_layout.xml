@@ -34,7 +34,8 @@
                android:id="@+id/enemy_health_bar"
                style="?android:attr/progressBarStyleHorizontal"
                android:layout_width="match_parent"
-               android:layout_height="wrap_content" />
+               android:layout_marginTop="4dp"
+               android:layout_height="15dp" />
 
        </LinearLayout>
 
@@ -221,7 +222,7 @@
        <LinearLayout
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:orientation="horizontal" android:layout_marginBottom="10dip">
+           android:orientation="horizontal" android:layout_marginBottom="5dip" android:gravity="left">
 
            <LinearLayout
                android:layout_width="wrap_content"
@@ -240,8 +241,67 @@
                    android:dropDownVerticalOffset="-50dp"
                    android:popupBackground="@drawable/spinner"
                    android:spinnerMode="dropdown" />
-           </LinearLayout>
 
+               
+           </LinearLayout>
+			<LinearLayout
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:gravity="right" >
+
+            <TextView
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/b"
+                android:textColor="@color/positive" />
+
+            <TextView
+                android:id="@+id/enemy_buffs"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="x" />
+            <TextView
+                android:id="@+id/enemy_longest_buff"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/attribute"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/d"
+                android:textColor="@color/positive" />
+
+            <TextView
+                android:id="@+id/enemy_debuffs"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="x" />
+            <TextView
+                android:id="@+id/enemy_longest_debuff"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+        </LinearLayout>
        </LinearLayout>
 
        <Button

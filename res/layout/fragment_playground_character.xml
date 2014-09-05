@@ -45,7 +45,39 @@
         android:layout_marginBottom="1dp"
         android:padding="10dp" >
 
-        
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right" >
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+				
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </TableRow>
+
+        </TableLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -75,11 +107,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/experience" />
 
-            <ProgressBar
+            <com.nex.gamebook.playground.TextProgressBar
                 android:id="@+id/experience_bar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_marginTop="4dp"
+                android:layout_height="15dp" />
 
         </LinearLayout>
 
@@ -100,9 +133,13 @@
                 android:id="@+id/p_health_progress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_marginTop="2dp"
+                android:layout_height="15dp" />
 
         </LinearLayout>
+
+        
+
         <TableRow
             android:id="@+id/tableRow0"
             android:layout_width="wrap_content"
@@ -287,25 +324,84 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" android:gravity="left">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
-                <com.nex.gamebook.playground.SkillsSpinner
-                    android:id="@+id/skills"
-                    style="@style/spinner_skills"
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="5sp"
-                    android:dropDownVerticalOffset="-50dp"
-                    android:popupBackground="@drawable/spinner"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
+                    <com.nex.gamebook.playground.SkillsSpinner
+                        android:id="@+id/skills"
+                        style="@style/spinner_skills"
+                        android:gravity="left"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="5sp"
+                        android:dropDownVerticalOffset="-50dp"
+                        android:popupBackground="@drawable/spinner"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+				<LinearLayout
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:gravity="right" >
+
+            <TextView
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/b"
+                android:textColor="@color/positive" />
+
+            <TextView
+                android:id="@+id/player_buffs"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="x" />
+			<TextView
+                android:id="@+id/player_longest_buff"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+            <TextView
+                style="@style/attribute"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/d"
+                android:textColor="@color/positive" />
+
+            <TextView
+                android:id="@+id/player_debuffs"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+
+            <TextView
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="x" />
+            <TextView
+                android:id="@+id/player_longest_debuff"
+                style="@style/attribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attr_value_zero" />
+        </LinearLayout>
 
         </LinearLayout>
 

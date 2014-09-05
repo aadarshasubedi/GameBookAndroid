@@ -53,20 +53,20 @@ public class ScoreActivity extends Activity {
 			level.setText(String.valueOf(score.getLevel()));
 			final TextView actualAttrs = (TextView) view.findViewById(R.id.actualStats);
 			final TextView baseStats = (TextView) view.findViewById(R.id.base_stats);
-			actualAttrs.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					showStats(view, score.getCurrentStats(), score.getStats(), true);
-					decoreClickableTextView(ScoreActivity.this, baseStats, R.string.base_stats);
-					actualAttrs.setText(R.string.actual_stats);
-				}
-			});
-			baseStats.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					showStats(view, score.getStats(), score.getStats(), false);
-					decoreClickableTextView(ScoreActivity.this, actualAttrs, R.string.actual_stats);
-					baseStats.setText(R.string.base_stats);
-				}
-			});
+//			actualAttrs.setOnClickListener(new OnClickListener() {
+//				public void onClick(View v) {
+//					showStats(view, score.getCurrentStats(), score.getStats(), true);
+//					decoreClickableTextView(ScoreActivity.this, baseStats, R.string.base_stats);
+//					actualAttrs.setText(R.string.actual_stats);
+//				}
+//			});
+//			baseStats.setOnClickListener(new OnClickListener() {
+//				public void onClick(View v) {
+//					showStats(view, score.getStats(), score.getStats(), false);
+//					decoreClickableTextView(ScoreActivity.this, actualAttrs, R.string.actual_stats);
+//					baseStats.setText(R.string.base_stats);
+//				}
+//			});
 			actualAttrs.callOnClick();
 			TextView title = (TextView) view.findViewById(R.id.title);
 			title.setText(this.score.getStoryname() + "\n" + this.score.getCharName());

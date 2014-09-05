@@ -37,32 +37,22 @@ public class SkillInfoDialog {
 		view.setText(skill.getName());
 		
 		view = (TextView) inflatedView.findViewById(R.id.skill_description);
-		view.setText(skill.getDescription(ctx));
-		
-		view = (TextView) inflatedView.findViewById(R.id.skill_type);
-		TextView aspect = (TextView) inflatedView.findViewById(R.id.skill_type_aspect);
-		aspect.setVisibility(View.GONE);
-		if(!skill.isPermanent()) {
-			aspect.setVisibility(View.VISIBLE);
-			aspect.setText(inflatedView.getContext().getString(R.string.special_skill_type_temp));
-		}
-//		view.setText(inflatedView.getContext().getString(skill.getTypeId()));
-		
+		view.setText(skill.getDescription(ctx, applicator));
 		int value = skill.getValue(applicator);
 		
 		if(value < 0) {
 			View powerRow = inflatedView.findViewById(R.id.power_row);
 			powerRow.setVisibility(View.GONE);
 		}
-		view = (TextView) inflatedView.findViewById(R.id.skill_aspect);
-		view.setText(skill.getAspectId());
+		if(skill.getOvertimeTurns()>0) {
+			View durabilityRow = inflatedView.findViewById(R.id.skill_durability);
+			durabilityRow.setVisibility(View.VISIBLE);
+			TextView d = (TextView) durabilityRow.findViewById(R.id.overtimeskill_turns);
+			d.setText(String.valueOf(skill.getOvertimeTurns()));
+		}
 		
 		TextView skillPower = (TextView) inflatedView.findViewById(R.id.skill_power);
-		String mark = "";
-		if(skill.showPercentage()) {
-			mark = "%";
-		}
-		skillPower.setText(String.valueOf(value) + mark);
+		skillPower.setText(String.valueOf(value));
 		
 		view = (TextView) inflatedView.findViewById(R.id.skill_trigger);
 		if(skill.isTriggerAfterEnemyAttack()) {

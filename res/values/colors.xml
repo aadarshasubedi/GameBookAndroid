@@ -5,7 +5,8 @@
     <color name="main_title_color">#000000</color>
     <color name="options_background">#000000</color>
     <color name="button_color">#ffffff</color>
-    <color name="number_color">#80000000</color>
+    <color name="number_color">#9b9b9b</color>
+<!--     <color name="number_color">#80000000</color> -->
 	<color name="attribute">#000000</color>
 	<color name="positive">#4c8341</color>
 	<color name="negative">#9e2311</color>
@@ -20,6 +21,9 @@
 	<color name="button_select">#bc9e56</color>
 	<color name="button_stroke">#505050</color>
 	
+	<color name="positive_overtime">#000000</color>
+	<color name="negative_overtime">#ffffff</color>
 	
+		
 	
 </resources>

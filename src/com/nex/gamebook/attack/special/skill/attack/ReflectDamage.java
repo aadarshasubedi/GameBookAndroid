@@ -18,13 +18,17 @@ public class ReflectDamage extends SpecialAttackSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		int value = resultCombat.getDamage();
-		int percentage = getValue(attacker);
+		int percentage = getRealValue(attacker);
 		value = getResultValuePercentage(value, percentage);
 		attacked.addBonus(createSpecialAttack(-1, value, getType()));
 		ResultCombat result = createBasicResult(value, attacker.getType(), resolveEnemy(attacker, attacked));
 		result.setEnemyName(resolveEnemy(attacker, attacked).getName());
 		callback.logAttack(result);
 		return true;
+	}
+
+	public int getRealValue(Character attacker) {
+		return calcDynamicValue(30, super.getValue(attacker), attacker);
 	}
 
 	@Override
@@ -38,15 +42,9 @@ public class ReflectDamage extends SpecialAttackSkill {
 	}
 
 	@Override
-	public String getDescription(Context context) {
-		return context.getString(R.string.reflect_damage_description);
+	public String getDescription(Context context, Character attacker) {
+		return context.getString(R.string.reflect_damage_description, getRealValue(attacker), "%");
 	}
-
-	// @Override
-	// public int getValue(Character character) {
-	// return calcDynamicValue(30, 1.4f,
-	// character.getCurrentStats().getSpecialSkillPower());
-	// }
 
 	@Override
 	public boolean isPermanent() {
@@ -62,14 +60,8 @@ public class ReflectDamage extends SpecialAttackSkill {
 	public boolean isTriggerAfterEnemyAttack() {
 		return true;
 	}
-
 	@Override
-	public boolean showPercentage() {
-		return true;
-	}
-
-	@Override
-	public int getAspectId() {
-		return ASPECT_POWER;
+	public int attemptsPerFight() {
+		return 1;
 	}
 }

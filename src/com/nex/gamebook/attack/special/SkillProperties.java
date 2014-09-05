@@ -1,5 +1,7 @@
 package com.nex.gamebook.attack.special;
 
+import android.util.Log;
+
 import com.nex.gamebook.attack.special.skill.conditional.DecreaseAttribute;
 import com.nex.gamebook.attack.special.skill.conditional.IncreaseAttribute;
 import com.nex.gamebook.attack.special.skill.overtime.DecreaseHealthOvertime;
@@ -16,12 +18,12 @@ public class SkillProperties {
 	private int turns = SpecialAttackSkill.NO_VALUE;
 	private int levelRequired;
 	private String proprietarySkill;
+
 	private String skillName = null;
 	private StatType type;
 	// private StatType greaterType;
 	private boolean increase;
 	private boolean resetAtBattleEnd;
-
 	private boolean beforeEnemySkill;
 	private boolean beforeEnemyAttack;
 	private boolean afterEnemyAttack;
@@ -92,23 +94,41 @@ public class SkillProperties {
 		this.increase = increase;
 	}
 
+	public boolean proprietarySkillExists() {
+		boolean exist = proprietarySkill != null && proprietarySkill.trim().length() > 0;
+		if (exist) {
+			Class<?> cls = SpecialSkillsMap.getSkills().get(proprietarySkill);
+			if (cls == null) {
+				Log.e("SkillCreation", "proprieatary skill with name " + proprietarySkill + " not exist");
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private SpecialSkill resolveSkill() {
-		if (proprietarySkill != null && proprietarySkill.length() > 0) {
+		if (proprietarySkillExists() && turns == 0) {
 			SpecialSkill skill = SpecialSkillsMap.get(proprietarySkill);
 			return skill;
 		}
 		if (increase) {
 			if (turns > 0) {
-				if (type != null) {
+				if (proprietarySkillExists()) {
+					return new IncreaseHealthOvertimeGreater(proprietarySkill);
+				} else if (type != null) {
 					return new IncreaseHealthOvertimeGreater(type);
+				} else {
+					return new IncreaseHealthOvertime();
 				}
-				return new IncreaseHealthOvertime();
 			} else {
 				return new IncreaseAttribute(type);
 			}
 		} else {
 			if (turns > 0) {
-				if (type != null) {
+				if (proprietarySkillExists()) {
+					return new DecreaseHealthOvertimeGreater(proprietarySkill);
+				} else if (type != null) {
 					return new DecreaseHealthOvertimeGreater(type);
 				} else {
 					return new DecreaseHealthOvertime();

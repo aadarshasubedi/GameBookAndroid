@@ -63,8 +63,9 @@
     <string name="you_take">Dostáváš</string>
     <string name="special_skill">Speciální dovednost</string>
     <string name="second_attack">(Druhý úder)</string>
-    <string name="you_cause">Způsobuješ</string>
     <string name="you_use">Používáš</string>
+    <string name="you_cause">Způsobuješ</string>
+    <string name="overtime_works">účinkuje</string>
     <string name="enemy_use">používá</string>
     <string name="for_word">za</string>
     <string name="fight_aspect_health">(Zdraví)</string>
@@ -129,5 +130,9 @@
     <string name="level">Úroveň</string>
     <string name="experience">Zkušenosti</string>
     <string name="skill_list">Seznam dovedností</string>
+    <string name="skill_durability">Výdrž</string>
+    <string name="skill_turns">kol</string>
+    <string name="b">B:</string>
+    <string name="d">D:</string>
     
 </resources>

@@ -19,12 +19,16 @@ public class QuickReaction extends SpecialAttackSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
-		ResultCombat result = combat.doNormalAttack(attacker, attacked, getValue(attacker) / 100f, false);
+		ResultCombat result = combat.doNormalAttack(attacker, attacked, getRealValue(attacker)/100f, false);
 		result.setSpecialAttack(this);
 		callback.logAttack(result);
 		return false;
 	}
-
+	
+	public int getRealValue(Character attacker) {
+		return calcDynamicValue(40, super.getValue(attacker), attacker);
+	}
+	
 	@Override
 	public StatType getType() {
 		return StatType.HEALTH;
@@ -36,8 +40,8 @@ public class QuickReaction extends SpecialAttackSkill {
 	}
 
 	@Override
-	public String getDescription(Context context) {
-		return context.getString(R.string.quick_reaction_description);
+	public String getDescription(Context context, Character attacker) {
+		return context.getString(R.string.quick_reaction_description, getRealValue(attacker),"%");
 	}
 
 	@Override
@@ -55,15 +59,7 @@ public class QuickReaction extends SpecialAttackSkill {
 		return false;
 	}
 
-	@Override
-	public int getAspectId() {
-		return ASPECT_POWER;
-	}
 
-	@Override
-	public boolean showPercentage() {
-		return true;
-	}
 
 	@Override
 	public int attemptsPerFight() {

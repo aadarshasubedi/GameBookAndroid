@@ -19,7 +19,7 @@ public class LifeLeech extends SpecialAttackSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		int dmg = resultCombat.getDamage();
-		int leech = (int) ((float) dmg / 100f * getValue(attacker));
+		int leech = (int) ((float) dmg / 100f * getRealValue(attacker));
 		Bonus bonus = createSpecialAttack(1, leech, StatType.HEALTH);
 		bonus.setCondition(false);
 		bonus.setOverflowed(false);
@@ -28,13 +28,12 @@ public class LifeLeech extends SpecialAttackSkill {
 		callback.logAttack(rs);
 		return false;
 	}
-//	@Override
-//	public int getValue(Character character) {
-//		return calcDynamicValue(30, 1.2f, character.getCurrentStats().getSpecialSkillPower());
-//	}
+	public int getRealValue(Character character) {
+		return calcDynamicValue(30, super.getValue(character), character);
+	}
 	@Override
-	public String getDescription(Context context) {
-		return context.getString(R.string.life_leech_description);
+	public String getDescription(Context context, Character attacker) {
+		return context.getString(R.string.life_leech_description, getRealValue(attacker), "%");
 	}
 
 	@Override
@@ -53,11 +52,6 @@ public class LifeLeech extends SpecialAttackSkill {
 	}
 
 	@Override
-	public boolean showPercentage() {
-		return true;
-	}
-
-	@Override
 	public boolean afterNormalAttack() {
 		return true;
 	}
@@ -68,11 +62,12 @@ public class LifeLeech extends SpecialAttackSkill {
 	}
 
 	@Override
-	public int getAspectId() {
-		return ASPECT_POWER;
-	}
-	@Override
 	public boolean isCondition() {
 		return true;
+	}
+	
+	@Override
+	public int attemptsPerFight() {
+		return 1;
 	}
 }

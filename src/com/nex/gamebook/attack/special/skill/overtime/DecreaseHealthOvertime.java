@@ -7,6 +7,7 @@ import com.nex.gamebook.attack.special.SpecialOvertimeSkill;
 import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.attack.special.skill.conditional.DecreaseAttribute;
 import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.Character;
 
 public class DecreaseHealthOvertime extends SpecialOvertimeSkill {
 
@@ -16,7 +17,7 @@ public class DecreaseHealthOvertime extends SpecialOvertimeSkill {
 	}
 
 	@Override
-	public String getDescription(Context ctx) {
+	public String getDescription(Context ctx, Character attacker) {
 		return ctx.getString(R.string.decrease_health_overtime);
 	}
 

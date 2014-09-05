@@ -2,17 +2,18 @@ package com.nex.gamebook.attack.special;
 
 import java.util.List;
 
+import android.content.Context;
+
+import com.nex.gamebook.R;
 import com.nex.gamebook.game.Bonus;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.CharacterType;
 import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SkillBased;
-import com.nex.gamebook.game.Story;
 import com.nex.gamebook.playground.BattleLogCallback;
 
-public abstract class SpecialAttackSkill implements SpecialSkill {
+public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDispatcher {
 
 	public static int NO_VALUE = -1;
 	protected int cycles = 0;
@@ -23,6 +24,7 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	public SpecialAttackSkill(int constantValue) {
 		super();
 		this.constantValue = constantValue;
+		setCombatTextDispatcher(this);
 	}
 
 	// protected boolean used = false;
@@ -56,11 +58,30 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 		bonus.setType(type);
 		bonus.setCoeff(coeff);
 		bonus.setPermanent(true);
+		if (coeff > 0 && type.equals(StatType.HEALTH))
+			bonus.setOverflowed(false);
+		else
+			bonus.setOverflowed(true);
 		bonus.setCondition(true);
-		bonus.setOverflowed(true);
 		return bonus;
 	}
-
+	/**
+	 * Make reduction if skill is conditional.
+	 * @param attacker
+	 * @param attacked
+	 * @return
+	 */
+	protected Bonus createReductedBonus(Character attacker, Character attacked) {
+		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getValue(attacker), getType());
+		if(isCondition()) {
+			//process reduction
+			int bonusValue = bonus.getValue();
+			int defense = attacked.getCurrentStats().getDefensePercentage();
+			bonus.setValue((int) (bonusValue - ((double) bonusValue / 100d) * defense));
+		}
+		return bonus;
+	}
+	
 	@Override
 	public boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 
@@ -163,31 +184,19 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	public boolean causeDamage() {
 		return true;
 	}
-
+	public int calcDynamicValue(int base, int value, Character attacker) {
+		return (int) (base * (properties.getCoeff() + value / 10));
+	}
 	@Override
 	public int getValue(Character character) {
 		if (constantValue != NO_VALUE)
 			return constantValue;
-		if (character.getSkillBased().equals(SkillBased.SKILL_POWER)) {
-			return getValueBasedOnSkillPower(character);
-		} else if (character.getSkillBased().equals(SkillBased.ATTACK)) {
-			return getValueBasedOnAttack(character);
-		} else if (character.getSkillBased().equals(SkillBased.SKILL)) {
-			return getValueBasedOnSkill(character);
-		}
-		throw new IllegalArgumentException("Wrong skill based type");
-	}
 
-	public int getValueBasedOnAttack(Character c) {
-		return (int) (c.getCurrentStats().getAttack() + (c.getCurrentStats().getAttack() * properties.getCoeff()));
+		return getValueBasedOnSkillPower(character);
 	}
 
 	public int getValueBasedOnSkillPower(Character c) {
-		return (int) (c.getCurrentStats().getSkillpower() + (c.getCurrentStats().getSkillpower() * properties.getCoeff()));
-	}
-
-	public int getValueBasedOnSkill(Character c) {
-		return (int) (c.getCurrentStats().getSkill() + (c.getCurrentStats().getSkill() * properties.getCoeff()));
+		return (int) (c.getCurrentStats().getSpecialSkillPower() + (c.getCurrentStats().getSpecialSkillPower() * properties.getCoeff()));
 	}
 
 	public String getName() {
@@ -195,7 +204,44 @@ public abstract class SpecialAttackSkill implements SpecialSkill {
 	}
 
 	public void setData(SkillProperties properties, String translatedSkillName) {
+		redefineProperties(properties);
 		this.properties = properties;
 		this.skillName = translatedSkillName;
+	}
+	protected void redefineProperties(SkillProperties properties) {
+		
+	}
+	
+	CombatTextDispatcher dispatcher;
+	
+	@Override
+	public void setCombatTextDispatcher(CombatTextDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
+	}
+	
+	public CombatTextDispatcher getCombatTextDispatcher() {
+		return dispatcher;
+	}
+	
+	@Override
+	public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
+		SpecialSkill skill = resultCombat.getSpecialAttack();
+		String enemyName = "";
+		int who = R.string.you_use;
+		int color = R.color.positive;
+		if (CharacterType.ENEMY.equals(resultCombat.getType())) {
+			who = R.string.enemy_use;
+			color = R.color.negative;
+			enemyName = resultCombat.getEnemyName() + " ";
+		}
+		String text = enemyName;
+		text += context.getString(who);
+		text += " " + skill.getName().toLowerCase();
+		if(skill.causeDamage()) {
+			text += " " + context.getString(R.string.for_word);		
+			text += " " + resultCombat.getDamage();
+		}
+		text += " " + context.getString(skill.getType().getText()).toLowerCase();
+		return new ResultCombatText(color, text);
 	}
 }

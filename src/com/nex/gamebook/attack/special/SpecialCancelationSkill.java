@@ -21,17 +21,6 @@ public abstract class SpecialCancelationSkill extends SpecialAttackSkill {
 	public boolean isPermanent() {
 		return false;
 	}
-
-	@Override
-	public int getAspectId() {
-		return NO_ASPECT;
-	}
-
-	@Override
-	public boolean showPercentage() {
-		return false;
-	}
-
 	@Override
 	public StatType getType() {
 		return null;
@@ -41,10 +30,14 @@ public abstract class SpecialCancelationSkill extends SpecialAttackSkill {
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+		int totalcanceledSkills = getSumOfCanceledSkills(attacker);
+		
+		int currentCanceled = 0;
 		ActiveOvertimeSkill releasedSkill = null;
 		for (ActiveOvertimeSkill s : attacked.getOvertimeSkills()) {
-			if ((isCancelPositive() && !s.getTargetSkill().isCondition()) || (!isCancelPositive() && s.getTargetSkill().isCondition())) {
+			if (currentCanceled<totalcanceledSkills && (isCancelPositive() && !s.getTargetSkill().isCondition()) || (!isCancelPositive() && s.getTargetSkill().isCondition())) {
 				releasedSkill = s;
+				currentCanceled++;
 				break;
 			}
 		}
@@ -72,4 +65,13 @@ public abstract class SpecialCancelationSkill extends SpecialAttackSkill {
 	public boolean causeDamage() {
 		return false;
 	}
+	
+	public int getSumOfCanceledSkills(Character attacker) {
+		int totalcanceledSkills = getValue(attacker) / 2;
+		if(totalcanceledSkills == 0) {
+			totalcanceledSkills = 1;
+		}
+		return totalcanceledSkills;
+	}
+	
 }

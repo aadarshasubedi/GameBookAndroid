@@ -1,14 +1,10 @@
 package com.nex.gamebook.attack.special;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.nex.gamebook.game.Bonus;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.playground.BattleLogCallback;
 
@@ -21,10 +17,10 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
 		Character applicationChar = resolveCharacterForApplication(attacked, attacker);
-		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getValue(attacker), getType());
-		int value = applicationChar.getCurrentStats().getValueByBonusType(getType());
+		Bonus bonus = createReductedBonus(attacker, applicationChar);
+		int value = attacked.getCurrentStats().getValueByBonusType(getType());
 		int res = value - bonus.getValue();
-		if (isCondition() && res <= getMinAttributeForStopAttack()) {
+		if (isCondition() && res <= getMinAttributeForStopAttack() && getMinAttributeForStopAttack()!=NO_VALUE) {
 			int bonusValue = value - getMinAttributeForStopAttack();
 			if (bonusValue < 0)
 				bonusValue = 0;
@@ -60,15 +56,6 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 		return attacker;
 	}
 
-	@Override
-	public int getAspectId() {
-		return ASPECT_POWER;
-	}
-
-	@Override
-	public boolean showPercentage() {
-		return false;
-	}
 
 	@Override
 	public boolean afterNormalAttack() {

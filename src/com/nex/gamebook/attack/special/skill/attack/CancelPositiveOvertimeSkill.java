@@ -7,11 +7,6 @@ import com.nex.gamebook.attack.special.SpecialCancelationSkill;
 
 public class CancelPositiveOvertimeSkill extends SpecialCancelationSkill {
 
-	
-	@Override
-	public String getDescription(Context ctx) {
-		return ctx.getString(R.string.cancel_positive_description);
-	}
 	@Override
 	public boolean isCancelPositive() {
 		return true;
@@ -22,5 +17,8 @@ public class CancelPositiveOvertimeSkill extends SpecialCancelationSkill {
 		return false;
 	}
 
-	
+	@Override
+	public String getDescription(Context ctx, com.nex.gamebook.game.Character attacker) {
+		return ctx.getString(R.string.cancel_positive_description, getSumOfCanceledSkills(attacker));
+	}
 }

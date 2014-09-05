@@ -31,30 +31,35 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/skill_durability"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" android:visibility="gone">
+
+
+
+            <TextView
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/skill_durability" />
+
+
 
         <TextView
-            style="@style/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="@string/special_skill_type" />
-
-        <TextView
-            android:id="@+id/skill_type"
-            style="@style/attribute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="@string/dsc_default" />
-
-        <TextView
-            android:id="@+id/skill_type_aspect"
+            android:id="@+id/overtimeskill_turns"
             style="@style/attribute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dsc_default" />
+
+        <TextView
+            style="@style/attribute"
+            android:layout_marginLeft="2dp"
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_turns" />
 
     </LinearLayout>
 
@@ -109,12 +114,11 @@
         android:layout_height="wrap_content" android:id="@+id/power_row">
 
         <TextView
-            android:id="@+id/skill_aspect"
             style="@style/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="@string/dsc_default" />
+            android:text="@string/power" />
 
         <TextView
             android:id="@+id/skill_power"
@@ -125,14 +129,15 @@
             android:text="@string/dsc_default" />
 
     </LinearLayout>
-
-
-	<TextView
-            android:id="@+id/skill_description"
-            style="@style/attribute"
-            android:layout_marginTop="10dip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dsc_default" />
+    <TextView
+    android:id="@+id/skill_description"
+    style="@style/attribute"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dip"
+    android:text="@string/dsc_default" />
 </LinearLayout>
+
+
+
 </LinearLayout>

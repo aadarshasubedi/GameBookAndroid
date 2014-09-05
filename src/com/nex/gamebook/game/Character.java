@@ -3,6 +3,8 @@ package com.nex.gamebook.game;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +38,6 @@ public abstract class Character implements Serializable, Mergable {
 	private transient List<Bonus> conditions = new ArrayList<>();
 	private int level = 1;
 	private long experience = 0;
-	private SkillBased skillBased;
 	private StatType primaryStat;
 
 	public Character() {
@@ -112,13 +113,16 @@ public abstract class Character implements Serializable, Mergable {
 	 */
 	public int addBonus(Bonus bonus) {
 		int realValue = 0;
+		int bonusValue = bonus.getValue();
+	
 		try {
+			
 			int currentValue = GameBookUtils.getStatByType(getCurrentStats(), bonus.getType());
-			int total = currentValue + (bonus.getCoeff() * bonus.getValue());
+			int total = currentValue + (bonus.getCoeff() * bonusValue);
 			int defaultValue = GameBookUtils.getStatByType(getStats(), bonus.getType());
 			int setedValue = 0;
 			if (bonus.isBase()) {
-				GameBookUtils.setStatByType(getStats(), bonus.getType(), defaultValue + bonus.getValue());
+				GameBookUtils.setStatByType(getStats(), bonus.getType(), defaultValue + bonusValue);
 				int difference = currentValue - defaultValue;
 				defaultValue = GameBookUtils.getStatByType(getStats(), bonus.getType());
 				defaultValue += difference;
@@ -136,7 +140,7 @@ public abstract class Character implements Serializable, Mergable {
 					realValue = currentValue;
 					total = 0;
 				} else {
-					realValue = bonus.getValue();
+					realValue = bonusValue;
 				}
 				setedValue = GameBookUtils.setStatByType(getCurrentStats(), bonus.getType(), total);
 			}
@@ -144,9 +148,9 @@ public abstract class Character implements Serializable, Mergable {
 				if (setedValue == 0) {
 					realValue = 0;
 				}
-			if ((currentValue + realValue) != setedValue) {
-				realValue = setedValue - currentValue;
-			}
+//			if ((currentValue + realValue) != setedValue && ) {
+//				realValue = setedValue - currentValue;
+//			}
 			if (!bonus.isPermanent()) {
 				if (this.temporalStatsHolder == null) {
 					overideHolderStats = true;
@@ -162,7 +166,7 @@ public abstract class Character implements Serializable, Mergable {
 			Log.e("GameBook", "", e);
 		}
 		if (bonus.isBase()) {
-			realValue = bonus.getValue();
+			realValue = bonusValue;
 		}
 		return realValue;
 	}
@@ -306,28 +310,64 @@ public abstract class Character implements Serializable, Mergable {
 	public abstract void chooseBestSkill(Character c, boolean enemyBegin);
 
 	public boolean hasOvertimeBuff() {
+		return getOvertimeBuffs() > 0;
+	}
+	
+	public int getOvertimeBuffs() {
+		int i = 0;
 		for (ActiveOvertimeSkill a : getOvertimeSkills()) {
 			if (!a.getTargetSkill().isCondition())
-				return true;
+				i++;
 		}
-		return false;
+		return i;
 	}
-
-	public boolean hasOvertimeDebuff() {
+	
+	public boolean hasOvertimeDebuff() {		
+		return getOvertimeDebuffs()>0;
+	}
+	public int getOvertimeDebuffs() {
+		int i = 0;
 		for (ActiveOvertimeSkill a : getOvertimeSkills()) {
 			if (a.getTargetSkill().isCondition())
-				return true;
+				i++;
 		}
-		return false;
+		return i;
 	}
-
-	public SkillBased getSkillBased() {
-		return skillBased;
+	
+	public int getLongesOvertimeBuff() {
+		List<ActiveOvertimeSkill> buffs = new ArrayList<ActiveOvertimeSkill>();
+		for (ActiveOvertimeSkill a : getOvertimeSkills()) {
+			if (!a.getTargetSkill().isCondition())
+				buffs.add(a);
+		}
+		Collections.sort(buffs, createOvertimeSkillsComparator());
+		if(buffs.size()>0)
+		return buffs.get(0).getRemainsTurns();
+		return 0;
 	}
-
-	public void setSkillBased(SkillBased skillBased) {
-		this.skillBased = skillBased;
+	
+	public int getLongestOvertimeDebuff() {
+		List<ActiveOvertimeSkill> buffs = new ArrayList<ActiveOvertimeSkill>();
+		for (ActiveOvertimeSkill a : getOvertimeSkills()) {
+			if (a.getTargetSkill().isCondition())
+				buffs.add(a);
+		}
+		Collections.sort(buffs, createOvertimeSkillsComparator());
+		if(buffs.size()>0)
+		return buffs.get(0).getRemainsTurns();
+		return 0;
 	}
+	
+	
+	private Comparator<ActiveOvertimeSkill> createOvertimeSkillsComparator() {
+		return new Comparator<ActiveOvertimeSkill>() {
+			@Override
+			public int compare(ActiveOvertimeSkill lhs, ActiveOvertimeSkill rhs) {
+				return -Integer.valueOf(lhs.getRemainsTurns()).compareTo(rhs.getRemainsTurns());
+			}
+		};
+	}
+	
 	public List<SkillAssign> getAssignedSkills() {
 		return assignedSkills;
 	}

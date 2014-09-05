@@ -5,6 +5,7 @@ import android.content.Context;
 import com.nex.gamebook.R;
 import com.nex.gamebook.attack.special.SpecialConditionalSkill;
 import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.Character;
 
 public class IncreaseAttribute extends SpecialConditionalSkill {
 
@@ -22,7 +23,7 @@ public class IncreaseAttribute extends SpecialConditionalSkill {
 	}
 
 	@Override
-	public String getDescription(Context ctx) {
+	public String getDescription(Context ctx, Character attacker) {
 		return ctx.getString(R.string.increase_attribute, ctx.getString(type.getText()));
 	}
 

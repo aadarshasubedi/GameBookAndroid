@@ -25,6 +25,7 @@ import android.widget.ViewFlipper;
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
+import com.nex.gamebook.attack.special.ResultCombatText;
 import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.combat.CombatProcess;
 import com.nex.gamebook.game.Character;
@@ -119,14 +120,14 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		final TextView baseStats = (TextView) view.findViewById(R.id.base_stats);
 		actualAttrs.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				showStats(masterView, _character.getCurrentStats(), _character.getStats(), true);
+				showStats(masterView, _character, true);
 				decoreClickableTextView(getContext(), baseStats, R.string.base_stats);
 				actualAttrs.setText(R.string.actual_stats);
 			}
 		});
 		baseStats.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				showStats(masterView, _character.getStats(), _character.getStats(), false);
+				showStats(masterView, _character, false);
 				decoreClickableTextView(getContext(), actualAttrs, R.string.actual_stats);
 				baseStats.setText(R.string.base_stats);
 			}
@@ -135,11 +136,23 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		// showSkill((TextView) view.findViewById(R.id.skill_name), _character);
 		showAvailableSkills();
 		TextView level = (TextView) view.findViewById(R.id.level);
-		ProgressBar progress = (ProgressBar) view.findViewById(R.id.experience_bar);
-
+		com.nex.gamebook.playground.TextProgressBar progress = (com.nex.gamebook.playground.TextProgressBar) view.findViewById(R.id.experience_bar);
+		changeProgressBarColor(progress, R.drawable.experience_bar_style);
+		progress.setText(String.valueOf(_character.getExperience()));
 		level.setText(String.valueOf(_character.getLevel()));
 		progress.setProgress(_character.getXpToLevelPercentage());
 		masterView.findViewById(R.id.tableLayout1).invalidate();
+		TextView buffs = (TextView) view.findViewById(R.id.player_buffs);
+		buffs.setText(String.valueOf(_character.getOvertimeBuffs()));
+		TextView debuffs = (TextView) view.findViewById(R.id.player_debuffs);
+		debuffs.setText(String.valueOf(_character.getOvertimeDebuffs()));
+		
+		TextView buffsLongest = (TextView) view.findViewById(R.id.player_longest_buff);
+		buffsLongest.setText(String.valueOf(_character.getLongesOvertimeBuff()));
+		TextView debuffsLongest = (TextView) view.findViewById(R.id.player_longest_debuff);
+		debuffsLongest.setText(String.valueOf(_character.getLongestOvertimeDebuff()));
+		
+		
 	}
 
 	public void showAvailableSkills() {
@@ -331,6 +344,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					
 					TextProgressBar bar = (TextProgressBar) rowView.findViewById(R.id.enemy_health_bar);
 					int healthPercentage = (int) (((double)cs.getHealth() / (double)s.getHealth()) * 100);
+					changeHealthProgressColor(bar, healthPercentage, enemy);
 					bar.setProgress(healthPercentage);
 					bar.setText(cs.getHealth()+"/"+s.getHealth());
 					List<SpecialSkill> sk = new ArrayList<>();
@@ -342,6 +356,15 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					} else {
 						skills.setVisibility(View.GONE);
 					}
+					TextView buffs = (TextView) rowView.findViewById(R.id.enemy_buffs);
+					buffs.setText(String.valueOf(enemy.getLongesOvertimeBuff()));
+					TextView debuffs = (TextView) rowView.findViewById(R.id.enemy_debuffs);
+					debuffs.setText(String.valueOf(enemy.getLongestOvertimeDebuff()));
+					
+					TextView buffsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_buff);
+					buffsLongest.setText(String.valueOf(enemy.getLongesOvertimeBuff()));
+					TextView debuffsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_debuff);
+					debuffsLongest.setText(String.valueOf(enemy.getLongestOvertimeDebuff()));
 				}
 			};
 			changeableView.addView(rowView);
@@ -412,23 +435,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 		private void logSpecialAttack(ResultCombat resultCombat) {
 			Context context = adapter.context;
-			SpecialSkill skill = resultCombat.getSpecialAttack();
-			String enemyName = "";
-			int who = R.string.you_use;
-			int color = R.color.positive;
-			if (CharacterType.ENEMY.equals(resultCombat.getType())) {
-				who = R.string.enemy_use;
-				color = R.color.negative;
-				enemyName = resultCombat.getEnemyName();
-			}
-			String text = enemyName;
-			text += " " + context.getString(who);
-			text += " " + skill.getName().toLowerCase();
-			if(skill.causeDamage()) {
-				text += " " + context.getString(R.string.for_word);		
-				text += " " + resultCombat.getDamage();
-			}
-			addResultToLog(log, text, context, color);
+			ResultCombatText text = resultCombat.getSpecialAttack().getCombatTextDispatcher().getLogAttack(context, resultCombat);
+			addResultToLog(log, text.getText(), context, text.getColor());
 		}
 
 		private void logNormalAttack(ResultCombat resultCombat) {

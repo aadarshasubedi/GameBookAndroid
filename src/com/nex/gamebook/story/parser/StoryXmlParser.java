@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,18 +23,17 @@ import android.util.Log;
 
 import com.nex.gamebook.attack.special.SkillProperties;
 import com.nex.gamebook.game.Bonus;
+import com.nex.gamebook.game.Bonus.BonusState;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Enemy;
+import com.nex.gamebook.game.Enemy.EnemyLevel;
 import com.nex.gamebook.game.EnemyAssign;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.SkillAssign;
-import com.nex.gamebook.game.SkillBased;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.game.StorySectionOption;
-import com.nex.gamebook.game.Bonus.BonusState;
-import com.nex.gamebook.game.Bonus.StatType;
-import com.nex.gamebook.game.Enemy.EnemyLevel;
 import com.nex.gamebook.util.GameBookUtils;
 
 public class StoryXmlParser {
@@ -109,7 +107,6 @@ public class StoryXmlParser {
 	private final String BEFOREENEMYATTACK="beforeEnemyAttack";
 	private final String AFTERENEMYATTACK="afterEnemyAttack";
 	private final String AFTERNORMALATTACK="afterNormalAttack";
-	
 	Context context;
 
 	public StoryXmlParser(Context context) {
@@ -275,7 +272,6 @@ public class StoryXmlParser {
 		String id = element.getAttribute(ID);
 		enemy.setEnemyLevel(EnemyLevel.getLevelByString(element.getAttribute(TYPE)));
 		enemy.setXpcoeff(getFloat(element.getAttribute(XPCOEFF), Enemy.DEFAULT_COEFF));
-		enemy.setSkillBased(SkillBased.valueOf(element.getAttribute(SKILL_BASED)));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
@@ -299,7 +295,6 @@ public class StoryXmlParser {
 		skill.setIncrease(getBoolean(element.getAttribute(INCREASE)));
 		skill.setCoeff(getFloat(element.getAttribute(COEFF)));
 		skill.setResetAtBattleEnd(getBoolean(element.getAttribute(RESETATBATTLEEND)));
-		
 		skill.setBeforeEnemyAttack(getBoolean(element.getAttribute(BEFOREENEMYATTACK)));
 		skill.setBeforeEnemySkill(getBoolean(element.getAttribute(BEFOREENEMYSKILL)));
 		skill.setAfterEnemyAttack(getBoolean(element.getAttribute(AFTERENEMYATTACK)));
@@ -314,7 +309,6 @@ public class StoryXmlParser {
 		character.setDescription(element.getAttribute(DESCRIPTION));
 		character.setId(getInteger(element.getAttribute(ID)));
 		character.setPosition(getInteger(element.getAttribute(POSITION)));
-		character.setSkillBased(SkillBased.valueOf(element.getAttribute(SKILL_BASED)));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);

@@ -2,45 +2,45 @@
 <resources>
     <!-- proprietary skills -->
 	<string name="twice_attack_description">
-	    Provede útok dvakrát.
+	    Provede útok dvakrát
 	</string>
 	<string name="reflect_damage_description">
-	    Po útoku nepřítele mu vrátí zpět určité množství obdrženého poškození.
+	    Vrátí nepříteli %1$d%2$s obdrženého poškození
 	</string>	
 	<string name="life_leech_description">
-	    Po útoku vrátí určité množství zdraví z uštědřeného poškození. Nikdy nevyléčí zdraví nad základ.
+	    Vrátí %1$d%2$s zdraví z uštědřeného poškození
 	</string>
 	<string name="quick_reaction_description">
-		Ještě před útokem nepřítele provede útok za n% normálního útoku.
+		Provede útok za %1$d%2$s normálního útoku
 	</string>
 	
 	<string name="cancel_positive_description">
-		Zruší nějaký pozitivní bonus na nepříteli.
+		Zruší %d pozitivních bonusů na nepříteli
 	</string>
 	<string name="cancel_negative_description">
-		Zruší nějaký negativní bonus na sesílateli.
+		Zruší %d negativních bonusů na sesílateli
 	</string>
 	
 	<!-- overtime skills -->
 	<string name="increase_health_overtime">
-		Postupně léčí zdraví. Nikdy nevyléčí zdraví nad základ.
+		Postupně léčí zdraví. Nikdy nevyléčí zdraví nad základ
 	</string>
 	<string name="increase_health_overtime_greater">
-		Okamžitě přidá %s a poté léčí zdraví postupně. Nikdy nevyléčí zdraví nad základ.
+		%s a poté léčí zdraví postupně. Nikdy nevyléčí zdraví nad základ
 	</string>
 	<string name="decrease_health_overtime">
-		Postupně snižuje zdraví. Nikdy nevyléčí zdraví nad základ.
+		Postupně snižuje zdraví.
 	</string>
 	<string name="decrease_health_overtime_greater">
-		Okamžitě sníží %s a poté snižuje zdraví postupně.
+	    %s a poté snižuje zdraví postupně
 	</string>
 	
 	<!-- conditional skills -->
 	<string name="decrease_attribute">
-	    Sníží %s nepříteli.
+	    Sníží %s nepříteli
 	</string>
 	<string name="increase_attribute">
-	    Zvýší %s nepříteli.
+	    Zvýší %s sesílateli
 	</string>
 	
 </resources>

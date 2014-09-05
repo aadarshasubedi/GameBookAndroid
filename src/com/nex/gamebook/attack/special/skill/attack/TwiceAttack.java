@@ -36,7 +36,7 @@ public class TwiceAttack extends SpecialAttackSkill {
 	}
 
 	@Override
-	public String getDescription(Context context) {
+	public String getDescription(Context context, Character attacker) {
 		return context.getString(R.string.twice_attack_description);
 	}
 
@@ -50,15 +50,6 @@ public class TwiceAttack extends SpecialAttackSkill {
 		return NO_VALUE;
 	}
 
-	@Override
-	public boolean showPercentage() {
-		return false;
-	}
-
-	@Override
-	public int getAspectId() {
-		return R.string.special_skill_aspect_power;
-	}
 
 	@Override
 	public int attemptsPerFight() {

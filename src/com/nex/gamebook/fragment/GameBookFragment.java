@@ -3,16 +3,26 @@ package com.nex.gamebook.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nex.gamebook.R;
+import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.Stats;
-import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.TextProgressBar;
 
 public abstract class GameBookFragment {
@@ -95,7 +105,10 @@ public abstract class GameBookFragment {
 		}
 	}
 	
-	protected void showStats(View view, Stats stats, Stats defaultStats, boolean colorify) {
+	protected void showStats(View view, Character c, boolean colorify) {
+		Stats stats = c.getCurrentStats();
+		Stats defaultStats = c.getStats();
+		
 		highlightPrimaryAttribute(view);
 		TextView attr = (TextView) view.findViewById(R.id.sel_attr_luck);
 		attr.setText(String.valueOf(stats.getLuckPercentage()));
@@ -147,13 +160,39 @@ public abstract class GameBookFragment {
 		attr.setText(String.valueOf(stats.getSkillpower()));
 		attr.setTextColor(getContext().getResources().getColor(R.color.number_color));
 		int healthPercentage = (int) (((double)stats.getHealth() / (double)defaultStats.getHealth()) * 100);
+		if(healthPercentage>100) {
+			healthPercentage = 100;
+		}
 		TextProgressBar progress = (TextProgressBar) view.findViewById(R.id.p_health_progress);
+		changeHealthProgressColor(progress, healthPercentage, c);
 		progress.setProgress(healthPercentage);
 		progress.setText(stats.getHealth() + "/"+defaultStats.getHealth());
+		
+		
 		if (colorify)
 			changeAttributeColor(view.getContext(), attr, defaultStats.getSkillpower(), stats.getSkillpower());
 	}
-
+	
+	
+	public void changeHealthProgressColor(TextProgressBar progress, int healthPercentage, Character ch) {
+		int color = R.drawable.health_bar_full;
+		if(healthPercentage<=50) {
+			color = R.drawable.health_bar_half;
+	    } 
+		if(healthPercentage<=20) {
+			color = R.drawable.health_bar_quarter;
+		}
+		if(ch.hasOvertimeDebuff()) {
+			color = R.drawable.health_bar_condition;
+		}
+		changeProgressBarColor(progress, color);
+	}
+	
+	public void changeProgressBarColor(ProgressBar pg, int drawable) {
+		Drawable d = context.getResources().getDrawable(drawable);
+		pg.setProgressDrawable(d);	
+	}
+	
 	@SuppressLint("ResourceAsColor")
 	protected void changeAttributeColor(Context ctx, TextView text, int defaultValue, int currentvalue) {
 		if (currentvalue > defaultValue) {
