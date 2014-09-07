@@ -28,6 +28,7 @@ import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.Enemy.EnemyLevel;
 import com.nex.gamebook.game.EnemyAssign;
+import com.nex.gamebook.game.ExperienceMap;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.SkillAssign;
 import com.nex.gamebook.game.Stats;
@@ -107,6 +108,8 @@ public class StoryXmlParser {
 	private final String BEFOREENEMYATTACK="beforeEnemyAttack";
 	private final String AFTERENEMYATTACK="afterEnemyAttack";
 	private final String AFTERNORMALATTACK="afterNormalAttack";
+	private final String CONDITION = "condition";
+	private final String ISBASE = "isBase";
 	Context context;
 
 	public StoryXmlParser(Context context) {
@@ -300,6 +303,8 @@ public class StoryXmlParser {
 		skill.setAfterEnemyAttack(getBoolean(element.getAttribute(AFTERENEMYATTACK)));
 		skill.setAfterNormalAttack(getBoolean(element.getAttribute(AFTERNORMALATTACK)));
 		skill.setPermanent(getBoolean(element.getAttribute(PERMANENT)));
+		skill.setCondition(getBoolean(element.getAttribute(CONDITION)));
+		skill.setOnEndOfRound(getBoolean(element.getAttribute("onEndOfRound")));
 		skill.setId(id);
 		story.getSkills().put(id, skill);
 	}
@@ -314,9 +319,10 @@ public class StoryXmlParser {
 			Node node = element.getChildNodes().item(i);
 			putStats(character, node);
 		}
-		character.getStats().setPlayer(character);
-		character.getCurrentStats().setPlayer(character);
+		character.getStats().setCharacter(character);
+		character.getCurrentStats().setCharacter(character);
 		character.setStory(story);
+		ExperienceMap.getInstance().updateStatsByLevel(character);
 		story.getCharacters().add(character);
 		
 	}
@@ -357,7 +363,7 @@ public class StoryXmlParser {
 				character.setPrimaryStat(stat);
 			}
 		}
-		character.setCurrentStats(new Stats(character.getStats()));
+		character.setCurrentStats(new Stats(character.getStats(), false));
 	}
 	
 	private void loadSection(Story story, Element element) throws Exception {

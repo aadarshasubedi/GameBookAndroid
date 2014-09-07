@@ -28,7 +28,33 @@ public class SkillProperties {
 	private boolean beforeEnemyAttack;
 	private boolean afterEnemyAttack;
 	private boolean afterNormalAttack;
+	private boolean onEndOfRound;
 	private boolean permanent;
+	private boolean condition;
+
+	public SkillProperties() {
+
+	}
+
+	public SkillProperties(SkillProperties source) {
+		this.proprietarySkill = source.proprietarySkill;
+		this.skillName = source.skillName;
+		this.increase = source.increase;
+		this.resetAtBattleEnd = source.resetAtBattleEnd;
+		this.permanent = source.permanent;
+		this.coeff = source.coeff;
+		this.condition = source.condition;
+		this.skillName = source.skillName;
+		this.attempts = source.attempts;
+		this.turns = source.attempts;
+		this.type = source.type;
+		this.beforeEnemySkill = source.beforeEnemySkill;
+		this.beforeEnemyAttack = source.beforeEnemyAttack;
+		this.afterEnemyAttack = source.afterEnemyAttack;
+		this.afterNormalAttack = source.afterNormalAttack;
+
+	}
+
 	private String id;
 	private float coeff;
 
@@ -113,7 +139,7 @@ public class SkillProperties {
 			return skill;
 		}
 		if (increase) {
-			if (turns > 0) {
+			if (turns > 0 && !condition) {
 				if (proprietarySkillExists()) {
 					return new IncreaseHealthOvertimeGreater(proprietarySkill);
 				} else if (type != null) {
@@ -125,7 +151,7 @@ public class SkillProperties {
 				return new IncreaseAttribute(type);
 			}
 		} else {
-			if (turns > 0) {
+			if (turns > 0 && !condition) {
 				if (proprietarySkillExists()) {
 					return new DecreaseHealthOvertimeGreater(proprietarySkill);
 				} else if (type != null) {
@@ -201,6 +227,22 @@ public class SkillProperties {
 
 	public void setPermanent(boolean permanent) {
 		this.permanent = permanent;
+	}
+
+	public boolean isCondition() {
+		return condition;
+	}
+
+	public void setCondition(boolean condition) {
+		this.condition = condition;
+	}
+
+	public boolean isOnEndOfRound() {
+		return onEndOfRound;
+	}
+
+	public void setOnEndOfRound(boolean onEndOfRound) {
+		this.onEndOfRound = onEndOfRound;
 	}
 
 }

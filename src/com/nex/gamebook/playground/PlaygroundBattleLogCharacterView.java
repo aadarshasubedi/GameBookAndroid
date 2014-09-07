@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -33,7 +32,6 @@ import com.nex.gamebook.game.CharacterType;
 import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.util.SkillInfoDialog;
@@ -120,14 +118,14 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		final TextView baseStats = (TextView) view.findViewById(R.id.base_stats);
 		actualAttrs.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				showStats(masterView, _character, true);
+				showStats(masterView, _character, false);
 				decoreClickableTextView(getContext(), baseStats, R.string.base_stats);
 				actualAttrs.setText(R.string.actual_stats);
 			}
 		});
 		baseStats.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				showStats(masterView, _character, false);
+				showStats(masterView, _character, true);
 				decoreClickableTextView(getContext(), actualAttrs, R.string.actual_stats);
 				baseStats.setText(R.string.base_stats);
 			}
@@ -142,17 +140,24 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		level.setText(String.valueOf(_character.getLevel()));
 		progress.setProgress(_character.getXpToLevelPercentage());
 		masterView.findViewById(R.id.tableLayout1).invalidate();
+		TextView hots = (TextView) view.findViewById(R.id.player_hots);
+		hots.setText(String.valueOf(_character.getHots()));
+		TextView dots = (TextView) view.findViewById(R.id.player_dots);
+		dots.setText(String.valueOf(_character.getDots()));
+		TextView hotsLongest = (TextView) view.findViewById(R.id.player_longest_hot);
+		hotsLongest.setText(String.valueOf(_character.getLongestHot()));
+		TextView dotsLongest = (TextView) view.findViewById(R.id.player_longest_dot);
+		dotsLongest.setText(String.valueOf(_character.getLongestDot()));
+
 		TextView buffs = (TextView) view.findViewById(R.id.player_buffs);
-		buffs.setText(String.valueOf(_character.getOvertimeBuffs()));
+		buffs.setText(String.valueOf(_character.getBuffs()));
 		TextView debuffs = (TextView) view.findViewById(R.id.player_debuffs);
-		debuffs.setText(String.valueOf(_character.getOvertimeDebuffs()));
-		
+		debuffs.setText(String.valueOf(_character.getDebuffs()));
 		TextView buffsLongest = (TextView) view.findViewById(R.id.player_longest_buff);
-		buffsLongest.setText(String.valueOf(_character.getLongesOvertimeBuff()));
+		buffsLongest.setText(String.valueOf(_character.getLongestBuff()));
 		TextView debuffsLongest = (TextView) view.findViewById(R.id.player_longest_debuff);
-		debuffsLongest.setText(String.valueOf(_character.getLongestOvertimeDebuff()));
-		
-		
+		debuffsLongest.setText(String.valueOf(_character.getLongestDebuff()));
+
 	}
 
 	public void showAvailableSkills() {
@@ -216,7 +221,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			if (skill != null) {
 				rowView.setTag(skill);
 				name.setText(skill.getName());
-				if (skill.canUse()) {
+				if (skill.canUse() && applicator.isCanCastSkill()) {
 					if (R.layout.spinner_dropdown_item == inflate)
 						name.setTextColor(getContext().getResources().getColor(R.color.button_color));
 					else
@@ -341,12 +346,12 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					attack.setText(String.valueOf(enemy.getCurrentStats().getSkillpower()));
 					changeAttributeColor(getContext(), attack, s.getSkillpower(), cs.getSkillpower());
 					final SkillsSpinner skills = (SkillsSpinner) rowView.findViewById(R.id.enemy_skills);
-					
+
 					TextProgressBar bar = (TextProgressBar) rowView.findViewById(R.id.enemy_health_bar);
-					int healthPercentage = (int) (((double)cs.getHealth() / (double)s.getHealth()) * 100);
+					int healthPercentage = (int) (((double) cs.getHealth() / (double) s.getHealth()) * 100);
 					changeHealthProgressColor(bar, healthPercentage, enemy);
 					bar.setProgress(healthPercentage);
-					bar.setText(cs.getHealth()+"/"+s.getHealth());
+					bar.setText(cs.getHealth() + "/" + s.getHealth());
 					List<SpecialSkill> sk = new ArrayList<>();
 					sk.add(null);
 					sk.addAll(enemy.getActiveSkills());
@@ -356,15 +361,25 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					} else {
 						skills.setVisibility(View.GONE);
 					}
+					TextView hots = (TextView) rowView.findViewById(R.id.enemy_hots);
+					hots.setText(String.valueOf(enemy.getHots()));
+					TextView dots = (TextView) rowView.findViewById(R.id.enemy_dots);
+					dots.setText(String.valueOf(enemy.getDots()));
+
+					TextView hotsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_hot);
+					hotsLongest.setText(String.valueOf(enemy.getLongestHot()));
+					TextView dotsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_dot);
+					dotsLongest.setText(String.valueOf(enemy.getLongestDot()));
+
 					TextView buffs = (TextView) rowView.findViewById(R.id.enemy_buffs);
-					buffs.setText(String.valueOf(enemy.getLongesOvertimeBuff()));
+					buffs.setText(String.valueOf(enemy.getBuffs()));
 					TextView debuffs = (TextView) rowView.findViewById(R.id.enemy_debuffs);
-					debuffs.setText(String.valueOf(enemy.getLongestOvertimeDebuff()));
-					
+					debuffs.setText(String.valueOf(enemy.getDebuffs()));
 					TextView buffsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_buff);
-					buffsLongest.setText(String.valueOf(enemy.getLongesOvertimeBuff()));
+					buffsLongest.setText(String.valueOf(enemy.getLongestBuff()));
 					TextView debuffsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_debuff);
-					debuffsLongest.setText(String.valueOf(enemy.getLongestOvertimeDebuff()));
+					debuffsLongest.setText(String.valueOf(enemy.getLongestDebuff()));
+
 				}
 			};
 			changeableView.addView(rowView);
@@ -443,8 +458,21 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			int color = R.color.positive;
 			String text = "";
 			Context context = adapter.context;
-
-			if (resultCombat.isLuck()) {
+			if (resultCombat.isCannotCast()) {
+				if(resultCombat.getType().equals(CharacterType.ENEMY)) {
+					text = context.getString(R.string.enemy_cannot_cast);	
+				} else {
+					text = context.getString(R.string.you_cannot_cast);
+					color = R.color.negative;
+				}
+			} else if (resultCombat.isCannotAttack()) {
+				if(resultCombat.getType().equals(CharacterType.ENEMY)) {
+					text = context.getString(R.string.enemy_cannot_attack);	
+				} else {
+					text = context.getString(R.string.you_cannot_attack);
+					color = R.color.negative;
+				}
+			} else if (resultCombat.isLuck()) {
 				if (resultCombat.getType().equals(CharacterType.ENEMY)) {
 					text += context.getResources().getString(R.string.you_have_luck);
 				} else {

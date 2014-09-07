@@ -10,6 +10,8 @@ public class ResultCombat {
 	private boolean luck;
 	private int damage;
 	private String enemyName;
+	private boolean cannotAttack;
+	private boolean cannotCast;
 
 	public boolean isCritical() {
 		return critical;
@@ -75,6 +77,22 @@ public class ResultCombat {
 
 	public void setSpecialAttack(SpecialSkill specialAttack) {
 		this.specialAttack = specialAttack;
+	}
+
+	public boolean isCannotAttack() {
+		return cannotAttack;
+	}
+
+	public void setCannotAttack(boolean cannotAttack) {
+		this.cannotAttack = cannotAttack;
+	}
+
+	public boolean isCannotCast() {
+		return cannotCast;
+	}
+
+	public void setCannotCast(boolean cannotCast) {
+		this.cannotCast = cannotCast;
 	}
 
 }

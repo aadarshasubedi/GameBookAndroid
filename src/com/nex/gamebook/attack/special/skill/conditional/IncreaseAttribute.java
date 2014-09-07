@@ -14,7 +14,6 @@ public class IncreaseAttribute extends SpecialConditionalSkill {
 	public IncreaseAttribute(StatType type, int constantValue) {
 		super(constantValue);
 		this.type = type;
-		this.skillName = skillName;
 	}
 
 	public IncreaseAttribute(StatType type) {

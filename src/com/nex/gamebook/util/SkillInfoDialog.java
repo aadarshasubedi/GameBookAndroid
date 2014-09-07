@@ -70,10 +70,12 @@ public class SkillInfoDialog {
 			view.setText(t);
 		}
 		view = (TextView) inflatedView.findViewById(R.id.attempts);
-		view.setText(String.valueOf(skill.attemptsPerFight()));
+		String att = String.valueOf(skill.attemptsPerFight());
+		view.setText(att);
 		if(skill.resetAtBattleEnd()) {
-			view.setText(R.string.once_in_battle);
-			inflatedView.findViewById(R.id.attempts_marker).setVisibility(View.GONE);
+			view.setText(att + "x ");
+			TextView v = (TextView) inflatedView.findViewById(R.id.attempts_marker);
+			v.setText(R.string.in_battle);
 		} else if(skill.attemptsPerFight() < 0) {
 			view.setText(R.string.always);
 			inflatedView.findViewById(R.id.attempts_marker).setVisibility(View.GONE);

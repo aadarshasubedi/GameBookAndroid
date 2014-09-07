@@ -192,20 +192,6 @@ public class Player extends Character {
 	}
 
 	@Override
-	public void setCurrentStats(Stats currentStats) {
-		Stats s = new Stats(currentStats);
-		s.setPlayer(this);
-		super.setCurrentStats(s);
-	}
-
-	@Override
-	public void setStats(Stats stats) {
-		Stats s = new Stats(stats);
-		s.setPlayer(this);
-		super.setStats(s);
-	}
-
-	@Override
 	public void chooseBestSkill(Character c, boolean enemyBegin) {
 	}
 

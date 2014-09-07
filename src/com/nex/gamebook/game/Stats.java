@@ -24,38 +24,75 @@ public class Stats implements Serializable {
 	private int attack;
 	private int damage = 1;
 	private int skillpower = 1;
-	private transient Player player;
+	private transient Character character;
 	private transient Stats holder;
+	private boolean isBase;
 
-	public Stats() {
+	public Stats(boolean isBase) {
+		this.isBase = isBase;
 	}
-	public Stats(Stats stats,int positive) {
-		this.health = positive*stats.health;
-		this.defense = positive*stats.defense;
-		this.skill = positive*stats.skill;
-		this.luck = positive*stats.luck;
-		this.attack = positive*stats.attack;
-		this.damage = positive*stats.damage;
-		this.skillpower = positive*stats.skillpower;
+
+	public Stats(Stats stats, int positive, boolean isBase) {
+		this(isBase);
+		this.health = positive * stats.health;
+		this.defense = positive * stats.defense;
+		this.skill = positive * stats.skill;
+		this.luck = positive * stats.luck;
+		this.attack = positive * stats.attack;
+		this.damage = positive * stats.damage;
+		this.skillpower = positive * stats.skillpower;
 	}
-	public Stats(Stats stats) {
-		this(stats, 1);
+
+	public Stats(Stats stats, boolean isBase) {
+		this(stats, 1, isBase);
 	}
 
 	public int getHealth() {
-		return health;
+		int value = health + getConditionsByType(StatType.HEALTH);
+		return value;
 	}
 
+	public int getRealHealth() {
+		return this.health;
+	}
+	
+	public int getRealDefense() {
+		return this.defense;
+	}
+	
+	public int getRealAttack() {
+		return this.attack;
+	}
+	public int getRealSkill() {
+		return this.skill;
+	}
+	public int getRealLuck() {
+		return this.luck;
+	}
+	public int getRealDamage() {
+		return this.damage;
+	}
+	public int getRealSkillpower() {
+		return this.skillpower;
+	}
 	public int setHealth(int health) {
 		return this.health = health;
 	}
 
 	public int getDefense() {
-		return defense;
+		int total = defense + getConditionsByType(StatType.DEFENSE);
+		int max = getMaxValuebyPercentage(TOTAL_ARMOR_FOR_CALC, MAX_DEFENSE_PERCENTAGE, total);
+		if (total > max)
+			total = max;
+		return total;
 	}
 
 	public int getSkillpower() {
-		return skillpower;
+		int total = skillpower + getConditionsByType(StatType.SKILLPOWER);
+		if (total < 1) {
+			total = 1;
+		}
+		return total;
 	}
 
 	public int setSkillpower(int skillpower) {
@@ -63,55 +100,57 @@ public class Stats implements Serializable {
 	}
 
 	public int setDefense(int defense) {
-		int total = getTotalStat(TOTAL_ARMOR_FOR_CALC);
+		return this.defense = getMaxValuebyPercentage(TOTAL_ARMOR_FOR_CALC, MAX_DEFENSE_PERCENTAGE, defense);
+	}
+
+	public int getMaxValuebyPercentage(int totalForCalc, int maxPerc, int value) {
+		int total = getTotalStat(totalForCalc);
 		int perc = Stats.getPercentage(defense, total);
-		if (perc > MAX_DEFENSE_PERCENTAGE) {
-			defense = getValuePerc(total, MAX_DEFENSE_PERCENTAGE);
+		if (perc > maxPerc) {
+			value = getValuePerc(total, maxPerc);
 		}
-		return this.defense = defense;
+		return value;
 	}
 
 	public int getSkill() {
-		return skill;
+		int total = skill + getConditionsByType(StatType.SKILL);
+		int max = getMaxValuebyPercentage(TOTAL_SKILL_FOR_CALC, MAX_SKILL_PERCENTAGE, total);
+		if (total > max)
+			total = max;
+		return total;
 	}
 
 	public int setSkill(int skill) {
-		int total = getTotalStat(TOTAL_SKILL_FOR_CALC);
-		int perc = Stats.getPercentage(skill, total);
-		if (perc > MAX_DEFENSE_PERCENTAGE) {
-			skill = getValuePerc(total, MAX_SKILL_PERCENTAGE);
-		}
-		return this.skill = skill;
+		return this.skill = getMaxValuebyPercentage(TOTAL_SKILL_FOR_CALC, MAX_SKILL_PERCENTAGE, skill);
 	}
 
 	public int getLuck() {
-		return luck;
+		int total = luck + getConditionsByType(StatType.LUCK);
+		int max = getMaxValuebyPercentage(TOTAL_LUCK_FOR_CALC, MAX_LUCK_PERCENTAGE, total);
+		if (total > max)
+			total = max;
+		return total;
 	}
 
-	public int setLuck(int luck) {
-		int total = getTotalStat(TOTAL_LUCK_FOR_CALC);
-		int perc = Stats.getPercentage(luck, total);
-		if (perc > MAX_DEFENSE_PERCENTAGE) {
-			luck = getValuePerc(total, MAX_LUCK_PERCENTAGE);
-		}
-		return this.luck = luck;
+	public int setLuck(int skill) {
+		return this.luck = getMaxValuebyPercentage(TOTAL_LUCK_FOR_CALC, MAX_LUCK_PERCENTAGE, skill);
 	}
 
 	public int getLuckPercentage() {
-		return Stats.getPercentage(luck, getTotalStat(TOTAL_LUCK_FOR_CALC));
+		return Stats.getPercentage(getLuck(), getTotalStat(TOTAL_LUCK_FOR_CALC));
 	}
 
 	public int getSkillPercentage() {
-		return Stats.getPercentage(skill, getTotalStat(TOTAL_SKILL_FOR_CALC));
+		return Stats.getPercentage(getSkill(), getTotalStat(TOTAL_SKILL_FOR_CALC));
 	}
 
 	public int getDefensePercentage() {
-		return Stats.getPercentage(defense, getTotalStat(TOTAL_ARMOR_FOR_CALC));
+		return Stats.getPercentage(getDefense(), getTotalStat(TOTAL_ARMOR_FOR_CALC));
 	}
 
 	private int getTotalStat(int stat) {
-		if (player != null) {
-			stat += player.getLevel();
+		if (character != null) {
+			stat += character.getLevel();
 		}
 		return stat;
 	}
@@ -126,7 +165,11 @@ public class Stats implements Serializable {
 	}
 
 	public int getAttack() {
-		return attack;
+		int total = attack + getConditionsByType(StatType.ATTACK);
+		if (total < 1) {
+			total = 1;
+		}
+		return total;
 	}
 
 	public int setAttack(int attack) {
@@ -194,15 +237,28 @@ public class Stats implements Serializable {
 		this.attack = 0;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public int getConditionsByType(StatType type) {
+		int value = 0;
+		if (isBase)
+			return value;
+		for (Bonus b : character.getConditions()) {
+			
+			if (b.getType().equals(type)) {
+				value += b.getCoeff() * b.getValue();
+			}
+		}
+		return value;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
+	public Character getCharacter() {
+		return character;
+	}
+
+	public void setCharacter(Character character) {
+		this.character = character;
 	}
 
 	public Integer getTotalPureDamage() {
-		return attack * damage;
+		return getAttack() * getDamage();
 	}
 }

@@ -29,10 +29,10 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 
 	// protected boolean used = false;
 
-	public Enemy resolveEnemy(Character applicationChar, Character character) {
-		if (applicationChar instanceof Enemy)
-			return (Enemy) applicationChar;
-		return (Enemy) character;
+	public Enemy resolveEnemy(Character attacker, Character attacked) {
+		if (attacker instanceof Enemy)
+			return (Enemy) attacker;
+		return (Enemy) attacked;
 	}
 
 	@Override
@@ -58,10 +58,11 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 		bonus.setType(type);
 		bonus.setCoeff(coeff);
 		bonus.setPermanent(true);
-		if (coeff > 0 && type.equals(StatType.HEALTH))
+//		if (coeff > 0 && type.equals(StatType.HEALTH))
+//			bonus.setOverflowed(false);
+//		else
 			bonus.setOverflowed(false);
-		else
-			bonus.setOverflowed(true);
+//		is
 		bonus.setCondition(true);
 		return bonus;
 	}
@@ -78,7 +79,8 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 			int bonusValue = bonus.getValue();
 			int defense = attacked.getCurrentStats().getDefensePercentage();
 			bonus.setValue((int) (bonusValue - ((double) bonusValue / 100d) * defense));
-		}
+		} 
+		bonus.setTurns(getOvertimeTurns());
 		return bonus;
 	}
 	
@@ -93,17 +95,6 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 
 	public abstract boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm);
 
-	public void addTemporalBonus(Character applicationChar, Bonus bonus, String conditionid) {
-		List<Bonus> tattacks = applicationChar.getConditions();
-		Bonus b = applicationChar.findConditionById(conditionid);
-		if (b == null) {
-			b = createSpecialAttack(1, (bonus.getCoeff() * -1) * bonus.getValue(), bonus.getType());
-			b.setConditionId(conditionid);
-			tattacks.add(b);
-		} else {
-			b.setValue(b.getValue() + bonus.getValue());
-		}
-	}
 
 	public int getResultValuePercentage(int value, int perc) {
 		float res = ((float) value / 100f);
@@ -243,5 +234,12 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 		}
 		text += " " + context.getString(skill.getType().getText()).toLowerCase();
 		return new ResultCombatText(color, text);
+	}
+	public SkillProperties getProperties() {
+		return properties;
+	}
+	@Override
+	public boolean isTriggerOnEndOfRound() {
+		return properties.isOnEndOfRound();
 	}
 }

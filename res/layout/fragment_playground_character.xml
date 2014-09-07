@@ -45,6 +45,25 @@
         android:layout_marginBottom="1dp"
         android:padding="10dp" >
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <com.nex.gamebook.playground.SkillsSpinner
+                android:id="@+id/skills"
+                style="@style/spinner_skills"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="5sp"
+                android:dropDownVerticalOffset="-50dp"
+                android:gravity="left"
+                android:popupBackground="@drawable/spinner"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -326,85 +345,129 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" android:gravity="left">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                    <com.nex.gamebook.playground.SkillsSpinner
-                        android:id="@+id/skills"
-                        style="@style/spinner_skills"
-                        android:gravity="left"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
-                        android:divider="@android:color/transparent"
-                        android:dividerHeight="5sp"
-                        android:dropDownVerticalOffset="-50dp"
-                        android:popupBackground="@drawable/spinner"
-                        android:spinnerMode="dropdown" />
-
-                </LinearLayout>
 				<LinearLayout
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:gravity="right" >
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:gravity="left" >
 
-            <TextView
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/b"
-                android:textColor="@color/positive" />
+				    <TextView
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/hot"
+				        android:textColor="@color/positive" />
 
-            <TextView
-                android:id="@+id/player_buffs"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
+				    <TextView
+				        android:id="@+id/player_hots"
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/attr_value_zero" />
 
-            <TextView
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x" />
-			<TextView
-                android:id="@+id/player_longest_buff"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-            <TextView
-                style="@style/attribute"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/d"
-                android:textColor="@color/positive" />
+				    <TextView
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="x" />
 
-            <TextView
-                android:id="@+id/player_debuffs"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
+				    <TextView
+				        android:id="@+id/player_longest_hot"
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/attr_value_zero" />
 
-            <TextView
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x" />
-            <TextView
-                android:id="@+id/player_longest_debuff"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
+				    <TextView
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_marginLeft="10dp"
+				        android:text="@string/dot"
+				        android:textColor="@color/positive" />
+
+				    <TextView
+				        android:id="@+id/player_dots"
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/attr_value_zero" />
+
+				    <TextView
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="x" />
+
+				    <TextView
+				        android:id="@+id/player_longest_dot"
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/attr_value_zero" />
+				</LinearLayout>
+
+				<LinearLayout
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:gravity="right" >
+
+				    <TextView
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/b"
+				        android:textColor="@color/positive" />
+
+				    <TextView
+				        android:id="@+id/player_buffs"
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/attr_value_zero" />
+
+				    <TextView
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="x" />
+
+				    <TextView
+				        android:id="@+id/player_longest_buff"
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/attr_value_zero" />
+
+				    <TextView
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_marginLeft="10dp"
+				        android:text="@string/d"
+				        android:textColor="@color/positive" />
+
+				    <TextView
+				        android:id="@+id/player_debuffs"
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/attr_value_zero" />
+
+				    <TextView
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="x" />
+
+				    <TextView
+				        android:id="@+id/player_longest_debuff"
+				        style="@style/attribute"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:text="@string/attr_value_zero" />
+				</LinearLayout>
+
         </LinearLayout>
-
-        </LinearLayout>
-
     </TableLayout>
 
     <TextView

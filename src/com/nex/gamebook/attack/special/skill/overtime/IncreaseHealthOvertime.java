@@ -18,7 +18,7 @@ public class IncreaseHealthOvertime extends SpecialOvertimeSkill {
 
 	@Override
 	public String getDescription(Context ctx, Character attacker) {
-		return ctx.getString(R.string.decrease_health_overtime);
+		return ctx.getString(R.string.increase_health_overtime);
 	}
 
 	public SpecialSkill getTargetSkill(com.nex.gamebook.game.Character character) {

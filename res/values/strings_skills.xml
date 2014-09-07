@@ -14,11 +14,24 @@
 		Provede útok za %1$d%2$s normálního útoku
 	</string>
 	
-	<string name="cancel_positive_description">
+	<string name="cancel_hot_description">
+		Zruší %d hot na nepříteli
+	</string>
+	<string name="cancel_dot_description">
+		Zruší %d dot na sesílateli
+	</string>
+	
+	<string name="cancel_buff_description">
 		Zruší %d pozitivních bonusů na nepříteli
 	</string>
-	<string name="cancel_negative_description">
+	<string name="cancel_debuff_description">
 		Zruší %d negativních bonusů na sesílateli
+	</string>
+	<string name="stun">
+	    Znemožní nepříteli vykonat v dalším kole normální útok i seslání schopnosti.
+	</string>
+	<string name="kick">
+	    Znemožní nepříteli vykonat v dalším kole seslání schopnosti.
 	</string>
 	
 	<!-- overtime skills -->
@@ -42,5 +55,5 @@
 	<string name="increase_attribute">
 	    Zvýší %s sesílateli
 	</string>
-	
+		
 </resources>

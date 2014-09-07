@@ -27,6 +27,8 @@ public interface SpecialSkill {
 	boolean isTriggerBeforeEnemyAttack();
 	boolean isTriggerAfterEnemyAttack();
 	boolean isTriggerBeforeEnemySpecialAttack();
+	boolean isTriggerOnEndOfRound();
+	
 	/**
 	 * Called after fight ends
 	 * 
@@ -58,7 +60,7 @@ public interface SpecialSkill {
 	boolean doSomething(Character attacked, Character attacker);
 	String getName();
 	void setData(SkillProperties properties, String translatedSkillName);
-	
+	SkillProperties getProperties();
 	void setCombatTextDispatcher(CombatTextDispatcher dispatcher);
 	CombatTextDispatcher getCombatTextDispatcher();
 }

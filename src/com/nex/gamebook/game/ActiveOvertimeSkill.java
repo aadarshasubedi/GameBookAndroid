@@ -8,7 +8,7 @@ import com.nex.gamebook.attack.special.ResultCombatText;
 import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.playground.BattleLogCallback;
 
-public class ActiveOvertimeSkill implements CombatTextDispatcher {
+public class ActiveOvertimeSkill implements CombatTextDispatcher, Cancelable {
 
 	private SpecialSkill targetSkill;
 
@@ -32,7 +32,11 @@ public class ActiveOvertimeSkill implements CombatTextDispatcher {
 	public boolean execute(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 
 		targetSkill.setCombatTextDispatcher(this);
-		targetSkill.doAttack(attacker, attacked, callback, resultCombat);
+		if(targetSkill.isCondition())
+			targetSkill.doAttack(attacked, attacker, callback, resultCombat);
+		else 
+			targetSkill.doAttack(attacker, attacked, callback, resultCombat);
+			
 		targetSkill.cleanAfterBattleEnd();
 		targetSkill.cleanAfterFightEnd();
 		currentTurns++;
@@ -70,5 +74,11 @@ public class ActiveOvertimeSkill implements CombatTextDispatcher {
 	public int getRemainsTurns() {
 		return turns - currentTurns;
 	}
+
+	@Override
+	public boolean isNegative() {
+		return targetSkill.isCondition();
+	}
 	
 }
+

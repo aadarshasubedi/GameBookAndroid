@@ -122,7 +122,7 @@
     <string name="with_luck">se štestím</string>
     <string name="special_skill_attempts">Použití</string>
     <string name="always">Vždy</string>
-    <string name="once_in_battle">Použití v celé bitvě</string>
+    <string name="in_battle">v bitvě</string>
     <string name="base_attr_inc">(základ)</string>
     <string name="gain_experience">Získáváš %d zkušeností.</string>
     <string name="level_increased">Dosáhl jsi úrovně %d.</string>
@@ -134,5 +134,27 @@
     <string name="skill_turns">kol</string>
     <string name="b">B:</string>
     <string name="d">D:</string>
+    <string name="hot">Hot:</string>
+    <string name="dot">Dot:</string>
+    
+    <string name="enemy_cancel_buff">Nepřítel ti zrušil buff.</string>
+    <string name="enemy_cancel_debuff">Nepřítel si zrušil debuff.</string>
+    <string name="enemy_cancel_hot">Nepřítel ti zrušil hot.</string>
+    <string name="enemy_cancel_dot">Nepřítel si zrušil dot.</string>
+    
+   <string name="player_cancel_buff">Zrušil jsi nepříteli buff.</string>
+   <string name="player_cancel_debuff">Zrušil sis debuff.</string>
+   <string name="player_cancel_hot">Zrušil jsi nepříteli hot.</string>
+   <string name="player_cancel_dot">Zrušil sis dot.</string>
+    
+    
+    <string name="you_cast">Sesíláš %s.</string>
+    <string name="enemy_cast">Nepřítel sesílá %s.</string>
+    
+    <string name="you_cannot_attack">Nemůžeš útočit.</string>
+    <string name="you_cannot_cast">Nemůžeš použít schopnost.</string>
+    
+    <string name="enemy_cannot_attack">Nepřítel nemůže útočit.</string>
+    <string name="enemy_cannot_cast">Nepřítel nemůže použít schopnost.</string>
     
 </resources>

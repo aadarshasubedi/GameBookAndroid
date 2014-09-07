@@ -18,20 +18,21 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
 		Character applicationChar = resolveCharacterForApplication(attacked, attacker);
 		Bonus bonus = createReductedBonus(attacker, applicationChar);
-		int value = attacked.getCurrentStats().getValueByBonusType(getType());
-		int res = value - bonus.getValue();
-		if (isCondition() && res <= getMinAttributeForStopAttack() && getMinAttributeForStopAttack()!=NO_VALUE) {
-			int bonusValue = value - getMinAttributeForStopAttack();
-			if (bonusValue < 0)
-				bonusValue = 0;
-			bonus.setValue(bonusValue);
-		}
-		int realValue = applicationChar.addBonus(bonus);
-		if(realValue<0)
-			realValue *= -1;
-		bonus.setValue(realValue);
+//		int value = attacked.getCurrentStats().getValueByBonusType(getType());
+//		int res = value - bonus.getValue();
+//		if (isCondition() && res <= getMinAttributeForStopAttack() && getMinAttributeForStopAttack()!=NO_VALUE) {
+//			int bonusValue = value - getMinAttributeForStopAttack();
+//			if (bonusValue < 0)
+//				bonusValue = 0;
+//			bonus.setValue(bonusValue);
+//		}
+//		int realValue = applicationChar.addBonus(bonus);
+//		bonus.setValue(realValue);
 		if (!isPermanent()) {
-			addTemporalBonus(applicationChar, bonus, createConditionId(attacker));
+			applicationChar.getConditions().add(bonus);
+		} else {
+			int realValue = applicationChar.addBonus(bonus);
+			bonus.setValue(realValue);
 		}
 		ResultCombat result = createBasicResult(bonus.getValue(), attacker.getType(), resolveEnemy(attacker, attacked));
 		callback.logAttack(result);
@@ -66,8 +67,8 @@ public abstract class SpecialConditionalSkill extends SpecialAttackSkill {
 	public boolean doSomething(Character attacked, Character attacker) {
 		if(isCondition()) {
 			Player test = new Player();
-			test.setCurrentStats(new Stats(attacked.getCurrentStats()));
-			test.setStats(new Stats(attacked.getCurrentStats()));
+			test.setCurrentStats(new Stats(attacked.getCurrentStats(), false));
+			test.setStats(new Stats(attacked.getCurrentStats(), true));
 			Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getValue(attacker), getType());
 			int realValue = test.addBonus(bonus);
 			if(realValue==0) return false;

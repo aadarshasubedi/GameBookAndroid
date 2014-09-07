@@ -105,10 +105,13 @@ public abstract class GameBookFragment {
 		}
 	}
 	
-	protected void showStats(View view, Character c, boolean colorify) {
+	protected void showStats(View view, Character c, boolean isBase) {
 		Stats stats = c.getCurrentStats();
 		Stats defaultStats = c.getStats();
-		
+		if(isBase) {
+			stats = defaultStats;
+		}
+		boolean colorify = !isBase;
 		highlightPrimaryAttribute(view);
 		TextView attr = (TextView) view.findViewById(R.id.sel_attr_luck);
 		attr.setText(String.valueOf(stats.getLuckPercentage()));
@@ -182,7 +185,7 @@ public abstract class GameBookFragment {
 		if(healthPercentage<=20) {
 			color = R.drawable.health_bar_quarter;
 		}
-		if(ch.hasOvertimeDebuff()) {
+		if(ch.hasDots()) {
 			color = R.drawable.health_bar_condition;
 		}
 		changeProgressBarColor(progress, color);

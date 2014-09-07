@@ -113,8 +113,12 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			bonus.setAlreadyGained(true);
 			int realValue =_character.addBonus(bonus);
 			String marker = "";
+			if(bonus.getCoeff() < 0 && realValue>0) {
+				realValue *=-1;
+			}
 			if(realValue>0)
 				marker = "+";
+			
 			TextView opt = new TextView(context);
 			opt.setTextAppearance(context, R.style.number);
 			String suffix = " ";
@@ -249,7 +253,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 
 	private void prepareAfterFight(Context context, LinearLayout layout, StorySection section) {
 		removeTemporalBonuses(context, layout);
-		prepareBonusSection(context, layout, section, _character.getConditions());
+//		prepareBonusSection(context, layout, section, _character.getConditions());
 		_character.getConditions().clear();
 		_character.getConditions().clear();
 		if(!section.isBonusesAfterFightAlreadyGained())

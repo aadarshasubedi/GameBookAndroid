@@ -9,11 +9,15 @@ import java.util.Map;
 import android.util.Log;
 
 import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.attack.special.skill.attack.CancelNegativeOvertimeSkill;
-import com.nex.gamebook.attack.special.skill.attack.CancelPositiveOvertimeSkill;
+import com.nex.gamebook.attack.special.skill.attack.CancelBuff;
+import com.nex.gamebook.attack.special.skill.attack.CancelDebuff;
+import com.nex.gamebook.attack.special.skill.attack.CancelDot;
+import com.nex.gamebook.attack.special.skill.attack.CancelHot;
+import com.nex.gamebook.attack.special.skill.attack.Kick;
 import com.nex.gamebook.attack.special.skill.attack.LifeLeech;
 import com.nex.gamebook.attack.special.skill.attack.QuickReaction;
 import com.nex.gamebook.attack.special.skill.attack.ReflectDamage;
+import com.nex.gamebook.attack.special.skill.attack.Stun;
 import com.nex.gamebook.attack.special.skill.attack.TwiceAttack;
 
 public class SpecialSkillsMap {
@@ -23,9 +27,12 @@ public class SpecialSkillsMap {
 	public static String REFLECT_DAMAGE = "reflect_damage";
 	public static String LIFE_LEECH = "life_leech";
 	public static String QUICK_REACTION = "quick_reaction";
-	public static String CANCEL_POSITIVE = "cancel_positive";
-	public static String CANCEL_NEGATIVE = "cancel_negative";
-	
+	public static String CANCEL_HOT = "cancel_hot";
+	public static String CANCEL_DOT = "cancel_dot";
+	public static String CANCEL_BUFF = "cancel_buff";
+	public static String CANCEL_DEBUFF = "cancel_debuff";
+	public static String STUN = "stun";
+	public static String KICK = "kick";
 	private Map<String, Class<? extends SpecialSkill>> skills = new HashMap<>();
 	private static SpecialSkillsMap instance;
 	static {
@@ -38,8 +45,12 @@ public class SpecialSkillsMap {
 		skills.put(REFLECT_DAMAGE, ReflectDamage.class);
 		skills.put(LIFE_LEECH, LifeLeech.class);
 		skills.put(QUICK_REACTION, QuickReaction.class);
-		skills.put(CANCEL_POSITIVE, CancelPositiveOvertimeSkill.class);
-		skills.put(CANCEL_NEGATIVE, CancelNegativeOvertimeSkill.class);
+		skills.put(CANCEL_HOT, CancelHot.class);
+		skills.put(CANCEL_DOT, CancelDot.class);
+		skills.put(CANCEL_BUFF, CancelBuff.class);
+		skills.put(CANCEL_DEBUFF, CancelDebuff.class);
+		skills.put(STUN, Stun.class);
+		skills.put(KICK, Kick.class);
 	}
 	
 	public static void main(String[] args) {

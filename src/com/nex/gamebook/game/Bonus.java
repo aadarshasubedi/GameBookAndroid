@@ -3,12 +3,9 @@ package com.nex.gamebook.game;
 import java.io.Serializable;
 
 import com.nex.gamebook.R;
+import com.nex.gamebook.attack.special.SpecialAttackSkill;
 
-public class Bonus implements Serializable, Mergable {
-	private static final long serialVersionUID = 4130822562659948335L;
-
-	private String conditionId;
-
+public class Bonus implements Cancelable {
 	public enum BonusState implements Serializable {
 		BEFORE_FIGHT, AFTER_FIGHT, NORMAL;
 
@@ -18,19 +15,21 @@ public class Bonus implements Serializable, Mergable {
 			}
 			return BonusState.valueOf(s.toUpperCase());
 		}
+
 	}
 
 	public enum StatType implements Serializable {
-		HEALTH(R.string.attr_health, 5, 1), 
-		LUCK(R.string.attr_luck, 1, 2), 
-		SKILL(R.string.attr_skill, 1, 2), 
-		DEFENSE(R.string.attr_defense, 1, 2), 
-		ATTACK(R.string.attr_attack, 1, 2), 
-		DAMAGE(R.string.attr_baseDmg, 1, 10), 
-		SKILLPOWER(R.string.attr_skill_power, 1, 5);
+		HEALTH(R.string.attr_health, 30, 1), 
+		LUCK(R.string.attr_luck, 2, 1), 
+		SKILL(R.string.attr_skill, 2, 1), 
+		DEFENSE(R.string.attr_defense, 1, 1), 
+		ATTACK(R.string.attr_attack, 1, 1), 
+		DAMAGE(R.string.attr_baseDmg, 2, 10), 
+		SKILLPOWER(R.string.attr_skill_power, 2, 3);
 		public int text;
 		public int baseValue;
 		public int increaseByLevel;
+
 		private StatType(int text, int baseValue, int incBylvl) {
 			this.text = text;
 			this.baseValue = baseValue;
@@ -44,6 +43,7 @@ public class Bonus implements Serializable, Mergable {
 		public int getText() {
 			return text;
 		}
+
 		public int getIncreaseByLevel() {
 			return increaseByLevel;
 		}
@@ -53,11 +53,13 @@ public class Bonus implements Serializable, Mergable {
 	private StatType type;
 	private int value;
 	private boolean overflowed;
+	private boolean base;
 	private int coeff;
 	private boolean alreadyGained;
 	private boolean permanent;
 	private boolean condition;
-	private boolean base;
+	private int turns;
+	private int currentTurn;
 
 	public StatType getType() {
 		return type;
@@ -127,14 +129,6 @@ public class Bonus implements Serializable, Mergable {
 		this.condition = condition;
 	}
 
-	public String getConditionId() {
-		return conditionId;
-	}
-
-	public void setConditionId(String conditionId) {
-		this.conditionId = conditionId;
-	}
-
 	public boolean isBase() {
 		return base;
 	}
@@ -143,4 +137,33 @@ public class Bonus implements Serializable, Mergable {
 		this.base = base;
 	}
 
+	public int getTurns() {
+		return turns;
+	}
+
+	public void setTurns(int turns) {
+		this.turns = turns;
+	}
+
+	public int getCurrentTurn() {
+		return currentTurn;
+	}
+
+	public void setCurrentTurn(int currentTurn) {
+		this.currentTurn = currentTurn;
+	}
+
+	public boolean isExhausted() {
+		if (this.turns == SpecialAttackSkill.NO_VALUE)
+			return false;
+		return this.currentTurn == turns;
+	}
+
+	public int getRemainsTurns() {
+		return turns - currentTurn;
+	}
+	@Override
+	public boolean isNegative() {
+		return coeff<0;
+	}
 }
