@@ -179,37 +179,37 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			return;
 		boolean show = false;
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.bonuses);
-		int value = releasedStats.getHealth();
+		int value = releasedStats.getRealHealth();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_health, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getAttack();
+		value = releasedStats.getRealAttack();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_attack, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getDefense();
+		value = releasedStats.getRealDefense();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_defense, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getSkill();
+		value = releasedStats.getRealSkill();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getLuck();
+		value = releasedStats.getRealLuck();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_luck, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getDamage();
+		value = releasedStats.getRealDamage();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getSkillpower();
+		value = releasedStats.getRealSkillpower();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill_power, context, color, text));
 			show = true;
