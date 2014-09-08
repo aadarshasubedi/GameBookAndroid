@@ -43,8 +43,10 @@ public class DecreaseHealthOvertimeGreater extends DecreaseHealthOvertime {
 		return super.doAttackOnce(attacker, attacked, callback, cm);
 	}
 	private SpecialSkill createSkill(Character attacker) {
-		if(proprietarySkill!=null) {
-			return SpecialSkillsMap.get(proprietarySkill);
+		if (proprietarySkill != null) {
+			SpecialSkill propri = SpecialSkillsMap.get(proprietarySkill);
+			propri.setData(properties, skillName);
+			return propri;
 		}
 		int skillvalue = getValue(attacker);
 		DecreaseAttribute skill = new DecreaseAttribute(type, skillvalue);

@@ -176,7 +176,10 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 		return true;
 	}
 	public int calcDynamicValue(int base, int value, Character attacker) {
-		return (int) (base * (properties.getCoeff() + value / 10));
+		double coeff = properties.getCoeff();
+		if(coeff==0d)
+			coeff = 1d;
+		return (int) (base * (coeff + value / 10));
 	}
 	@Override
 	public int getValue(Character character) {
@@ -187,7 +190,10 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 	}
 
 	public int getValueBasedOnSkillPower(Character c) {
-		return (int) (c.getCurrentStats().getSpecialSkillPower() + (c.getCurrentStats().getSpecialSkillPower() * properties.getCoeff()));
+		int power = c.getCurrentStats().getSpecialSkillPower();
+		double coeff = properties.getCoeff();
+		if(coeff==0d) return power;
+		return (int) (power * coeff);
 	}
 
 	public String getName() {
@@ -219,10 +225,10 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 		SpecialSkill skill = resultCombat.getSpecialAttack();
 		String enemyName = "";
 		int who = R.string.you_use;
-		int color = R.color.positive;
+//		int color = R.color.positive;
 		if (CharacterType.ENEMY.equals(resultCombat.getType())) {
 			who = R.string.enemy_use;
-			color = R.color.negative;
+//			color = R.color.negative;
 			enemyName = resultCombat.getEnemyName() + " ";
 		}
 		String text = enemyName;
@@ -233,7 +239,7 @@ public abstract class SpecialAttackSkill implements SpecialSkill, CombatTextDisp
 			text += " " + resultCombat.getDamage();
 		}
 		text += " " + context.getString(skill.getType().getText()).toLowerCase();
-		return new ResultCombatText(color, text);
+		return new ResultCombatText(R.color.reset, text);
 	}
 	public SkillProperties getProperties() {
 		return properties;

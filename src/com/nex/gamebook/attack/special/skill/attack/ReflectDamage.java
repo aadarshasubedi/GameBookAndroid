@@ -18,7 +18,7 @@ public class ReflectDamage extends SpecialAttackSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		int value = resultCombat.getDamage();
-		int percentage = getRealValue(attacker);
+		int percentage = getValue(attacker);
 		value = getResultValuePercentage(value, percentage);
 		attacked.addBonus(createSpecialAttack(-1, value, getType()));
 		ResultCombat result = createBasicResult(value, attacker.getType(), resolveEnemy(attacker, attacked));
@@ -26,11 +26,10 @@ public class ReflectDamage extends SpecialAttackSkill {
 		callback.logAttack(result);
 		return true;
 	}
-
-	public int getRealValue(Character attacker) {
-		return calcDynamicValue(30, super.getValue(attacker), attacker);
+	@Override
+	public int getValue(Character character) {
+		return calcDynamicValue(30, super.getValue(character), character);
 	}
-
 	@Override
 	public StatType getType() {
 		return StatType.HEALTH;
@@ -43,7 +42,7 @@ public class ReflectDamage extends SpecialAttackSkill {
 
 	@Override
 	public String getDescription(Context context, Character attacker) {
-		return context.getString(R.string.reflect_damage_description, getRealValue(attacker), "%");
+		return context.getString(R.string.reflect_damage_description, getValue(attacker), "%");
 	}
 
 	@Override

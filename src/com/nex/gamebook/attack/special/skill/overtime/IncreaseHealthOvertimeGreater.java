@@ -38,14 +38,16 @@ public class IncreaseHealthOvertimeGreater extends IncreaseHealthOvertime {
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
 		SpecialSkill skill = createSkill(attacker);
 		skill.setCombatTextDispatcher(this);
-		skill.setData(properties, skillName);
+		
 		skill.doAttack(attacker, attacked, callback, cm);
 		return super.doAttackOnce(attacker, attacked, callback, cm);
 	}
 
 	private SpecialSkill createSkill(Character attacker) {
 		if (proprietarySkill != null) {
-			return SpecialSkillsMap.get(proprietarySkill);
+			SpecialSkill propri = SpecialSkillsMap.get(proprietarySkill);
+			propri.setData(properties, skillName);
+			return propri;
 		}
 		int skillvalue = getValue(attacker);
 		IncreaseAttribute skill = new IncreaseAttribute(type, skillvalue);

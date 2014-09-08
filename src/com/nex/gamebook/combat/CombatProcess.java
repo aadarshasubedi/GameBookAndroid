@@ -64,6 +64,7 @@ public class CombatProcess {
 
 		callback.divide(++turn);
 		boolean enemyBegin = !player.hasLuck();
+		doOvertimeSkills(player, enemy, callback);
 		if (enemyBegin) {
 			if (!doSpecialAttack(enemy, player, callback, true)) {
 				doSpecialAttack(player, enemy, callback, false);
@@ -89,9 +90,6 @@ public class CombatProcess {
 				doSkill(enemy, player, enemy, enemySkill, callback, null);
 			}
 		}
-		
-		
-		doOvertimeSkills(player, enemy, callback);
 		doConditionEffects(player, enemy);
 		
 		if (enemy.isDefeated() || player.isDefeated()) {
@@ -100,6 +98,7 @@ public class CombatProcess {
 			if (player.isDefeated()) {
 				exp = 0;
 			}
+			player.setSelectedSkill(null);
 			callback.fightEnd(exp);
 		}
 	}
@@ -112,6 +111,7 @@ public class CombatProcess {
 	private void doConditionEffects(Character c) {
 		List<Bonus> releaseThese = new ArrayList<Bonus>();
 		for(Bonus b: c.getConditions()) {
+			
 			if(b.isExhausted()) {
 				releaseThese.add(b);
 			}

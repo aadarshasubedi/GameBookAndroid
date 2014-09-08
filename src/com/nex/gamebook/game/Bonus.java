@@ -160,7 +160,7 @@ public class Bonus implements Cancelable {
 	}
 
 	public int getRemainsTurns() {
-		return turns - currentTurn;
+		return (turns - currentTurn) + 1;
 	}
 	@Override
 	public boolean isNegative() {

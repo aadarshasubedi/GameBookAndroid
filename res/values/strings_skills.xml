@@ -8,7 +8,7 @@
 	    Vrátí nepříteli %1$d%2$s obdrženého poškození
 	</string>	
 	<string name="life_leech_description">
-	    Vrátí %1$d%2$s zdraví z uštědřeného poškození
+	    Vyléčí sesílateli %1$d%2$s zdraví z uštědřeného poškození
 	</string>
 	<string name="quick_reaction_description">
 		Provede útok za %1$d%2$s normálního útoku

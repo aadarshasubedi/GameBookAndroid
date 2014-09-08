@@ -19,7 +19,7 @@ public class LifeLeech extends SpecialAttackSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 		int dmg = resultCombat.getDamage();
-		int leech = (int) ((float) dmg / 100f * getRealValue(attacker));
+		int leech = (int) ((float) dmg / 100f * this.getValue(attacker));
 		Bonus bonus = createSpecialAttack(1, leech, StatType.HEALTH);
 		bonus.setCondition(false);
 		bonus.setOverflowed(false);
@@ -28,12 +28,15 @@ public class LifeLeech extends SpecialAttackSkill {
 		callback.logAttack(rs);
 		return false;
 	}
-	public int getRealValue(Character character) {
+	
+	@Override
+	public int getValue(Character character) {
 		return calcDynamicValue(30, super.getValue(character), character);
 	}
+	
 	@Override
 	public String getDescription(Context context, Character attacker) {
-		return context.getString(R.string.life_leech_description, getRealValue(attacker), "%");
+		return context.getString(R.string.life_leech_description, this.getValue(attacker), "%");
 	}
 
 	@Override
