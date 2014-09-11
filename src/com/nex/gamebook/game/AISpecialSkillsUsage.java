@@ -5,20 +5,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.nex.gamebook.attack.special.SpecialCancelationSkill;
-import com.nex.gamebook.attack.special.SpecialSkill;
-import com.nex.gamebook.attack.special.skill.attack.CancelBuff;
-import com.nex.gamebook.attack.special.skill.attack.CancelDebuff;
-import com.nex.gamebook.attack.special.skill.attack.CancelDot;
-import com.nex.gamebook.attack.special.skill.attack.CancelHot;
 import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.skills.active.ActiveCancelationSkill;
+import com.nex.gamebook.skills.active.Skill;
+import com.nex.gamebook.skills.active.proprietary.CancelBuff;
+import com.nex.gamebook.skills.active.proprietary.CancelDebuff;
+import com.nex.gamebook.skills.active.proprietary.CancelDot;
+import com.nex.gamebook.skills.active.proprietary.CancelHot;
 
 public class AISpecialSkillsUsage {
-	public static SpecialSkill getBestSpecialSkill(Player player, final Enemy enemy, boolean enemyBegin) {
-		List<SpecialSkill> friendlySkills = new ArrayList<>();
-		List<SpecialSkill> attackSkills = new ArrayList<>();
-		List<SpecialSkill> proprietarySkills = new ArrayList<>();
-		for (SpecialSkill s : enemy.getActiveSkills()) {
+	public static Skill getBestSpecialSkill(Player player, final Enemy enemy, boolean enemyBegin) {
+		List<Skill> friendlySkills = new ArrayList<>();
+		List<Skill> attackSkills = new ArrayList<>();
+		List<Skill> proprietarySkills = new ArrayList<>();
+		for (Skill s : enemy.getActiveSkills()) {
 			if (s.getProperties().proprietarySkillExists()) {
 				proprietarySkills.add(s);
 			} else if (s.isCondition()) {
@@ -28,24 +28,24 @@ public class AISpecialSkillsUsage {
 			}
 		}
 		// seradime podle buffu/debuffu a hot dot
-		SpecialSkill optimalProprietarySkill = findOptimalProprietarySkill(proprietarySkills, player, enemy);
-		SpecialSkill optimalFriendlySkill = findOptimalFriendlySkill(friendlySkills, player, enemy);
-		SpecialSkill optimalAttackSkill = findOptimalAttackSkill(attackSkills, player, enemy);
-		List<SpecialSkill> optimalSkills = new ArrayList<>();
+		Skill optimalProprietarySkill = findOptimalProprietarySkill(proprietarySkills, player, enemy);
+		Skill optimalFriendlySkill = findOptimalFriendlySkill(friendlySkills, player, enemy);
+		Skill optimalAttackSkill = findOptimalAttackSkill(attackSkills, player, enemy);
+		List<Skill> optimalSkills = new ArrayList<>();
 		if (optimalAttackSkill != null)
 			optimalSkills.add(optimalAttackSkill);
 		if (optimalProprietarySkill != null)
 			optimalSkills.add(optimalProprietarySkill);
 		if (optimalFriendlySkill != null)
 			optimalSkills.add(optimalFriendlySkill);
-		Collections.sort(optimalSkills, new Comparator<SpecialSkill>() {
+		Collections.sort(optimalSkills, new Comparator<Skill>() {
 			@Override
-			public int compare(SpecialSkill lhs, SpecialSkill rhs) {
+			public int compare(Skill lhs, Skill rhs) {
 				// skilly na zruseni buff/hot nebo debuff/dot maji prednost pred
 				// vsemi ostatnimi skily
-				if (lhs instanceof SpecialCancelationSkill)
+				if (lhs instanceof ActiveCancelationSkill)
 					return -1;
-				if (rhs instanceof SpecialCancelationSkill)
+				if (rhs instanceof ActiveCancelationSkill)
 					return 1;
 				return Integer.valueOf(lhs.getValue(enemy)).compareTo(rhs.getValue(enemy));
 			}
@@ -55,39 +55,39 @@ public class AISpecialSkillsUsage {
 		return null;
 	}
 	
-	public static SpecialSkill findOptimalAttackSkill(List<SpecialSkill> skill, Player player, Enemy enemy) {
-		Collections.sort(skill, new Comparator<SpecialSkill>() {
+	public static Skill findOptimalAttackSkill(List<Skill> skill, Player player, Enemy enemy) {
+		Collections.sort(skill, new Comparator<Skill>() {
 			@Override
-			public int compare(SpecialSkill lhs, SpecialSkill rhs) {
+			public int compare(Skill lhs, Skill rhs) {
 				return Integer.valueOf(lhs.getOvertimeTurns()).compareTo(rhs.getOvertimeTurns());
 			}
 		});
 		//TODO vytvorit AI na selekci spravneho skilu
-		for (SpecialSkill s: skill) {
+		for (Skill s: skill) {
 			if(!s.canUse()) continue;
 			return s;
 		}
 		return null;
 	}
 	
-	public static SpecialSkill findOptimalFriendlySkill(List<SpecialSkill> skill, Player player, Enemy enemy) {
-		Collections.sort(skill, new Comparator<SpecialSkill>() {
+	public static Skill findOptimalFriendlySkill(List<Skill> skill, Player player, Enemy enemy) {
+		Collections.sort(skill, new Comparator<Skill>() {
 			@Override
-			public int compare(SpecialSkill lhs, SpecialSkill rhs) {
+			public int compare(Skill lhs, Skill rhs) {
 				return Integer.valueOf(lhs.getOvertimeTurns()).compareTo(rhs.getOvertimeTurns());
 			}
 		});
 		//TODO vytvorit AI na selekci spravneho skilu
-		for (SpecialSkill s : skill) {
+		for (Skill s : skill) {
 			if(!s.canUse()) continue;
 			return s;
 		}
 		return null;
 	}
-	public static SpecialSkill findOptimalProprietarySkill(List<SpecialSkill> skill, Player player, Enemy enemy) {		
-		for (SpecialSkill s : skill) {
+	public static Skill findOptimalProprietarySkill(List<Skill> skill, Player player, Enemy enemy) {		
+		for (Skill s : skill) {
 			if(!s.canUse()) continue;
-			if(s instanceof SpecialCancelationSkill) {
+			if(s instanceof ActiveCancelationSkill) {
 				if (s instanceof CancelDot && enemy.hasDots()) {
 					return s;
 				} else if (s instanceof CancelDebuff && enemy.hasDebuffs()) {

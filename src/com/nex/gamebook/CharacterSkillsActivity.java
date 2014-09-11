@@ -18,12 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.SkillRequiredLevel;
 import com.nex.gamebook.game.SpecialSkillsMap;
 import com.nex.gamebook.game.Story;
+import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.util.SkillInfoDialog;
 
@@ -65,7 +65,7 @@ public class CharacterSkillsActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final SkillRequiredLevel sk = keys.get(position);
 			int level = sk.getLevel();
-			final SpecialSkill skill = _character.getSpecialSkills().get(sk);
+			final Skill skill = _character.getSpecialSkills().get(sk);
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.skill_item, parent, false);
 			rowView.setOnClickListener(new View.OnClickListener() {

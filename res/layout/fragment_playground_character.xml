@@ -31,7 +31,7 @@
         android:layout_below="@+id/tableLayout1"
         android:paddingLeft="10dip"
         android:paddingRight="10dip">
-
+		
     </ViewFlipper>
 
     <TableLayout

@@ -1,12 +1,12 @@
 package com.nex.gamebook.game;
 
-import com.nex.gamebook.attack.special.SpecialSkill;
+import com.nex.gamebook.skills.active.Skill;
 
 public class ResultCombat {
 	private CharacterType type;
 	private boolean critical;
 	private double multiply;
-	private SpecialSkill specialAttack;
+	private Skill specialAttack;
 	private boolean luck;
 	private int damage;
 	private String enemyName;
@@ -71,11 +71,11 @@ public class ResultCombat {
 		return "1.5x";
 	}
 
-	public SpecialSkill getSpecialAttack() {
+	public Skill getSpecialAttack() {
 		return specialAttack;
 	}
 
-	public void setSpecialAttack(SpecialSkill specialAttack) {
+	public void setSpecialAttack(Skill specialAttack) {
 		this.specialAttack = specialAttack;
 	}
 

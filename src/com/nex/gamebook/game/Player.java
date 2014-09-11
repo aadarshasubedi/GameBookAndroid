@@ -4,22 +4,18 @@ import java.util.Map;
 
 import android.util.Log;
 
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.playground.BattleLogCallback;
-import com.nex.gamebook.playground.PlaygroundActivity;
 import com.nex.gamebook.util.GameBookUtils;
 import com.nex.gamebook.util.SaveGameSectionState;
 import com.nex.gamebook.util.SaveGameState;
 
 public class Player extends Character {
-
-	private static final long serialVersionUID = 7279750413253963361L;
+	public static int SKILLPOINTS_AT_LEVEL = 3;
 	private int id;
 	private String name;
 	private String description;
 	private int position;
-	private int sections;
-	private int visitedSections;
+	
 	private Enemy currentEnemy;
 
 	public int getId() {
@@ -78,40 +74,19 @@ public class Player extends Character {
 	public StorySection getCurrentSection() {
 		return getStory().getSection(this.position);
 	}
-
-	public int getSections() {
-		return sections;
-	}
-
-	public void setSections(int sections) {
-		this.sections = sections;
-	}
-
-	public int getVisitedSections() {
-		return visitedSections;
-	}
-
-	public void setVisitedSections(int visitedSections) {
-		this.visitedSections = visitedSections;
-	}
-
-	public void addSection() {
-		this.sections++;
-	}
-
-	public void addVisitedSection() {
-		this.visitedSections++;
-	}
-
 	public void addExperience(BattleLogCallback callback, long exp) {
 		if (getLevel() == ExperienceMap.getInstance().getMaxLevel()) {
 			return;
 		}
+		
 		setExperience(getExperience() + exp);
 		long requiredExperience = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
 		callback.logExperience(exp);
 		while (getExperience() >= requiredExperience) {
 			setLevel(getLevel() + 1);
+			if(getLevel() % SKILLPOINTS_AT_LEVEL == 0) {
+				setSkillPoints(getSkillPoints() + 1);
+			}
 			requiredExperience = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
 			callback.logLevelIncreased();
 			ExperienceMap.getInstance().updateStatsByLevel(this);
@@ -143,8 +118,9 @@ public class Player extends Character {
 		state.setLevel(getLevel());
 		state.setExperience(getExperience());
 		state.setPosition(getPosition());
-		state.setSections(getSections());
-		state.setVisitedSections(getVisitedSections());
+		state.setStatistics(getStatistics());
+		state.setLearnedPassiveSkills(getLearnedPassiveSkills());
+		state.setSkillPoints(getSkillPoints());
 		for (Map.Entry<Integer, StorySection> entry : getStory().getSections().entrySet()) {
 			SaveGameSectionState sectionState = new SaveGameSectionState();
 			StorySection section = entry.getValue();
@@ -167,10 +143,12 @@ public class Player extends Character {
 		setLevel(state.getLevel());
 		setExperience(state.getExperience());
 		setPosition(state.getPosition());
-		setSections(state.getSections());
-		setVisitedSections(state.getVisitedSections());
+		setStatistics(state.getStatistics());
 		setCurrentStats(state.getCurrentStats());
 		setStats(state.getStats());
+		setSkillPoints(state.getSkillPoints());
+		setLearnedPassiveSkills(state.getLearnedPassiveSkills());
+		instantiatePassiveSkills();
 		for (Map.Entry<Integer, SaveGameSectionState> entry : state.getSectionsState().entrySet()) {
 			SaveGameSectionState section = entry.getValue();
 			StorySection sectionState = getStory().getSection(entry.getKey());

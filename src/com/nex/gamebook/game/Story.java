@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.nex.gamebook.attack.special.SkillProperties;
+import com.nex.gamebook.skills.active.SkillProperties;
 import com.nex.gamebook.util.GameBookUtils;
 
 public class Story implements Serializable, Mergable {

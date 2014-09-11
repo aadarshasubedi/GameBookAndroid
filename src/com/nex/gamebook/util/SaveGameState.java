@@ -1,7 +1,9 @@
 package com.nex.gamebook.util;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.nex.gamebook.game.Stats;
 
@@ -9,12 +11,14 @@ public class SaveGameState {
 
 	private Stats stats;
 	private Stats currentStats;
+	private Statistics statistics;
 	private int position;
-	private int sections;
-	private int visitedSections;
+
 	private int level = 1;
 	private long experience = 0;
 	private Map<Integer, SaveGameSectionState> sectionsState = new HashMap<>();
+	private int skillPoints;
+	private Set<String> learnedPassiveSkills = new HashSet<>();
 
 	public Stats getStats() {
 		return stats;
@@ -40,22 +44,6 @@ public class SaveGameState {
 		this.position = position;
 	}
 
-	public int getSections() {
-		return sections;
-	}
-
-	public void setSections(int sections) {
-		this.sections = sections;
-	}
-
-	public int getVisitedSections() {
-		return visitedSections;
-	}
-
-	public void setVisitedSections(int visitedSections) {
-		this.visitedSections = visitedSections;
-	}
-
 	public int getLevel() {
 		return level;
 	}
@@ -78,6 +66,30 @@ public class SaveGameState {
 
 	public void setSectionsState(Map<Integer, SaveGameSectionState> sectionsState) {
 		this.sectionsState = sectionsState;
+	}
+
+	public int getSkillPoints() {
+		return skillPoints;
+	}
+
+	public void setSkillPoints(int skillPoints) {
+		this.skillPoints = skillPoints;
+	}
+
+	public Set<String> getLearnedPassiveSkills() {
+		return learnedPassiveSkills;
+	}
+
+	public void setLearnedPassiveSkills(Set<String> learnedPassiveSkills) {
+		this.learnedPassiveSkills = learnedPassiveSkills;
+	}
+
+	public Statistics getStatistics() {
+		return statistics;
+	}
+
+	public void setStatistics(Statistics statistics) {
+		this.statistics = statistics;
 	}
 
 }

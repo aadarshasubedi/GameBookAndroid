@@ -3,7 +3,7 @@ package com.nex.gamebook.game;
 import java.io.Serializable;
 
 import com.nex.gamebook.R;
-import com.nex.gamebook.attack.special.SpecialAttackSkill;
+import com.nex.gamebook.skills.active.ActiveSkill;
 
 public class Bonus implements Cancelable {
 	public enum BonusState implements Serializable {
@@ -154,7 +154,7 @@ public class Bonus implements Cancelable {
 	}
 
 	public boolean isExhausted() {
-		if (this.turns == SpecialAttackSkill.NO_VALUE)
+		if (this.turns == ActiveSkill.NO_VALUE)
 			return false;
 		return this.currentTurn == turns;
 	}

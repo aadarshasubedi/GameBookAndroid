@@ -9,8 +9,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.nex.gamebook.R;
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.game.Character;
+import com.nex.gamebook.skills.active.Skill;
 public class SkillInfoDialog {
 
 	private Dialog dialog;
@@ -18,7 +18,7 @@ public class SkillInfoDialog {
 	public SkillInfoDialog(Context context, Character applicator) {
 		this(context, applicator, applicator.getSelectedSkill());
 	}
-	public SkillInfoDialog(Context context, Character applicator, SpecialSkill skill) {
+	public SkillInfoDialog(Context context, Character applicator, Skill skill) {
 		super();
 		this.ctx = context;
 		dialog = new Dialog(context);
@@ -32,7 +32,7 @@ public class SkillInfoDialog {
 		
 	}
 
-	public void showSkillData(Character applicator, SpecialSkill skill, View inflatedView) {
+	public void showSkillData(Character applicator, Skill skill, View inflatedView) {
 		TextView view = (TextView) inflatedView.findViewById(R.id.skill_name);
 		view.setText(skill.getName());
 		

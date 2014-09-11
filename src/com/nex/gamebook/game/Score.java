@@ -21,8 +21,8 @@ public class Score {
 	public void saveScoreData(Player player) {
 		this.stats = new Stats(player.getStats(), true);
 		this.currentStats = new Stats(player.getCurrentStats(), false);
-		this.sections = player.getSections();
-		this.visitedSections = player.getVisitedSections();
+//		this.sections = player.getSections();
+//		this.visitedSections = player.getVisitedSections();
 		this.multiplier = player.getStory().getSection(player.getPosition()).getScoreMultiplier();
 		this.level = player.getLevel();
 		this.charName = player.getRawName();

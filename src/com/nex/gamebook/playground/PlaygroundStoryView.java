@@ -354,11 +354,11 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		public void onClick(View v) {
 			this.section.setCompleted(true);
 			if (!this.section.isVisited()) {
-				_character.addVisitedSection();
+				_character.getStatistics().addVisitedSection();
 			}
 			this.section.setVisited(true);
 			this.section.canTryLuck();
-			_character.addSection();
+			_character.getStatistics().addSection();
 			option.setDisabled(option.isDisableWhenSelected());
 			int sectionId = _character.getPosition();
 			PlaygroundStoryView.this._character.setPosition(option.getSection());

@@ -21,7 +21,6 @@ import org.xml.sax.SAXException;
 import android.content.Context;
 import android.util.Log;
 
-import com.nex.gamebook.attack.special.SkillProperties;
 import com.nex.gamebook.game.Bonus;
 import com.nex.gamebook.game.Bonus.BonusState;
 import com.nex.gamebook.game.Bonus.StatType;
@@ -35,6 +34,7 @@ import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.game.StorySectionOption;
+import com.nex.gamebook.skills.active.SkillProperties;
 import com.nex.gamebook.util.GameBookUtils;
 
 public class StoryXmlParser {

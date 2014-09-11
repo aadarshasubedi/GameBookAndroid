@@ -24,8 +24,6 @@ import android.widget.ViewFlipper;
 import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
-import com.nex.gamebook.attack.special.ResultCombatText;
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.combat.CombatProcess;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.CharacterType;
@@ -34,6 +32,8 @@ import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.StorySection;
+import com.nex.gamebook.skills.ResultCombatText;
+import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.util.SkillInfoDialog;
 
 public class PlaygroundBattleLogCharacterView extends AbstractFragment {
@@ -58,6 +58,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		resultButton.setVisibility(View.GONE);
 		if (section != null) {
 			prepareBattleLog(masterView);
+		} else {
+			showStatistics();
 		}
 
 		masterView.setTag(this);
@@ -65,6 +67,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		return masterView;
 	}
 
+	private void showStatistics() {
+		
+	}
+	
 	public ViewFlipper getSwitcher() {
 		return switcher;
 	}
@@ -162,12 +168,12 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 	public void showAvailableSkills() {
 		SkillsSpinner skills = (SkillsSpinner) masterView.findViewById(R.id.skills);
-		List<SpecialSkill> availableSkills = new ArrayList<>();
+		List<Skill> availableSkills = new ArrayList<>();
 		availableSkills.add(null);
 		availableSkills.addAll(_character.getActiveSkills());
 		skills.setAdapter(new SkillsAdapter(getContext(), _character, availableSkills, skills));
 		skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-		SpecialSkill selected = _character.getSelectedSkill();
+		Skill selected = _character.getSelectedSkill();
 		if (selected != null) {
 			int index = availableSkills.indexOf(selected);
 			skills.setSelection(index);
@@ -176,7 +182,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 	public class CustomOnItemSelectedListener implements OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			SpecialSkill i = (SpecialSkill) parent.getItemAtPosition(pos);
+			Skill i = (Skill) parent.getItemAtPosition(pos);
 			_character.setSelectedSkill(i);
 		}
 
@@ -185,13 +191,13 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 	}
 
-	class SkillsAdapter extends ArrayAdapter<SpecialSkill> {
+	class SkillsAdapter extends ArrayAdapter<Skill> {
 		SkillsSpinner owner;
-		List<SpecialSkill> keys;
+		List<Skill> keys;
 		Context context;
 		Character applicator;
 
-		public SkillsAdapter(Context context, Character applicator, List<SpecialSkill> keys, SkillsSpinner owner) {
+		public SkillsAdapter(Context context, Character applicator, List<Skill> keys, SkillsSpinner owner) {
 			super(context, R.layout.list_item, keys);
 			this.context = context;
 			this.keys = keys;
@@ -214,7 +220,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 
 		public View getCustomViewView(final int position, final View convertView, final ViewGroup parent, int inflate, boolean isDropdown) {
-			final SpecialSkill skill = keys.get(position);
+			final Skill skill = keys.get(position);
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(inflate, parent, false);
 			TextView name = (TextView) rowView.findViewById(R.id.name);
@@ -352,7 +358,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					changeHealthProgressColor(bar, healthPercentage, enemy);
 					bar.setProgress(healthPercentage);
 					bar.setText(cs.getHealth() + "/" + s.getHealth());
-					List<SpecialSkill> sk = new ArrayList<>();
+					List<Skill> sk = new ArrayList<>();
 					sk.add(null);
 					sk.addAll(enemy.getActiveSkills());
 					if (!sk.isEmpty()) {
@@ -440,7 +446,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		@SuppressLint("NewApi")
 		@Override
 		public void logAttack(ResultCombat resultCombat) {
-			SpecialSkill spec = resultCombat.getSpecialAttack();
+			Skill spec = resultCombat.getSpecialAttack();
 			if (spec == null) {
 				logNormalAttack(resultCombat);
 			} else {

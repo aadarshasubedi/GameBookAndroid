@@ -14,29 +14,34 @@ import java.util.Set;
 
 import android.util.Log;
 
-import com.nex.gamebook.attack.special.SkillProperties;
-import com.nex.gamebook.attack.special.SpecialAttackSkill;
-import com.nex.gamebook.attack.special.SpecialSkill;
 import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.skills.active.ActiveSkill;
+import com.nex.gamebook.skills.active.OvertimeSkill;
+import com.nex.gamebook.skills.active.Skill;
+import com.nex.gamebook.skills.active.SkillProperties;
+import com.nex.gamebook.skills.passive.PassiveSkill;
 import com.nex.gamebook.util.GameBookUtils;
+import com.nex.gamebook.util.Statistics;
 
 public abstract class Character implements Serializable, Mergable {
 	private static final long serialVersionUID = 214922718575334896L;
 	private Stats stats = new Stats(true);
 	private Stats currentStats = new Stats(stats, false);
 	private boolean fighting;
-	private Story story;
 	private boolean overideHolderStats = false;
+	private Story story;
 	private Stats temporalStatsHolder;
+	private Statistics statistics = new Statistics();
 	// private String skillName;
 	private transient List<SkillAssign> assignedSkills = new ArrayList<>();
-
-	private transient Map<SkillRequiredLevel, SpecialSkill> specialSkills = new HashMap<>();
-	private transient Set<SpecialSkill> activeSkills;
-	private transient SpecialSkill selectedSkill;
-
-	private transient Set<ActiveOvertimeSkill> overtimeSkills = new HashSet<ActiveOvertimeSkill>();
+	private transient Map<SkillRequiredLevel, Skill> specialSkills = new HashMap<>();
+	private transient Set<Skill> activeSkills;
+	private transient Set<PassiveSkill> pasiveSkills;
+	private transient Skill selectedSkill;
+	private transient Set<OvertimeSkill> overtimeSkills = new HashSet<OvertimeSkill>();
 	private transient Set<Bonus> conditions = new HashSet<>();
+	private Set<String> learnedPassiveSkills = new HashSet<>();
+	private int skillPoints;
 	private int level = 1;
 	private long experience = 0;
 	private StatType primaryStat;
@@ -205,19 +210,19 @@ public abstract class Character implements Serializable, Mergable {
 		this.experience = experience;
 	}
 
-	public Map<SkillRequiredLevel, SpecialSkill> getSpecialSkills() {
+	public Map<SkillRequiredLevel, Skill> getSpecialSkills() {
 		return specialSkills;
 	}
 
-	public void setSpecialSkills(Map<SkillRequiredLevel, SpecialSkill> specialSkills) {
+	public void setSpecialSkills(Map<SkillRequiredLevel, Skill> specialSkills) {
 		this.specialSkills = specialSkills;
 	}
 
-	public SpecialSkill getSelectedSkill() {
+	public Skill getSelectedSkill() {
 		return selectedSkill;
 	}
 
-	public void setSelectedSkill(SpecialSkill selectedSkill) {
+	public void setSelectedSkill(Skill selectedSkill) {
 		this.selectedSkill = selectedSkill;
 	}
 
@@ -231,7 +236,7 @@ public abstract class Character implements Serializable, Mergable {
 		} else {
 			List<Bonus> releaseThese = new ArrayList<Bonus>();
 			for (Bonus b : this.conditions) {
-				if (b.getTurns() > SpecialAttackSkill.NO_VALUE) {
+				if (b.getTurns() > ActiveSkill.NO_VALUE) {
 					releaseThese.add(b);
 				}
 			}
@@ -240,7 +245,7 @@ public abstract class Character implements Serializable, Mergable {
 	}
 
 	public void cleanActiveSkillsAfterFightEnd() {
-		for (SpecialSkill skill : activeSkills) {
+		for (Skill skill : activeSkills) {
 			skill.cleanAfterFightEnd();
 		}
 		clearOvertimeSkills();
@@ -248,7 +253,7 @@ public abstract class Character implements Serializable, Mergable {
 	}
 
 	public void cleanActiveSkillsAfterBattleEnd() {
-		for (SpecialSkill skill : activeSkills) {
+		for (Skill skill : activeSkills) {
 			skill.cleanAfterBattleEnd();
 		}
 		clearConditionSkills(true);
@@ -261,7 +266,7 @@ public abstract class Character implements Serializable, Mergable {
 
 	public void updateActiveSkills() {
 		// this.activeSkills.clear();
-		for (Map.Entry<SkillRequiredLevel, SpecialSkill> skills : specialSkills.entrySet()) {
+		for (Map.Entry<SkillRequiredLevel, Skill> skills : specialSkills.entrySet()) {
 			SkillRequiredLevel level = skills.getKey();
 			if (level.getLevel() <= getLevel())
 				this.activeSkills.add(skills.getValue());
@@ -303,11 +308,11 @@ public abstract class Character implements Serializable, Mergable {
 		return s;
 	}
 
-	public Set<SpecialSkill> getActiveSkills() {
+	public Set<Skill> getActiveSkills() {
 		return activeSkills;
 	}
 
-	public Set<ActiveOvertimeSkill> getOvertimeSkills() {
+	public Set<OvertimeSkill> getOvertimeSkills() {
 		return overtimeSkills;
 	}
 
@@ -323,7 +328,7 @@ public abstract class Character implements Serializable, Mergable {
 
 	public int getHots() {
 		int i = 0;
-		for (ActiveOvertimeSkill a : getOvertimeSkills()) {
+		for (OvertimeSkill a : getOvertimeSkills()) {
 			if (!a.getTargetSkill().isCondition())
 				i++;
 		}
@@ -367,7 +372,7 @@ public abstract class Character implements Serializable, Mergable {
 
 	public int getDots() {
 		int i = 0;
-		for (ActiveOvertimeSkill a : getOvertimeSkills()) {
+		for (OvertimeSkill a : getOvertimeSkills()) {
 			if (a.getTargetSkill().isCondition())
 				i++;
 		}
@@ -384,8 +389,8 @@ public abstract class Character implements Serializable, Mergable {
 	}
 
 	public int getLongestHot() {
-		List<ActiveOvertimeSkill> buffs = new ArrayList<ActiveOvertimeSkill>();
-		for (ActiveOvertimeSkill a : getOvertimeSkills()) {
+		List<OvertimeSkill> buffs = new ArrayList<OvertimeSkill>();
+		for (OvertimeSkill a : getOvertimeSkills()) {
 			if (!a.getTargetSkill().isCondition())
 				buffs.add(a);
 		}
@@ -396,8 +401,8 @@ public abstract class Character implements Serializable, Mergable {
 	}
 
 	public int getLongestDot() {
-		List<ActiveOvertimeSkill> buffs = new ArrayList<ActiveOvertimeSkill>();
-		for (ActiveOvertimeSkill a : getOvertimeSkills()) {
+		List<OvertimeSkill> buffs = new ArrayList<OvertimeSkill>();
+		for (OvertimeSkill a : getOvertimeSkills()) {
 			if (a.getTargetSkill().isCondition())
 				buffs.add(a);
 		}
@@ -431,10 +436,10 @@ public abstract class Character implements Serializable, Mergable {
 		return 0;
 	}
 
-	private Comparator<ActiveOvertimeSkill> createOvertimeSkillsComparator() {
-		return new Comparator<ActiveOvertimeSkill>() {
+	private Comparator<OvertimeSkill> createOvertimeSkillsComparator() {
+		return new Comparator<OvertimeSkill>() {
 			@Override
-			public int compare(ActiveOvertimeSkill lhs, ActiveOvertimeSkill rhs) {
+			public int compare(OvertimeSkill lhs, OvertimeSkill rhs) {
 				return -Integer.valueOf(lhs.getRemainsTurns()).compareTo(rhs.getRemainsTurns());
 			}
 		};
@@ -492,10 +497,50 @@ public abstract class Character implements Serializable, Mergable {
 	public void setCanCastSkill(boolean canCastSkill) {
 		this.canCastSkill = canCastSkill;
 	}
-	
+
 	public void allowActions() {
 		this.canAttack = true;
 		this.canCastSkill = true;
 	}
-	
+
+	public Set<PassiveSkill> getPasiveSkills() {
+		return pasiveSkills;
+	}
+
+	public Set<String> getLearnedPassiveSkills() {
+		return learnedPassiveSkills;
+	}
+
+	public void setLearnedPassiveSkills(Set<String> learnedPassiveSkills) {
+		this.learnedPassiveSkills = learnedPassiveSkills;
+	}
+
+	public void learnPassiveSkill(String s) {
+		this.learnedPassiveSkills.add(s);
+		instantiatePassiveSkills();
+	}
+
+	public void instantiatePassiveSkills() {
+		this.pasiveSkills.clear();
+		for (String ps : this.learnedPassiveSkills) {
+			// this.pasiveSkills.add(SpecialSkillsMap.getPassive(ps));
+		}
+	}
+
+	public Statistics getStatistics() {
+		return statistics;
+	}
+
+	public void setStatistics(Statistics statistics) {
+		this.statistics = statistics;
+	}
+
+	public int getSkillPoints() {
+		return skillPoints;
+	}
+
+	public void setSkillPoints(int skillPoints) {
+		this.skillPoints = skillPoints;
+	}
+
 }
