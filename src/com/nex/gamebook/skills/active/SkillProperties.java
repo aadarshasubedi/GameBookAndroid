@@ -3,7 +3,7 @@ package com.nex.gamebook.skills.active;
 import android.util.Log;
 
 import com.nex.gamebook.game.Bonus.StatType;
-import com.nex.gamebook.game.SpecialSkillsMap;
+import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.skills.active.conditional.DecreaseAttribute;
 import com.nex.gamebook.skills.active.conditional.IncreaseAttribute;
@@ -123,7 +123,7 @@ public class SkillProperties {
 	public boolean proprietarySkillExists() {
 		boolean exist = proprietarySkill != null && proprietarySkill.trim().length() > 0;
 		if (exist) {
-			Class<?> cls = SpecialSkillsMap.getSkills().get(proprietarySkill);
+			Class<?> cls = SkillMap.getSkills().get(proprietarySkill);
 			if (cls == null) {
 				Log.e("SkillCreation", "proprieatary skill with name " + proprietarySkill + " not exist");
 			} else {
@@ -135,7 +135,7 @@ public class SkillProperties {
 
 	private Skill resolveSkill() {
 		if (proprietarySkillExists() && turns == 0) {
-			Skill skill = SpecialSkillsMap.get(proprietarySkill);
+			Skill skill = SkillMap.get(proprietarySkill);
 			return skill;
 		}
 		if (increase) {

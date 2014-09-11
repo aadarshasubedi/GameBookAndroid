@@ -7,7 +7,7 @@ import com.nex.gamebook.R;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SpecialSkillsMap;
+import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.ResultCombatText;
 import com.nex.gamebook.skills.active.Skill;
@@ -45,7 +45,7 @@ public class IncreaseHealthOvertimeGreater extends IncreaseHealthOvertime {
 
 	private Skill createSkill(Character attacker) {
 		if (proprietarySkill != null) {
-			Skill propri = SpecialSkillsMap.get(proprietarySkill);
+			Skill propri = SkillMap.get(proprietarySkill);
 			propri.setData(properties, skillName);
 			return propri;
 		}

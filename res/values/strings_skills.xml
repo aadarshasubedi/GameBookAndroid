@@ -55,5 +55,9 @@
 	<string name="increase_attribute">
 	    Zvýší %s sesílateli
 	</string>
-		
+	<!-- PASSIVE SKILLS -->
+	<string name="passive_health_increase">
+	    Zvýší zdraví o %1$d%2$s.
+	</string>
+			
 </resources>

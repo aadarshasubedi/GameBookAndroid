@@ -3,8 +3,10 @@ package com.nex.gamebook.game;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import android.util.Log;
 
@@ -19,9 +21,10 @@ import com.nex.gamebook.skills.active.proprietary.QuickReaction;
 import com.nex.gamebook.skills.active.proprietary.ReflectDamage;
 import com.nex.gamebook.skills.active.proprietary.Stun;
 import com.nex.gamebook.skills.active.proprietary.TwiceAttack;
+import com.nex.gamebook.skills.passive.HealthIncrease;
 import com.nex.gamebook.skills.passive.PassiveSkill;
 
-public class SpecialSkillsMap {
+public class SkillMap {
 	public static String NO_SKILL = "no_skill";
 
 	public static String TWICE_ATTACK = "twice_attack";
@@ -34,15 +37,23 @@ public class SpecialSkillsMap {
 	public static String CANCEL_DEBUFF = "cancel_debuff";
 	public static String STUN = "stun";
 	public static String KICK = "kick";
+	
+	public static String PASSIVE_HEALTH_INCREASE = "passiveHealthIncrease";
+	
 	private Map<String, Class<? extends Skill>> skills = new HashMap<>();
-	private Map<Integer, List<PassiveSkill>> pasiveSkills = new HashMap<>();
+	private Set<PassiveSkill> passiveSkills = new HashSet<>();
 
-	private static SpecialSkillsMap instance;
+	private static SkillMap instance;
 	static {
-		instance = new SpecialSkillsMap();
+		instance = new SkillMap();
 		instance.init();
+		instance.initPassive();
 	}
-
+	
+	private void initPassive() {
+		passiveSkills.add(new HealthIncrease());
+	}
+	
 	private void init() {
 		skills.put(TWICE_ATTACK, TwiceAttack.class);
 		skills.put(REFLECT_DAMAGE, ReflectDamage.class);
@@ -56,12 +67,12 @@ public class SpecialSkillsMap {
 		skills.put(KICK, Kick.class);
 	}
 
-	public static void main(String[] args) {
-		for (String key : getSkills().keySet()) {
-			String xsdEnumeration = "<xs:enumeration value=\"{0}\" />";
-			System.out.println(MessageFormat.format(xsdEnumeration, key));
-		}
-	}
+//	public static void main(String[] args) {
+//		for (String key : getSkills().keySet()) {
+//			String xsdEnumeration = "<xs:enumeration value=\"{0}\" />";
+//			System.out.println(MessageFormat.format(xsdEnumeration, key));
+//		}
+//	}
 
 	public static Map<String, Class<? extends Skill>> getSkills() {
 		return instance.skills;

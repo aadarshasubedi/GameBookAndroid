@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.SkillRequiredLevel;
-import com.nex.gamebook.game.SpecialSkillsMap;
+import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.story.parser.StoryXmlParser;
