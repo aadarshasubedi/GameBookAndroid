@@ -59,5 +59,25 @@
 	<string name="passive_health_increase">
 	    Zvýší zdraví o %1$d%2$s.
 	</string>
-			
+	<string name="passive_aoe">
+	    Při každém úspěšném úderu zraní všechny okolní nepřátele za %1$d%2$s poškození.
+	</string>		
+	<string name="passive_leech">
+	    Při každém úspěšném úderu vyléčí %1$d%2$s zdraví.
+	</string>
+	<string name="passive_attack_buff">
+	    Při každém kritickém úderu zvýší útok o %1$d na 4 kola.
+	</string>
+	<string name="passive_defense_buff">
+	    Při každém obdrženém kritickém úderu zvýší útok o %1$d na 4 kola.
+	</string>
+	<string name="passive_dodge_is_skill">
+	    Vyhnutí se útoku zvýší dovednost o %1$d%2$s na 4 kola.
+	</string>
+	<string name="passive_luck_is_skillpower">
+	    Při normálním útoku je  %1$d%2$s šance, že se zvýší síla schopností o %3$d na 4 kola.
+	</string>
+	<string name="passive_boost_passiveSkills">
+	    Zvýší sílu pasivních dovedností o %1$d%2$s.
+	</string>
 </resources>

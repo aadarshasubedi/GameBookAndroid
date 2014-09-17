@@ -156,5 +156,7 @@
     
     <string name="enemy_cannot_attack">Nepřítel nemůže útočit.</string>
     <string name="enemy_cannot_cast">Nepřítel nemůže použít schopnost.</string>
+    <string name="select_passive_skill">%d dovednostních bodů.</string>
+    <string name="learn_passive_skill">Naučit</string>
     
 </resources>

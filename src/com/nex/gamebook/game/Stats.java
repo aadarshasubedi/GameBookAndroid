@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import android.util.Log;
 
 import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.skills.passive.HealthIncrease;
 import com.nex.gamebook.util.GameBookUtils;
 
 public class Stats implements Serializable {
@@ -48,12 +49,17 @@ public class Stats implements Serializable {
 	}
 
 	public int getHealth() {
-		int value = health + getConditionsByType(StatType.HEALTH);
+		int value = getRealHealth() + getConditionsByType(StatType.HEALTH);
 		return value;
 	}
 
 	public int getRealHealth() {
-		return this.health;
+		int value = this.health;
+		HealthIncrease skill = (HealthIncrease) character.findPassiveSkill(HealthIncrease.class);
+		if(skill!=null) {
+			value += (value/100) * skill.power(character);
+		}
+		return value;
 	}
 	
 	public int getRealDefense() {

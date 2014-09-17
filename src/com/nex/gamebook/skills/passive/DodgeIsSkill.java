@@ -6,21 +6,21 @@ import android.content.Context;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.game.Character;
-import com.nex.gamebook.game.SkillMap;
 
-public class HealthIncrease extends PassiveSkill {
-	public static String ID = "passiveHealthIncrease";
-	
+public class DodgeIsSkill extends PassiveSkill {
+	public static String ID = "passiveDodgeIsSkill";
 	@Override
 	public String getName(Properties p) {
 		return p.getProperty(ID);
 	}
 	
 	public String getDescription(Context ctx, Character c) {
-		return ctx.getString(R.string.passive_health_increase, power(c), "%");
+		return ctx.getString(R.string.passive_luck_is_skillpower, c.getCurrentStats().getLuckPercentage(), "%", power(c));
 	}
+
 	@Override
 	public int power(Character c) {
-		return boostPower(c, 30);
+		return boostPower(c, c.getCurrentStats().getSpecialSkillPower());
 	}
+
 }

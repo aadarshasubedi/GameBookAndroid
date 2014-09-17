@@ -28,7 +28,7 @@ public class TwiceAttack extends ActiveSkill {
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat rm) {
-		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
+		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked), callback.getEnemies());
 		ResultCombat result = combat.doNormalAttack(attacker, attacked, false);
 		result.setSpecialAttack(this);
 		callback.logAttack(result);

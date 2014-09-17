@@ -1,6 +1,5 @@
 package com.nex.gamebook.game;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,8 +22,7 @@ import com.nex.gamebook.skills.passive.PassiveSkill;
 import com.nex.gamebook.util.GameBookUtils;
 import com.nex.gamebook.util.Statistics;
 
-public abstract class Character implements Serializable, Mergable {
-	private static final long serialVersionUID = 214922718575334896L;
+public abstract class Character {
 	private Stats stats = new Stats(true);
 	private Stats currentStats = new Stats(stats, false);
 	private boolean fighting;
@@ -36,7 +34,7 @@ public abstract class Character implements Serializable, Mergable {
 	private transient List<SkillAssign> assignedSkills = new ArrayList<>();
 	private transient Map<SkillRequiredLevel, Skill> specialSkills = new HashMap<>();
 	private transient Set<Skill> activeSkills;
-	private transient Set<PassiveSkill> pasiveSkills;
+	private transient Set<PassiveSkill> pasiveSkills = new HashSet<>();
 	private transient Skill selectedSkill;
 	private transient Set<OvertimeSkill> overtimeSkills = new HashSet<OvertimeSkill>();
 	private transient Set<Bonus> conditions = new HashSet<>();
@@ -523,7 +521,7 @@ public abstract class Character implements Serializable, Mergable {
 	public void instantiatePassiveSkills() {
 		this.pasiveSkills.clear();
 		for (String ps : this.learnedPassiveSkills) {
-			// this.pasiveSkills.add(SpecialSkillsMap.getPassive(ps));
+			 this.pasiveSkills.add(SkillMap.getPassive(ps));
 		}
 	}
 
@@ -542,5 +540,12 @@ public abstract class Character implements Serializable, Mergable {
 	public void setSkillPoints(int skillPoints) {
 		this.skillPoints = skillPoints;
 	}
-
+	public PassiveSkill findPassiveSkill(Class<? extends PassiveSkill> skill) {
+		for(PassiveSkill s: getPasiveSkills()) {
+			if(s.getClass().equals(skill)) {
+				return s;
+			}
+		}
+		return null;
+	}
 }

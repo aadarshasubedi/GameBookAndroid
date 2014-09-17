@@ -30,10 +30,13 @@ import com.nex.gamebook.game.CharacterType;
 import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
+import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.skills.ResultCombatText;
 import com.nex.gamebook.skills.active.Skill;
+import com.nex.gamebook.util.PassiveSkillInfoDialogAnSelection;
+import com.nex.gamebook.util.PassiveSkillInfoDialogAnSelection.DismissCallBack;
 import com.nex.gamebook.util.SkillInfoDialog;
 
 public class PlaygroundBattleLogCharacterView extends AbstractFragment {
@@ -139,6 +142,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		actualAttrs.callOnClick();
 		// showSkill((TextView) view.findViewById(R.id.skill_name), _character);
 		showAvailableSkills();
+		showPassiveSkills();
 		TextView level = (TextView) view.findViewById(R.id.level);
 		com.nex.gamebook.playground.TextProgressBar progress = (com.nex.gamebook.playground.TextProgressBar) view.findViewById(R.id.experience_bar);
 		changeProgressBarColor(progress, R.drawable.experience_bar_style);
@@ -165,7 +169,22 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		debuffsLongest.setText(String.valueOf(_character.getLongestDebuff()));
 
 	}
-
+	
+	public void showPassiveSkills() {
+		SkillsSpinner skills = (SkillsSpinner) masterView.findViewById(R.id.passive_skills);
+		int skillPoints = _character.getSkillPoints();
+		List<String> availableSkills = new ArrayList<>();
+		if(skillPoints > 0) {
+			availableSkills = SkillMap.getUnlearnedSkills(_character.getLearnedPassiveSkills());
+		} else {
+			availableSkills = new ArrayList<>(_character.getLearnedPassiveSkills());
+		}
+//		if(availableSkills.isEmpty()) {
+//			availableSkills.add("none");
+//		}
+		skills.setAdapter(new PassiveSkillsAdapter(getContext(), availableSkills, skills));
+	}
+	
 	public void showAvailableSkills() {
 		SkillsSpinner skills = (SkillsSpinner) masterView.findViewById(R.id.skills);
 		List<Skill> availableSkills = new ArrayList<>();
@@ -191,6 +210,52 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 	}
 
+	class PassiveSkillsAdapter extends ArrayAdapter<String> {
+		private List<String> skills;
+		SkillsSpinner owner;
+		Context context;
+		public PassiveSkillsAdapter(Context context, List<String> keys, SkillsSpinner owner) {
+			super(context, R.layout.list_item, keys);
+			this.skills = keys;
+			this.context = context;
+			this.owner = owner;
+		}
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			final String skill = skills.get(position);
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.spinner_dropdown_item, parent, false);
+			TextView name = (TextView) rowView.findViewById(R.id.name);
+			name.setText(SkillMap.getPassive(skill).getName(_character.getStory().getProperties()));
+			rowView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					//owner.onDetachedFromWindow();
+					PassiveSkillInfoDialogAnSelection dialog = new PassiveSkillInfoDialogAnSelection(context, _character, skill);
+					dialog.show(new DismissCallBack() {
+						
+						@Override
+						public void dismiss() {
+							owner.onDetachedFromWindow();
+							showCurrentValues();
+						}
+					});
+				}
+			});
+			return rowView;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.spinner_single_item_skill, parent, false);
+			TextView name = (TextView) rowView.findViewById(R.id.name);
+			name.setText(context.getString(R.string.select_passive_skill, _character.getSkillPoints()));
+			decoreClickableTextView(getContext(), name, String.valueOf(name.getText()));
+			return rowView;
+		}			
+	}
+	
 	class SkillsAdapter extends ArrayAdapter<Skill> {
 		SkillsSpinner owner;
 		List<Skill> keys;
@@ -416,14 +481,22 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		private BattleLogAdapter adapter;
 		private boolean buttonPressed = false;
 		CombatProcess combat;
-
+		private Enemy enemy;
 		public FightingLog(BattleLogAdapter ad, Enemy enemy, LinearLayout log) {
 			super();
 			this.adapter = ad;
 			this.log = log;
-			combat = new CombatProcess(enemy);
+			this.enemy = enemy;
+			combat = new CombatProcess(enemy, getEnemies());
 		}
-
+		
+		@Override
+		public List<Enemy> getEnemies() {
+			List<Enemy> others = new ArrayList<Enemy>(section.getEnemies());
+			others.remove(enemy);
+			return others;
+		}
+		
 		@Override
 		public Player getCharacter() {
 			return _character;

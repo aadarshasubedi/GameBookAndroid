@@ -18,7 +18,7 @@ public class QuickReaction extends ActiveSkill {
 
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
-		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked));
+		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked), callback.getEnemies());
 		ResultCombat result = combat.doNormalAttack(attacker, attacked, this.getValue(attacker)/100f, false);
 		result.setSpecialAttack(this);
 		callback.logAttack(result);

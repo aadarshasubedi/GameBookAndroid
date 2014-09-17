@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:background="@drawable/corners_noopacity" android:padding="10dip">
+
+<LinearLayout
+    android:id="@+id/skill_data"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/name" />
+
+        <TextView
+            android:id="@+id/skill_name"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dsc_default" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/skill_durability"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:visibility="gone">
+
+
+
+            <TextView
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/skill_durability" />
+
+
+
+        <TextView
+            android:id="@+id/overtimeskill_turns"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dsc_default" />
+
+        <TextView
+            style="@style/attribute"
+            android:layout_marginLeft="2dp"
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_turns" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/special_skill_trigger" />
+
+        <TextView
+            android:id="@+id/skill_trigger"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dsc_default" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/attempts_row">
+
+        <TextView
+            style="@style/title"
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:text="@string/special_skill_attempts" />
+
+        <TextView
+            style="@style/attribute"
+            android:id="@+id/attempts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/attr_value_zero" />
+		<TextView
+		    android:id="@+id/attempts_marker"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/power_row">
+
+        <TextView
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/power" />
+
+        <TextView
+            android:id="@+id/skill_power"
+            style="@style/attribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/dsc_default" />
+
+    </LinearLayout>
+    <TextView
+    android:id="@+id/skill_description"
+    style="@style/attribute"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dip"
+    android:text="@string/dsc_default" />
+</LinearLayout>
+
+<Button
+    android:id="@+id/learn"
+    style="@style/button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/learn_passive_skill" />
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.nex.gamebook.playground;
 
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -18,6 +19,7 @@ import com.nex.gamebook.MainScreenActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ScoreActivity;
 import com.nex.gamebook.game.Bonus;
+import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.game.Stats;
@@ -410,7 +412,10 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		log.addView(battleText);
 		
 	}
-
+	@Override
+	public List<Enemy> getEnemies() {
+		return Collections.emptyList();
+	}
 	@Override
 	public void logExperience(long xp) {
 		addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);

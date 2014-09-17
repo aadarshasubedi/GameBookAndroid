@@ -6,21 +6,30 @@ import java.util.List;
 import com.nex.gamebook.game.Bonus;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Enemy;
+import com.nex.gamebook.game.Bonus.StatType;
+import com.nex.gamebook.game.Enemy.EnemyLevel;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.Enemy.EnemyLevel;
 import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.active.OvertimeSkill;
 import com.nex.gamebook.skills.active.Skill;
+import com.nex.gamebook.skills.passive.AreaOfDamage;
+import com.nex.gamebook.skills.passive.AttackBuff;
+import com.nex.gamebook.skills.passive.DefenseBuff;
+import com.nex.gamebook.skills.passive.DodgeIsSkill;
+import com.nex.gamebook.skills.passive.Leech;
+import com.nex.gamebook.skills.passive.LuckIsSkillpower;
 
 public class CombatProcess {
 
 	private Enemy enemy;
+	private List<Enemy> otherEnemies;
 	int turn = 0;
 
-	public CombatProcess(Enemy enemy) {
+	public CombatProcess(Enemy enemy, List<Enemy> otherEnemies) {
 		super();
 		this.enemy = enemy;
+		this.otherEnemies = otherEnemies;
 	}
 
 	// public ResultCombat doNormalAttack(Character attacker, Character
@@ -51,18 +60,80 @@ public class CombatProcess {
 				double criticalMultiplier = attacker.hasLuck() ? 1 : 0.5;
 				resultCombat.setMultiply(criticalMultiplier);
 				totalDamage += totalDamage * criticalMultiplier;
+				processPassiveWhenCriticalHit(attacker, attacked);
 			}
+			processPassiveSkills(attacker, totalDamage);
 			resultCombat.setDamage(totalDamage);
 			int attackedHealth = attacked.getCurrentStats().getRealHealth();
 			attacked.getCurrentStats().setHealth(attackedHealth - resultCombat.getDamage());
 		} else {
 			attacker.getStatistics().addMissedAttack();
-			attacker.getStatistics().addDodgedAttack();
+			attacked.getStatistics().addDodgedAttack();
+			DodgeIsSkill askill = (DodgeIsSkill) attacker.findPassiveSkill(DodgeIsSkill.class);
+			if(askill!=null) {
+				Bonus b = createBonus(StatType.SKILL, askill.power(attacked));
+				attacked.addBonus(b);
+			}
 		}
 		resultCombat.setEnemyName(enemy.getName());
 		return resultCombat;
 	}
-
+	private void processPassiveWhenCriticalHit(Character attacker, Character attacked) {
+		AttackBuff askill = (AttackBuff) attacker.findPassiveSkill(AttackBuff.class);
+		if(askill!=null) {
+			int buff = askill.power(attacker);
+			attacker.getConditions().add(createBonus(StatType.ATTACK, buff));
+		}
+		DefenseBuff dskill = (DefenseBuff) attacker.findPassiveSkill(DefenseBuff.class);
+		if(dskill!=null) {
+			int buff = dskill.power(attacked);
+			attacked.getConditions().add(createBonus(StatType.DEFENSE, buff));
+		}
+	}
+	
+	private Bonus createBonus(StatType type, int val) {
+		Bonus b = new Bonus();
+		b.setType(type);
+		b.setCoeff(1);
+		b.setValue(val);
+		b.setTurns(4);
+		return b;
+	}
+	
+	private void processPassiveSkills(Character attacker, int totaldmg) {
+		processAOEDmg(attacker, totaldmg);
+		processLeech(attacker);
+		processLuckIsSkillPower(attacker);
+	}
+	private void processLuckIsSkillPower(Character attacker) {
+		LuckIsSkillpower skill = (LuckIsSkillpower) attacker.findPassiveSkill(LuckIsSkillpower.class);
+		if(skill!=null) {
+			if(attacker.hasLuck()) {
+				attacker.getConditions().add(createBonus(StatType.SKILLPOWER, skill.power(attacker)));
+			}
+		}
+	}
+	private void processLeech(Character attacker) {
+		Leech leechSkill = (Leech) attacker.findPassiveSkill(Leech.class);
+		if(leechSkill!=null) {
+			int currentHealth = attacker.getCurrentStats().getRealHealth();
+			currentHealth += (attacker.getStats().getRealHealth() / 100) * leechSkill.power(attacker);
+			if(currentHealth>attacker.getStats().getRealHealth()) {
+				currentHealth = attacker.getStats().getRealHealth();
+			}
+			attacker.getCurrentStats().setHealth(currentHealth);
+		}
+	}
+	
+	private void processAOEDmg(Character attacker, int totaldmg) {
+		AreaOfDamage aoeSkill = (AreaOfDamage) attacker.findPassiveSkill(AreaOfDamage.class);
+		if(aoeSkill!=null) {
+			int aoeDamage = (int) (((double)totaldmg / 100d) * aoeSkill.power(attacker));
+			for(Enemy e: this.otherEnemies) {
+				e.getCurrentStats().setHealth(e.getCurrentStats().getRealHealth() - aoeDamage);
+			}
+		}
+	}
 	public ResultCombat doNormalAttack(Character attacker, Character attacked, boolean allowLuck) {
 		return doNormalAttack(attacker, attacked, 1, allowLuck);
 	}

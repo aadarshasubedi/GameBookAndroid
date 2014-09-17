@@ -1,9 +1,7 @@
 package com.nex.gamebook.game;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +19,14 @@ import com.nex.gamebook.skills.active.proprietary.QuickReaction;
 import com.nex.gamebook.skills.active.proprietary.ReflectDamage;
 import com.nex.gamebook.skills.active.proprietary.Stun;
 import com.nex.gamebook.skills.active.proprietary.TwiceAttack;
+import com.nex.gamebook.skills.passive.AreaOfDamage;
+import com.nex.gamebook.skills.passive.AttackBuff;
+import com.nex.gamebook.skills.passive.BoostPassiveSkill;
+import com.nex.gamebook.skills.passive.DefenseBuff;
+import com.nex.gamebook.skills.passive.DodgeIsSkill;
 import com.nex.gamebook.skills.passive.HealthIncrease;
+import com.nex.gamebook.skills.passive.Leech;
+import com.nex.gamebook.skills.passive.LuckIsSkillpower;
 import com.nex.gamebook.skills.passive.PassiveSkill;
 
 public class SkillMap {
@@ -38,10 +43,8 @@ public class SkillMap {
 	public static String STUN = "stun";
 	public static String KICK = "kick";
 	
-	public static String PASSIVE_HEALTH_INCREASE = "passiveHealthIncrease";
-	
 	private Map<String, Class<? extends Skill>> skills = new HashMap<>();
-	private Set<PassiveSkill> passiveSkills = new HashSet<>();
+	private Map<String, Class<? extends PassiveSkill>> passiveSkills = new HashMap<>();
 
 	private static SkillMap instance;
 	static {
@@ -51,7 +54,15 @@ public class SkillMap {
 	}
 	
 	private void initPassive() {
-		passiveSkills.add(new HealthIncrease());
+		passiveSkills.put(HealthIncrease.ID, HealthIncrease.class);
+		passiveSkills.put(AreaOfDamage.ID, AreaOfDamage.class);
+		passiveSkills.put(Leech.ID, Leech.class);
+		passiveSkills.put(LuckIsSkillpower.ID, LuckIsSkillpower.class);
+		passiveSkills.put(DodgeIsSkill.ID, DodgeIsSkill.class);
+		passiveSkills.put(AttackBuff.ID, AttackBuff.class);
+		passiveSkills.put(DefenseBuff.ID, DefenseBuff.class);
+		passiveSkills.put(BoostPassiveSkill.ID, BoostPassiveSkill.class);
+		
 	}
 	
 	private void init() {
@@ -96,7 +107,16 @@ public class SkillMap {
 		}
 		return null;
 	}
-
+	
+	public static List<String> getUnlearnedSkills(Set<String> learnedSkills) {
+		List<String> skills = new ArrayList<String>();
+		for(String s: instance.passiveSkills.keySet()) {
+			if(!learnedSkills.contains(s))
+				skills.add(s);
+		}
+		return skills;
+	}
+	
 	public static String getSkillId(Class<? extends Skill> cls) {
 		for (Map.Entry<String, Class<? extends Skill>> entry : instance.skills.entrySet()) {
 			if (cls.equals(entry.getValue())) {
@@ -117,17 +137,14 @@ public class SkillMap {
 		}
 		return s;
 	}
-//	public static PassiveSkill getPassive(String skillName) {
-//		try {
-//			Class<PassiveSkill> skill = instance.pasiveSkills.get(skillName);
-//			if (skill != null)
-//				return skill.newInstance();
-//		} catch (InstantiationException | IllegalAccessException e) {
-//			Log.e("", "SkillPull", e);
-//		}
-//		return null;
-//	}
-//	public Map<String, Class<? extends PassiveSkill>> getPasiveSkills() {
-//		return pasiveSkills;
-//	}
+	public static PassiveSkill getPassive(String skillName) {
+		try {
+			Class<? extends PassiveSkill> skill = instance.passiveSkills.get(skillName);
+			if (skill != null)
+				return skill.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			Log.e("", "SkillPull", e);
+		}
+		return null;
+	}
 }
