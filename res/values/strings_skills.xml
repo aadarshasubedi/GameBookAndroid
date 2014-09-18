@@ -59,6 +59,12 @@
 	<string name="passive_health_increase">
 	    Zvýší zdraví o %1$d%2$s.
 	</string>
+	<string name="passive_health_is_defense">
+	    Zvýší zdraví o (%1$d%2$s). Závisí na atributu obrana.
+	</string>
+	<string name="passive_defense_is_attack">
+	    Zvýší útok o (%1$d%2$s). Závisí na atributu obrana.
+	</string>
 	<string name="passive_aoe">
 	    Při každém úspěšném úderu zraní všechny okolní nepřátele za %1$d%2$s poškození.
 	</string>		
@@ -79,5 +85,14 @@
 	</string>
 	<string name="passive_boost_passiveSkills">
 	    Zvýší sílu pasivních dovedností o %1$d%2$s.
+	</string>
+	<string name="passive_health_for_attack">
+	    Sníží zdraví o %1$d%2$s, ale zvýší útok o %3$d%4$s.
+	</string>
+	<string name="passive_health_for_skillpower">
+	    Sníží zdraví o %1$d%2$s, ale zvýší sílu schopností o %3$d%4$s.
+	</string>
+	<string name="passive_criticalSkills">
+	    Zapne na schopnostech %1$d%2$s šanci na kritický zásah (%3$dx).
 	</string>
 </resources>

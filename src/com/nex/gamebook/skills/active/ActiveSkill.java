@@ -14,6 +14,7 @@ import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.CombatTextDispatcher;
 import com.nex.gamebook.skills.ResultCombatText;
+import com.nex.gamebook.skills.passive.CriticalSkills;
 
 public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 
@@ -50,6 +51,7 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 		result.setSpecialAttack(this);
 		result.setDamage(value);
 		result.setType(type);
+		result.setCritical(wasCritical);
 		result.setEnemyName(enemy.getName());
 		return result;
 	}
@@ -187,9 +189,9 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 	}
 	@Override
 	public int getValue(Character character) {
+		wasCritical = false;
 		if (constantValue != NO_VALUE)
 			return constantValue;
-
 		return getValueBasedOnSkillPower(character);
 	}
 
@@ -197,9 +199,15 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 		int power = c.getCurrentStats().getSpecialSkillPower();
 		double coeff = properties.getCoeff();
 		if(coeff==0d) return power;
-		return (int) (power * coeff);
+		int value = (int) (power * coeff);
+		CriticalSkills s = (CriticalSkills) c.findPassiveSkill(CriticalSkills.class);
+		if(s!=null && c.isCriticalChance()) {
+			value *= s.power(c);
+			wasCritical = true;
+		}
+		return value;
 	}
-
+	protected boolean wasCritical = false;
 	public String getName() {
 		return skillName;
 	}
@@ -242,7 +250,7 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 			text += " " + context.getString(R.string.for_word);		
 			text += " " + resultCombat.getDamage();
 		}
-		text += " " + context.getString(skill.getType().getText()).toLowerCase();
+		text += " " + context.getString(skill.getType().getText()).toLowerCase() + ".";
 		return new ResultCombatText(R.color.reset, text);
 	}
 	public SkillProperties getProperties() {

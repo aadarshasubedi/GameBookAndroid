@@ -530,7 +530,11 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		private void logSpecialAttack(ResultCombat resultCombat) {
 			Context context = adapter.context;
 			ResultCombatText text = resultCombat.getSpecialAttack().getCombatTextDispatcher().getLogAttack(context, resultCombat);
-			addResultToLog(log, text.getText(), context, text.getColor());
+			String t = text.getText();
+			if(resultCombat.isCritical()) {
+				t += " " + adapter.context.getString(R.string.critical_strike);
+			}
+			addResultToLog(log, t, context, text.getColor());
 		}
 
 		private void logNormalAttack(ResultCombat resultCombat) {

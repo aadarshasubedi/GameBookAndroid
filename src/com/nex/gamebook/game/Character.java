@@ -515,6 +515,7 @@ public abstract class Character {
 
 	public void learnPassiveSkill(String s) {
 		this.learnedPassiveSkills.add(s);
+		SkillMap.getPassive(s).processWhenLearned(this);
 		instantiatePassiveSkills();
 	}
 

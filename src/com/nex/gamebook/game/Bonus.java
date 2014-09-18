@@ -20,9 +20,9 @@ public class Bonus implements Cancelable {
 
 	public enum StatType implements Serializable {
 		HEALTH(R.string.attr_health, 30, 1), 
-		LUCK(R.string.attr_luck, 2, 1), 
-		SKILL(R.string.attr_skill, 2, 1), 
-		DEFENSE(R.string.attr_defense, 1, 1), 
+		LUCK(R.string.attr_luck, 2, 4), 
+		SKILL(R.string.attr_skill, 2, 4), 
+		DEFENSE(R.string.attr_defense, 1, 4), 
 		ATTACK(R.string.attr_attack, 1, 1), 
 		DAMAGE(R.string.attr_baseDmg, 2, 10), 
 		SKILLPOWER(R.string.attr_skill_power, 2, 3);

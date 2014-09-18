@@ -45,13 +45,13 @@ public abstract class ActiveOvertimeSkill extends ActiveSkill {
 		p.setPermanent(true);
 		return p;
 	}
-	@Override
-	public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
-		int text = R.string.you_cast;
+	
+	public ResultCombatText getLogAttackOvertime(Context context, ResultCombat resultCombat) {
+		int text = R.string.you_applied;
 		if(resultCombat.getType().equals(CharacterType.ENEMY)) {
-			text = R.string.enemy_cast;
+			text = R.string.enemy_applied;
 		}
-		return new ResultCombatText(R.color.reset, context.getString(text, getName()));
+		return new ResultCombatText(R.color.reset, context.getString(text, getName().toLowerCase()));
 	}
 	
 	protected void redefinePropertiesIfProprietarySkillExist(SkillProperties properties, String proprietarySkill) {

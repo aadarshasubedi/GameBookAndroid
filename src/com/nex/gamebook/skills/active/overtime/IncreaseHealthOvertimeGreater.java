@@ -9,6 +9,7 @@ import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.playground.BattleLogCallback;
+import com.nex.gamebook.skills.CombatTextDispatcher;
 import com.nex.gamebook.skills.ResultCombatText;
 import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.skills.active.SkillProperties;
@@ -37,8 +38,7 @@ public class IncreaseHealthOvertimeGreater extends IncreaseHealthOvertime {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
 		Skill skill = createSkill(attacker);
-		skill.setCombatTextDispatcher(this);
-		
+		skill.setData(properties, skillName);
 		skill.doAttack(attacker, attacked, callback, cm);
 		return super.doAttackOnce(attacker, attacked, callback, cm);
 	}
@@ -46,11 +46,19 @@ public class IncreaseHealthOvertimeGreater extends IncreaseHealthOvertime {
 	private Skill createSkill(Character attacker) {
 		if (proprietarySkill != null) {
 			Skill propri = SkillMap.get(proprietarySkill);
+//			propri.setCombatTextDispatcher(this);
 			propri.setData(properties, skillName);
 			return propri;
 		}
 		int skillvalue = getValue(attacker);
 		IncreaseAttribute skill = new IncreaseAttribute(type, skillvalue);
+		skill.setCombatTextDispatcher(new CombatTextDispatcher() {
+			
+			@Override
+			public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
+				return IncreaseHealthOvertimeGreater.super.getLogAttack(context, resultCombat);
+			}
+		});
 		return skill;
 	}
 
@@ -61,7 +69,7 @@ public class IncreaseHealthOvertimeGreater extends IncreaseHealthOvertime {
 	@SuppressLint("ResourceAsColor")
 	@Override
 	public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
-		ResultCombatText text = super.getLogAttack(context, resultCombat);
+		ResultCombatText text = super.getLogAttackOvertime(context, resultCombat);
 		text.setColor(R.color.reset);
 		return text;
 	}

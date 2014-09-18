@@ -21,4 +21,8 @@ public abstract class PassiveSkill {
 		return defaultPower;
 	}
 	
+	public void processWhenLearned(Character c) {
+		
+	}
+	
 }

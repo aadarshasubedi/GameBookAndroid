@@ -268,7 +268,7 @@ public class GameBookUtils {
 	}
 
 	public static int getStatByType(Stats destination, StatType type) throws Exception {
-		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("getReal", type.name().toLowerCase()), new Class<?>[0]);
+		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", type.name().toLowerCase()), new Class<?>[0]);
 		return (int) m.invoke(destination, new Object[0]);
 	}
 }

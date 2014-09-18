@@ -5,10 +5,12 @@ import android.content.Context;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.game.Character;
+import com.nex.gamebook.game.CharacterType;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.playground.BattleLogCallback;
+import com.nex.gamebook.skills.CombatTextDispatcher;
 import com.nex.gamebook.skills.ResultCombatText;
 import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.skills.active.SkillProperties;
@@ -37,7 +39,6 @@ public class DecreaseHealthOvertimeGreater extends DecreaseHealthOvertime {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
 		Skill skill = createSkill(attacker);
-		skill.setCombatTextDispatcher(this);
 		skill.setData(properties, skillName);
 		skill.doAttack(attacker, attacked, callback, cm);
 		return super.doAttackOnce(attacker, attacked, callback, cm);
@@ -45,11 +46,19 @@ public class DecreaseHealthOvertimeGreater extends DecreaseHealthOvertime {
 	private Skill createSkill(Character attacker) {
 		if (proprietarySkill != null) {
 			Skill propri = SkillMap.get(proprietarySkill);
+//			propri.setCombatTextDispatcher(this);
 			propri.setData(properties, skillName);
 			return propri;
 		}
 		int skillvalue = getValue(attacker);
 		DecreaseAttribute skill = new DecreaseAttribute(type, skillvalue);
+		skill.setCombatTextDispatcher(new CombatTextDispatcher() {
+			
+			@Override
+			public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
+				return DecreaseHealthOvertimeGreater.super.getLogAttack(context, resultCombat);
+			}
+		});
 		return skill;
 	}
 	@Override
@@ -61,7 +70,7 @@ public class DecreaseHealthOvertimeGreater extends DecreaseHealthOvertime {
 	@SuppressLint("ResourceAsColor")
 	@Override
 	public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
-		ResultCombatText text = super.getLogAttack(context, resultCombat);
+		ResultCombatText text = super.getLogAttackOvertime(context, resultCombat);
 		text.setColor(R.color.reset);
 		return text;
 	}

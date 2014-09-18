@@ -21,8 +21,8 @@ public abstract class ActiveConditionalSkill extends ActiveSkill {
 		if (!isPermanent()) {
 			applicationChar.getConditions().add(bonus);
 		} else {
-			if(bonus.getType().equals(StatType.HEALTH)) {
-				if(isCondition()) {
+			if (bonus.getType().equals(StatType.HEALTH)) {
+				if (isCondition()) {
 					attacker.getStatistics().addSkillGivenDamage(bonus.getValue());
 					attacked.getStatistics().addSkillTakenDamage(bonus.getValue());
 				} else {
@@ -40,7 +40,7 @@ public abstract class ActiveConditionalSkill extends ActiveSkill {
 	public abstract boolean isCondition();
 
 	public int getMinAttributeForStopAttack() {
-		if(properties.getType().equals(StatType.ATTACK)) {
+		if (properties.getType().equals(StatType.ATTACK)) {
 			return 1;
 		}
 		return -1;
@@ -53,21 +53,24 @@ public abstract class ActiveConditionalSkill extends ActiveSkill {
 		return attacker;
 	}
 
-
 	@Override
 	public boolean afterNormalAttack() {
 		return false;
 	}
 
+	/**
+	 * Test if skill do something, this is used for AI.
+	 */
 	@Override
 	public boolean doSomething(Character attacked, Character attacker) {
-		if(isCondition()) {
+		if (isCondition()) {
 			Player test = new Player();
 			test.setCurrentStats(new Stats(attacked.getCurrentStats(), false));
 			test.setStats(new Stats(attacked.getCurrentStats(), true));
 			Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getValue(attacker), getType());
 			int realValue = test.addBonus(bonus);
-			if(realValue==0) return false;
+			if (realValue == 0)
+				return false;
 		}
 		return true;
 	}

@@ -22,8 +22,13 @@ import com.nex.gamebook.skills.active.proprietary.TwiceAttack;
 import com.nex.gamebook.skills.passive.AreaOfDamage;
 import com.nex.gamebook.skills.passive.AttackBuff;
 import com.nex.gamebook.skills.passive.BoostPassiveSkill;
+import com.nex.gamebook.skills.passive.CriticalSkills;
 import com.nex.gamebook.skills.passive.DefenseBuff;
+import com.nex.gamebook.skills.passive.DefenseIsAttack;
+import com.nex.gamebook.skills.passive.DefenseIsHealth;
 import com.nex.gamebook.skills.passive.DodgeIsSkill;
+import com.nex.gamebook.skills.passive.HealthForAttack;
+import com.nex.gamebook.skills.passive.HealthForSkillPower;
 import com.nex.gamebook.skills.passive.HealthIncrease;
 import com.nex.gamebook.skills.passive.Leech;
 import com.nex.gamebook.skills.passive.LuckIsSkillpower;
@@ -62,7 +67,11 @@ public class SkillMap {
 		passiveSkills.put(AttackBuff.ID, AttackBuff.class);
 		passiveSkills.put(DefenseBuff.ID, DefenseBuff.class);
 		passiveSkills.put(BoostPassiveSkill.ID, BoostPassiveSkill.class);
-		
+		passiveSkills.put(HealthForAttack.ID, HealthForAttack.class);
+		passiveSkills.put(HealthForSkillPower.ID, HealthForSkillPower.class);
+		passiveSkills.put(CriticalSkills.ID, CriticalSkills.class);
+		passiveSkills.put(DefenseIsHealth.ID, DefenseIsHealth.class);
+		passiveSkills.put(DefenseIsAttack.ID, DefenseIsAttack.class);
 	}
 	
 	private void init() {
