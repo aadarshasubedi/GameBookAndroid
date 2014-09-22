@@ -5,7 +5,17 @@
     android:background="@drawable/main_background"
     
     tools:context="com.nex.gamebook.MainScreenActivity">
+<!-- 	<fragment android:name="com.google.android.gms.example.bannerexample.MyActivity$PlaceholderFragment" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--         android:layout_above="@+id/adFragment" /> -->
 
+    <fragment
+        android:id="@+id/adFragment"
+        android:name="com.nex.gamebook.ads.FragmentAd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 	<ImageView
 	    android:id="@+id/imageView1"
 	    android:layout_width="wrap_content"
@@ -17,7 +27,7 @@
 	    android:layout_marginRight="20dip"
 	    
 	    android:src="@drawable/logo" />
-
+		
         <Button
             android:id="@+id/button2"
             style="@style/button"

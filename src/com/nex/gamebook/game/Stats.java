@@ -114,7 +114,7 @@ public class Stats implements Serializable {
 		}
 		DefenseIsAttack dskill = (DefenseIsAttack) character.findPassiveSkill(DefenseIsAttack.class);
 		if(dskill!=null) {
-			value += getValuePerc(value, dskill.power(character));
+			value += getValuePerc(value, dskill.power(character)); 
 		}
 		return value;
 	}
