@@ -95,7 +95,7 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 
 		if (!canUse())
 			return true;
-		cycles++;
+		addCycle();
 		return doAttackOnce(attacker, attacked, callback, resultCombat);
 	}
 
@@ -259,5 +259,11 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 	@Override
 	public boolean isTriggerOnEndOfRound() {
 		return properties.isOnEndOfRound();
+	}
+	public int getRemainings() {
+		return attemptsPerFight() - cycles;
+	}
+	public void addCycle() {
+		this.cycles++;
 	}
 }

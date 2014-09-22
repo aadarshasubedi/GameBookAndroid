@@ -11,6 +11,7 @@ import com.nex.gamebook.game.Enemy.EnemyLevel;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.playground.BattleLogCallback;
+import com.nex.gamebook.skills.active.ActiveSkill;
 import com.nex.gamebook.skills.active.OvertimeSkill;
 import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.skills.passive.AreaOfDamage;
@@ -293,6 +294,7 @@ public class CombatProcess {
 		} else {
 			logIfCannotCast(callback, skillOwner);
 			skillOwner.setCanCastSkill(true);
+			((ActiveSkill)skill).addCycle();
 		}
 	}
 	

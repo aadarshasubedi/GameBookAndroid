@@ -28,10 +28,11 @@
 		Zruší %d negativních bonusů na sesílateli
 	</string>
 	<string name="stun">
-	    Znemožní nepříteli vykonat v dalším kole normální útok i seslání schopnosti.
+	    Znemožní nepříteli vykonat v dalším kole normální útok.
 	</string>
 	<string name="kick">
-	    Znemožní nepříteli vykonat v dalším kole seslání schopnosti.
+	    Při použití jakékoliv schopnosti se odečtě její použití a schopnost bude vyblokována. 
+	    (Tento efekt vydrží dokud se nepřítel nepokusí použít schopnost).
 	</string>
 	
 	<!-- overtime skills -->

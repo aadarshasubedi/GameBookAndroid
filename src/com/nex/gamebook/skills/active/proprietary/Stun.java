@@ -45,7 +45,7 @@ public class Stun extends ActiveSkill {
 	@Override
 	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
 		attacked.setCanAttack(false);
-		attacked.setCanCastSkill(false);
+//		attacked.setCanCastSkill(false);
 		ResultCombat c = createBasicResult(0, attacker.getType(), resolveEnemy(attacker, attacked));
 		callback.logAttack(c);
 		return true;

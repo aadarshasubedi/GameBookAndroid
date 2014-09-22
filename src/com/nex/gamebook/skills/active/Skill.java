@@ -64,4 +64,5 @@ public interface Skill {
 	SkillProperties getProperties();
 	void setCombatTextDispatcher(CombatTextDispatcher dispatcher);
 	CombatTextDispatcher getCombatTextDispatcher();
+	int getRemainings();
 }

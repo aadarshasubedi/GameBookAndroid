@@ -153,10 +153,10 @@
     <string name="you_cast">Používáš %s.</string>
     <string name="enemy_cast">Nepřítel používá %s.</string>
     <string name="you_cannot_attack">Nemůžeš útočit.</string>
-    <string name="you_cannot_cast">Nemůžeš použít schopnost.</string>
+    <string name="you_cannot_cast">Nepřítel vyblokoval tvoji schopnost.</string>
     
     <string name="enemy_cannot_attack">Nepřítel nemůže útočit.</string>
-    <string name="enemy_cannot_cast">Nepřítel nemůže použít schopnost.</string>
+    <string name="enemy_cannot_cast">Vyblokoval jsi schopnost nepřítele.</string>
     <string name="select_passive_skill">%d dovednostních bodů.</string>
     <string name="learn_passive_skill">Naučit</string>
     <string name="critical_strike">Kritický úder</string>

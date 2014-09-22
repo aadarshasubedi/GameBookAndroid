@@ -291,12 +291,14 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			TextView name = (TextView) rowView.findViewById(R.id.name);
 			if (skill != null) {
 				rowView.setTag(skill);
-				name.setText(skill.getName());
+				name.setText(skill.getRemainings() + "x " + skill.getName());
 				if (skill.canUse() && applicator.isCanCastSkill()) {
 					if (R.layout.spinner_dropdown_item == inflate)
 						name.setTextColor(getContext().getResources().getColor(R.color.button_color));
 					else
 						name.setTextColor(getContext().getResources().getColor(R.color.condition));
+				} else if(!applicator.isCanCastSkill()) {
+					name.setTextColor(getContext().getResources().getColor(R.color.condition));
 				} else {
 					name.setTextColor(getContext().getResources().getColor(R.color.negative));
 				}
