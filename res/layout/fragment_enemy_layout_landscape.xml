@@ -24,21 +24,13 @@
 
     <TableLayout
         android:id="@+id/tableLayout1"
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/_background_corners"
         android:layout_marginLeft="1dp"
-        android:padding="10dp" >
-
-        <TextView
-            android:id="@+id/enemy_name"
-            style="@style/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dsc_default" />
-
+        android:background="@drawable/_background_corners_enemy"
+        android:padding="10dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -49,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="0dp"
                 android:layout_weight="1"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="5sp"
@@ -61,14 +53,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/textView1"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dip"
-                android:text="@string/attr_health" />
 
             <com.nex.gamebook.playground.TextProgressBar
                 android:id="@+id/enemy_health_bar"
@@ -212,7 +196,6 @@
 
             
         </TableRow>
-	<TableRow >
 	    <TableRow >
 	        <TextView
                 android:id="@+id/textView15"
@@ -236,7 +219,6 @@
                 android:text="%" />
 	    </TableRow>
 	    
-	</TableRow>
         <TableRow
             android:id="@+id/tableRow5"
             android:layout_width="wrap_content"

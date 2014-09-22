@@ -93,10 +93,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			Enemy enemy = section.getEnemies().get(i);
 			enemy.setIndex(i + 1);
 			View enemyView = adapter.create(enemy, switcher);
-			TextView v = (TextView) enemyView.findViewById(R.id.enemy_name);
+//			TextView v = (TextView) enemyView.findViewById(R.id.enemy_name);
 			String name = enemy.getName();
 			name += " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().getString(R.string.level) + " " + enemy.getLevel();
-			v.setText(name);
+//			v.setText(name);
 			switcher.addView(enemyView);
 		}
 	}
@@ -122,7 +122,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	private void showEnemyPosition(ViewFlipper switcher, TextView enemyName, int total) {
 		Enemy enemy = (Enemy) switcher.getCurrentView().getTag();
 		int index = enemy.getIndex();
-		enemyName.setText(index + "/" + total);
+		String name =  enemy.getName() + " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().getString(R.string.level) + " " + enemy.getLevel();
+		enemyName.setText(name + " ("+index + "/" + total+")");
 	}
 
 	public void showCurrentValues() {
