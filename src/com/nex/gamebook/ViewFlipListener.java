@@ -95,6 +95,7 @@ public abstract class ViewFlipListener implements OnClickListener,
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
+		if(e1==null || e2 == null) return true;
 		float ev1X = e1.getX();
 		float ev2X = e2.getX();
 		final float xdistance = Math.abs(ev1X - ev2X);

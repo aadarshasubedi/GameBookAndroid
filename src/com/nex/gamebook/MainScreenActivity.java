@@ -6,14 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -25,11 +21,9 @@ import com.nex.gamebook.util.GameBookUtils;
  * 
  * @see SystemUiHider
  */
-public class MainScreenActivity extends Activity {
-
+public class MainScreenActivity extends BannerAdActivity {
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onPreCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -38,24 +32,9 @@ public class MainScreenActivity extends Activity {
 		String category = GameBookUtils.FOLDER;
 //		GameBookUtils.getInstance().getPreferences().edit().clear().commit();
 		copyAssetFolder(getAssets(), category, GameBookUtils.getGamebookStorage(this) + File.separator + category + File.separator);
-//		 if (savedInstanceState == null) {
-//		        getSupportFragmentManager().beginTransaction()
-//		            .add(R.id.container, new PlaceholderFragment())
-//		            .commit();
-//		    }
+
 	}
-//	public static class PlaceholderFragment extends Fragment {
-//
-//        public PlaceholderFragment() {
-//        }
-//
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-//            View rootView = inflater.inflate(R.layout.fragment_ad, container, false);
-//            return rootView;
-//        }
-//    }
+
 	public void newGame(View view) {
 		Intent intent = new Intent(this, StorySelectionActivity.class);
 		startActivity(intent);

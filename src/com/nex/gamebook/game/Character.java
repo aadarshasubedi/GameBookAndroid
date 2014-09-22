@@ -549,4 +549,12 @@ public abstract class Character {
 		}
 		return null;
 	}
+	public Bonus findConditionById(String id) {
+		for(Bonus b: this.conditions) {
+			if(b.getId()!=null && b.getId().equals(id)) {
+				return b;
+			}
+		}
+		return null;
+	}
 }

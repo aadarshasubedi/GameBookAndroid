@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,6 +20,7 @@ import android.widget.ViewFlipper;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
+import com.nex.gamebook.ads.AdFactory;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.SerializationMetadata;
 import com.nex.gamebook.game.Story;
@@ -38,12 +40,14 @@ public class PlaygroundActivity extends Activity {
 	private PlaygroundStoryView storyFragment;
 	private ViewFlipListener listener;
 	private static List<View> battleLog = new ArrayList<>();
-
+	private int SHOW_AD_AFTER_CHANGE_FRAGMENTS = 20;
+	private int fragmentsDisplayed = SHOW_AD_AFTER_CHANGE_FRAGMENTS;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_playground);
+		int view = R.layout.activity_playground;
+		setContentView(view);
 		try {
 			_character = load();
 			battleLog.clear();
@@ -124,8 +128,10 @@ public class PlaygroundActivity extends Activity {
 	}
 
 	public void changeToBattle(StorySection section) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		checkAndDisplayAd();
 		section.setFighting(true);
-		getCharacterFragment().fight(section);
+		getCharacterFragment().setSection(section);
 		flipper.removeAllViews();
 		flipper.addView(characterFragment.create(flipper));
 		listener = characterFragment.createListener(left, right, title);
@@ -133,6 +139,8 @@ public class PlaygroundActivity extends Activity {
 	}
 
 	public void changeToStory(StorySection section) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		checkAndDisplayAd();
 		section.setFighting(false);
 		title.setText(_character.getStory().getName());
 		flipper.removeAllViews();
@@ -170,10 +178,7 @@ public class PlaygroundActivity extends Activity {
 				public void onClick(View v) {
 					// Intent intent = new Intent(PlaygroundActivity.this,
 					// MainScreenActivity.class);
-					// PlaygroundActivity.this.startActivity(intent);
-					if(!fighting)
-					PlaygroundActivity.this._character.save();
-
+					// PlaygroundActivity.this.startActivity(intent);					
 					dialog.dismiss();
 					PlaygroundActivity.this.finish();
 				}
@@ -185,7 +190,15 @@ public class PlaygroundActivity extends Activity {
 		}
 
 	}
-
+	
+	void checkAndDisplayAd() {
+		if(fragmentsDisplayed % SHOW_AD_AFTER_CHANGE_FRAGMENTS == 0) {
+			fragmentsDisplayed = 0;
+			AdFactory.loadDefaultInterstitialAd(this);
+		}
+		fragmentsDisplayed++;
+	}
+	
 	// @Override
 	// public boolean dispatchTouchEvent(MotionEvent ev){
 	// super.dispatchTouchEvent(ev);

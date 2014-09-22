@@ -1,7 +1,5 @@
 package com.nex.gamebook.skills.active;
 
-import java.util.List;
-
 import android.content.Context;
 
 import com.nex.gamebook.R;

@@ -21,11 +21,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nex.gamebook.ads.AdFactory;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
 public class StorySelectionActivity extends Activity {
-	
+//	private InterstitialAd mInterstitial;
 //	private 
 	private OnImageListener activeListener;
 	@Override
@@ -44,6 +45,7 @@ public class StorySelectionActivity extends Activity {
 		} catch (IOException e) {
 			Log.e("GameBookStorySelection",  "", e);
 		}
+//		AdFactory.loadInterstitialAd(this, R.string.ad_interistial_story);
 	}
 	class StoryListAdapter {
 		Context context;

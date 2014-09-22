@@ -19,13 +19,8 @@ public class Bonus implements Cancelable {
 	}
 
 	public enum StatType implements Serializable {
-		HEALTH(R.string.attr_health, 30, 1), 
-		LUCK(R.string.attr_luck, 2, 4), 
-		SKILL(R.string.attr_skill, 2, 4), 
-		DEFENSE(R.string.attr_defense, 1, 4), 
-		ATTACK(R.string.attr_attack, 1, 1), 
-		DAMAGE(R.string.attr_baseDmg, 2, 10), 
-		SKILLPOWER(R.string.attr_skill_power, 2, 3);
+		HEALTH(R.string.attr_health, 30, 1), LUCK(R.string.attr_luck, 2, 4), SKILL(R.string.attr_skill, 2, 4), DEFENSE(R.string.attr_defense, 1, 4), ATTACK(R.string.attr_attack, 1, 1), DAMAGE(
+				R.string.attr_baseDmg, 2, 10), SKILLPOWER(R.string.attr_skill_power, 2, 3);
 		public int text;
 		public int baseValue;
 		public int increaseByLevel;
@@ -60,6 +55,7 @@ public class Bonus implements Cancelable {
 	private boolean condition;
 	private int turns;
 	private int currentTurn;
+	private String id;
 
 	public StatType getType() {
 		return type;
@@ -162,8 +158,18 @@ public class Bonus implements Cancelable {
 	public int getRemainsTurns() {
 		return (turns - currentTurn) + 1;
 	}
+
 	@Override
 	public boolean isNegative() {
-		return coeff<0;
+		return coeff < 0;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 }

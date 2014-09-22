@@ -11,6 +11,7 @@
 	<color name="positive">#4c8341</color>
 	<color name="negative">#9e2311</color>
 	<color name="temporal">#3377f4</color>
+	<color name="passive_skill_triggered">#5d90ec</color>
 	<color name="base">#469a68</color>
 	<color name="reset">#e56c00</color>
 	<color name="condition">#a033f4</color>
@@ -21,8 +22,8 @@
 	<color name="button_select">#bc9e56</color>
 	<color name="button_stroke">#505050</color>
 	
-	<color name="positive_overtime">#000000</color>
-	<color name="negative_overtime">#ffffff</color>
+<!-- 	<color name="positive_overtime">#000000</color> -->
+<!-- 	<color name="negative_overtime">#ffffff</color> -->
 	
 		
 	

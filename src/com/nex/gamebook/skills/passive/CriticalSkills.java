@@ -15,7 +15,7 @@ public class CriticalSkills extends PassiveSkill {
 	}
 	
 	public String getDescription(Context ctx, Character c) {
-		return ctx.getString(R.string.passive_criticalSkills, c.getCurrentStats().getLuckPercentage(), "%", power(c));
+		return ctx.getString(R.string.passive_criticalSkills, c.getCurrentStats().getSkillPercentage(), "%", power(c));
 	}
 
 	@Override

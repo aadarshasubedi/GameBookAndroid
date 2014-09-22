@@ -77,7 +77,7 @@
     <string name="log">Log</string>
     <string name="close_book">Zavřít knihu</string>
     <string name="close_book_when_fighting_description">Právě bojujete. \nOpravdu chcete zavřít knihu?</string>
-    <string name="close_book_description">Před zavřením knihy bude hra uložena. \nChcete pokračovat?</string>
+    <string name="close_book_description">Hra bude ukončena. V bojové sekci přijdete o stav bitvy. \nChcete pokračovat?</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="confirm">Potvrdit</string>
@@ -160,4 +160,6 @@
     <string name="select_passive_skill">%d dovednostních bodů.</string>
     <string name="learn_passive_skill">Naučit</string>
     <string name="critical_strike">Kritický úder</string>
+	<string name="passive_skill_triggered">Pasivní dovednost %1$s byla spuštěna.</string>
+	<string name="passive_skill_refreshed">Pasivní dovednost %1$s byla obnovena.</string>
 </resources>

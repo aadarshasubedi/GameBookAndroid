@@ -52,14 +52,19 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	private View masterView;
 
 	public View create(ViewGroup container) {
-		masterView = getPlayground().getLayoutInflater().inflate(R.layout.fragment_playground_character, container, false);
+		boolean battle = section != null;
+		int inflate = R.layout.fragment_playground_character;
+		if(battle) {
+			inflate = R.layout.fragment_playground_character_landscape;
+		}
+		masterView = getPlayground().getLayoutInflater().inflate(inflate, container, false);
 		switcher = (ViewFlipper) masterView.findViewById(R.id.viewSwitcher1);
 		_character = getPlayground().getCharacter();
 		_character.createActiveSkills();
 		showCurrentValues();
 		resultButton = (Button) masterView.findViewById(R.id.result_button);
 		resultButton.setVisibility(View.GONE);
-		if (section != null) {
+		if (battle) {
 			prepareBattleLog(masterView);
 		} else {
 			showStatistics();
@@ -349,7 +354,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		});
 	}
 
-	public void fight(StorySection section) {
+	public void setSection(StorySection section) {
 		this.section = section;
 	}
 
@@ -363,7 +368,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 		public View create(final Enemy enemy, final ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			final View rowView = inflater.inflate(R.layout.fragment_enemy_layout, parent, false);
+			final View rowView = inflater.inflate(R.layout.fragment_enemy_layout_landscape, parent, false);
 			LinearLayout log = (LinearLayout) rowView.findViewById(R.id.e_battle_log);
 			final FightingLog fl = new FightingLog(BattleLogAdapter.this, enemy, log);
 			final LinearLayoutRefreshable changeableView = new LinearLayoutRefreshable(context) {
@@ -491,7 +496,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			this.enemy = enemy;
 			combat = new CombatProcess(enemy, getEnemies());
 		}
-		
+		@Override
+		public Context getContext() {
+			return PlaygroundBattleLogCharacterView.this.getContext();
+		}
 		@Override
 		public List<Enemy> getEnemies() {
 			List<Enemy> others = new ArrayList<Enemy>(section.getEnemies());
@@ -587,7 +595,12 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		public void logExperience(long xp) {
 			addResultToLog(log, getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
 		}
-
+		
+		@Override
+		public void logPassiveSkillsTriggered(String text) {
+			addResultToLog(log, text, getContext(), R.color.passive_skill_triggered);
+		}
+		
 		@Override
 		public void fightEnd(long xp) {
 			_character.addExperience(this, xp);

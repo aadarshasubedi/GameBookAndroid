@@ -181,37 +181,37 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			return;
 		boolean show = false;
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.bonuses);
-		int value = releasedStats.getRealHealth();
+		int value = releasedStats.getPureHealth();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_health, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getRealAttack();
+		value = releasedStats.getPureAttack();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_attack, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getRealDefense();
+		value = releasedStats.getPureDefense();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_defense, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getRealSkill();
+		value = releasedStats.getPureSkill();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getRealLuck();
+		value = releasedStats.getPureLuck();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_luck, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getRealDamage();
+		value = releasedStats.getPureDamage();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_baseDmg, context, color, text));
 			show = true;
 		}
-		value = releasedStats.getRealSkillpower();
+		value = releasedStats.getPureSkillpower();
 		if (value != 0) {
 			layout.addView(getViewForReleasedTemporalAttribute(value, R.string.attr_skill_power, context, color, text));
 			show = true;
@@ -239,7 +239,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		if (!section.isEnemiesAlreadyKilled() && section.isLuckPossible()) {
 			section.tryApplyLuckForBattle(_character);
 		}
-		_character.save();
+		
 		if (section.isHasLuck()) {
 			if (section.isLuckDefeatEnemies()) {
 				section.setEnemiesAlreadyKilled(true);
@@ -368,6 +368,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			if (option.isDisabled()) {
 				nextSection.setUnreturnableSection(sectionId);
 			}
+			_character.save();
 			PlaygroundStoryView.this.refresh();
 		}
 	}
@@ -419,5 +420,9 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 	@Override
 	public void logExperience(long xp) {
 		addResultToLog(getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
+	}
+	@Override
+	public void logPassiveSkillsTriggered(String text) {
+		addResultToLog(text, getContext(), R.color.passive_skill_triggered);
 	}
 }
