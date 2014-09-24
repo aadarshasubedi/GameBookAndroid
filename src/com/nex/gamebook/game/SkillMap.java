@@ -1,5 +1,6 @@
 package com.nex.gamebook.game;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,17 +88,19 @@ public class SkillMap {
 		skills.put(KICK, Kick.class);
 	}
 
-//	public static void main(String[] args) {
-//		for (String key : getSkills().keySet()) {
-//			String xsdEnumeration = "<xs:enumeration value=\"{0}\" />";
-//			System.out.println(MessageFormat.format(xsdEnumeration, key));
-//		}
-//	}
+	public static void main(String[] args) {
+		for (String key : getSkills().keySet()) {
+			String xsdEnumeration = "<xs:enumeration value=\"{0}\" />";
+			System.out.println(MessageFormat.format(xsdEnumeration, key));
+		}
+	}
 
 	public static Map<String, Class<? extends Skill>> getSkills() {
 		return instance.skills;
 	}
-
+	public static Map<String, Class<? extends PassiveSkill>> getPasiveSkills() {
+		return instance.passiveSkills;
+	}
 	public static boolean isSpecialSkillEqualToName(Class<? extends Skill> skill, String name) {
 		Class<? extends Skill> cls = instance.skills.get(name);
 		if (cls != null) {
