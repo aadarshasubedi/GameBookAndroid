@@ -55,7 +55,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		boolean battle = section != null;
 		int inflate = R.layout.fragment_playground_character;
 		if(battle) {
-			inflate = R.layout.fragment_playground_character_landscape;
+			inflate = R.layout.fragment_playground_character;
 		}
 		masterView = getPlayground().getLayoutInflater().inflate(inflate, container, false);
 		switcher = (ViewFlipper) masterView.findViewById(R.id.viewSwitcher1);
@@ -93,10 +93,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			Enemy enemy = section.getEnemies().get(i);
 			enemy.setIndex(i + 1);
 			View enemyView = adapter.create(enemy, switcher);
-//			TextView v = (TextView) enemyView.findViewById(R.id.enemy_name);
+			TextView v = (TextView) enemyView.findViewById(R.id.enemy_name);
 			String name = enemy.getName();
 			name += " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().getString(R.string.level) + " " + enemy.getLevel();
-//			v.setText(name);
+			v.setText(name);
 			switcher.addView(enemyView);
 		}
 	}
@@ -123,7 +123,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		Enemy enemy = (Enemy) switcher.getCurrentView().getTag();
 		int index = enemy.getIndex();
 		String name =  enemy.getName() + " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().getString(R.string.level) + " " + enemy.getLevel();
-		enemyName.setText(name + " ("+index + "/" + total+")");
+		//enemyName.setText(name + " ("+index + "/" + total+")");
+		enemyName.setText(index + "/" + total);
 	}
 
 	public void showCurrentValues() {
@@ -369,7 +370,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 		public View create(final Enemy enemy, final ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			final View rowView = inflater.inflate(R.layout.fragment_enemy_layout_landscape, parent, false);
+			final View rowView = inflater.inflate(R.layout.fragment_enemy_layout, parent, false);
 			LinearLayout log = (LinearLayout) rowView.findViewById(R.id.e_battle_log);
 			final FightingLog fl = new FightingLog(BattleLogAdapter.this, enemy, log);
 			final LinearLayoutRefreshable changeableView = new LinearLayoutRefreshable(context) {

@@ -115,7 +115,7 @@ public class PlaygroundActivity extends Activity {
 		StoryXmlParser parser = new StoryXmlParser(this);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
 		Player character = story.getCharacter(getIntent().getExtras().getInt("character"));
-		character.save();
+		character.fullsave();
 		return character;
 	}
 
@@ -128,7 +128,7 @@ public class PlaygroundActivity extends Activity {
 	}
 
 	public void changeToBattle(StorySection section) {
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		checkAndDisplayAd();
 		section.setFighting(true);
 		getCharacterFragment().setSection(section);
@@ -139,7 +139,7 @@ public class PlaygroundActivity extends Activity {
 	}
 
 	public void changeToStory(StorySection section) {
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		checkAndDisplayAd();
 		section.setFighting(false);
 		title.setText(_character.getStory().getName());
@@ -180,6 +180,7 @@ public class PlaygroundActivity extends Activity {
 					// MainScreenActivity.class);
 					// PlaygroundActivity.this.startActivity(intent);					
 					dialog.dismiss();
+					_character.save();
 					PlaygroundActivity.this.finish();
 				}
 			}).show();

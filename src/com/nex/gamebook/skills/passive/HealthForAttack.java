@@ -32,7 +32,7 @@ public class HealthForAttack extends PassiveSkill {
 	public void processWhenLearned(Character c) {
 		int currentHealth = c.getCurrentStats().getPureHealth();
 		int real = currentHealth - c.getCurrentStats().getValuePerc(currentHealth, powerDown(c));
-		c.getCurrentStats().setHealth(real);		
+		c.getCurrentStats().setHealth(real);
 	}
 	
 }

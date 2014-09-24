@@ -292,8 +292,8 @@ public abstract class Character {
 		s.nullAllAttributes();
 		for (StatType type : StatType.values()) {
 			try {
-				int defaultVal = GameBookUtils.getStatByType(this.stats, type);
-				int currentVal = GameBookUtils.getStatByType(this.currentStats, type);
+				int defaultVal = GameBookUtils.getRealStatByType(this.stats, type);
+				int currentVal = GameBookUtils.getRealStatByType(this.currentStats, type);
 				if ((mod == 0 && currentVal != defaultVal) || (mod == 1 && currentVal > defaultVal) || (mod == 2 && currentVal < defaultVal)) {
 					GameBookUtils.setStatByType(this.currentStats, type, defaultVal);
 					int res = currentVal - defaultVal;

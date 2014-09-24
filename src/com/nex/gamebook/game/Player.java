@@ -102,13 +102,21 @@ public class Player extends Character {
 	public boolean isCriticalChance() {
 		return isCriticalChance(Stats.TOTAL_SKILL_FOR_CALC + getLevel());
 	}
-
+	SaveGameState saveState = null;
+	public void fullsave() {
+		preSave();
+		save();
+	}
 	public void save() {
 		try {
-			GameBookUtils.getInstance().saveGame(this);
+			GameBookUtils.getInstance().saveGame(this, this.saveState);
 		} catch (Exception e) {
 			Log.e("SaveGame", "", e);
 		}
+	}
+	
+	public void preSave() {
+		this.saveState = createSaveGameState();
 	}
 
 	public SaveGameState createSaveGameState() {

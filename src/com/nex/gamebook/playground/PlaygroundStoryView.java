@@ -368,7 +368,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			if (option.isDisabled()) {
 				nextSection.setUnreturnableSection(sectionId);
 			}
-			_character.save();
+			_character.preSave();
 			PlaygroundStoryView.this.refresh();
 		}
 	}

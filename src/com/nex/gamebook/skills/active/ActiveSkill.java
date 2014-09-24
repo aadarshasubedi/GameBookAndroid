@@ -9,6 +9,7 @@ import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.CharacterType;
 import com.nex.gamebook.game.Enemy;
 import com.nex.gamebook.game.ResultCombat;
+import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.CombatTextDispatcher;
 import com.nex.gamebook.skills.ResultCombatText;
@@ -263,5 +264,14 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 	}
 	public void addCycle() {
 		this.cycles++;
+	}
+	protected void redefinePropertiesIfProprietarySkillExist(SkillProperties properties, String proprietarySkill) {
+		if(proprietarySkill!=null) {
+			Skill s = SkillMap.get(proprietarySkill);
+			properties.setAfterEnemyAttack(s.isTriggerAfterEnemyAttack());
+			properties.setAfterNormalAttack(s.afterNormalAttack());
+			properties.setBeforeEnemyAttack(s.isTriggerBeforeEnemyAttack());
+			properties.setBeforeEnemySkill(s.isTriggerBeforeEnemySpecialAttack());
+		}
 	}
 }

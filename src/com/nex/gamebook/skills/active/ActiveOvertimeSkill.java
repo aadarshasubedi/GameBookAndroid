@@ -54,13 +54,5 @@ public abstract class ActiveOvertimeSkill extends ActiveSkill {
 		return new ResultCombatText(R.color.reset, context.getString(text, getName().toLowerCase()));
 	}
 	
-	protected void redefinePropertiesIfProprietarySkillExist(SkillProperties properties, String proprietarySkill) {
-		if(proprietarySkill!=null) {
-			Skill s = SkillMap.get(proprietarySkill);
-			properties.setAfterEnemyAttack(s.isTriggerAfterEnemyAttack());
-			properties.setAfterNormalAttack(s.afterNormalAttack());
-			properties.setBeforeEnemyAttack(s.isTriggerBeforeEnemyAttack());
-			properties.setBeforeEnemySkill(s.isTriggerBeforeEnemySpecialAttack());
-		}
-	}
+	
 }

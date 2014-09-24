@@ -5,6 +5,7 @@ import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
+import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.playground.BattleLogCallback;
 
@@ -73,5 +74,13 @@ public abstract class ActiveConditionalSkill extends ActiveSkill {
 				return false;
 		}
 		return true;
+	}
+	protected Skill createSkill(Character attacker, String skill) {
+
+		Skill propri = SkillMap.get(skill);
+		// propri.setCombatTextDispatcher(this);
+		propri.setData(properties, skillName);
+		return propri;
+
 	}
 }

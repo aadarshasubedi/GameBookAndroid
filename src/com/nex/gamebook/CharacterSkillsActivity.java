@@ -37,7 +37,7 @@ public class CharacterSkillsActivity extends Activity {
 		setContentView(R.layout.activity_character_skills);
 		StoryXmlParser parser = new StoryXmlParser(this);
 		try {
-			Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
+			Story story = parser.loadStory(getIntent().getExtras().getString("story"), false, true);
 			_character = story.getCharacter(getIntent().getExtras().getInt("character"));
 			ListView list = (ListView) findViewById(R.id.skills);
 			keys = new ArrayList<>(_character.getSpecialSkills().keySet());

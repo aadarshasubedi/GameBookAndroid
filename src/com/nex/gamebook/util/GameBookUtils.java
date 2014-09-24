@@ -162,7 +162,7 @@ public class GameBookUtils {
 		return fileName;
 	}
 
-	public void saveGame(Player character) throws Exception {
+	public void saveGame(Player character, SaveGameState state) throws Exception {
 		String fileName = createSaveGameFileName(character);
 		File file = getSavesFolder("", "", true);
 		File metaFile = getSavesFolder("meta", "", true);
@@ -171,7 +171,6 @@ public class GameBookUtils {
 		file.createNewFile();
 		metaFile.createNewFile();
 		saveMetada(character, metaFile, fileName);
-		SaveGameState state = character.createSaveGameState();
 		FileOutputStream fos = new FileOutputStream(file);
 		XStream xStream = createXStream();
 		xStream.toXML(state, fos);
@@ -267,6 +266,14 @@ public class GameBookUtils {
 		return (int) m.invoke(destination, value);
 	}
 
+	public static int getPureStatByType(Stats destination, StatType type) throws Exception {
+		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("getPure", type.name().toLowerCase()), new Class<?>[0]);
+		return (int) m.invoke(destination, new Object[0]);
+	}
+	public static int getRealStatByType(Stats destination, StatType type) throws Exception {
+		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("getReal", type.name().toLowerCase()), new Class<?>[0]);
+		return (int) m.invoke(destination, new Object[0]);
+	}
 	public static int getStatByType(Stats destination, StatType type) throws Exception {
 		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", type.name().toLowerCase()), new Class<?>[0]);
 		return (int) m.invoke(destination, new Object[0]);

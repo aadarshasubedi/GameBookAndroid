@@ -6,7 +6,9 @@ import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.skills.active.conditional.DecreaseAttribute;
+import com.nex.gamebook.skills.active.conditional.DecreaseAttributeGreater;
 import com.nex.gamebook.skills.active.conditional.IncreaseAttribute;
+import com.nex.gamebook.skills.active.conditional.IncreaseAttributeGreater;
 import com.nex.gamebook.skills.active.overtime.DecreaseHealthOvertime;
 import com.nex.gamebook.skills.active.overtime.DecreaseHealthOvertimeGreater;
 import com.nex.gamebook.skills.active.overtime.IncreaseHealthOvertime;
@@ -134,7 +136,7 @@ public class SkillProperties {
 	}
 
 	private Skill resolveSkill() {
-		if (proprietarySkillExists() && turns == 0) {
+		if (proprietarySkillExists() && turns == 0 && type==null) {
 			Skill skill = SkillMap.get(proprietarySkill);
 			return skill;
 		}
@@ -148,6 +150,9 @@ public class SkillProperties {
 					return new IncreaseHealthOvertime();
 				}
 			} else {
+				if(proprietarySkillExists()) {
+					return new IncreaseAttributeGreater(type, proprietarySkill);
+				}
 				return new IncreaseAttribute(type);
 			}
 		} else {
@@ -160,6 +165,9 @@ public class SkillProperties {
 					return new DecreaseHealthOvertime();
 				}
 			} else {
+				if(proprietarySkillExists()) {
+					return new DecreaseAttributeGreater(type, proprietarySkill);
+				}
 				return new DecreaseAttribute(type);
 			}
 		}

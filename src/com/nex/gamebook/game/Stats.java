@@ -130,7 +130,7 @@ public class Stats implements Serializable {
 	public int getRealSkillpower() {
 		int value = this.skillpower;
 		HealthForSkillPower sskill = (HealthForSkillPower) character.findPassiveSkill(HealthForSkillPower.class);
-		if(sskill!=null && isBase) {
+		if(sskill!=null) {
 			value += getValuePerc(value, sskill.power(character));
 		}
 		return value;
