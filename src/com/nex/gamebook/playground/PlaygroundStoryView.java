@@ -51,7 +51,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.section_story);
 		TextView tw = (TextView) layout.findViewById(R.id.story_view);
 		Story story = _character.getStory();
-		StorySection currentSection = story.getSection(_character.getPosition());
+		StorySection currentSection = story.getSection(_character, _character.getPosition());
 		if (currentSection.isFighting()) {
 			startFight(view.getContext(), _character.getCurrentSection());
 			return;
@@ -364,11 +364,15 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			option.setDisabled(option.isDisableWhenSelected());
 			int sectionId = _character.getPosition();
 			PlaygroundStoryView.this._character.setPosition(option.getSection());
-			StorySection nextSection = _character.getStory().getSection(_character.getPosition());
+			StorySection nextSection = _character.getStory().getSection(null, _character.getPosition());
 			if (option.isDisabled()) {
 				nextSection.setUnreturnableSection(sectionId);
 			}
-			_character.preSave();
+			try {
+				_character.preSave();
+			} catch (Exception e) {
+				Log.e("GameSaving", "", e);
+			}
 			PlaygroundStoryView.this.refresh();
 		}
 	}

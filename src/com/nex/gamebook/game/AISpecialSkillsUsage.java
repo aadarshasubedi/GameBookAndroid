@@ -14,6 +14,7 @@ import com.nex.gamebook.skills.active.proprietary.CancelDot;
 import com.nex.gamebook.skills.active.proprietary.CancelHot;
 
 public class AISpecialSkillsUsage {
+
 	public static Skill getBestSpecialSkill(Player player, final Enemy enemy, boolean enemyBegin) {
 		List<Skill> friendlySkills = new ArrayList<>();
 		List<Skill> attackSkills = new ArrayList<>();

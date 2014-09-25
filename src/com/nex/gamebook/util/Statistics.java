@@ -1,7 +1,13 @@
 package com.nex.gamebook.util;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.util.Log;
@@ -9,33 +15,87 @@ import android.util.Log;
 import com.nex.gamebook.R;
 
 public class Statistics {
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ ElementType.FIELD })
+	public @interface Position {
+		int value();
+	}
 
-	private long maxAttackDamageGiven = 0;
-	private long maxAttackDamageTaken = 0;
-	private long maxSkillDamageTaken = 0;
-	private long maxSkillDamageGiven = 0;
-	private long totalAttackDamageTaken = 0;
-	private long totalAttackDamageGiven = 0;
-	private long totalSkillDamageTaken = 0;
-	private long totalSkillDamageGiven = 0;
-	private long totalDamageTaken = 0;
-	private long totalDamageGiven = 0;
-	private long totalHealthHealed = 0;
-	private long maxHealthHealed = 0;
-	private long totalDamageReduce = 0;
-	private long totalAttackDamageReduce = 0;
-	private long totalSkillDamageReduce = 0;
-	private int criticalHits = 0;
-	private int usedSkills = 0;
-	private int sections = 0;
-	private int visitedSections = 0;
-	private int totalDodgedAttacks = 0;
-	private int totalMissedAttacks = 0;
-	private int totalKilledEnemies = 0;
-	private int killedBosses = 0;
-	private int killedMinions = 0;
+	@Position(1)
 	private int killedMobs = 0;
+	@Position(2)
+	private int killedMinions = 0;
+	@Position(3)
+	private int killedBosses = 0;
+	@Position(4)
+	private int totalKilledEnemies = 0;
+	@Position(5)
+	private int totalTurns = 0;
+	@Position(6)
+	private int totalBattles = 0;
 
+	@Position(7)
+	private int criticalHits = 0;
+	@Position(8)
+	private int usedSkills = 0;
+	@Position(9)
+	private long maxAttackDamageGiven = 0;
+	@Position(10)
+	private long maxSkillDamageGiven = 0;
+
+	@Position(11)
+	private long maxSkillDamageTaken = 0;
+	@Position(12)
+	private long maxAttackDamageTaken = 0;
+
+	@Position(13)
+	private long totalAttackDamageTaken = 0;
+	@Position(14)
+	private long totalSkillDamageTaken = 0;
+	@Position(15)
+	private long totalDamageTaken = 0;
+
+	@Position(16)
+	private long totalAttackDamageGiven = 0;
+	@Position(17)
+	private long totalSkillDamageGiven = 0;
+	@Position(18)
+	private long totalDamageGiven = 0;
+
+	@Position(19)
+	private long maxHealthHealed = 0;
+	@Position(20)
+	private long totalHealthHealed = 0;
+
+	@Position(21)
+	private int totalDodgedAttacks = 0;
+	@Position(22)
+	private int totalMissedAttacks = 0;
+
+	@Position(23)
+	private long totalAttackDamageReduce = 0;
+	@Position(24)
+	private long totalSkillDamageReduce = 0;
+	@Position(25)
+	private long totalDamageReduce = 0;
+
+	@Position(26)
+	private int visitedSections = 0;
+	@Position(27)
+	private int sections = 0;
+
+	public Statistics() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Statistics(Statistics s) throws IllegalAccessException, IllegalArgumentException {
+		for(Field f: s.getClass().getDeclaredFields()) {
+			f.setAccessible(true);
+			f.set(this, f.get(s));
+			f.setAccessible(false);
+		}
+	}
+	
 	public void addHealedHealth(long val) {
 		totalHealthHealed += val;
 		if (maxHealthHealed < val) {
@@ -97,7 +157,7 @@ public class Statistics {
 		totalDamageTaken += dmg;
 		totalSkillDamageTaken += dmg;
 		if (maxSkillDamageTaken < dmg) {
-			maxSkillDamageGiven = dmg;
+			maxSkillDamageTaken = dmg;
 		}
 	}
 
@@ -125,142 +185,63 @@ public class Statistics {
 		this.visitedSections++;
 	}
 
-	public long getMaxAttackDamageGiven() {
-		return maxAttackDamageGiven;
+	public void addTurn() {
+		this.totalTurns++;
 	}
 
-	public long getMaxAttackDamageTaken() {
-		return maxAttackDamageTaken;
-	}
-
-	public long getMaxSkillDamageTaken() {
-		return maxSkillDamageTaken;
-	}
-
-	public long getMaxSkillDamageGiven() {
-		return maxSkillDamageGiven;
-	}
-
-	public long getTotalAttackDamageTaken() {
-		return totalAttackDamageTaken;
-	}
-
-	public long getTotalAttackDamageGiven() {
-		return totalAttackDamageGiven;
-	}
-
-	public long getTotalSkillDamageTaken() {
-		return totalSkillDamageTaken;
-	}
-
-	public long getTotalSkillDamageGiven() {
-		return totalSkillDamageGiven;
-	}
-
-	public long getTotalDamageTaken() {
-		return totalDamageTaken;
-	}
-
-	public long getTotalDamageGiven() {
-		return totalDamageGiven;
-	}
-
-	public int getCriticalHits() {
-		return criticalHits;
-	}
-
-	public int getUsedSkills() {
-		return usedSkills;
-	}
-
-	public int getSections() {
-		return sections;
-	}
-
-	public int getVisitedSections() {
-		return visitedSections;
-	}
-
-	public int getTotalDodgedAttacks() {
-		return totalDodgedAttacks;
-	}
-
-	public int getTotalMissedAttacks() {
-		return totalMissedAttacks;
-	}
-
-	public int getTotalKilledEnemies() {
-		return totalKilledEnemies;
-	}
-
-	public int getKilledBosses() {
-		return killedBosses;
-	}
-
-	public int getKilledMinions() {
-		return killedMinions;
-	}
-
-	public int getKilledMobs() {
-		return killedMobs;
-	}
-
-	public long getMaxHealthHealed() {
-		return maxHealthHealed;
-	}
-
-	public long getTotalHealthHealed() {
-		return totalHealthHealed;
-	}
-
-	public long getTotalDamageReduce() {
-		return totalDamageReduce;
-	}
-
-	public long getTotalAttackDamageReduce() {
-		return totalAttackDamageReduce;
-	}
-
-	public long getTotalSkillDamageReduce() {
-		return totalSkillDamageReduce;
+	public void addBattle() {
+		this.totalBattles++;
 	}
 
 	public List<StatisticItem> asList() {
 		List<StatisticItem> stats = new ArrayList<>();
-		for(Field f: getClass().getDeclaredFields()) {
+		for (Field f : getClass().getDeclaredFields()) {
 			try {
 				StatisticItem i = new StatisticItem();
 				i.id = R.string.class.getDeclaredField(f.getName()).getInt(null);
 				i.value = f.get(this);
+				i.position = getPosition(f);
 				stats.add(i);
 			} catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
 				Log.w("Statistics", f.getName() + " no exist in " + R.string.class.getName());
 			}
-			
+
 		}
+		Collections.sort(stats);
 		return stats;
 	}
 
-	public static class StatisticItem {
+	private int getPosition(Field f) {
+		for (Annotation ann : f.getDeclaredAnnotations()) {
+			if (ann instanceof Position) {
+				return ((Position) ann).value();
+			}
+		}
+		return 0;
+	}
+
+	public static class StatisticItem implements Comparable<StatisticItem> {
 		private int id;
+		private int position;
 		private Object value;
 
 		public int getId() {
 			return id;
 		}
 
-		public void setId(int id) {
-			this.id = id;
-		}
-
 		public Object getValue() {
 			return value;
 		}
 
-		public void setValue(Object value) {
-			this.value = value;
+		public int getPosition() {
+			return position;
 		}
 
+		@Override
+		public int compareTo(StatisticItem another) {
+
+			return -Integer.valueOf(another.position).compareTo(position);
+		}
 	}
 
 }

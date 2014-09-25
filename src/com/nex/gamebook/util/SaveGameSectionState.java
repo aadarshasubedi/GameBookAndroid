@@ -1,5 +1,8 @@
 package com.nex.gamebook.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SaveGameSectionState {
 	private boolean xpAlreadyGained;
 	private boolean completed;
@@ -11,6 +14,7 @@ public class SaveGameSectionState {
 	private boolean enemiesAlreadyKilled;
 	private boolean hasLuck;
 	private boolean tryluck = true;
+	private List<Integer> disabledOptions = new ArrayList<>();
 
 	public boolean isXpAlreadyGained() {
 		return xpAlreadyGained;
@@ -90,6 +94,14 @@ public class SaveGameSectionState {
 
 	public void setBonusesAfterFightAlreadyGained(boolean bonusesAfterFightAlreadyGained) {
 		this.bonusesAfterFightAlreadyGained = bonusesAfterFightAlreadyGained;
+	}
+
+	public List<Integer> getDisabledOptions() {
+		return disabledOptions;
+	}
+
+	public void setDisabledOptions(List<Integer> disabledOptions) {
+		this.disabledOptions = disabledOptions;
 	}
 
 }

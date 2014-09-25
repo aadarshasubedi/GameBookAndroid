@@ -1,6 +1,8 @@
 package com.nex.gamebook.playground;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -63,10 +65,14 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		showCurrentValues();
 		resultButton = (Button) masterView.findViewById(R.id.result_button);
 		resultButton.setVisibility(View.GONE);
+		LinearLayout layout = (LinearLayout) masterView.findViewById(R.id.statistics_space);
+		
 		if (battle) {
+			layout.setVisibility(View.GONE);
 			prepareBattleLog(masterView);
 		} else {
-			showStatistics(masterView);
+			layout.setVisibility(View.VISIBLE);
+			showStatistics(layout);
 		}
 
 		masterView.setTag(this);
@@ -74,11 +80,14 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		return masterView;
 	}
 
-	private void showStatistics(final View view) {
+	private void showStatistics(final LinearLayout view) {
 		LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		final View rowView = inflater.inflate(R.layout.fragment_statistics, switcher, false);
+		
+		final View rowView = inflater.inflate(R.layout.fragment_statistics, view, false);
+		view.addView(rowView);
 		ListView log = (ListView) rowView.findViewById(R.id.statistics_list);
 		final List<StatisticItem> items = _character.getStatistics().asList();
+		
 		log.setAdapter(new ArrayAdapter<StatisticItem>(view.getContext(), R.layout.statistics_item, items) {
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
@@ -220,9 +229,16 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		SkillsSpinner skills = (SkillsSpinner) masterView.findViewById(R.id.skills);
 		List<Skill> availableSkills = new ArrayList<>();
 		availableSkills.add(null);
-		availableSkills.addAll(_character.getActiveSkills());
+		List<Skill> tosort = new ArrayList<Skill>(_character.getActiveSkills());
+		Collections.sort(tosort, new Comparator<Skill>() {
+			@Override
+			public int compare(Skill lhs, Skill rhs) {
+				return Integer.valueOf(lhs.getProperties().getLevelRequired()).compareTo(rhs.getProperties().getLevelRequired());
+			}
+		});
+		availableSkills.addAll(tosort);
 		skills.setAdapter(new SkillsAdapter(getContext(), _character, availableSkills, skills));
-		skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+//		skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 		Skill selected = _character.getSelectedSkill();
 		if (selected != null) {
 			int index = availableSkills.indexOf(selected);
@@ -230,16 +246,16 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 	}
 
-	public class CustomOnItemSelectedListener implements OnItemSelectedListener {
-		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			Skill i = (Skill) parent.getItemAtPosition(pos);
-			_character.setSelectedSkill(i);
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> arg0) {
-		}
-	}
+//	public class CustomOnItemSelectedListener implements OnItemSelectedListener {
+//		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//			Skill i = (Skill) parent.getItemAtPosition(pos);
+//			_character.setSelectedSkill(i);
+//		}
+//
+//		@Override
+//		public void onNothingSelected(AdapterView<?> arg0) {
+//		}
+//	}
 
 	class PassiveSkillsAdapter extends ArrayAdapter<String> {
 		private List<String> skills;
@@ -359,6 +375,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 								public void onClick(View v) {
 									owner.onDetachedFromWindow();
 									owner.setSelection(position);
+									_character.setSelectedSkill(skill);
 								}
 							};
 						}
@@ -456,7 +473,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					sk.addAll(enemy.getActiveSkills());
 					if (!sk.isEmpty()) {
 						skills.setAdapter(new SkillsAdapter(getContext(), enemy, sk, skills));
-						skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+//						skills.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 					} else {
 						skills.setVisibility(View.GONE);
 					}
@@ -697,8 +714,9 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
 	private void redirectToStoryBoard() {
 		PlaygroundActivity activity = getPlayground();
-		activity.changeToStory(section);
+		StorySection s = section;
 		section = null;
+		activity.changeToStory(s);
 		resultButton.setVisibility(View.GONE);
 	}
 

@@ -8,10 +8,6 @@
 
 package com.nex.gamebook.xsd;
 
-import ae.javax.xml.bind.annotation.XmlAccessType;
-import ae.javax.xml.bind.annotation.XmlAccessorType;
-import ae.javax.xml.bind.annotation.XmlAttribute;
-import ae.javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -32,13 +28,12 @@ import ae.javax.xml.bind.annotation.XmlType;
  * 
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "enemyReference")
+
 public class EnemyReference {
 
-    @XmlAttribute(name = "value", required = true)
+
     protected String value;
-    @XmlAttribute(name = "xpcoeff")
+
     protected Float xpcoeff;
 
     /**

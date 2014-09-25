@@ -8,10 +8,6 @@
 
 package com.nex.gamebook.xsd;
 
-import ae.javax.xml.bind.annotation.XmlAccessType;
-import ae.javax.xml.bind.annotation.XmlAccessorType;
-import ae.javax.xml.bind.annotation.XmlAttribute;
-import ae.javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -31,11 +27,9 @@ import ae.javax.xml.bind.annotation.XmlType;
  * 
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "skillReference")
+
 public class SkillReference {
 
-    @XmlAttribute(name = "value", required = true)
     protected String value;
 
     /**

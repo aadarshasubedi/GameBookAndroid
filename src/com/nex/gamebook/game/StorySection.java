@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.nex.gamebook.game.Bonus.BonusState;
 import com.nex.gamebook.util.GameBookUtils;
+import com.nex.gamebook.util.SaveGameSectionState;
 import com.nex.gamebook.xsd.EnemyReference;
 
 public class StorySection implements Serializable, Mergable {
@@ -18,7 +19,7 @@ public class StorySection implements Serializable, Mergable {
 	private String enemiesDefeatedText;
 	private String luckText = "main_luck_text";
 	private String gameOverText = "main_gameover_text";
-
+	private boolean initialized = false;
 	private int unreturnableSection = -1;
 	private boolean xpAlreadyGained;
 	private boolean loseSection;
@@ -159,9 +160,33 @@ public class StorySection implements Serializable, Mergable {
 		this.visited = visited;
 	}
 
-	public void reset() {
+	public void reset(SaveGameSectionState state) {
 		this.completed = false;
 		assignEnemies();
+		if (state != null) {
+			updateSection(state, this);
+		}
+
+	}
+
+	public void updateSection(SaveGameSectionState section, StorySection sectionState) {
+		sectionState.setAlreadyHasLuck(section.isAlreadyHasLuck());
+		sectionState.setBonusesAlreadyGained(section.isBonusesAlreadyGained());
+		sectionState.setBonusesAfterFightAlreadyGained(section.isBonusesAfterFightAlreadyGained());
+		sectionState.setBonusesBeforeFightAlreadyGained(section.isBonusesBeforeFightAlreadyGained());
+		sectionState.setCompleted(section.isCompleted());
+		sectionState.setEnemiesAlreadyKilled(section.isEnemiesAlreadyKilled());
+		sectionState.setHasLuck(section.isHasLuck());
+		sectionState.setTryluck(section.isTryluck());
+		sectionState.setVisited(section.isVisited());
+		sectionState.setXpAlreadyGained(section.isXpAlreadyGained());
+		for (Integer d : section.getDisabledOptions()) {
+			for (StorySectionOption o : sectionState.getOptions()) {
+				if (o.getSection() == d) {
+					o.setDisabled(true);
+				}
+			}
+		}
 	}
 
 	public void setHasLuck(boolean hasLuck) {
@@ -253,29 +278,29 @@ public class StorySection implements Serializable, Mergable {
 	}
 
 	public void assignEnemies() {
-		if(!enemiesIds.isEmpty() && this.enemies.isEmpty())
-		for (EnemyReference enemyKey : enemiesIds) {
-			Enemy enemy = story.findEnemy(enemyKey.getValue());
-			if (enemy == null) {
-				Log.e("GamebookEnemeNotFound", enemyKey.getValue());
-				continue;
+		if (!enemiesIds.isEmpty() && this.enemies.isEmpty())
+			for (EnemyReference enemyKey : enemiesIds) {
+				Enemy enemy = story.findEnemy(enemyKey.getValue());
+				if (enemy == null) {
+					Log.e("GamebookEnemeNotFound", enemyKey.getValue());
+					continue;
+				}
+				enemy = new Enemy(enemy);
+				if (enemyKey.getXpcoeff() != null && enemyKey.getXpcoeff() > 0d) {
+					enemy.setXpcoeff(enemyKey.getXpcoeff());
+				}
+				enemy.getStats().setCharacter(enemy);
+				enemy.getCurrentStats().setCharacter(enemy);
+				for (int i = 1; i <= getLevel(); i++) {
+					enemy.setLevel(i);
+					ExperienceMap.getInstance().updateStatsByLevel(enemy);
+				}
+				enemy.createSkills(story.getSkills());
+				enemy.createActiveSkills();
+				
+
+				this.enemies.add(enemy);
 			}
-			enemy = new Enemy(enemy);
-			if (enemyKey.getXpcoeff()!=null && enemyKey.getXpcoeff() > 0d) {
-				enemy.setXpcoeff(enemyKey.getXpcoeff());
-			}
-			int level = getLevel();
-			enemy.createSkills(story.getSkills());
-			enemy.getStats().setCharacter(enemy);
-			enemy.getCurrentStats().setCharacter(enemy);
-			enemy.createActiveSkills();
-			for(int i = 1; i <= level; i++) {
-				ExperienceMap.getInstance().updateStatsByLevel(enemy);
-				enemy.setLevel(i);
-			}
-			
-			this.enemies.add(enemy);
-		}
 	}
 
 	public int getLevel() {
@@ -383,4 +408,13 @@ public class StorySection implements Serializable, Mergable {
 	public void setXpAlreadyGained(boolean xpAlreadyGained) {
 		this.xpAlreadyGained = xpAlreadyGained;
 	}
+
+	public boolean isInitialized() {
+		return initialized;
+	}
+
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
+	}
+
 }

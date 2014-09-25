@@ -249,8 +249,14 @@ public abstract class Character {
 		}
 		clearOvertimeSkills();
 		clearConditionSkills(false);
+		patchHealth();
 	}
 
+	public void patchHealth() {
+		if(getCurrentStats().getRealHealth()>getStats().getRealHealth())
+			getCurrentStats().setHealth(getStats().getRealHealth());
+	}
+	
 	public void cleanActiveSkillsAfterBattleEnd() {
 		for (Skill skill : activeSkills) {
 			skill.cleanAfterBattleEnd();

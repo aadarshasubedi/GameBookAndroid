@@ -153,7 +153,7 @@ public class CombatProcess {
 
 	public void fight(BattleLogCallback callback) {
 		Player player = (Player) callback.getCharacter();
-
+		player.getStatistics().addTurn();
 		callback.divide(++turn);
 		boolean enemyBegin = !player.hasLuck();
 		doOvertimeSkills(player, enemy, callback);
@@ -235,6 +235,7 @@ public class CombatProcess {
 				releaseThese.add(skill);
 		}
 		attacker.getOvertimeSkills().removeAll(releaseThese);
+		attacker.patchHealth();
 	}
 
 	private void choseSkillForAI(Character attacker, Character attacked) {
@@ -300,7 +301,6 @@ public class CombatProcess {
 	}
 
 	private void doSkill(Character attacker, Character attacked, Character skillOwner, Skill skill, BattleLogCallback callback, ResultCombat resultCombat) {
-		skillOwner.getStatistics().addUsedSkill();
 		if (skillOwner.isCanCastSkill()) {
 			skill.doAttack(attacker, attacked, callback, resultCombat);
 		} else {

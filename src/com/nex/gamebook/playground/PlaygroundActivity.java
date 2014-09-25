@@ -163,6 +163,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 		flipper.addView(characterFragment.create(flipper));
 		listener = characterFragment.createListener(left, right, title);
 		characterFragment.getSwitcher().setVisibility(View.VISIBLE);
+		_character.getStatistics().addBattle();
 	}
 
 	public void changeToStory(StorySection section) {

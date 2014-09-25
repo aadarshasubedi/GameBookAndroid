@@ -8,6 +8,7 @@ import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.util.GameBookUtils;
 import com.nex.gamebook.util.SaveGameSectionState;
 import com.nex.gamebook.util.SaveGameState;
+import com.nex.gamebook.util.Statistics;
 
 public class Player extends Character {
 	public static int SKILLPOINTS_AT_LEVEL = 3;
@@ -72,7 +73,7 @@ public class Player extends Character {
 	}
 
 	public StorySection getCurrentSection() {
-		return getStory().getSection(this.position);
+		return getStory().getSection(this, this.position);
 	}
 	public void addExperience(BattleLogCallback callback, long exp) {
 		if (getLevel() == ExperienceMap.getInstance().getMaxLevel()) {
@@ -103,30 +104,35 @@ public class Player extends Character {
 		return isCriticalChance(Stats.TOTAL_SKILL_FOR_CALC + getLevel());
 	}
 	SaveGameState saveState = null;
-	public void fullsave() {
+	public void fullsave() throws Exception {
 		preSave();
 		save();
 	}
 	public void save() {
 		try {
+			if(this.saveState!=null)
 			GameBookUtils.getInstance().saveGame(this, this.saveState);
 		} catch (Exception e) {
 			Log.e("SaveGame", "", e);
 		}
 	}
 	
-	public void preSave() {
+	public void preSave() throws Exception {
 		this.saveState = createSaveGameState();
 	}
-
-	public SaveGameState createSaveGameState() {
+	
+	public SaveGameState getSaveState() {
+		return saveState;
+	}
+	
+	public SaveGameState createSaveGameState() throws Exception {
 		SaveGameState state = new SaveGameState();
-		state.setCurrentStats(getCurrentStats());
-		state.setStats(getStats());
+		state.setCurrentStats(new Stats(getCurrentStats(), false));
+		state.setStats(new Stats(getStats(), true));
 		state.setLevel(getLevel());
 		state.setExperience(getExperience());
 		state.setPosition(getPosition());
-		state.setStatistics(getStatistics());
+		state.setStatistics(new Statistics(getStatistics()));
 		state.setLearnedPassiveSkills(getLearnedPassiveSkills());
 		state.setSkillPoints(getSkillPoints());
 		for (Map.Entry<Integer, StorySection> entry : getStory().getSections().entrySet()) {
@@ -142,6 +148,11 @@ public class Player extends Character {
 			sectionState.setTryluck(section.isTryluck());
 			sectionState.setVisited(section.isVisited());
 			sectionState.setXpAlreadyGained(section.isXpAlreadyGained());
+			for(StorySectionOption option:entry.getValue().getOptions()) {
+				if(option.isDisabled()) {
+					sectionState.getDisabledOptions().add(option.getSection());
+				}
+			}
 			state.getSectionsState().put(entry.getKey(), sectionState);
 		}
 		return state;
@@ -157,26 +168,8 @@ public class Player extends Character {
 		setSkillPoints(state.getSkillPoints());
 		setLearnedPassiveSkills(state.getLearnedPassiveSkills());
 		instantiatePassiveSkills();
-		for (Map.Entry<Integer, SaveGameSectionState> entry : state.getSectionsState().entrySet()) {
-			SaveGameSectionState section = entry.getValue();
-			StorySection sectionState = getStory().getSection(entry.getKey());
-			if (sectionState == null) {
-				Log.w("Loading game", "section " + entry.getKey() + " nont exist");
-				continue;
-			}
-			sectionState.setAlreadyHasLuck(section.isAlreadyHasLuck());
-			sectionState.setBonusesAlreadyGained(section.isBonusesAlreadyGained());
-			sectionState.setBonusesAfterFightAlreadyGained(section.isBonusesAfterFightAlreadyGained());
-			sectionState.setBonusesBeforeFightAlreadyGained(section.isBonusesBeforeFightAlreadyGained());
-			sectionState.setCompleted(section.isCompleted());
-			sectionState.setEnemiesAlreadyKilled(section.isEnemiesAlreadyKilled());
-			sectionState.setHasLuck(section.isHasLuck());
-			sectionState.setTryluck(section.isTryluck());
-			sectionState.setVisited(section.isVisited());
-			sectionState.setXpAlreadyGained(section.isXpAlreadyGained());
-		}
 	}
-
+	
 	@Override
 	public void chooseBestSkill(Character c, boolean enemyBegin) {
 	}

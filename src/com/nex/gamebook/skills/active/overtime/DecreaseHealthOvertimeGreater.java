@@ -56,7 +56,7 @@ public class DecreaseHealthOvertimeGreater extends DecreaseHealthOvertime {
 			
 			@Override
 			public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
-				return DecreaseHealthOvertimeGreater.super.getLogAttack(context, resultCombat);
+				return DecreaseHealthOvertimeGreater.super.getDefaultLogAttack(context, resultCombat);
 			}
 		});
 		return skill;

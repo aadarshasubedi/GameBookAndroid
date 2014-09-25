@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import com.nex.gamebook.skills.active.SkillProperties;
 import com.nex.gamebook.util.GameBookUtils;
+import com.nex.gamebook.util.SaveGameSectionState;
 
 public class Story implements Serializable, Mergable {
 	private static final long serialVersionUID = -4844842607652119895L;
@@ -32,9 +33,14 @@ public class Story implements Serializable, Mergable {
 		this.id = id;
 	}
 
-	public StorySection getSection(int position) {
+	public StorySection getSection(Player pl, int position) {
 		StorySection section = this.sections.get(position);
-		section.reset();
+		SaveGameSectionState state = null;
+		if(pl!=null && pl.getSaveState()!=null && !section.isInitialized()) {
+			state = pl.getSaveState().getSectionsState().get(position);
+		}
+		section.setInitialized(true);
+		section.reset(state);
 		return section;
 	}
 

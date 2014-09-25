@@ -81,13 +81,17 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 			//process reduction
 			int bonusValue = bonus.getValue();
 			int defense = attacked.getCurrentStats().getDefensePercentage();
-			int reducedDamage = (int) (bonusValue - ((double) bonusValue / 100d) * defense);
-			attacked.getStatistics().addSkillReducedDamage(bonusValue - reducedDamage);
+			int reduction = (int) Math.floor((((double) bonusValue / 100d) * defense));
+			int reducedDamage = (int) (bonusValue - reduction);
+			attacked.getStatistics().addSkillReducedDamage(reduction);
 			bonus.setValue(reducedDamage);
 		} 
 		bonus.setTurns(getOvertimeTurns());
 		return bonus;
 	}
+	
+	
+	
 	
 	@Override
 	public boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
@@ -95,6 +99,7 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 		if (!canUse())
 			return true;
 		addCycle();
+		attacker.getStatistics().addUsedSkill();
 		return doAttackOnce(attacker, attacked, callback, resultCombat);
 	}
 
@@ -230,9 +235,7 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 	public CombatTextDispatcher getCombatTextDispatcher() {
 		return dispatcher;
 	}
-	
-	@Override
-	public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
+	public ResultCombatText getDefaultLogAttack(Context context, ResultCombat resultCombat) {
 		Skill skill = resultCombat.getSpecialAttack();
 		String enemyName = "";
 		int who = R.string.you_use;
@@ -251,6 +254,10 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 		}
 		text += " " + context.getString(skill.getType().getText()).toLowerCase() + ".";
 		return new ResultCombatText(R.color.reset, text);
+	}
+	@Override
+	public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
+		return getDefaultLogAttack(context, resultCombat);
 	}
 	public SkillProperties getProperties() {
 		return properties;

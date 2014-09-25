@@ -210,7 +210,7 @@ public class Stats implements Serializable {
 
 	private int getTotalStat(int stat) {
 		if (character != null) {
-			stat += character.getLevel();
+			stat += character.getLevel() * 2;
 		}
 		return stat;
 	}
