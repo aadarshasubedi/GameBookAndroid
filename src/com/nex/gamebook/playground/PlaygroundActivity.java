@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.nex.gamebook.BannerAdActivity;
 import com.nex.gamebook.R;
 import com.nex.gamebook.ViewFlipListener;
 import com.nex.gamebook.ads.AdFactory;
@@ -28,9 +30,11 @@ import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.util.DialogBuilder;
 import com.nex.gamebook.util.GameBookUtils;
+import com.nex.gamebook.util.LoadingCallback;
 import com.thoughtworks.xstream.XStream;
 
-public class PlaygroundActivity extends Activity {
+public class PlaygroundActivity extends BannerAdActivity {
+	private ProgressDialog progressDialog;
 	private Player _character;
 	private ViewFlipper flipper;
 	private ImageView left;
@@ -42,27 +46,50 @@ public class PlaygroundActivity extends Activity {
 	private static List<View> battleLog = new ArrayList<>();
 	private int SHOW_AD_AFTER_CHANGE_FRAGMENTS = 20;
 	private int fragmentsDisplayed = SHOW_AD_AFTER_CHANGE_FRAGMENTS;
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onPreCreate(Bundle savedInstanceState) {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		int view = R.layout.activity_playground;
-		setContentView(view);
-		try {
-			_character = load();
-			battleLog.clear();
-			flipper = (ViewFlipper) findViewById(R.id.viewSwitcher1);
-			left = (ImageView) findViewById(R.id.imageView1);
-			right = (ImageView) findViewById(R.id.imageView2);
-			title = (TextView) findViewById(R.id.textView1);
-			characterFragment = new PlaygroundBattleLogCharacterView(this);
-			characterFragment.setCharacter(_character);
-			flipper.addView(characterFragment.create(flipper));
-			storyFragment = new PlaygroundStoryView(this);
-			storyFragment.setCharacter(_character);
-			changeToStory(_character.getCurrentSection());
-		} catch (Exception e) {
-			Log.e("GameBook", "", e);
+		setContentView(R.layout.loading_layout);
+		new LoadViewTask().execute();
+
+	}
+
+	// To use the AsyncTask, it must be subclassed
+	private class LoadViewTask extends AsyncTask<Void, Integer, Void> {
+
+		// The code to be executed in a background thread.
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				_character = PlaygroundActivity.this.load(null);
+			} catch (Exception e) {
+				Log.e("LoadingResources", "", e);
+			}
+			return null;
+		}
+
+		// after executing the code in the thread
+		@Override
+		protected void onPostExecute(Void result) {
+			// close the progress dialog
+//			progressDialog.dismiss();
+			setContentView(R.layout.activity_playground);
+			try {
+				battleLog.clear();
+				flipper = (ViewFlipper) findViewById(R.id.viewSwitcher1);
+				left = (ImageView) findViewById(R.id.imageView1);
+				right = (ImageView) findViewById(R.id.imageView2);
+				title = (TextView) findViewById(R.id.textView1);
+				characterFragment = new PlaygroundBattleLogCharacterView(PlaygroundActivity.this);
+				characterFragment.setCharacter(_character);
+				flipper.addView(characterFragment.create(flipper));
+				storyFragment = new PlaygroundStoryView(PlaygroundActivity.this);
+				storyFragment.setCharacter(_character);
+				changeToStory(_character.getCurrentSection());
+			} catch (Exception e) {
+				Log.e("GameBook", "", e);
+			}
 		}
 
 	}
@@ -103,16 +130,16 @@ public class PlaygroundActivity extends Activity {
 		return _character;
 	}
 
-	private Player load() throws Exception {
+	private Player load(LoadingCallback cb) throws Exception {
 		XStream stream = GameBookUtils.getInstance().createXStream();
 		String metadata = getIntent().getExtras().getString("metadata");
-		if(metadata!=null && metadata.length()>0) {
+		if (metadata != null && metadata.length() > 0) {
 			SerializationMetadata loadedGame = GameBookUtils.getInstance().loadSingleMetadata(stream, new File(metadata));
 			if (loadedGame != null) {
-				return GameBookUtils.getInstance().loadCharacter(loadedGame);
+				return GameBookUtils.getInstance().loadCharacter(loadedGame, cb);
 			}
 		}
-		StoryXmlParser parser = new StoryXmlParser(this);
+		StoryXmlParser parser = new StoryXmlParser(this, cb);
 		Story story = parser.loadStory(getIntent().getExtras().getString("story"), true);
 		Player character = story.getCharacter(getIntent().getExtras().getInt("character"));
 		character.fullsave();
@@ -128,7 +155,7 @@ public class PlaygroundActivity extends Activity {
 	}
 
 	public void changeToBattle(StorySection section) {
-//		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		checkAndDisplayAd();
 		section.setFighting(true);
 		getCharacterFragment().setSection(section);
@@ -139,7 +166,7 @@ public class PlaygroundActivity extends Activity {
 	}
 
 	public void changeToStory(StorySection section) {
-//		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		checkAndDisplayAd();
 		section.setFighting(false);
 		title.setText(_character.getStory().getName());
@@ -149,7 +176,6 @@ public class PlaygroundActivity extends Activity {
 		createListener();
 		characterFragment.getSwitcher().setVisibility(View.GONE);
 	}
-
 
 	public List<View> getBattleLog() {
 		return battleLog;
@@ -167,7 +193,7 @@ public class PlaygroundActivity extends Activity {
 		final boolean fighting = PlaygroundActivity.this._character.getCurrentSection().isFighting();
 		// Handle the back button
 		int text = R.string.close_book_description;
-		if(fighting) {
+		if (fighting) {
 			text = R.string.close_book_when_fighting_description;
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -178,7 +204,7 @@ public class PlaygroundActivity extends Activity {
 				public void onClick(View v) {
 					// Intent intent = new Intent(PlaygroundActivity.this,
 					// MainScreenActivity.class);
-					// PlaygroundActivity.this.startActivity(intent);					
+					// PlaygroundActivity.this.startActivity(intent);
 					dialog.dismiss();
 					_character.save();
 					PlaygroundActivity.this.finish();
@@ -191,15 +217,15 @@ public class PlaygroundActivity extends Activity {
 		}
 
 	}
-	
+
 	void checkAndDisplayAd() {
-		if(fragmentsDisplayed % SHOW_AD_AFTER_CHANGE_FRAGMENTS == 0) {
+		if (fragmentsDisplayed % SHOW_AD_AFTER_CHANGE_FRAGMENTS == 0) {
 			fragmentsDisplayed = 0;
-			AdFactory.loadDefaultInterstitialAd(this);
+//			AdFactory.loadDefaultInterstitialAd(this);
 		}
 		fragmentsDisplayed++;
 	}
-	
+
 	// @Override
 	// public boolean dispatchTouchEvent(MotionEvent ev){
 	// super.dispatchTouchEvent(ev);

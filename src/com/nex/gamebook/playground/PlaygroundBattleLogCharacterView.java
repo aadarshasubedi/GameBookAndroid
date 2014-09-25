@@ -56,9 +56,6 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	public View create(ViewGroup container) {
 		boolean battle = section != null;
 		int inflate = R.layout.fragment_playground_character;
-		if (battle) {
-			inflate = R.layout.fragment_playground_character;
-		}
 		masterView = getPlayground().getLayoutInflater().inflate(inflate, container, false);
 		switcher = (ViewFlipper) masterView.findViewById(R.id.viewSwitcher1);
 		_character = getPlayground().getCharacter();
@@ -164,6 +161,15 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 				baseStats.setText(R.string.base_stats);
 			}
 		});
+		if(section!=null) {
+			actualAttrs.setVisibility(View.GONE);
+			baseStats.setVisibility(View.GONE);
+			view.findViewById(R.id.attrs_title).setVisibility(View.GONE);
+		} else {
+			actualAttrs.setVisibility(View.VISIBLE);
+			baseStats.setVisibility(View.VISIBLE);
+			view.findViewById(R.id.attrs_title).setVisibility(View.VISIBLE);
+		}
 		actualAttrs.callOnClick();
 		// showSkill((TextView) view.findViewById(R.id.skill_name), _character);
 		showAvailableSkills();
@@ -260,7 +266,6 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					// owner.onDetachedFromWindow();
 					PassiveSkillInfoDialogAnSelection dialog = new PassiveSkillInfoDialogAnSelection(context, _character, skill);
 					dialog.show(new DismissCallBack() {
-
 						@Override
 						public void dismiss() {
 							owner.onDetachedFromWindow();
@@ -277,6 +282,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.spinner_single_item_skill, parent, false);
 			TextView name = (TextView) rowView.findViewById(R.id.name);
+			name.setTextColor(getContext().getResources().getColor(R.color.passive_skill_triggered));
 			name.setText(context.getString(R.string.select_passive_skill, _character.getSkillPoints()));
 			decoreClickableTextView(getContext(), name, String.valueOf(name.getText()));
 			return rowView;
@@ -336,25 +342,30 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					name.setText(R.string.no_skill);
 			}
 			if (inflate == R.layout.spinner_dropdown_item) {
-				rowView.setOnLongClickListener(new OnLongClickListener() {
-
-					@Override
-					public boolean onLongClick(View arg0) {
-						if (skill == null)
-							return false;
-						SkillInfoDialog dialog = new SkillInfoDialog(context, applicator, skill);
-						dialog.show();
-						return false;
-					}
-				});
 				rowView.setOnClickListener(new OnClickListener() {
-
 					@Override
 					public void onClick(View arg0) {
-						owner.onDetachedFromWindow();
-						if (applicator instanceof Player)
+						if(skill==null) {
+							owner.onDetachedFromWindow();
 							owner.setSelection(position);
+							return ;
+						}
+						OnClickListener listener = null;
+						if (applicator instanceof Player && section!=null) {
+							owner.setSelection(position);
+							listener = new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									owner.onDetachedFromWindow();
+									owner.setSelection(position);
+								}
+							};
+						}
+						SkillInfoDialog dialog = new SkillInfoDialog(context, applicator, skill, listener);
+						dialog.show();
 					}
+					
 				});
 			} else {
 				decoreClickableTextView(getContext(), name, String.valueOf(name.getText()));
@@ -363,19 +374,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 
 	}
-
-	public void showSkill(TextView view, final Character applicator) {
-		decoreClickableTextView(getContext(), view, applicator.getSelectedSkill().getName());
-		view.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				SkillInfoDialog dialog = new SkillInfoDialog(getContext(), applicator);
-				dialog.show();
-			}
-		});
-	}
-
+	
 	public void setSection(StorySection section) {
 		this.section = section;
 	}

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -16,9 +17,11 @@ public class SkillInfoDialog {
 	private Dialog dialog;
 	private Context ctx;
 	public SkillInfoDialog(Context context, Character applicator) {
-		this(context, applicator, applicator.getSelectedSkill());
+		this(context, applicator, applicator.getSelectedSkill(), null);
 	}
-	public SkillInfoDialog(Context context, Character applicator, Skill skill) {
+
+	
+	public SkillInfoDialog(Context context, Character applicator, Skill skill, final OnClickListener listener) {
 		super();
 		this.ctx = context;
 		dialog = new Dialog(context);
@@ -26,9 +29,20 @@ public class SkillInfoDialog {
 		//View inflatedView = dialog.getLayoutInflater().inflate(R.layout.skill_info_layout, context);
 		dialog.setContentView(R.layout.skill_info_layout);
 		dialog.setCancelable(true);
-		
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		showSkillData(applicator, skill, dialog.findViewById(R.id.skill_data));
+		if(listener!=null) {
+			dialog.findViewById(R.id.use_button).setVisibility(View.VISIBLE);
+			
+			dialog.findViewById(R.id.use_button).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					listener.onClick(v);
+					dismiss();
+				}
+			});
+		}
 		
 	}
 

@@ -21,6 +21,7 @@ import com.nex.gamebook.skills.active.SkillProperties;
 import com.nex.gamebook.skills.passive.PassiveSkill;
 import com.nex.gamebook.util.GameBookUtils;
 import com.nex.gamebook.util.Statistics;
+import com.nex.gamebook.xsd.SkillReference;
 
 public abstract class Character {
 	private Stats stats = new Stats(true);
@@ -31,7 +32,7 @@ public abstract class Character {
 	private Stats temporalStatsHolder;
 	private Statistics statistics = new Statistics();
 	// private String skillName;
-	private transient List<SkillAssign> assignedSkills = new ArrayList<>();
+	private transient List<SkillReference> assignedSkills = new ArrayList<>();
 	private transient Map<SkillRequiredLevel, Skill> specialSkills = new HashMap<>();
 	private transient Set<Skill> activeSkills;
 	private transient Set<PassiveSkill> pasiveSkills = new HashSet<>();
@@ -55,7 +56,7 @@ public abstract class Character {
 		this.currentStats = new Stats(this.stats, false);
 		this.story = character.story;
 		this.specialSkills = new HashMap<>(character.getSpecialSkills());
-		this.assignedSkills = new ArrayList<SkillAssign>(character.getAssignedSkills());
+		this.assignedSkills = new ArrayList<>(character.getAssignedSkills());
 	}
 
 	public Stats getStats() {
@@ -452,15 +453,15 @@ public abstract class Character {
 		};
 	}
 
-	public List<SkillAssign> getAssignedSkills() {
+	public List<SkillReference> getAssignedSkills() {
 		return assignedSkills;
 	}
 
 	public void createSkills(Map<String, SkillProperties> skills) {
-		for (SkillAssign assignedSkill : this.assignedSkills) {
-			SkillProperties skillProp = skills.get(assignedSkill.getSkillKey());
+		for (SkillReference assignedSkill : this.assignedSkills) {
+			SkillProperties skillProp = skills.get(assignedSkill.getValue());
 			if (skillProp == null) {
-				Log.w("SkillAssign", "skill with name " + assignedSkill.getSkillKey() + " not exist");
+				Log.w("SkillAssign", "skill with name " + assignedSkill.getValue() + " not exist");
 				continue;
 			}
 			this.specialSkills.put(new SkillRequiredLevel(skillProp.getLevelRequired(), skillProp.getId()), skillProp.createSpecialSkill(getStory()));

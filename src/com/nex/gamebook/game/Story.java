@@ -140,7 +140,7 @@ public class Story implements Serializable, Mergable {
 		for (Character c : this.characters) {
 			c.createSkills(this.skills);
 		}
-		skills.clear();
+//		skills.clear();
 	}
 
 	public Map<String, SkillProperties> getSkills() {

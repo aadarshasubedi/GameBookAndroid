@@ -43,6 +43,7 @@
         android:layout_below="@+id/actualStats"
         android:background="@drawable/_background_corners"
         android:layout_marginBottom="1dp"
+        android:layout_marginTop="10dp"
         android:padding="10dp">
 
         <LinearLayout
@@ -487,7 +488,7 @@
     <TextView
         style="@style/title"
         android:layout_marginRight="10dp"
-        android:id="@+id/textView1"
+        android:id="@+id/attrs_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tableLayout1"
@@ -501,7 +502,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_toRightOf="@+id/attrs_title"
         android:gravity="center_horizontal"
         android:text="@string/actual_stats" />
 
