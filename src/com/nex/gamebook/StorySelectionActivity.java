@@ -22,53 +22,59 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nex.gamebook.ads.AdFactory;
+import com.nex.gamebook.ads.AdFactory.OnAdClosed;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 
-public class StorySelectionActivity extends Activity {
-//	private InterstitialAd mInterstitial;
-//	private 
+public class StorySelectionActivity extends BannerAdActivity {
+	// private InterstitialAd mInterstitial;
+	// private
 	private OnImageListener activeListener;
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onPreCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_story_selection);
-		StoryXmlParser parser = new StoryXmlParser(this);
-		LinearLayout layout = (LinearLayout) findViewById(R.id.stories);
-		StoryListAdapter ad = new StoryListAdapter(this);
-		try {
-			for(Story story: parser.loadStories()) {
-				 layout.addView(ad.getView(story, layout));
+		setContentView(R.layout.loading_layout);
+		AdFactory.loadDefaultInterstitialAd(this, new OnAdClosed() {
+			@Override
+			public void closed() {
+				setContentView(R.layout.activity_story_selection);
+				StoryXmlParser parser = new StoryXmlParser(StorySelectionActivity.this);
+				LinearLayout layout = (LinearLayout) findViewById(R.id.stories);
+				StoryListAdapter ad = new StoryListAdapter(StorySelectionActivity.this);
+				try {
+					for (Story story : parser.loadStories()) {
+						layout.addView(ad.getView(story, layout));
+					}
+				} catch (IOException e) {
+					Log.e("GameBookStorySelection", "", e);
+				}
 			}
-		} catch (IOException e) {
-			Log.e("GameBookStorySelection",  "", e);
-		}
-//		AdFactory.loadInterstitialAd(this, R.string.ad_interistial_story);
+		});
+
+		// AdFactory.loadInterstitialAd(this, R.string.ad_interistial_story);
 	}
+
 	class StoryListAdapter {
 		Context context;
 
 		public StoryListAdapter(Context context) {
-			
+
 			this.context = context;
 		}
 
-
 		@SuppressLint("NewApi")
 		public View getView(Story story, ViewGroup parent) {
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.list_story_layout, parent,
-					false);
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.list_story_layout, parent, false);
 			LinearLayout imagerounding = (LinearLayout) rowView.findViewById(R.id.imagerounding);
 			LinearLayout storyInfo = (LinearLayout) rowView.findViewById(R.id.story_info);
-			
-//			imagerounding.bringToFront();
+
+			// imagerounding.bringToFront();
 			ImageView image = (ImageView) rowView.findViewById(R.id.story_image);
-			if(story.getBackground()>0)
-			image.setBackground(context.getResources().getDrawable(story.getBackground()));
+			if (story.getBackground() > 0)
+				image.setBackground(context.getResources().getDrawable(story.getBackground()));
 			Button button = (Button) storyInfo.findViewById(R.id.play_button);
 			button.setTag(story);
 			button.setOnClickListener(buttonClicked);
@@ -86,6 +92,7 @@ public class StorySelectionActivity extends Activity {
 	class OnImageListener implements OnClickListener {
 		private LinearLayout layout;
 		private Context context;
+
 		public OnImageListener(Context context, LinearLayout layout) {
 			super();
 			this.layout = layout;
@@ -94,7 +101,7 @@ public class StorySelectionActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			if(activeListener != null && !activeListener.equals(this)) {
+			if (activeListener != null && !activeListener.equals(this)) {
 				activeListener.hide();
 			}
 			activeListener = this;
@@ -103,37 +110,37 @@ public class StorySelectionActivity extends Activity {
 
 		public void toggle() {
 			int visibility = layout.getVisibility();
-			if(visibility == View.GONE) {
+			if (visibility == View.GONE) {
 				show();
 			} else {
 				hide();
 			}
 		}
-		
+
 		public void show() {
 			layout.setVisibility(View.VISIBLE);
-//			animate(R.anim.trans_show);
+			// animate(R.anim.trans_show);
 		}
-		
+
 		public void hide() {
 			layout.setVisibility(View.GONE);
-			
+
 		}
+
 		private void animate(int anim) {
 			Animation animation = AnimationUtils.loadAnimation(context, anim);
-		    animation.setDuration(500);
-		    layout.setAnimation(animation);
-		    layout.animate();
-		    animation.start();
+			animation.setDuration(500);
+			layout.setAnimation(animation);
+			layout.animate();
+			animation.start();
 		}
 	}
-	
+
 	OnClickListener buttonClicked = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			Story story = (Story) v.getTag();
-			Intent intent = new Intent(StorySelectionActivity.this,
-					CharacterSelectionActivity.class);
+			Intent intent = new Intent(StorySelectionActivity.this, CharacterSelectionActivity.class);
 			Bundle b = new Bundle();
 			// intent
 			b.putString("story", story.getFullpath());

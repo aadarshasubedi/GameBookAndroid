@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -68,18 +69,27 @@ public class GameBookUtils {
 		return null;
 	}
 
-	public void loadProperties(Story story) throws IOException {
-		Properties prop = loadProperties(story.getPath());
+	public long loadProperties(Story story) throws IOException {
+		PropsSize s = new PropsSize();
+		Properties prop = loadProperties(story.getPath(), s);
 		story.setProperties(prop);
+		return s.size;
 	}
-	public Properties loadProperties(String storypath) throws IOException {
+
+	class PropsSize {
+		long size;
+	}
+
+	public Properties loadProperties(String storypath, PropsSize size) throws IOException {
 
 		List<String> fileList = getRelevantLocalizedFiles(storypath);
 		Properties prop = new StoryProperties();
 		// prop.
 		for (String file : fileList) {
 			try {
-				InputStream fileStream = new FileInputStream(file);
+				File f = new File(file);
+				size.size += f.length();
+				InputStream fileStream = new FileInputStream(f);
 				Reader reader = new InputStreamReader(fileStream);
 				prop.load(reader);
 				fileStream.close();
@@ -89,6 +99,7 @@ public class GameBookUtils {
 		}
 		return prop;
 	}
+
 	public String getText(String name, Story story) {
 		if ("".equals(name) || name == null)
 			return null;
@@ -124,24 +135,57 @@ public class GameBookUtils {
 	}
 
 	public File getStoriesFolder(String subFolder) {
-		return new File(getGamebookStorage(context) + File.separator + FOLDER + File.separator + subFolder);
+		return new File(getStoriesPath(subFolder));
+	}
+
+	public String getStoriesPath(String subFolder) {
+		return getGamebookStorage(context) + File.separator + FOLDER + File.separator + subFolder;
+	}
+
+	public long getTotalSize(String subFolder) {
+		File f = getStoriesFolder(subFolder);
+		return getFileSize(f);
+	}
+
+	public static long getFileSize(final File file) {
+		if (file == null || !file.exists())
+			return 0;
+		if (!file.isDirectory())
+			return file.length();
+		final List<File> dirs = new LinkedList<File>();
+		dirs.add(file);
+		long result = 0;
+		while (!dirs.isEmpty()) {
+			final File dir = dirs.remove(0);
+			if (!dir.exists())
+				continue;
+			final File[] listFiles = dir.listFiles();
+			if (listFiles == null || listFiles.length == 0)
+				continue;
+			for (final File child : listFiles) {
+				result += child.length();
+				if (child.isDirectory())
+					dirs.add(child);
+			}
+		}
+		return result;
 	}
 
 	public File getSavesFolder(String subfolder, String fileName, boolean createSubfolders) {
 		File f = new File(getGamebookStorage(context) + File.separator + "saves" + File.separator + subfolder + File.separator + fileName);
-		if(!f.exists() && createSubfolders) {
+		if (!f.exists() && createSubfolders) {
 			f.mkdirs();
 		}
 		return f;
 	}
+
 	public File getScoreFolder(String subfolder, String fileName, boolean createSubfolders) {
 		File f = new File(getGamebookStorage(context) + File.separator + "scores" + File.separator + subfolder + File.separator + fileName);
-		if(!f.exists() && createSubfolders) {
+		if (!f.exists() && createSubfolders) {
 			f.mkdirs();
 		}
 		return f;
 	}
-	
 
 	public String saveScore(Player character) throws Exception {
 		File file = getScoreFolder("", "", true);
@@ -181,38 +225,42 @@ public class GameBookUtils {
 		String fileName = SAVE_GAME_PREFIX + character.getId() + "_" + character.getStory().getId() + ".sav";
 		return fileName;
 	}
+
 	public List<SerializationMetadata> getScores() {
 		return loadMetadata(getScoreFolder("meta", "", false));
 	}
+
 	public List<SerializationMetadata> getSavedGames() {
 		return loadMetadata(getSavesFolder("meta", "", false));
 	}
-	
+
 	private List<SerializationMetadata> loadMetadata(File metaFolder) {
 		List<SerializationMetadata> ls = new ArrayList<>();
 		XStream stream = createXStream();
-		if(metaFolder!=null && metaFolder.list()!=null)
-		for(String metaFile:metaFolder.list()) {
-			ls.add(loadSingleMetadata(stream, new File(metaFolder.getAbsoluteFile() + File.separator + metaFile)));
-		}
+		if (metaFolder != null && metaFolder.list() != null)
+			for (String metaFile : metaFolder.list()) {
+				ls.add(loadSingleMetadata(stream, new File(metaFolder.getAbsoluteFile() + File.separator + metaFile)));
+			}
 		return ls;
 	}
+
 	public SerializationMetadata loadSingleMetadata(XStream stream, File file) {
 		SerializationMetadata m = (SerializationMetadata) stream.fromXML(file);
 		m.setMetaFile(file.getAbsolutePath());
 		return m;
 	}
-	
+
 	public Score loadScore(String filename) throws Exception {
 		File file = getScoreFolder("", filename, false);
 		FileInputStream fis = new FileInputStream(file);
 		XStream xStream = createXStream();
 		Score simpleClass = (Score) xStream.fromXML(fis);
-		simpleClass.setProperties(GameBookUtils.getInstance().loadProperties(simpleClass.getStoryPath()));
+		simpleClass.setProperties(GameBookUtils.getInstance().loadProperties(simpleClass.getStoryPath(), new PropsSize()));
 		fis.close();
 		return simpleClass;
 	}
-	public Player loadCharacter(SerializationMetadata metadata) throws Exception {
+
+	public Player loadCharacter(SerializationMetadata metadata, LoadingCallback cb) throws Exception {
 		File file = getSavesFolder("", metadata.getFile(), false);
 		FileInputStream fis = new FileInputStream(file);
 		StoryXmlParser parser = new StoryXmlParser(context);
@@ -237,7 +285,7 @@ public class GameBookUtils {
 		xStream.toXML(sg, fos);
 		fos.close();
 	}
-	
+
 	public void removeSavedGame(Player player) {
 		String fileName = createSaveGameFileName(player);
 		File delete = getSavesFolder("meta", fileName, false);
@@ -270,10 +318,12 @@ public class GameBookUtils {
 		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("getPure", type.name().toLowerCase()), new Class<?>[0]);
 		return (int) m.invoke(destination, new Object[0]);
 	}
+
 	public static int getRealStatByType(Stats destination, StatType type) throws Exception {
 		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("getReal", type.name().toLowerCase()), new Class<?>[0]);
 		return (int) m.invoke(destination, new Object[0]);
 	}
+
 	public static int getStatByType(Stats destination, StatType type) throws Exception {
 		Method m = Stats.class.getDeclaredMethod(GameBookUtils.createMethodName("get", type.name().toLowerCase()), new Class<?>[0]);
 		return (int) m.invoke(destination, new Object[0]);

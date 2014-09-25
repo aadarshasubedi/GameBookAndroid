@@ -1,7 +1,9 @@
 package com.nex.gamebook.story.parser;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,6 +38,9 @@ import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.game.StorySectionOption;
 import com.nex.gamebook.skills.active.SkillProperties;
 import com.nex.gamebook.util.GameBookUtils;
+import com.nex.gamebook.util.LoadingCallback;
+import com.nex.gamebook.xsd.EnemyReference;
+import com.nex.gamebook.xsd.SkillReference;
 
 public class StoryXmlParser {
 	private final String INCREASE = "increase";
@@ -65,13 +70,13 @@ public class StoryXmlParser {
 	private final String STORY = "story";
 	private final String XPCOEFF = "xpcoeff";
 	private final String COEFF = "coeff";
-	
+
 	private final String OPTIONS = "options";
 	private final String BASE = "base";
 	private final String ENEMIES = "enemies";
 	private final String ENEMY = "enemy";
 	private final String BASE_DAMAGE = "damage";
-	
+
 	private final String BONUSES = "bonuses";
 	private final String FIGHT_LUCK_TEXT_SECTION = "luckText";
 	private final String GAMEOVER_SECTION = "gameOverText";
@@ -86,7 +91,7 @@ public class StoryXmlParser {
 	private final String SKILL = "skill";
 	private final String LUCK = "luck";
 	private final String SKILL_POWER = "skillPower";
-	
+
 	private final String LUCK_ASPECT = "luckAspect";
 
 	private final String NAME = "name";
@@ -94,30 +99,38 @@ public class StoryXmlParser {
 	private final String ID = "id";
 
 	private final String TYPE = "type";
-	
+
 	private final String VALUE = "value";
-//	private final String OVERRIDE_SKILL = "overrideSkill";
+	// private final String OVERRIDE_SKILL = "overrideSkill";
 	private final String OVERFLOWED = "overflowed";
 	private final String PERMANENT = "permanent";
-	
+
 	private final String DEBUFF = "debuff";
 	private final String STATE = "state";
 	private final String SKILL_BASED = "skillBased";
-	
-	private final String BEFOREENEMYSKILL="beforeEnemySkill";
-	private final String BEFOREENEMYATTACK="beforeEnemyAttack";
-	private final String AFTERENEMYATTACK="afterEnemyAttack";
-	private final String AFTERNORMALATTACK="afterNormalAttack";
+
+	private final String BEFOREENEMYSKILL = "beforeEnemySkill";
+	private final String BEFOREENEMYATTACK = "beforeEnemyAttack";
+	private final String AFTERENEMYATTACK = "afterEnemyAttack";
+	private final String AFTERNORMALATTACK = "afterNormalAttack";
 	private final String CONDITION = "condition";
 	private final String ISBASE = "isBase";
 	Context context;
+	private long totalStorySize;
+	private long loadedBytes = 0;
+	private LoadingCallback cb;
 
 	public StoryXmlParser(Context context) {
 		super();
 		this.context = context;
+
 	}
 
-	
+	public StoryXmlParser(Context context, LoadingCallback cb) {
+		super();
+		this.context = context;
+		this.cb = cb;
+	}
 
 	public List<Story> loadStories() throws IOException {
 		List<Story> stories = new ArrayList<Story>();
@@ -149,27 +162,38 @@ public class StoryXmlParser {
 		return loadStory(xml, fully, fully);
 	}
 
-	public Story loadStory(String xml, boolean sections, boolean characters)
-			throws Exception {
+	public Story loadStory(String xml, boolean sections, boolean characters) throws Exception {
 		Story story = new Story();
 		story.saveXmlPath(xml);
-		GameBookUtils.getInstance().loadProperties(story);
+		this.totalStorySize = GameBookUtils.getInstance().getTotalSize(story.getPath());
+		setLoadedBytes(GameBookUtils.getInstance().loadProperties(story));
 		loadStory(story, story.getXml(), sections, characters);
-		story.assignEnemiesToSections();
+//		story.assignEnemiesToSections();
 		story.assignSkillsToCharacters();
+		Log.i("StoryParser", "all resources loaded");
+		if(cb!=null)
+		cb.finished();
 		return story;
 	}
 
 	
-
 	
+	private void setLoadedBytes(long bytes) {
+		this.loadedBytes += bytes;
+		Log.i("StoryLoading", "totalsize:"+totalStorySize + " loadedsize:"+loadedBytes);
+		if(cb!=null)
+		cb.loaded(getCurrentLoaded());
+	}
+
+	public int getCurrentLoaded() {
+		return (int) (((double)loadedBytes / (double)totalStorySize) * 100);
+	}
 
 	public void loadStory(Story story, String xml, boolean sections, boolean characters) throws Exception {
 
 		InputStream stream = null;
 		try {
-			File storiesFolder = GameBookUtils.getInstance().getStoriesFolder(story.getPath()
-					+ File.separator + xml);
+			File storiesFolder = GameBookUtils.getInstance().getStoriesFolder(story.getPath() + File.separator + xml);
 			stream = new FileInputStream(storiesFolder);
 			Document document = getDocument(stream);
 			NodeList nList = document.getElementsByTagName(STORY);
@@ -180,14 +204,14 @@ public class StoryXmlParser {
 					include(story, el, sections, characters);
 					NodeList background = el.getElementsByTagName(BACKGROUND);
 					if (background.getLength() > 0)
-						story.setBackground(getIdentifier(background.item(0)
-								.getTextContent()));
+						story.setBackground(getIdentifier(background.item(0).getTextContent()));
 					NodeList version = el.getElementsByTagName(VERSION);
 					if (version.getLength() > 0)
 						story.setVersion(getInteger(version.item(0).getTextContent()));
 					initializeStory(story, document, sections, characters);
 				}
 			}
+			setLoadedBytes(storiesFolder.length());
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -209,8 +233,7 @@ public class StoryXmlParser {
 		}
 	}
 
-	public void initializeStory(Story story, Document document,
-			boolean sections, boolean characters) throws Exception {
+	public void initializeStory(Story story, Document document, boolean sections, boolean characters) throws Exception {
 		if (!sections && !characters)
 			return;
 		if (sections) {
@@ -221,10 +244,10 @@ public class StoryXmlParser {
 			loadCharacters(document, story);
 			loadSkills(document, story);
 		}
-
 	}
 
 	private void loadSections(Document document, Story story) throws Exception {
+		Log.i("StoryParser", "Loading sections....");
 		NodeList nList = document.getElementsByTagName(SECTION);
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node node = nList.item(temp);
@@ -235,11 +258,12 @@ public class StoryXmlParser {
 		}
 	}
 
-	private void loadCharacters(Document document, Story story)
-			throws Exception {
+	private void loadCharacters(Document document, Story story) throws Exception {
+		Log.i("StoryParser", "Loading characters....");
 		NodeList nList = document.getElementsByTagName(CHARACTER);
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node node = nList.item(temp);
+			
 			if (node instanceof Element) {
 				Element el = (Element) node;
 				loadCharacter(story, el);
@@ -248,17 +272,20 @@ public class StoryXmlParser {
 	}
 
 	private void loadEnemies(Document document, Story story) {
+		Log.i("StoryParser", "Loading enemies....");
 		NodeList nList = document.getElementsByTagName(ENEMY);
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node node = nList.item(temp);
+			
 			if (node instanceof Element) {
 				Element el = (Element) node;
 				loadEnemy(story, el);
 			}
 		}
 	}
-	
+
 	private void loadSkills(Document document, Story story) {
+		Log.i("StoryParser", "Loading skills....");
 		NodeList nList = document.getElementsByTagName(SPECIAL_SKILL);
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node node = nList.item(temp);
@@ -268,7 +295,7 @@ public class StoryXmlParser {
 			}
 		}
 	}
-	
+
 	private void loadEnemy(Story story, Element element) {
 		Enemy enemy = new Enemy();
 		enemy.setName(element.getAttribute(NAME));
@@ -283,7 +310,7 @@ public class StoryXmlParser {
 		enemy.setStory(story);
 		story.getEnemies().put(id, enemy);
 	}
-	
+
 	private void loadSkill(Story story, Element element) {
 		SkillProperties skill = new SkillProperties();
 		String id = element.getAttribute(ID);
@@ -293,8 +320,8 @@ public class StoryXmlParser {
 		skill.setTurns(getInteger(element.getAttribute(TURNS)));
 		skill.setLevelRequired(getInteger(element.getAttribute(LEVEL_REQUIRED)));
 		String type = element.getAttribute(TYPE);
-		if(type!=null && type.length()>0)
-		skill.setType(StatType.valueOf(type.toUpperCase()));
+		if (type != null && type.length() > 0)
+			skill.setType(StatType.valueOf(type.toUpperCase()));
 		skill.setIncrease(getBoolean(element.getAttribute(INCREASE)));
 		skill.setCoeff(getFloat(element.getAttribute(COEFF)));
 		skill.setResetAtBattleEnd(getBoolean(element.getAttribute(RESETATBATTLEEND)));
@@ -308,6 +335,7 @@ public class StoryXmlParser {
 		skill.setId(id);
 		story.getSkills().put(id, skill);
 	}
+
 	private void loadCharacter(Story story, Element element) throws Exception {
 		Player character = new Player();
 		character.setName(element.getAttribute(NAME));
@@ -324,19 +352,16 @@ public class StoryXmlParser {
 		character.setStory(story);
 		ExperienceMap.getInstance().updateStatsByLevel(character);
 		story.getCharacters().add(character);
-		
+
 	}
 
 	private void putStats(com.nex.gamebook.game.Character character, Node node) {
 		if (node.getNodeName().equals(HEALTH)) {
-			character.getStats().setHealth(
-					getInteger(node.getTextContent()));
+			character.getStats().setHealth(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(DEFENSE)) {
-			character.getStats().setDefense(
-					getInteger(node.getTextContent()));
+			character.getStats().setDefense(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(SKILL)) {
-			character.getStats()
-					.setSkill(getInteger(node.getTextContent()));
+			character.getStats().setSkill(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(LUCK)) {
 			character.getStats().setLuck(getInteger(node.getTextContent()));
 		} else if (node.getNodeName().equals(ATTACK)) {
@@ -350,32 +375,34 @@ public class StoryXmlParser {
 				if (n instanceof Element) {
 					Element element = (Element) n;
 					String skillKey = element.getAttribute(VALUE);
-					character.getAssignedSkills().add(new SkillAssign(skillKey));
+					SkillReference r = new SkillReference();
+					r.setValue(skillKey);
+					character.getAssignedSkills().add(r);
 				}
-			}			
+			}
 		} else if (node.getNodeName().equals(SKILL_POWER)) {
 			character.getStats().setSkillpower(getInteger(node.getTextContent()));
-		} else if(node.getNodeName().equals(PRIMARY_STAT)) {
+		} else if (node.getNodeName().equals(PRIMARY_STAT)) {
 			StatType stat = StatType.valueOf(node.getTextContent().toUpperCase());
-			if(StatType.DAMAGE.equals(stat)) {
-				Log.w("StoryXMLParser", "damage cannot be primary attribute"); 
+			if (StatType.DAMAGE.equals(stat)) {
+				Log.w("StoryXMLParser", "damage cannot be primary attribute");
 			} else {
 				character.setPrimaryStat(stat);
 			}
 		}
 		character.setCurrentStats(new Stats(character.getStats(), false));
 	}
-	
+
 	private void loadSection(Story story, Element element) throws Exception {
+		
 		int position = getInteger(element.getAttribute(POSITION));
 		if (position == 0) {
 			throw new IllegalStateException("position attribute must exist on <section />");
 		}
-
 		StorySection section = new StorySection();
 		section.setStory(story);
 		int level = getInteger(element.getAttribute(LEVEL));
-		if(level==0) {
+		if (level == 0) {
 			level = 1;
 		}
 		section.setLevel(level);
@@ -390,21 +417,19 @@ public class StoryXmlParser {
 		section.setText(text);
 		section.setAlreadyVisitedText(text);
 		String alreadyVisitedText = element.getAttribute(ALREADY_VISITED_TEXT);
-		if (alreadyVisitedText != null && alreadyVisitedText.length()>0)
+		if (alreadyVisitedText != null && alreadyVisitedText.length() > 0)
 			section.setAlreadyVisitedText(alreadyVisitedText);
 
-		String enemiesDefeatedText = element
-				.getAttribute("enemiesDefeatedText");
+		String enemiesDefeatedText = element.getAttribute("enemiesDefeatedText");
 		String luckText = element.getAttribute(FIGHT_LUCK_TEXT_SECTION);
-		if (luckText !=null && luckText.trim().length() > 0) {
+		if (luckText != null && luckText.trim().length() > 0) {
 			section.setLuckPossible(true);
 			section.setLuckText(luckText);
 		}
 		String gameOverText = element.getAttribute(GAMEOVER_SECTION);
-		if (gameOverText!=null && gameOverText.trim().length()> 0)
+		if (gameOverText != null && gameOverText.trim().length() > 0)
 			section.setGameOverText(gameOverText);
-		section.setLuckDefeatEnemies(getBoolean(element
-				.getAttribute(LUCK_DEFEAT_ENEMIES)));
+		section.setLuckDefeatEnemies(getBoolean(element.getAttribute(LUCK_DEFEAT_ENEMIES)));
 		NodeList optionsList = element.getChildNodes();
 		for (int i = 0; i < optionsList.getLength(); i++) {
 			Node node = element.getChildNodes().item(i);
@@ -417,9 +442,7 @@ public class StoryXmlParser {
 			}
 		}
 		if (!section.getEnemies().isEmpty() && enemiesDefeatedText == null) {
-			throw new IllegalStateException(
-					"enemiesDefeatedText attribute must exist if <section position="
-							+ position + "/> has enemies");
+			throw new IllegalStateException("enemiesDefeatedText attribute must exist if <section position=" + position + "/> has enemies");
 		}
 		section.setEnemiesDefeatedText(enemiesDefeatedText);
 		story.getSections().put(position, section);
@@ -428,8 +451,7 @@ public class StoryXmlParser {
 	private int getIdentifier(String name) {
 		String[] splited = name.split("@|/");
 		if (splited.length > 1)
-			return context.getResources().getIdentifier(splited[2], splited[1],
-					context.getPackageName());
+			return context.getResources().getIdentifier(splited[2], splited[1], context.getPackageName());
 		return 0;
 	}
 
@@ -439,12 +461,13 @@ public class StoryXmlParser {
 			Node n = optionsList.item(i);
 			if (n instanceof Element) {
 				Element enemyNode = (Element) n;
-				section.getEnemiesIds().add(new EnemyAssign(enemyNode.getAttribute(VALUE), getFloat(enemyNode.getAttribute(XPCOEFF))));
+				EnemyReference r = new EnemyReference();
+				r.setValue(enemyNode.getAttribute(VALUE));
+				r.setXpcoeff(getFloat(enemyNode.getAttribute(XPCOEFF)));
+				section.getEnemiesIds().add(r);
 			}
 		}
 	}
-	
-	
 
 	private void createBonuses(StorySection section, Node node) {
 		NodeList optionsList = node.getChildNodes();
@@ -453,15 +476,12 @@ public class StoryXmlParser {
 			if (n instanceof Element) {
 				Element optionNode = (Element) n;
 				Bonus bonus = new Bonus();
-				bonus.setType(StatType.valueOf(optionNode.getAttribute(TYPE)
-						.toUpperCase()));
+				bonus.setType(StatType.valueOf(optionNode.getAttribute(TYPE).toUpperCase()));
 				bonus.setValue(getInteger(optionNode.getAttribute(VALUE)));
-				bonus.setOverflowed(getBoolean(optionNode
-						.getAttribute(OVERFLOWED)));
+				bonus.setOverflowed(getBoolean(optionNode.getAttribute(OVERFLOWED)));
 				Boolean coeff = getBoolean(optionNode.getAttribute(DEBUFF));
 				bonus.setCoeff(coeff ? -1 : 1);
-				bonus.setState(BonusState.getStateByString(optionNode
-						.getAttribute(STATE)));
+				bonus.setState(BonusState.getStateByString(optionNode.getAttribute(STATE)));
 				bonus.setPermanent(getBoolean(optionNode.getAttribute(PERMANENT), true));
 				bonus.setBase(getBoolean(optionNode.getAttribute(BASE)));
 				section.getBonuses().add(bonus);
@@ -477,55 +497,55 @@ public class StoryXmlParser {
 				Element optionNode = (Element) n;
 				StorySectionOption option = new StorySectionOption();
 				option.setSection(getInteger(optionNode.getAttribute(SECTION)));
-				option.setDisableWhenSelected(getBoolean(optionNode
-						.getAttribute(DISABLE_WHEN_SELECTED)));
+				option.setDisableWhenSelected(getBoolean(optionNode.getAttribute(DISABLE_WHEN_SELECTED)));
 				option.setText(optionNode.getAttribute(TEXT));
 				option.setSkill(getInteger(optionNode.getAttribute(SKILL)));
-				option.setLuckAspect(getBoolean(optionNode
-						.getAttribute(LUCK_ASPECT)));
+				option.setLuckAspect(getBoolean(optionNode.getAttribute(LUCK_ASPECT)));
 				option.setStory(section.getStory());
 				section.getOptions().add(option);
 			}
 		}
 	}
-	
-	// Returns the entire XML document
-		public Document getDocument(InputStream inputStream) {
-			Document document = null;
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			try {
-				DocumentBuilder db = factory.newDocumentBuilder();
-				InputSource inputSource = new InputSource(inputStream);
-				document = db.parse(inputSource);
-			} catch (ParserConfigurationException e) {
-				Log.e("Error: ", e.getMessage());
-				return null;
-			} catch (SAXException e) {
-				Log.e("Error: ", e.getMessage());
-				return null;
-			} catch (IOException e) {
-				Log.e("Error: ", e.getMessage());
-				return null;
-			}
-			return document;
-		}
 
-	
+	// Returns the entire XML document
+	public Document getDocument(InputStream inputStream) {
+		Document document = null;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder db = factory.newDocumentBuilder();
+			InputSource inputSource = new InputSource(inputStream);
+			document = db.parse(inputSource);
+		} catch (ParserConfigurationException e) {
+			Log.e("Error: ", e.getMessage());
+			return null;
+		} catch (SAXException e) {
+			Log.e("Error: ", e.getMessage());
+			return null;
+		} catch (IOException e) {
+			Log.e("Error: ", e.getMessage());
+			return null;
+		}
+		return document;
+	}
+
 	private boolean getBoolean(String s) {
 		return getBoolean(s, false);
 	}
+
 	private boolean getBoolean(String s, boolean defaultValue) {
 		return s != null && !"".equals(s) ? Boolean.valueOf(s) : defaultValue;
 	}
+
 	private int getInteger(String s) {
 		return s != null && !"".equals(s) ? Integer.valueOf(s.trim()) : 0;
 	}
+
 	private float getFloat(String s) {
 		return getFloat(s, 0f);
 	}
+
 	private float getFloat(String s, float defaultvalue) {
 		return s != null && !"".equals(s) ? Float.valueOf(s.trim()) : defaultvalue;
 	}
-	
 
 }

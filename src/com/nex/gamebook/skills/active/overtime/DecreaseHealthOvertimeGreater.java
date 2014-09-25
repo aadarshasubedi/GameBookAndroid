@@ -67,12 +67,6 @@ public class DecreaseHealthOvertimeGreater extends DecreaseHealthOvertime {
 	}
 	
 	
-	@SuppressLint("ResourceAsColor")
-	@Override
-	public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
-		ResultCombatText text = super.getLogAttackOvertime(context, resultCombat);
-		text.setColor(R.color.reset);
-		return text;
-	}
+	
 	
 }

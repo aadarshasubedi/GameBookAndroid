@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.nex.gamebook.game.Bonus.BonusState;
 import com.nex.gamebook.util.GameBookUtils;
+import com.nex.gamebook.xsd.EnemyReference;
 
 public class StorySection implements Serializable, Mergable {
 
@@ -45,7 +46,7 @@ public class StorySection implements Serializable, Mergable {
 	private List<StorySectionOption> options = new ArrayList<>();
 	private List<Enemy> enemies = new ArrayList<>();
 	private List<Bonus> bonuses = new ArrayList<>();
-	private transient List<EnemyAssign> enemiesIds = new ArrayList<EnemyAssign>();
+	private transient List<EnemyReference> enemiesIds = new ArrayList<EnemyReference>();
 
 	public StorySection() {
 		super();
@@ -160,6 +161,7 @@ public class StorySection implements Serializable, Mergable {
 
 	public void reset() {
 		this.completed = false;
+		assignEnemies();
 	}
 
 	public void setHasLuck(boolean hasLuck) {
@@ -246,19 +248,20 @@ public class StorySection implements Serializable, Mergable {
 		return story;
 	}
 
-	public List<EnemyAssign> getEnemiesIds() {
+	public List<EnemyReference> getEnemiesIds() {
 		return enemiesIds;
 	}
 
 	public void assignEnemies() {
-		for (EnemyAssign enemyKey : enemiesIds) {
-			Enemy enemy = story.findEnemy(enemyKey.getEnemyKey());
+		if(!enemiesIds.isEmpty() && this.enemies.isEmpty())
+		for (EnemyReference enemyKey : enemiesIds) {
+			Enemy enemy = story.findEnemy(enemyKey.getValue());
 			if (enemy == null) {
-				Log.e("GamebookEnemeNotFound", enemyKey.getEnemyKey());
+				Log.e("GamebookEnemeNotFound", enemyKey.getValue());
 				continue;
 			}
 			enemy = new Enemy(enemy);
-			if (enemyKey.getXpcoeff() > 0d) {
+			if (enemyKey.getXpcoeff()!=null && enemyKey.getXpcoeff() > 0d) {
 				enemy.setXpcoeff(enemyKey.getXpcoeff());
 			}
 			int level = getLevel();

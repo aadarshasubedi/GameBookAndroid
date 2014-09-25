@@ -138,6 +138,14 @@
     android:text="@string/dsc_default" />
 </LinearLayout>
 
-
+<TextView
+    android:id="@+id/use_button"
+    style="@style/button"
+    android:visibility="gone"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/use_skill"
+    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>

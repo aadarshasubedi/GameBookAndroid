@@ -46,6 +46,8 @@ public abstract class ActiveOvertimeSkill extends ActiveSkill {
 		return p;
 	}
 	
+	
+	
 	public ResultCombatText getLogAttackOvertime(Context context, ResultCombat resultCombat) {
 		int text = R.string.you_applied;
 		if(resultCombat.getType().equals(CharacterType.ENEMY)) {

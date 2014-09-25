@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,10 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.SkillRequiredLevel;
-import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.story.parser.StoryXmlParser;
@@ -71,7 +68,7 @@ public class CharacterSkillsActivity extends Activity {
 			rowView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					SkillInfoDialog infoDialog = new SkillInfoDialog(CharacterSkillsActivity.this, _character, skill);
+					SkillInfoDialog infoDialog = new SkillInfoDialog(CharacterSkillsActivity.this, _character, skill, null);
 					infoDialog.show();
 				}
 			});
