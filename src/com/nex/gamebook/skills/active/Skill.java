@@ -2,11 +2,9 @@ package com.nex.gamebook.skills.active;
 
 import android.content.Context;
 
-import com.nex.gamebook.R;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.Story;
 import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.CombatTextDispatcher;
 

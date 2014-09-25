@@ -1,5 +1,13 @@
 package com.nex.gamebook.util;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.util.Log;
+
+import com.nex.gamebook.R;
+
 public class Statistics {
 
 	private long maxAttackDamageGiven = 0;
@@ -17,7 +25,6 @@ public class Statistics {
 	private long totalDamageReduce = 0;
 	private long totalAttackDamageReduce = 0;
 	private long totalSkillDamageReduce = 0;
-
 	private int criticalHits = 0;
 	private int usedSkills = 0;
 	private int sections = 0;
@@ -216,6 +223,44 @@ public class Statistics {
 
 	public long getTotalSkillDamageReduce() {
 		return totalSkillDamageReduce;
+	}
+
+	public List<StatisticItem> asList() {
+		List<StatisticItem> stats = new ArrayList<>();
+		for(Field f: getClass().getDeclaredFields()) {
+			try {
+				StatisticItem i = new StatisticItem();
+				i.id = R.string.class.getDeclaredField(f.getName()).getInt(null);
+				i.value = f.get(this);
+				stats.add(i);
+			} catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
+				Log.w("Statistics", f.getName() + " no exist in " + R.string.class.getName());
+			}
+			
+		}
+		return stats;
+	}
+
+	public static class StatisticItem {
+		private int id;
+		private Object value;
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public Object getValue() {
+			return value;
+		}
+
+		public void setValue(Object value) {
+			this.value = value;
+		}
+
 	}
 
 }

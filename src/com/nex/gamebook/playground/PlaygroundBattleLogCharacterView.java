@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -38,6 +39,7 @@ import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.util.PassiveSkillInfoDialogAnSelection;
 import com.nex.gamebook.util.PassiveSkillInfoDialogAnSelection.DismissCallBack;
 import com.nex.gamebook.util.SkillInfoDialog;
+import com.nex.gamebook.util.Statistics.StatisticItem;
 
 public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 
@@ -54,7 +56,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	public View create(ViewGroup container) {
 		boolean battle = section != null;
 		int inflate = R.layout.fragment_playground_character;
-		if(battle) {
+		if (battle) {
 			inflate = R.layout.fragment_playground_character;
 		}
 		masterView = getPlayground().getLayoutInflater().inflate(inflate, container, false);
@@ -67,7 +69,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		if (battle) {
 			prepareBattleLog(masterView);
 		} else {
-			showStatistics();
+			showStatistics(masterView);
 		}
 
 		masterView.setTag(this);
@@ -75,10 +77,26 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		return masterView;
 	}
 
-	private void showStatistics() {
-		
+	private void showStatistics(final View view) {
+		LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final View rowView = inflater.inflate(R.layout.fragment_statistics, switcher, false);
+		ListView log = (ListView) rowView.findViewById(R.id.statistics_list);
+		final List<StatisticItem> items = _character.getStatistics().asList();
+		log.setAdapter(new ArrayAdapter<StatisticItem>(view.getContext(), R.layout.statistics_item, items) {
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View rowView = inflater.inflate(R.layout.statistics_item, parent, false);
+				StatisticItem item = items.get(position);
+				TextView text = (TextView) rowView.findViewById(R.id.stat_title);
+				text.setText(item.getId());
+				text = (TextView) rowView.findViewById(R.id.stat_summary);
+				text.setText(String.valueOf(item.getValue()));
+				return rowView;
+			}
+		});
 	}
-	
+
 	public ViewFlipper getSwitcher() {
 		return switcher;
 	}
@@ -122,8 +140,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	private void showEnemyPosition(ViewFlipper switcher, TextView enemyName, int total) {
 		Enemy enemy = (Enemy) switcher.getCurrentView().getTag();
 		int index = enemy.getIndex();
-		String name =  enemy.getName() + " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().getString(R.string.level) + " " + enemy.getLevel();
-		//enemyName.setText(name + " ("+index + "/" + total+")");
+		String name = enemy.getName() + " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().getString(R.string.level) + " " + enemy.getLevel();
+		// enemyName.setText(name + " ("+index + "/" + total+")");
 		enemyName.setText(index + "/" + total);
 	}
 
@@ -176,22 +194,22 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		debuffsLongest.setText(String.valueOf(_character.getLongestDebuff()));
 
 	}
-	
+
 	public void showPassiveSkills() {
 		SkillsSpinner skills = (SkillsSpinner) masterView.findViewById(R.id.passive_skills);
 		int skillPoints = _character.getSkillPoints();
 		List<String> availableSkills = new ArrayList<>();
-		if(skillPoints > 0) {
+		if (skillPoints > 0) {
 			availableSkills = SkillMap.getUnlearnedSkills(_character.getLearnedPassiveSkills());
 		} else {
 			availableSkills = new ArrayList<>(_character.getLearnedPassiveSkills());
 		}
-//		if(availableSkills.isEmpty()) {
-//			availableSkills.add("none");
-//		}
+		// if(availableSkills.isEmpty()) {
+		// availableSkills.add("none");
+		// }
 		skills.setAdapter(new PassiveSkillsAdapter(getContext(), availableSkills, skills));
 	}
-	
+
 	public void showAvailableSkills() {
 		SkillsSpinner skills = (SkillsSpinner) masterView.findViewById(R.id.skills);
 		List<Skill> availableSkills = new ArrayList<>();
@@ -221,12 +239,14 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		private List<String> skills;
 		SkillsSpinner owner;
 		Context context;
+
 		public PassiveSkillsAdapter(Context context, List<String> keys, SkillsSpinner owner) {
 			super(context, R.layout.list_item, keys);
 			this.skills = keys;
 			this.context = context;
 			this.owner = owner;
 		}
+
 		@Override
 		public View getDropDownView(int position, View convertView, ViewGroup parent) {
 			final String skill = skills.get(position);
@@ -237,10 +257,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			rowView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					//owner.onDetachedFromWindow();
+					// owner.onDetachedFromWindow();
 					PassiveSkillInfoDialogAnSelection dialog = new PassiveSkillInfoDialogAnSelection(context, _character, skill);
 					dialog.show(new DismissCallBack() {
-						
+
 						@Override
 						public void dismiss() {
 							owner.onDetachedFromWindow();
@@ -260,9 +280,9 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			name.setText(context.getString(R.string.select_passive_skill, _character.getSkillPoints()));
 			decoreClickableTextView(getContext(), name, String.valueOf(name.getText()));
 			return rowView;
-		}			
+		}
 	}
-	
+
 	class SkillsAdapter extends ArrayAdapter<Skill> {
 		SkillsSpinner owner;
 		List<Skill> keys;
@@ -304,7 +324,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 						name.setTextColor(getContext().getResources().getColor(R.color.button_color));
 					else
 						name.setTextColor(getContext().getResources().getColor(R.color.condition));
-				} else if(!applicator.isCanCastSkill()) {
+				} else if (!applicator.isCanCastSkill()) {
 					name.setTextColor(getContext().getResources().getColor(R.color.condition));
 				} else {
 					name.setTextColor(getContext().getResources().getColor(R.color.negative));
@@ -491,6 +511,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		private boolean buttonPressed = false;
 		CombatProcess combat;
 		private Enemy enemy;
+
 		public FightingLog(BattleLogAdapter ad, Enemy enemy, LinearLayout log) {
 			super();
 			this.adapter = ad;
@@ -498,17 +519,19 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			this.enemy = enemy;
 			combat = new CombatProcess(enemy, getEnemies());
 		}
+
 		@Override
 		public Context getContext() {
 			return PlaygroundBattleLogCharacterView.this.getContext();
 		}
+
 		@Override
 		public List<Enemy> getEnemies() {
 			List<Enemy> others = new ArrayList<Enemy>(section.getEnemies());
 			others.remove(enemy);
 			return others;
 		}
-		
+
 		@Override
 		public Player getCharacter() {
 			return _character;
@@ -543,7 +566,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			Context context = adapter.context;
 			ResultCombatText text = resultCombat.getSpecialAttack().getCombatTextDispatcher().getLogAttack(context, resultCombat);
 			String t = text.getText();
-			if(resultCombat.isCritical()) {
+			if (resultCombat.isCritical()) {
 				t += " " + adapter.context.getString(R.string.critical_strike);
 			}
 			addResultToLog(log, t, context, text.getColor());
@@ -554,15 +577,15 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			String text = "";
 			Context context = adapter.context;
 			if (resultCombat.isCannotCast()) {
-				if(resultCombat.getType().equals(CharacterType.ENEMY)) {
-					text = context.getString(R.string.enemy_cannot_cast);	
+				if (resultCombat.getType().equals(CharacterType.ENEMY)) {
+					text = context.getString(R.string.enemy_cannot_cast);
 				} else {
 					text = context.getString(R.string.you_cannot_cast);
 					color = R.color.negative;
 				}
 			} else if (resultCombat.isCannotAttack()) {
-				if(resultCombat.getType().equals(CharacterType.ENEMY)) {
-					text = context.getString(R.string.enemy_cannot_attack);	
+				if (resultCombat.getType().equals(CharacterType.ENEMY)) {
+					text = context.getString(R.string.enemy_cannot_attack);
 				} else {
 					text = context.getString(R.string.you_cannot_attack);
 					color = R.color.negative;
@@ -597,12 +620,12 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		public void logExperience(long xp) {
 			addResultToLog(log, getContext().getString(R.string.gain_experience, xp), getContext(), R.color.condition);
 		}
-		
+
 		@Override
 		public void logPassiveSkillsTriggered(String text) {
 			addResultToLog(log, text, getContext(), R.color.passive_skill_triggered);
 		}
-		
+
 		@Override
 		public void fightEnd(long xp) {
 			_character.addExperience(this, xp);

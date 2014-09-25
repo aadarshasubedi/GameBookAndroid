@@ -4,12 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_background"
-    
     tools:context="com.nex.gamebook.MainScreenActivity">
-<!-- 	<fragment android:name="com.google.android.gms.example.bannerexample.MyActivity$PlaceholderFragment" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="match_parent" -->
-<!--         android:layout_above="@+id/adFragment" /> -->
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/banner_ad"
