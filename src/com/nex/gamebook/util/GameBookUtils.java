@@ -10,26 +10,23 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Environment;
 import android.util.Log;
 
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.Score;
 import com.nex.gamebook.game.SerializationMetadata;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.Story;
-import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -222,7 +219,7 @@ public class GameBookUtils {
 	}
 
 	private String createSaveGameFileName(Player character) {
-		String fileName = SAVE_GAME_PREFIX + character.getId() + "_" + character.getStory().getId() + ".sav";
+		String fileName = SAVE_GAME_PREFIX + character.getId() + "_" + character.getStory().getPath() + ".sav";
 		return fileName;
 	}
 

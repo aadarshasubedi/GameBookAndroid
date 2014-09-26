@@ -1,6 +1,7 @@
 package com.nex.gamebook;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -10,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.nex.gamebook.ads.AdFactory;
-import com.nex.gamebook.ads.AdFactory.OnAdClosed;
 import com.nex.gamebook.fragment.FragmentTab;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.Story;
@@ -24,46 +23,57 @@ public class CharacterSelectionActivity extends BannerAdActivity {
 	protected void onPreCreate(Bundle savedInstanceState) {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.loading_layout);
-		AdFactory.loadDefaultInterstitialAd(this, new OnAdClosed() {
-			@Override
-			public void closed() {
-				setContentView(R.layout.activity_character_selection);
-				try {
-					StoryXmlParser parser = new StoryXmlParser(CharacterSelectionActivity.this, null);
-					Story story = parser.loadStory(getIntent().getExtras().getString("story"), false, true);
-					setTitle(story.getName());
+		new LoadViewTask().execute();
+	}
 
-					overridePendingTransition(R.anim.trans_left_in, R.anim.trans_right_out);
+	private class LoadViewTask extends AsyncTask<Void, Integer, Void> {
+		Story story;
 
-					final ViewFlipper flipper = (ViewFlipper) findViewById(R.id.viewSwitcher1);
-					final TextView title = (TextView) findViewById(R.id.textView1);
-					ImageView left = (ImageView) findViewById(R.id.imageView1);
-					ImageView right = (ImageView) findViewById(R.id.imageView2);
-					listener = new ViewFlipListener(left, right, flipper, title) {
-						@Override
-						public void viewChanged(View currentView) {
-							showTitle(currentView, title);
-						}
+		@Override
+		protected Void doInBackground(Void... params) {
+			StoryXmlParser parser = new StoryXmlParser(CharacterSelectionActivity.this, null);
+			try {
+				story = parser.loadStory(getIntent().getExtras().getString("story"), false, true);
+			} catch (Exception e) {
+				Log.e("Gamebook", "", e);
+			}
+			return null;
+		}
 
-						@Override
-						public Context getContext() {
-							return CharacterSelectionActivity.this;
-						}
-					};
+		@Override
+		protected void onPostExecute(Void result) {
+			setContentView(R.layout.activity_character_selection);
 
-					for (Player c : story.getCharacters()) {
-						FragmentTab fragmentTab = new FragmentTab(CharacterSelectionActivity.this);
-						fragmentTab.setCharacter(c);
-						flipper.addView(fragmentTab.create(flipper));
-					}
-					listener.select(0);
-					showTitle(flipper.getCurrentView(), title);
-				} catch (Exception e) {
-					Log.e("Gamebook", "", e);
+			setTitle(story.getName());
+
+			overridePendingTransition(R.anim.trans_left_in, R.anim.trans_right_out);
+
+			final ViewFlipper flipper = (ViewFlipper) findViewById(R.id.viewSwitcher1);
+			final TextView title = (TextView) findViewById(R.id.textView1);
+			ImageView left = (ImageView) findViewById(R.id.imageView1);
+			ImageView right = (ImageView) findViewById(R.id.imageView2);
+			listener = new ViewFlipListener(left, right, flipper, title) {
+				@Override
+				public void viewChanged(View currentView) {
+					showTitle(currentView, title);
 				}
 
+				@Override
+				public Context getContext() {
+					return CharacterSelectionActivity.this;
+				}
+			};
+
+			for (Player c : story.getCharacters()) {
+				FragmentTab fragmentTab = new FragmentTab(CharacterSelectionActivity.this);
+				fragmentTab.setCharacter(c);
+				flipper.addView(fragmentTab.create(flipper));
 			}
-		});
+			listener.select(0);
+			showTitle(flipper.getCurrentView(), title);
+
+		}
+
 	}
 
 	private void showTitle(View currentView, TextView title) {

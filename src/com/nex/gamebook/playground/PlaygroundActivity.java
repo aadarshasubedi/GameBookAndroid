@@ -155,6 +155,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 	}
 
 	public void changeToBattle(StorySection section) {
+		unloadAd();
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		checkAndDisplayAd();
 		section.setFighting(true);
@@ -167,6 +168,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 	}
 
 	public void changeToStory(StorySection section) {
+		loadAd();
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		checkAndDisplayAd();
 		section.setFighting(false);
@@ -207,8 +209,8 @@ public class PlaygroundActivity extends BannerAdActivity {
 					// MainScreenActivity.class);
 					// PlaygroundActivity.this.startActivity(intent);
 					dialog.dismiss();
-					_character.save();
-					PlaygroundActivity.this.finish();
+					setContentView(R.layout.saving_layout);
+					new SaveGameTask().execute();
 				}
 			}).show();
 
@@ -219,6 +221,21 @@ public class PlaygroundActivity extends BannerAdActivity {
 
 	}
 
+	public class SaveGameTask extends AsyncTask<Void, Integer, Void> {
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			_character.save();
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			PlaygroundActivity.this.finish();
+		}
+		
+	}
+	
 	void checkAndDisplayAd() {
 		if (fragmentsDisplayed % SHOW_AD_AFTER_CHANGE_FRAGMENTS == 0) {
 			fragmentsDisplayed = 0;

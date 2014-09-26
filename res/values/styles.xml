@@ -35,13 +35,13 @@
     <style name="ButtonBarButton" />
     
     <style name="section">
-         <item name="android:layout_marginLeft">10dp</item>
-         <item name="android:layout_marginRight">10dp</item>
-         <item name="android:layout_marginBottom">10dp</item>
+         <item name="android:layout_marginLeft">5dp</item>
+         <item name="android:layout_marginRight">5dp</item>
+         <item name="android:layout_marginBottom">5dp</item>
     </style>
     
 	<style name="button">
-	    <item name="android:layout_margin">10dp</item>
+	    <item name="android:layout_margin">5dp</item>
 	    <item name="android:textColor">@color/button_color</item>
 	    <item name="android:textSize">25sp</item>
 	    <item name="android:background">@drawable/button</item>
@@ -67,6 +67,11 @@
 	
     <style name="title">
         <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/title_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="enemy_name">
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/title_color</item>
         <item name="android:textStyle">bold</item>
     </style>

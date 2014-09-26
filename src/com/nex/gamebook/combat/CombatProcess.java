@@ -58,7 +58,9 @@ public class CombatProcess {
 			attacker.getStatistics().addAttackGivenDamage(totalDamage);
 			attacked.getStatistics().addAttackTakenDamage(totalDamage);
 			attacker.getStatistics().addAttackReducedDamage(attack - totalDamage);
+			attacked.getStatistics().addObtainedAttackReducedDamage(attack - totalDamage);
 			if (resultCombat.isCritical()) {
+				attacked.getStatistics().addObtainedCriticalHit();
 				attacker.getStatistics().addCriticalHit();
 				double criticalMultiplier = attacker.hasLuck() ? 1 : 0.5;
 				resultCombat.setMultiply(criticalMultiplier);

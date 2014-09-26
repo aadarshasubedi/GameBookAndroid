@@ -1,11 +1,14 @@
 package com.nex.gamebook;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,24 +39,43 @@ public class StorySelectionActivity extends BannerAdActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.loading_layout);
-		AdFactory.loadDefaultInterstitialAd(this, new OnAdClosed() {
-			@Override
-			public void closed() {
-				setContentView(R.layout.activity_story_selection);
-				StoryXmlParser parser = new StoryXmlParser(StorySelectionActivity.this);
-				LinearLayout layout = (LinearLayout) findViewById(R.id.stories);
-				StoryListAdapter ad = new StoryListAdapter(StorySelectionActivity.this);
-				try {
-					for (Story story : parser.loadStories()) {
-						layout.addView(ad.getView(story, layout));
-					}
-				} catch (IOException e) {
-					Log.e("GameBookStorySelection", "", e);
-				}
-			}
-		});
+		new LoadViewTask().execute();
+
+		// AdFactory.loadDefaultInterstitialAd(this, new OnAdClosed() {
+		// @Override
+		// public void closed() {
+		//
+		// }
+		// });
 
 		// AdFactory.loadInterstitialAd(this, R.string.ad_interistial_story);
+	}
+
+	private class LoadViewTask extends AsyncTask<Void, Integer, Void> {
+		private List<Story> stories = new ArrayList<>();
+		@Override
+		protected Void doInBackground(Void... params) {
+			StoryXmlParser parser = new StoryXmlParser(StorySelectionActivity.this);
+			try {
+				for (Story story : parser.loadStories()) {
+					stories.add(story);
+				}
+			} catch (IOException e) {
+				Log.e("GameBookStorySelection", "", e);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			setContentView(R.layout.activity_story_selection);
+			LinearLayout layout = (LinearLayout) findViewById(R.id.stories);
+			StoryListAdapter ad = new StoryListAdapter(StorySelectionActivity.this);
+			for (Story story : stories) {
+				layout.addView(ad.getView(story, layout));
+			}
+		}
+
 	}
 
 	class StoryListAdapter {

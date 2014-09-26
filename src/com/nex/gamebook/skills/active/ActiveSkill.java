@@ -84,6 +84,7 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 			int reduction = (int) Math.floor((((double) bonusValue / 100d) * defense));
 			int reducedDamage = (int) (bonusValue - reduction);
 			attacked.getStatistics().addSkillReducedDamage(reduction);
+			attacker.getStatistics().addObtainedSkillReducedDamage(reduction);
 			bonus.setValue(reducedDamage);
 		} 
 		bonus.setTurns(getOvertimeTurns());

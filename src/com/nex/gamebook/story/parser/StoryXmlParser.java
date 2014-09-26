@@ -208,6 +208,11 @@ public class StoryXmlParser {
 					NodeList version = el.getElementsByTagName(VERSION);
 					if (version.getLength() > 0)
 						story.setVersion(getInteger(version.item(0).getTextContent()));
+//					NodeList id = el.getElementsByTagName(ID);
+//					if (id.getLength() > 0 && story.getId()==0)
+//						story.setVersion(getInteger(version.item(0).getTextContent()));
+//					else
+//						throw new IllegalStateException("root.xml must contain <id></id> of story " + xml);
 					initializeStory(story, document, sections, characters);
 				}
 			}

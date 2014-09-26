@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.nex.gamebook.ads.AdFactory;
+import com.nex.gamebook.ads.AdFactory.OnAdClosed;
 import com.nex.gamebook.util.GameBookUtils;
 
 /**
@@ -30,8 +32,13 @@ public class MainScreenActivity extends BannerAdActivity {
 		setContentView(R.layout.activity_main_screen);
 		GameBookUtils.initialize(this);
 		String category = GameBookUtils.FOLDER;
+//		AdFactory.displayAds = false;
 //		GameBookUtils.getInstance().getPreferences().edit().clear().commit();
-		copyAssetFolder(getAssets(), category, GameBookUtils.getGamebookStorage(this) + File.separator + category + File.separator);
+		String storiesFolder = GameBookUtils.getGamebookStorage(this) + File.separator + category + File.separator;
+		File f = new File(storiesFolder);
+		if(f.exists())
+			f.delete();
+		copyAssetFolder(getAssets(), category, storiesFolder);
 
 	}
 
@@ -77,6 +84,16 @@ public class MainScreenActivity extends BannerAdActivity {
 		}
 	}
 
+	@Override
+	public void finish() {
+		AdFactory.loadDefaultInterstitialAd(this, new OnAdClosed() {
+			@Override
+			public void closed() {
+				MainScreenActivity.super.finish();
+			}
+		});
+	}
+	
 	private static boolean copyAsset(AssetManager assetManager,
 			String fromAssetPath, String toPath) {
 		InputStream in = null;

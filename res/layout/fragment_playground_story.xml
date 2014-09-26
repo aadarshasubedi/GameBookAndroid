@@ -21,13 +21,13 @@
         style="@style/section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/endGame_button"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/_background_corners"
-        android:padding="10dp" >
+        android:padding="5dp" >
 
         <LinearLayout
             android:id="@+id/section_story"

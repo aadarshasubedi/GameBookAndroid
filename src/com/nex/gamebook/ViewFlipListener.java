@@ -51,7 +51,7 @@ public abstract class ViewFlipListener implements OnClickListener,
 		Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.btn_style_next);
 		leftButton.startAnimation(animation);
 		animation = AnimationUtils.loadAnimation(getContext(), R.anim.btn_style_previous);
-		title.startAnimation(animation);
+//		title.startAnimation(animation);
 		// Previous View
 		flipper.setInAnimation(getContext(), R.anim.in_animation);
 		flipper.setOutAnimation(getContext(), R.anim.out_animation);
@@ -64,7 +64,7 @@ public abstract class ViewFlipListener implements OnClickListener,
 		Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.btn_style_previous);
 		rightButton.startAnimation(animation);
 		animation = AnimationUtils.loadAnimation(getContext(), R.anim.btn_style_next);
-		title.startAnimation(animation);
+//		title.startAnimation(animation);
 		// Next View
 		flipper.setInAnimation(getContext(), R.anim.in_animation1);
 		flipper.setOutAnimation(getContext(), R.anim.out_animation1);

@@ -36,6 +36,8 @@ public class Statistics {
 
 	@Position(7)
 	private int criticalHits = 0;
+	@Position(7)
+	private int obtainedCriticalHits = 0;
 	@Position(8)
 	private int usedSkills = 0;
 	@Position(9)
@@ -80,8 +82,16 @@ public class Statistics {
 	private long totalDamageReduce = 0;
 
 	@Position(26)
-	private int visitedSections = 0;
+	private long totalObtainedAttackDamageReduce = 0;
 	@Position(27)
+	private long totalObtainedSkillDamageReduce = 0;
+	@Position(28)
+	private long totalObtainedDamageReduce = 0;
+
+	
+	@Position(29)
+	private int visitedSections = 0;
+	@Position(20)
 	private int sections = 0;
 
 	public Statistics() {
@@ -136,7 +146,15 @@ public class Statistics {
 		this.totalDamageReduce += dmg;
 		this.totalSkillDamageReduce += dmg;
 	}
+	public void addObtainedAttackReducedDamage(long dmg) {
+		this.totalObtainedDamageReduce += dmg;
+		this.totalObtainedAttackDamageReduce += dmg;
+	}
 
+	public void addObtainedSkillReducedDamage(long dmg) {
+		this.totalObtainedDamageReduce += dmg;
+		this.totalObtainedSkillDamageReduce += dmg;
+	}
 	public void addUsedSkill() {
 		this.usedSkills++;
 	}
@@ -144,7 +162,11 @@ public class Statistics {
 	public void addCriticalHit() {
 		criticalHits++;
 	}
-
+	
+	public void addObtainedCriticalHit() {
+		this.obtainedCriticalHits++;
+	}
+	
 	public void addSkillGivenDamage(long dmg) {
 		totalDamageGiven += dmg;
 		totalSkillDamageGiven += dmg;

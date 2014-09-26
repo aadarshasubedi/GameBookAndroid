@@ -176,7 +176,13 @@
 	<string name="totalDamageReduce">Celkem redukováno poškození</string>
 	<string name="totalAttackDamageReduce">Redukováno poškození z útoku</string>
 	<string name="totalSkillDamageReduce">Redukováno poškození ze schopností</string>
+	
+	<string name="totalObtainedDamageReduce">Celkem redukováno obdrženého poškození</string>
+	<string name="totalObtainedAttackDamageReduce">Redukováno obdrženého poškození z útoku</string>
+	<string name="totalObtainedSkillDamageReduce">Redukováno obdrženého poškození ze schopností</string>
+	
 	<string name="criticalHits">Kritických poškození</string>
+	<string name="obtainedCriticalHits">Obdržených kritických poškození</string>
 	<string name="usedSkills">Použitých dovedností</string>
 	<string name="sections">Celkem sekcí</string>
     <string name="visitedSections">Navštívených sekcí</string>
@@ -189,7 +195,8 @@
 	<string name="totalTurns">Celkem kol v bojích</string>
 	<string name="totalBattles">Celkem vybojovaných bitev</string>
 	
-	<string name="loading">Nahrávám...</string>
+	<string name="loading">Nahrávám&#8230;</string>
+	<string name="saving">Ukládám&#8230;</string>
 	<string name="loading_message"></string>
 	<string name="use_skill">Použít</string>
 </resources>

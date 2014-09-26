@@ -2,6 +2,7 @@ package com.nex.gamebook;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -14,12 +15,28 @@ public abstract class BannerAdActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		onPreCreate(savedInstanceState);
-		mAdView = (AdView) findViewById(R.id.banner_ad);
-		if(AdFactory.displayAds && mAdView!=null)
-		mAdView.loadAd(new AdRequest.Builder().build());
+		loadAd();
 	}
 
 	protected abstract void onPreCreate(Bundle savedInstanceState);
+	
+	
+	
+	protected void loadAd() {
+		mAdView = (AdView) findViewById(R.id.banner_ad);
+		if(AdFactory.displayAds && mAdView!=null) {
+			mAdView.setVisibility(View.VISIBLE);
+			mAdView.loadAd(new AdRequest.Builder().build());
+		} else {
+			mAdView.setVisibility(View.GONE);
+		}
+	}
+	
+	protected void unloadAd() {
+		mAdView = (AdView) findViewById(R.id.banner_ad);
+		if(mAdView!=null)
+			mAdView.setVisibility(View.GONE);
+	}
 	
 	@Override
 	protected void onPause() {
