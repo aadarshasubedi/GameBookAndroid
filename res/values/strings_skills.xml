@@ -6,7 +6,7 @@
 	</string>
 	<string name="reflect_damage_description">
 	    Vrátí nepříteli %1$d%2$s obdrženého poškození
-	</string>	
+	</string>
 	<string name="life_leech_description">
 	    Vyléčí sesílateli %1$d%2$s zdraví z uštědřeného poškození
 	</string>
@@ -33,19 +33,27 @@
 	<string name="kick">
 	    Vyblokuje schopnost nepřítele
 	</string>
-	
+	<string name="summon_attacker">
+	    Přivolá pomocníka s %1$d zdraví, který blokuje poškození z útoku dokud nezemře, také způsobuje %2$d%3$s základního poškození
+	</string>
+	<string name="summon_tank">
+	    Přivolá pomocníka s %1$d zdraví a %2$d%3$s obranou, který blokuje veškeré útoky proti sesílateli dokud nezemře, tento pomocník nezpůsobuje žádné poškození
+	</string>
+	<string name="summon_mage">
+	    Přivolá pomocníka s %1$d zdraví, který blokuje poškození z útoku dokud nezemře, způsobuje poškození jako schopnost za %2$d, síla je závislá na síle schopností sesílatele
+	</string>
 	<!-- overtime skills -->
 	<string name="increase_health_overtime">
-		Postupně léčí zdraví. Nikdy nevyléčí zdraví nad základ
+		Každé kolo léčí zdraví.
 	</string>
 	<string name="increase_health_overtime_greater">
-		%s a poté léčí zdraví postupně. Nikdy nevyléčí zdraví nad základ
+		%s a poté léčí zdraví každé kolo.
 	</string>
 	<string name="decrease_health_overtime">
-		Postupně snižuje zdraví.
+		Každé kolo snižuje zdraví nepřítele.
 	</string>
 	<string name="decrease_health_overtime_greater">
-	    %s a poté snižuje zdraví postupně
+	    %s a poté snižuje každé kolo zdraví nepřítele.
 	</string>
 	
 	<!-- conditional skills -->
@@ -55,6 +63,13 @@
 	<string name="increase_attribute">
 	    Zvýší %s sesílateli
 	</string>
+	<string name="heal_attribute">
+	    Vyléčí zdraví sesílateli
+	</string>
+	<string name="damage_attribute">
+	    Způsobí zranění nepříteli
+	</string>
+
 	<!-- PASSIVE SKILLS -->
 	<string name="passive_health_increase">
 	    Zvýší zdraví o %1$d%2$s.
@@ -67,7 +82,19 @@
 	</string>
 	<string name="passive_aoe">
 	    Při každém úspěšném úderu zraní všechny okolní nepřátele za %1$d%2$s poškození.
-	</string>		
+	</string>
+	<string name="armored_summon">
+	    Obrníš své pomocníky. Nyní dokáží redukovat %1$d%2$s poškození.
+	</string>
+	<string name="tough_summon">
+	   Tvý pomocnící mají nyní o %1$d%2$s více zdraví.
+	</string>
+	<string name="enraged_summon">
+	    Učíš své pomocníky kritickým útokům. Nyní mají %1$d%2$s šanci na %3$sx kritický úder.
+	</string>	
+	<string name="strong_summon">
+	    Tvý pomocníci způsobují o %1$d%2$s větší poškození.
+	</string>	
 	<string name="passive_leech">
 	    Při každém úspěšném úderu vyléčí %1$d%2$s zdraví.
 	</string>

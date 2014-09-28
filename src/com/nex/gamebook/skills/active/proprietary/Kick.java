@@ -12,7 +12,7 @@ import com.nex.gamebook.skills.ResultCombatText;
 import com.nex.gamebook.skills.active.ActiveSkill;
 
 public class Kick extends ActiveSkill {
-
+	public static String ID = "kick";
 	public Kick() {
 		super(NO_VALUE);
 	}
@@ -41,7 +41,7 @@ public class Kick extends ActiveSkill {
 	}
 	
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm, boolean checksummon) {
 		attacked.setCanCastSkill(false);
 		ResultCombat c = createBasicResult(0, attacker.getType(), resolveEnemy(attacker, attacked));
 		callback.logAttack(c);

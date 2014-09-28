@@ -34,7 +34,6 @@ import com.nex.gamebook.util.LoadingCallback;
 import com.thoughtworks.xstream.XStream;
 
 public class PlaygroundActivity extends BannerAdActivity {
-	private ProgressDialog progressDialog;
 	private Player _character;
 	private ViewFlipper flipper;
 	private ImageView left;
@@ -46,7 +45,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 	private static List<View> battleLog = new ArrayList<>();
 	private int SHOW_AD_AFTER_CHANGE_FRAGMENTS = 20;
 	private int fragmentsDisplayed = SHOW_AD_AFTER_CHANGE_FRAGMENTS;
-
+	private long startTime;
 	@Override
 	protected void onPreCreate(Bundle savedInstanceState) {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -79,13 +78,17 @@ public class PlaygroundActivity extends BannerAdActivity {
 				battleLog.clear();
 				flipper = (ViewFlipper) findViewById(R.id.viewSwitcher1);
 				left = (ImageView) findViewById(R.id.imageView1);
+				left.setAlpha(0.5f);
 				right = (ImageView) findViewById(R.id.imageView2);
+				right.setAlpha(0.5f);
 				title = (TextView) findViewById(R.id.textView1);
 				characterFragment = new PlaygroundBattleLogCharacterView(PlaygroundActivity.this);
 				characterFragment.setCharacter(_character);
 				flipper.addView(characterFragment.create(flipper));
 				storyFragment = new PlaygroundStoryView(PlaygroundActivity.this);
 				storyFragment.setCharacter(_character);
+				PlaygroundActivity.this.startTime = System.currentTimeMillis();
+				loadAd();
 				changeToStory(_character.getCurrentSection());
 			} catch (Exception e) {
 				Log.e("GameBook", "", e);
@@ -155,7 +158,8 @@ public class PlaygroundActivity extends BannerAdActivity {
 	}
 
 	public void changeToBattle(StorySection section) {
-		unloadAd();
+//		unloadAd();
+		hideAd();
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		checkAndDisplayAd();
 		section.setFighting(true);
@@ -168,7 +172,8 @@ public class PlaygroundActivity extends BannerAdActivity {
 	}
 
 	public void changeToStory(StorySection section) {
-		loadAd();
+		storeTime();
+		showAd();
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		checkAndDisplayAd();
 		section.setFighting(false);
@@ -193,6 +198,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(PlaygroundActivity.this._character==null) return false;
 		final boolean fighting = PlaygroundActivity.this._character.getCurrentSection().isFighting();
 		// Handle the back button
 		int text = R.string.close_book_description;
@@ -210,6 +216,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 					// PlaygroundActivity.this.startActivity(intent);
 					dialog.dismiss();
 					setContentView(R.layout.saving_layout);
+					storeTime();
 					new SaveGameTask().execute();
 				}
 			}).show();
@@ -220,7 +227,14 @@ public class PlaygroundActivity extends BannerAdActivity {
 		}
 
 	}
-
+	/**
+	 * Run this method before saving game or score for real time spent saving.
+	 */
+	public void storeTime() {
+		_character.getStatistics().addTimeSpent(System.currentTimeMillis() - startTime);
+		startTime = System.currentTimeMillis();
+	}
+	
 	public class SaveGameTask extends AsyncTask<Void, Integer, Void> {
 
 		@Override

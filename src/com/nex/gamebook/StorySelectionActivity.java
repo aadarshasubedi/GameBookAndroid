@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,10 +26,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.internal.ia;
 import com.nex.gamebook.ads.AdFactory;
 import com.nex.gamebook.ads.AdFactory.OnAdClosed;
 import com.nex.gamebook.game.Story;
 import com.nex.gamebook.story.parser.StoryXmlParser;
+import com.nex.gamebook.util.ImageHelper;
 
 public class StorySelectionActivity extends BannerAdActivity {
 	// private InterstitialAd mInterstitial;
@@ -90,13 +94,15 @@ public class StorySelectionActivity extends BannerAdActivity {
 		public View getView(Story story, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.list_story_layout, parent, false);
-			LinearLayout imagerounding = (LinearLayout) rowView.findViewById(R.id.imagerounding);
+//			LinearLayout imagerounding = (LinearLayout) rowView.findViewById(R.id.imagerounding);
 			LinearLayout storyInfo = (LinearLayout) rowView.findViewById(R.id.story_info);
 
 			// imagerounding.bringToFront();
 			ImageView image = (ImageView) rowView.findViewById(R.id.story_image);
+			BitmapDrawable backgr = (BitmapDrawable) context.getResources().getDrawable(R.drawable.valley_of_death);
 			if (story.getBackground() > 0)
-				image.setBackground(context.getResources().getDrawable(story.getBackground()));
+				backgr = (BitmapDrawable) context.getResources().getDrawable(story.getBackground());
+			image.setBackground(new BitmapDrawable(context.getResources(), ImageHelper.getRoundedCornerBitmap(backgr.getBitmap(), 20)));
 			Button button = (Button) storyInfo.findViewById(R.id.play_button);
 			button.setTag(story);
 			button.setOnClickListener(buttonClicked);

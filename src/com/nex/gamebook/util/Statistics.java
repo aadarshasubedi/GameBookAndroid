@@ -6,106 +6,117 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import android.util.Log;
+import android.util.TimeUtils;
 
 import com.nex.gamebook.R;
 
 public class Statistics {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ ElementType.FIELD })
-	public @interface Position {
+	public @interface Data {
 		int value();
+
+		boolean ignore() default false;
+
+		boolean format() default false;
 	}
 
-	@Position(1)
+	@Data(1)
 	private int killedMobs = 0;
-	@Position(2)
+	@Data(2)
 	private int killedMinions = 0;
-	@Position(3)
+	@Data(3)
 	private int killedBosses = 0;
-	@Position(4)
+	@Data(4)
 	private int totalKilledEnemies = 0;
-	@Position(5)
+	@Data(5)
 	private int totalTurns = 0;
-	@Position(6)
+	@Data(6)
 	private int totalBattles = 0;
 
-	@Position(7)
+	@Data(7)
 	private int criticalHits = 0;
-	@Position(7)
+	@Data(7)
 	private int obtainedCriticalHits = 0;
-	@Position(8)
+	@Data(8)
 	private int usedSkills = 0;
-	@Position(9)
+	@Data(9)
 	private long maxAttackDamageGiven = 0;
-	@Position(10)
+	@Data(10)
 	private long maxSkillDamageGiven = 0;
 
-	@Position(11)
+	@Data(11)
 	private long maxSkillDamageTaken = 0;
-	@Position(12)
+	@Data(12)
 	private long maxAttackDamageTaken = 0;
 
-	@Position(13)
+	@Data(13)
 	private long totalAttackDamageTaken = 0;
-	@Position(14)
+	@Data(14)
 	private long totalSkillDamageTaken = 0;
-	@Position(15)
+	@Data(15)
 	private long totalDamageTaken = 0;
 
-	@Position(16)
+	@Data(16)
 	private long totalAttackDamageGiven = 0;
-	@Position(17)
+	@Data(17)
 	private long totalSkillDamageGiven = 0;
-	@Position(18)
+	@Data(18)
 	private long totalDamageGiven = 0;
 
-	@Position(19)
+	@Data(19)
 	private long maxHealthHealed = 0;
-	@Position(20)
+	@Data(20)
 	private long totalHealthHealed = 0;
 
-	@Position(21)
+	@Data(21)
 	private int totalDodgedAttacks = 0;
-	@Position(22)
+	@Data(22)
 	private int totalMissedAttacks = 0;
 
-	@Position(23)
+	@Data(23)
 	private long totalAttackDamageReduce = 0;
-	@Position(24)
+	@Data(24)
 	private long totalSkillDamageReduce = 0;
-	@Position(25)
+	@Data(25)
 	private long totalDamageReduce = 0;
 
-	@Position(26)
+	@Data(26)
 	private long totalObtainedAttackDamageReduce = 0;
-	@Position(27)
+	@Data(27)
 	private long totalObtainedSkillDamageReduce = 0;
-	@Position(28)
+	@Data(28)
 	private long totalObtainedDamageReduce = 0;
 
-	
-	@Position(29)
+	@Data(29)
 	private int visitedSections = 0;
-	@Position(20)
+	@Data(30)
 	private int sections = 0;
+
+	@Data(value = 31, format = true)
+	private long timespent = 0;
 
 	public Statistics() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public Statistics(Statistics s) throws IllegalAccessException, IllegalArgumentException {
-		for(Field f: s.getClass().getDeclaredFields()) {
+		for (Field f : s.getClass().getDeclaredFields()) {
 			f.setAccessible(true);
 			f.set(this, f.get(s));
 			f.setAccessible(false);
 		}
 	}
-	
+
 	public void addHealedHealth(long val) {
 		totalHealthHealed += val;
 		if (maxHealthHealed < val) {
@@ -146,6 +157,7 @@ public class Statistics {
 		this.totalDamageReduce += dmg;
 		this.totalSkillDamageReduce += dmg;
 	}
+
 	public void addObtainedAttackReducedDamage(long dmg) {
 		this.totalObtainedDamageReduce += dmg;
 		this.totalObtainedAttackDamageReduce += dmg;
@@ -155,6 +167,7 @@ public class Statistics {
 		this.totalObtainedDamageReduce += dmg;
 		this.totalObtainedSkillDamageReduce += dmg;
 	}
+
 	public void addUsedSkill() {
 		this.usedSkills++;
 	}
@@ -162,11 +175,11 @@ public class Statistics {
 	public void addCriticalHit() {
 		criticalHits++;
 	}
-	
+
 	public void addObtainedCriticalHit() {
 		this.obtainedCriticalHits++;
 	}
-	
+
 	public void addSkillGivenDamage(long dmg) {
 		totalDamageGiven += dmg;
 		totalSkillDamageGiven += dmg;
@@ -219,10 +232,13 @@ public class Statistics {
 		List<StatisticItem> stats = new ArrayList<>();
 		for (Field f : getClass().getDeclaredFields()) {
 			try {
+				Data d = getData(f);
+				if (d == null || d.ignore())
+					continue;
 				StatisticItem i = new StatisticItem();
 				i.id = R.string.class.getDeclaredField(f.getName()).getInt(null);
-				i.value = f.get(this);
-				i.position = getPosition(f);
+				i.value = convert(f.get(this), d.format());
+				i.position = d.value();
 				stats.add(i);
 			} catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
 				Log.w("Statistics", f.getName() + " no exist in " + R.string.class.getName());
@@ -233,13 +249,34 @@ public class Statistics {
 		return stats;
 	}
 
-	private int getPosition(Field f) {
+	public Object convert(Object value, boolean format) {
+		if(!format) return value;
+		Long millis = Long.valueOf(value.toString());
+		long hours = TimeUnit.MILLISECONDS.toHours(millis);
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
+		long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) -  TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis));
+		String formatedTime = String.format("%dh %dm %ds", hours, minutes, seconds);
+		return formatedTime;
+	}
+
+	public static void main(String[] args) {
+
+		long res = 1000 * 60 * 60 * 24 * 3;
+		res += 1000 * 60 * 60 * 6;
+		res += 1000 * 60 * 5;
+		res += 10000;
+
+		System.out.println(new Statistics().convert(res, true));
+
+	}
+
+	private Data getData(Field f) {
 		for (Annotation ann : f.getDeclaredAnnotations()) {
-			if (ann instanceof Position) {
-				return ((Position) ann).value();
+			if (ann instanceof Data) {
+				return (Data) ann;
 			}
 		}
-		return 0;
+		return null;
 	}
 
 	public static class StatisticItem implements Comparable<StatisticItem> {
@@ -264,6 +301,138 @@ public class Statistics {
 
 			return -Integer.valueOf(another.position).compareTo(position);
 		}
+	}
+
+	public void addTimeSpent(long l) {
+		this.timespent += l;
+	}
+
+	public int getKilledMobs() {
+		return killedMobs;
+	}
+
+	public int getKilledMinions() {
+		return killedMinions;
+	}
+
+	public int getKilledBosses() {
+		return killedBosses;
+	}
+
+	public int getTotalKilledEnemies() {
+		return totalKilledEnemies;
+	}
+
+	public int getTotalTurns() {
+		return totalTurns;
+	}
+
+	public int getTotalBattles() {
+		return totalBattles;
+	}
+
+	public int getCriticalHits() {
+		return criticalHits;
+	}
+
+	public int getObtainedCriticalHits() {
+		return obtainedCriticalHits;
+	}
+
+	public int getUsedSkills() {
+		return usedSkills;
+	}
+
+	public long getMaxAttackDamageGiven() {
+		return maxAttackDamageGiven;
+	}
+
+	public long getMaxSkillDamageGiven() {
+		return maxSkillDamageGiven;
+	}
+
+	public long getMaxSkillDamageTaken() {
+		return maxSkillDamageTaken;
+	}
+
+	public long getMaxAttackDamageTaken() {
+		return maxAttackDamageTaken;
+	}
+
+	public long getTotalAttackDamageTaken() {
+		return totalAttackDamageTaken;
+	}
+
+	public long getTotalSkillDamageTaken() {
+		return totalSkillDamageTaken;
+	}
+
+	public long getTotalDamageTaken() {
+		return totalDamageTaken;
+	}
+
+	public long getTotalAttackDamageGiven() {
+		return totalAttackDamageGiven;
+	}
+
+	public long getTotalSkillDamageGiven() {
+		return totalSkillDamageGiven;
+	}
+
+	public long getTotalDamageGiven() {
+		return totalDamageGiven;
+	}
+
+	public long getMaxHealthHealed() {
+		return maxHealthHealed;
+	}
+
+	public long getTotalHealthHealed() {
+		return totalHealthHealed;
+	}
+
+	public int getTotalDodgedAttacks() {
+		return totalDodgedAttacks;
+	}
+
+	public int getTotalMissedAttacks() {
+		return totalMissedAttacks;
+	}
+
+	public long getTotalAttackDamageReduce() {
+		return totalAttackDamageReduce;
+	}
+
+	public long getTotalSkillDamageReduce() {
+		return totalSkillDamageReduce;
+	}
+
+	public long getTotalDamageReduce() {
+		return totalDamageReduce;
+	}
+
+	public long getTotalObtainedAttackDamageReduce() {
+		return totalObtainedAttackDamageReduce;
+	}
+
+	public long getTotalObtainedSkillDamageReduce() {
+		return totalObtainedSkillDamageReduce;
+	}
+
+	public long getTotalObtainedDamageReduce() {
+		return totalObtainedDamageReduce;
+	}
+
+	public int getVisitedSections() {
+		return visitedSections;
+	}
+
+	public int getSections() {
+		return sections;
+	}
+
+	public long getTimespent() {
+		return timespent;
 	}
 
 }

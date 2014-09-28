@@ -12,6 +12,7 @@ public class ResultCombat {
 	private String enemyName;
 	private boolean cannotAttack;
 	private boolean cannotCast;
+	private boolean strikeIsTaunted;
 
 	public boolean isCritical() {
 		return critical;
@@ -93,6 +94,14 @@ public class ResultCombat {
 
 	public void setCannotCast(boolean cannotCast) {
 		this.cannotCast = cannotCast;
+	}
+
+	public boolean isStrikeIsTaunted() {
+		return strikeIsTaunted;
+	}
+
+	public void setStrikeIsTaunted(boolean strikeIsTaunted) {
+		this.strikeIsTaunted = strikeIsTaunted;
 	}
 
 }

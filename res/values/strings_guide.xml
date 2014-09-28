@@ -36,7 +36,8 @@
        Tyto možnosti nejsou nijak označeny.	</string>
     <string name="game_saving">Ukládání hry</string>
     <string name="guide_save">
-      Ukládání hry se provádí automaticky před bojem a při zavření knihy.
+      Ukládání hry se provádí automaticky, tak že při vstupu do sekce se zaznamená aktualní stav hry a ten se uloží teprve při zavření příběhu.
+      Což znamená, že když hru vypnete po boji tak se hra skutečně uloží před bojem.
       Každá postava v příběhu má pouze jednu úložnou pozici.
       Uložené hry nelze mazat, přeuloží se buď novou hrou nebo se úplně smažou úspěšně dohranou hrou.	</string>
     <string name="battle">Bitva</string>

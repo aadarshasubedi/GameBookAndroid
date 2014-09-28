@@ -36,11 +36,11 @@ public class IncreaseHealthOvertimeGreater extends IncreaseHealthOvertime {
 	}
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm, boolean checkSummon) {
 		Skill skill = createSkill(attacker);
 		skill.setData(properties, skillName);
-		skill.doAttack(attacker, attacked, callback, cm);
-		return super.doAttackOnce(attacker, attacked, callback, cm);
+		skill.doAttack(attacker, attacked, callback, cm, checkSummon);
+		return super.doAttackOnce(attacker, attacked, callback, cm, checkSummon);
 	}
 
 	private Skill createSkill(Character attacker) {

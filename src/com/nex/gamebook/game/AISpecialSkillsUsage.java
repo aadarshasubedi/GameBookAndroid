@@ -8,6 +8,7 @@ import java.util.List;
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.skills.active.ActiveCancelationSkill;
 import com.nex.gamebook.skills.active.Skill;
+import com.nex.gamebook.skills.active.SummoningSkill;
 import com.nex.gamebook.skills.active.proprietary.CancelBuff;
 import com.nex.gamebook.skills.active.proprietary.CancelDebuff;
 import com.nex.gamebook.skills.active.proprietary.CancelDot;
@@ -56,11 +57,11 @@ public class AISpecialSkillsUsage {
 		return null;
 	}
 	
-	public static Skill findOptimalAttackSkill(List<Skill> skill, Player player, Enemy enemy) {
+	public static Skill findOptimalAttackSkill(List<Skill> skill, final Player player, final Enemy enemy) {
 		Collections.sort(skill, new Comparator<Skill>() {
 			@Override
 			public int compare(Skill lhs, Skill rhs) {
-				return Integer.valueOf(lhs.getOvertimeTurns()).compareTo(rhs.getOvertimeTurns());
+				return Integer.valueOf(lhs.getOvertimeTurns(enemy)).compareTo(rhs.getOvertimeTurns(enemy));
 			}
 		});
 		//TODO vytvorit AI na selekci spravneho skilu
@@ -71,11 +72,11 @@ public class AISpecialSkillsUsage {
 		return null;
 	}
 	
-	public static Skill findOptimalFriendlySkill(List<Skill> skill, Player player, Enemy enemy) {
+	public static Skill findOptimalFriendlySkill(List<Skill> skill, Player player, final Enemy enemy) {
 		Collections.sort(skill, new Comparator<Skill>() {
 			@Override
 			public int compare(Skill lhs, Skill rhs) {
-				return Integer.valueOf(lhs.getOvertimeTurns()).compareTo(rhs.getOvertimeTurns());
+				return Integer.valueOf(lhs.getOvertimeTurns(enemy)).compareTo(rhs.getOvertimeTurns(enemy));
 			}
 		});
 		//TODO vytvorit AI na selekci spravneho skilu
@@ -87,6 +88,7 @@ public class AISpecialSkillsUsage {
 	}
 	public static Skill findOptimalProprietarySkill(List<Skill> skill, Player player, Enemy enemy) {		
 		for (Skill s : skill) {
+			if(s instanceof SummoningSkill && enemy.getSummon()!=null) continue;
 			if(!s.canUse()) continue;
 			if(s instanceof ActiveCancelationSkill) {
 				if (s instanceof CancelDot && enemy.hasDots()) {

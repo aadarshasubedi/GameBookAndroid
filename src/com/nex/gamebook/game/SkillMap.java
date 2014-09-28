@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import android.util.Log;
 
 import com.nex.gamebook.skills.active.Skill;
+import com.nex.gamebook.skills.active.SummoningSkill;
 import com.nex.gamebook.skills.active.proprietary.CancelBuff;
 import com.nex.gamebook.skills.active.proprietary.CancelDebuff;
 import com.nex.gamebook.skills.active.proprietary.CancelDot;
@@ -20,35 +22,31 @@ import com.nex.gamebook.skills.active.proprietary.QuickReaction;
 import com.nex.gamebook.skills.active.proprietary.ReflectDamage;
 import com.nex.gamebook.skills.active.proprietary.Stun;
 import com.nex.gamebook.skills.active.proprietary.TwiceAttack;
+import com.nex.gamebook.skills.active.proprietary.summon.SummonFighter;
+import com.nex.gamebook.skills.active.proprietary.summon.SummonMage;
+import com.nex.gamebook.skills.active.proprietary.summon.SummonTank;
 import com.nex.gamebook.skills.passive.AreaOfDamage;
+import com.nex.gamebook.skills.passive.ArmoredSummon;
 import com.nex.gamebook.skills.passive.AttackBuff;
+import com.nex.gamebook.skills.passive.StrongSummon;
 import com.nex.gamebook.skills.passive.BoostPassiveSkill;
 import com.nex.gamebook.skills.passive.CriticalSkills;
 import com.nex.gamebook.skills.passive.DefenseBuff;
 import com.nex.gamebook.skills.passive.DefenseIsAttack;
 import com.nex.gamebook.skills.passive.DefenseIsHealth;
 import com.nex.gamebook.skills.passive.DodgeIsSkill;
+import com.nex.gamebook.skills.passive.EnragedSummon;
 import com.nex.gamebook.skills.passive.HealthForAttack;
 import com.nex.gamebook.skills.passive.HealthForSkillPower;
 import com.nex.gamebook.skills.passive.HealthIncrease;
 import com.nex.gamebook.skills.passive.Leech;
 import com.nex.gamebook.skills.passive.LuckIsSkillpower;
 import com.nex.gamebook.skills.passive.PassiveSkill;
+import com.nex.gamebook.skills.passive.ToughSummon;
 
 public class SkillMap {
 	public static String NO_SKILL = "no_skill";
 
-	public static String TWICE_ATTACK = "twice_attack";
-	public static String REFLECT_DAMAGE = "reflect_damage";
-	public static String LIFE_LEECH = "life_leech";
-	public static String QUICK_REACTION = "quick_reaction";
-	public static String CANCEL_HOT = "cancel_hot";
-	public static String CANCEL_DOT = "cancel_dot";
-	public static String CANCEL_BUFF = "cancel_buff";
-	public static String CANCEL_DEBUFF = "cancel_debuff";
-	public static String STUN = "stun";
-	public static String KICK = "kick";
-	
 	private Map<String, Class<? extends Skill>> skills = new HashMap<>();
 	private Map<String, Class<? extends PassiveSkill>> passiveSkills = new HashMap<>();
 
@@ -58,7 +56,7 @@ public class SkillMap {
 		instance.init();
 		instance.initPassive();
 	}
-	
+
 	private void initPassive() {
 		passiveSkills.put(HealthIncrease.ID, HealthIncrease.class);
 		passiveSkills.put(AreaOfDamage.ID, AreaOfDamage.class);
@@ -73,23 +71,30 @@ public class SkillMap {
 		passiveSkills.put(CriticalSkills.ID, CriticalSkills.class);
 		passiveSkills.put(DefenseIsHealth.ID, DefenseIsHealth.class);
 		passiveSkills.put(DefenseIsAttack.ID, DefenseIsAttack.class);
+		passiveSkills.put(ArmoredSummon.ID, ArmoredSummon.class);
+		passiveSkills.put(EnragedSummon.ID, EnragedSummon.class);
+		passiveSkills.put(StrongSummon.ID, StrongSummon.class);
+		passiveSkills.put(ToughSummon.ID, ToughSummon.class);
 	}
-	
+
 	private void init() {
-		skills.put(TWICE_ATTACK, TwiceAttack.class);
-		skills.put(REFLECT_DAMAGE, ReflectDamage.class);
-		skills.put(LIFE_LEECH, LifeLeech.class);
-		skills.put(QUICK_REACTION, QuickReaction.class);
-		skills.put(CANCEL_HOT, CancelHot.class);
-		skills.put(CANCEL_DOT, CancelDot.class);
-		skills.put(CANCEL_BUFF, CancelBuff.class);
-		skills.put(CANCEL_DEBUFF, CancelDebuff.class);
-		skills.put(STUN, Stun.class);
-		skills.put(KICK, Kick.class);
+		skills.put(TwiceAttack.ID, TwiceAttack.class);
+		skills.put(ReflectDamage.ID, ReflectDamage.class);
+		skills.put(LifeLeech.ID, LifeLeech.class);
+		skills.put(QuickReaction.ID, QuickReaction.class);
+		skills.put(CancelHot.ID, CancelHot.class);
+		skills.put(CancelDot.ID, CancelDot.class);
+		skills.put(CancelBuff.ID, CancelBuff.class);
+		skills.put(CancelDebuff.ID, CancelDebuff.class);
+		skills.put(Stun.ID, Stun.class);
+		skills.put(Kick.ID, Kick.class);
+		skills.put(SummonFighter.ID, SummonFighter.class);
+		skills.put(SummonTank.ID, SummonTank.class);
+		skills.put(SummonMage.ID, SummonMage.class);
 	}
 
 	public static void main(String[] args) {
-		for (String key : getSkills().keySet()) {
+		for (String key : getPasiveSkills().keySet()) {
 			String xsdEnumeration = "<xs:enumeration value=\"{0}\" />";
 			System.out.println(MessageFormat.format(xsdEnumeration, key));
 		}
@@ -98,9 +103,11 @@ public class SkillMap {
 	public static Map<String, Class<? extends Skill>> getSkills() {
 		return instance.skills;
 	}
+
 	public static Map<String, Class<? extends PassiveSkill>> getPasiveSkills() {
 		return instance.passiveSkills;
 	}
+
 	public static boolean isSpecialSkillEqualToName(Class<? extends Skill> skill, String name) {
 		Class<? extends Skill> cls = instance.skills.get(name);
 		if (cls != null) {
@@ -119,16 +126,18 @@ public class SkillMap {
 		}
 		return null;
 	}
-	
-	public static List<String> getUnlearnedSkills(Set<String> learnedSkills) {
+
+	public static List<String> getUnlearnedSkills(Character c) {
+		Set<String> learnedSkills = c.getLearnedPassiveSkills();
 		List<String> skills = new ArrayList<String>();
-		for(String s: instance.passiveSkills.keySet()) {
-			if(!learnedSkills.contains(s))
+		for (String s : instance.passiveSkills.keySet()) {
+			if(c.getStory().getProperties().get(s)==null) continue;
+			if (!learnedSkills.contains(s))
 				skills.add(s);
 		}
 		return skills;
 	}
-	
+
 	public static String getSkillId(Class<? extends Skill> cls) {
 		for (Map.Entry<String, Class<? extends Skill>> entry : instance.skills.entrySet()) {
 			if (cls.equals(entry.getValue())) {
@@ -149,6 +158,7 @@ public class SkillMap {
 		}
 		return s;
 	}
+
 	public static PassiveSkill getPassive(String skillName) {
 		try {
 			Class<? extends PassiveSkill> skill = instance.passiveSkills.get(skillName);

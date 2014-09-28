@@ -11,6 +11,7 @@ import com.nex.gamebook.skills.active.ActiveCancelationSkill;
 import com.nex.gamebook.skills.active.OvertimeSkill;
 
 public class CancelDot extends ActiveCancelationSkill<OvertimeSkill> {
+	public static String ID = "cancel_dot";
 
 	@Override
 	public boolean isCancelPositive() {
@@ -26,14 +27,16 @@ public class CancelDot extends ActiveCancelationSkill<OvertimeSkill> {
 	public String getDescription(Context ctx, com.nex.gamebook.game.Character attacker) {
 		return ctx.getString(R.string.cancel_dot_description, getSumOfCanceledSkills(attacker));
 	}
+
 	@Override
 	public Set<OvertimeSkill> getCancelablesSkills(Character attacker) {
 		return attacker.getOvertimeSkills();
 	}
+
 	@Override
 	public String getCanceledText(Context ctx, CharacterType type) {
 		int text = R.string.player_cancel_dot;
-		if(CharacterType.ENEMY.equals(type))
+		if (CharacterType.ENEMY.equals(type))
 			text = R.string.enemy_cancel_dot;
 		return ctx.getString(text);
 	}

@@ -207,7 +207,9 @@ public class Stats implements Serializable {
 	public int getDefensePercentage() {
 		return Stats.getPercentage(getDefense(), getTotalStat(TOTAL_ARMOR_FOR_CALC));
 	}
-
+	public int getPureDefensePercentage() {
+		return Stats.getPercentage(getPureDefense(), getTotalStat(TOTAL_ARMOR_FOR_CALC));
+	}
 	private int getTotalStat(int stat) {
 		if (character != null) {
 			stat += character.getLevel() * 2;
@@ -215,7 +217,7 @@ public class Stats implements Serializable {
 		return stat;
 	}
 
-	public int getValuePerc(int cap, int perc) {
+	public static int getValuePerc(int cap, int perc) {
 		return (int) Math.ceil((((float) cap / 100f) * perc));
 	}
 
@@ -278,13 +280,14 @@ public class Stats implements Serializable {
 
 	public int getSpecialSkillPower() {
 		int skillPower = getSkillpower();
-		float one = (float) skillPower / 100f;
-		int percCalc = TOTAL_SKILL_FOR_CALC - skillPower;
-		if (percCalc <= 0) {
-			percCalc = 1;
-		}
-		int addition = (int) (skillPower + one * Stats.getPercentage(skill, percCalc));
-		return skillPower + addition;
+		return skillPower;
+//		float one = (float) skillPower / 100f;
+//		int percCalc = TOTAL_SKILL_FOR_CALC - skillPower;
+//		if (percCalc <= 0) {
+//			percCalc = 1;
+//		}
+//		int addition = (int) (skillPower + one * Stats.getPercentage(skill, percCalc));
+//		return skillPower + addition;
 	}
 
 	public void nullAllAttributes() {

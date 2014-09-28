@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,19 +33,40 @@ import com.nex.gamebook.story.parser.StoryXmlParser;
 import com.nex.gamebook.util.DialogBuilder;
 import com.nex.gamebook.util.GameBookUtils;
 
-public class LoadGameActivity extends Activity {
+public class LoadGameActivity extends BannerAdActivity {
+	private Map<SerializationMetadata, Story> data = new HashMap<SerializationMetadata, Story>();
 	private List<SerializationMetadata> keys;
-	private StoryXmlParser parser;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onPreCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_load_game);
-		this.keys = GameBookUtils.getInstance().getSavedGames();
-		parser = new StoryXmlParser(this);
-		ListView list = (ListView) findViewById(R.id.saved_games);
-		list.setAdapter(new SavedGameItem(this));
+	    setContentView(R.layout.loading_layout);
+	    new LoadViewTask().execute();
+	}
+	
+	private class LoadViewTask extends AsyncTask<Void, Integer, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			List<SerializationMetadata> metas = GameBookUtils.getInstance().getSavedGames();
+			for(SerializationMetadata m: metas) {
+				String xml = m.getStory();
+				try {
+					StoryXmlParser parser = new StoryXmlParser(LoadGameActivity.this);
+					LoadGameActivity.this.data.put(m, parser.loadStory(xml, false, true));
+				} catch (Exception e) {
+					Log.e("GameBookLoadActivity", "", e);
+				}
+			}
+			LoadGameActivity.this.keys = new ArrayList<SerializationMetadata>(LoadGameActivity.this.data.keySet());
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			setContentView(R.layout.activity_load_game);
+			ListView list = (ListView) findViewById(R.id.saved_games);
+			list.setAdapter(new SavedGameItem(LoadGameActivity.this));
+		}
 	}
 	class SavedGameItem extends ArrayAdapter<String> {
 		Context context;
@@ -73,7 +95,7 @@ public class LoadGameActivity extends Activity {
 			String formatedTime = df.format(new Date(Long.valueOf(timeInString)));
 			time.setText(formatedTime);
 			try {
-				final Story story = parser.loadStory(xml, false, true);
+				final Story story = LoadGameActivity.this.data.get(saveGame);
 				final Player _character = story.getCharacter(Integer.valueOf(charId));
 				rowView.setOnClickListener(new View.OnClickListener() {
 					@Override

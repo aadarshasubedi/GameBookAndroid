@@ -20,6 +20,7 @@ public interface Skill {
 	 * @return
 	 */
 	boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat);
+	boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat, boolean checkSummon);
 	String getDescription(Context ctx, Character attacker);
 	int getValue(Character character);
 	boolean isPermanent();
@@ -27,7 +28,8 @@ public interface Skill {
 	boolean isTriggerAfterEnemyAttack();
 	boolean isTriggerBeforeEnemySpecialAttack();
 	boolean isTriggerOnEndOfRound();
-	
+	int getReductedDamage(Character attacked, int pureDamage);
+	int getConstantValue();
 	/**
 	 * Called after fight ends
 	 * 
@@ -53,7 +55,7 @@ public interface Skill {
 	StatType getType();
 	boolean isCondition();
 	boolean isOverTime();	
-	int getOvertimeTurns();
+	int getOvertimeTurns(Character character);
 	boolean causeDamage();
 	int getCountOfUsed();
 	boolean doSomething(Character attacked, Character attacker);

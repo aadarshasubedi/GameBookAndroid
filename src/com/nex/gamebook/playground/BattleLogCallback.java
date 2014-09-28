@@ -19,4 +19,6 @@ public interface BattleLogCallback {
 	void logLevelIncreased();
 	void logExperience(long xp);
 	void logPassiveSkillsTriggered(String text);
+	void logSummonDie(String summonName);
+	void logText(String text, int color);
 }

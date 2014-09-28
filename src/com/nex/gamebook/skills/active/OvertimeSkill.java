@@ -14,9 +14,10 @@ import com.nex.gamebook.skills.ResultCombatText;
 public class OvertimeSkill implements CombatTextDispatcher, Cancelable {
 
 	private Skill targetSkill;
+	private CharacterType realTargetType;
 
-	private int turns;
-	private int currentTurns = 0;
+	protected int turns;
+	protected int currentTurns = 0;
 
 	public OvertimeSkill(Skill targetSkill, int turns) {
 		super();
@@ -35,11 +36,11 @@ public class OvertimeSkill implements CombatTextDispatcher, Cancelable {
 	public boolean execute(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
 
 		targetSkill.setCombatTextDispatcher(this);
-		if(targetSkill.isCondition())
-			targetSkill.doAttack(attacked, attacker, callback, resultCombat);
-		else 
+		if (targetSkill.isCondition())
+			targetSkill.doAttack(attacked, attacker, callback, resultCombat, false);
+		else
 			targetSkill.doAttack(attacker, attacked, callback, resultCombat);
-			
+
 		targetSkill.cleanAfterBattleEnd();
 		targetSkill.cleanAfterFightEnd();
 		currentTurns++;
@@ -48,11 +49,20 @@ public class OvertimeSkill implements CombatTextDispatcher, Cancelable {
 		return true;
 	}
 
+	public int getDamage() {
+		return this.targetSkill.getConstantValue();
+	}
+	public int getReducedDamage(Character target) {
+		return this.targetSkill.getReductedDamage(target, this.targetSkill.getConstantValue());
+	}
+	
 	@Override
 	public ResultCombatText getLogAttack(Context context, ResultCombat resultCombat) {
 		Skill skill = resultCombat.getSpecialAttack();
 		int color = R.color.positive;
-		if (CharacterType.ENEMY.equals(resultCombat.getType())) {
+		if (realTargetType!=null && CharacterType.SUMMON.equals(realTargetType)) {
+			color = R.color.condition;
+		} else if (CharacterType.ENEMY.equals(resultCombat.getType())) {
 			color = R.color.negative;
 		}
 		String text = resultCombat.getSpecialAttack().getName();
@@ -73,7 +83,7 @@ public class OvertimeSkill implements CombatTextDispatcher, Cancelable {
 	public int getCurrentTurns() {
 		return currentTurns;
 	}
-	
+
 	public int getRemainsTurns() {
 		return turns - currentTurns;
 	}
@@ -82,6 +92,13 @@ public class OvertimeSkill implements CombatTextDispatcher, Cancelable {
 	public boolean isNegative() {
 		return targetSkill.isCondition();
 	}
-	
-}
 
+	public CharacterType getRealTargetType() {
+		return realTargetType;
+	}
+
+	public void setRealTargetType(CharacterType realTargetType) {
+		this.realTargetType = realTargetType;
+	}
+
+}

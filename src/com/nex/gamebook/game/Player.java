@@ -4,6 +4,7 @@ import java.util.Map;
 
 import android.util.Log;
 
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.util.GameBookUtils;
 import com.nex.gamebook.util.SaveGameSectionState;
@@ -16,7 +17,7 @@ public class Player extends Character {
 	private String name;
 	private String description;
 	private int position;
-	
+
 	private Enemy currentEnemy;
 
 	public int getId() {
@@ -75,17 +76,18 @@ public class Player extends Character {
 	public StorySection getCurrentSection() {
 		return getStory().getSection(this, this.position);
 	}
+
 	public void addExperience(BattleLogCallback callback, long exp) {
 		if (getLevel() == ExperienceMap.getInstance().getMaxLevel()) {
 			return;
 		}
-		
+
 		setExperience(getExperience() + exp);
 		long requiredExperience = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
 		callback.logExperience(exp);
 		while (getExperience() >= requiredExperience) {
 			setLevel(getLevel() + 1);
-			if(getLevel() % SKILLPOINTS_AT_LEVEL == 0) {
+			if (getLevel() % SKILLPOINTS_AT_LEVEL == 0) {
 				setSkillPoints(getSkillPoints() + 1);
 			}
 			requiredExperience = ExperienceMap.getInstance().getExperienceByLevel(getLevel());
@@ -103,29 +105,36 @@ public class Player extends Character {
 	public boolean isCriticalChance() {
 		return isCriticalChance(Stats.TOTAL_SKILL_FOR_CALC + getLevel());
 	}
+
 	SaveGameState saveState = null;
+
 	public void fullsave() throws Exception {
 		preSave();
 		save();
 	}
+
 	public void save() {
 		try {
-			if(this.saveState!=null)
-			GameBookUtils.getInstance().saveGame(this, this.saveState);
+			if (this.saveState != null)
+				GameBookUtils.getInstance().saveGame(this);
 		} catch (Exception e) {
 			Log.e("SaveGame", "", e);
 		}
 	}
-	
+
 	public void preSave() throws Exception {
-		this.saveState = createSaveGameState();
+		this.saveState = createSaveGameState(false);
 	}
-	
+
+	public void preSaveAsScore() throws Exception {
+		this.saveState = createSaveGameState(true);
+	}
+
 	public SaveGameState getSaveState() {
 		return saveState;
 	}
-	
-	public SaveGameState createSaveGameState() throws Exception {
+
+	public SaveGameState createSaveGameState(boolean asScore) throws Exception {
 		SaveGameState state = new SaveGameState();
 		state.setCurrentStats(new Stats(getCurrentStats(), false));
 		state.setStats(new Stats(getStats(), true));
@@ -135,27 +144,55 @@ public class Player extends Character {
 		state.setStatistics(new Statistics(getStatistics()));
 		state.setLearnedPassiveSkills(getLearnedPassiveSkills());
 		state.setSkillPoints(getSkillPoints());
-		for (Map.Entry<Integer, StorySection> entry : getStory().getSections().entrySet()) {
-			SaveGameSectionState sectionState = new SaveGameSectionState();
-			StorySection section = entry.getValue();
-			sectionState.setAlreadyHasLuck(section.isAlreadyHasLuck());
-			sectionState.setBonusesAlreadyGained(section.isBonusesAlreadyGained());
-			sectionState.setBonusesAfterFightAlreadyGained(section.isBonusesAfterFightAlreadyGained());
-			sectionState.setBonusesBeforeFightAlreadyGained(section.isBonusesBeforeFightAlreadyGained());
-			sectionState.setCompleted(section.isCompleted());
-			sectionState.setEnemiesAlreadyKilled(section.isEnemiesAlreadyKilled());
-			sectionState.setHasLuck(section.isHasLuck());
-			sectionState.setTryluck(section.isTryluck());
-			sectionState.setVisited(section.isVisited());
-			sectionState.setXpAlreadyGained(section.isXpAlreadyGained());
-			for(StorySectionOption option:entry.getValue().getOptions()) {
-				if(option.isDisabled()) {
-					sectionState.getDisabledOptions().add(option.getSection());
+		state.setResetSkillsAvailable(getResetSkillsAvailable());
+		if (!asScore) {
+			for (Map.Entry<Integer, StorySection> entry : getStory().getSections().entrySet()) {
+				SaveGameSectionState sectionState = new SaveGameSectionState();
+				StorySection section = entry.getValue();
+				sectionState.setAlreadyHasLuck(section.isAlreadyHasLuck());
+				sectionState.setBonusesAlreadyGained(section.isBonusesAlreadyGained());
+				sectionState.setBonusesAfterFightAlreadyGained(section.isBonusesAfterFightAlreadyGained());
+				sectionState.setBonusesBeforeFightAlreadyGained(section.isBonusesBeforeFightAlreadyGained());
+				sectionState.setCompleted(section.isCompleted());
+				sectionState.setEnemiesAlreadyKilled(section.isEnemiesAlreadyKilled());
+				sectionState.setHasLuck(section.isHasLuck());
+				sectionState.setTryluck(section.isTryluck());
+				sectionState.setVisited(section.isVisited());
+				sectionState.setXpAlreadyGained(section.isXpAlreadyGained());
+
+				for (StorySectionOption option : entry.getValue().getOptions()) {
+					if (option.isDisabled()) {
+						sectionState.getDisabledOptions().add(option.getSection());
+					}
 				}
+				state.getSectionsState().put(entry.getKey(), sectionState);
 			}
-			state.getSectionsState().put(entry.getKey(), sectionState);
+		} else {
+			state.setScore(getScore());
+			state.setStoryPath(getStory().getPath());
 		}
 		return state;
+	}
+
+	public int getScore() {
+		int score = 0;
+		for (StatType type : StatType.values()) {
+			try {
+				score += GameBookUtils.getStatByType(getCurrentStats(), type);
+			} catch (Exception e) {
+				Log.e("Score", "", e);
+			}
+		}
+		int sectionsMultiplier = getStatistics().getSections() - getStatistics().getVisitedSections();
+		if (sectionsMultiplier == 0)
+			sectionsMultiplier = 1;
+		score += getStatistics().getSections() * sectionsMultiplier;
+		score += getLevel();
+		double multiplier = getCurrentSection().getScoreMultiplier();
+		if (multiplier > 1d) {
+			score *= multiplier;
+		}
+		return score;
 	}
 
 	public void updateSavedGameStates(SaveGameState state) {
@@ -167,9 +204,11 @@ public class Player extends Character {
 		setStats(state.getStats());
 		setSkillPoints(state.getSkillPoints());
 		setLearnedPassiveSkills(state.getLearnedPassiveSkills());
+		setResetSkillsAvailable(state.getResetSkillsAvailable());
 		instantiatePassiveSkills();
+		this.saveState = state;
 	}
-	
+
 	@Override
 	public void chooseBestSkill(Character c, boolean enemyBegin) {
 	}

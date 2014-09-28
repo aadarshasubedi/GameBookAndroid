@@ -27,7 +27,7 @@ public class FragmentTab extends GameBookFragment {
 		try {
 			final Player _character = getCharacter();
 			button = (Button) view.findViewById(R.id.play_button);
-			fillDefaultStats(view);
+			showStats(view, _character, true);
 			TextView textview = (TextView) view.findViewById(R.id.sel_char_description);
 			textview.setText(_character.getDescription());
 			button.setOnClickListener(new OnClickListener() {

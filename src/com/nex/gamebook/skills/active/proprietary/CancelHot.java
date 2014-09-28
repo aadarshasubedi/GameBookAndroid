@@ -11,7 +11,7 @@ import com.nex.gamebook.skills.active.ActiveCancelationSkill;
 import com.nex.gamebook.skills.active.OvertimeSkill;
 
 public class CancelHot extends ActiveCancelationSkill<OvertimeSkill> {
-
+	public static String ID = "cancel_hot";
 	@Override
 	public boolean isCancelPositive() {
 		return true;

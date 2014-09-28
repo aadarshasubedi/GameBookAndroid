@@ -37,15 +37,18 @@ public abstract class Character {
 	private transient Set<Skill> activeSkills;
 	private transient Set<PassiveSkill> pasiveSkills = new HashSet<>();
 	private transient Skill selectedSkill;
-	private transient Set<OvertimeSkill> overtimeSkills = new HashSet<OvertimeSkill>();
+	private transient Set<OvertimeSkill> overtimeSkills = new HashSet<>();
 	private transient Set<Bonus> conditions = new HashSet<>();
+	// private transient List<Summon> summons = new ArrayList<>();
 	private Set<String> learnedPassiveSkills = new HashSet<>();
 	private int skillPoints;
+	private int resetSkillsAvailable = 3;
 	private int level = 1;
 	private long experience = 0;
 	private StatType primaryStat;
 	private boolean canAttack = true;
 	private boolean canCastSkill = true;
+	private Summon summon;
 
 	public Character() {
 		// TODO Auto-generated constructor stub
@@ -62,6 +65,8 @@ public abstract class Character {
 	public Stats getStats() {
 		return stats;
 	}
+
+	public abstract String getName();
 
 	public Stats getCurrentStats() {
 		return currentStats;
@@ -80,6 +85,7 @@ public abstract class Character {
 	public boolean isCriticalChance(int modificator) {
 		Random random = new Random();
 		int res = random.nextInt(modificator);
+		if(res==0) return false;
 		return getCurrentStats().getSkill() >= res;
 	}
 
@@ -253,10 +259,10 @@ public abstract class Character {
 	}
 
 	public void patchHealth() {
-		if(getCurrentStats().getRealHealth()>getStats().getRealHealth())
+		if (getCurrentStats().getRealHealth() > getStats().getRealHealth())
 			getCurrentStats().setHealth(getStats().getRealHealth());
 	}
-	
+
 	public void cleanActiveSkillsAfterBattleEnd() {
 		for (Skill skill : activeSkills) {
 			skill.cleanAfterBattleEnd();
@@ -319,6 +325,14 @@ public abstract class Character {
 
 	public Set<OvertimeSkill> getOvertimeSkills() {
 		return overtimeSkills;
+	}
+
+	public Summon getSummon() {
+		return summon;
+	}
+
+	public void setSummon(Summon summon) {
+		this.summon = summon;
 	}
 
 	public abstract void chooseBestSkill(Character c, boolean enemyBegin);
@@ -529,7 +543,7 @@ public abstract class Character {
 	public void instantiatePassiveSkills() {
 		this.pasiveSkills.clear();
 		for (String ps : this.learnedPassiveSkills) {
-			 this.pasiveSkills.add(SkillMap.getPassive(ps));
+			this.pasiveSkills.add(SkillMap.getPassive(ps));
 		}
 	}
 
@@ -548,20 +562,44 @@ public abstract class Character {
 	public void setSkillPoints(int skillPoints) {
 		this.skillPoints = skillPoints;
 	}
+
 	public PassiveSkill findPassiveSkill(Class<? extends PassiveSkill> skill) {
-		for(PassiveSkill s: getPasiveSkills()) {
-			if(s.getClass().equals(skill)) {
+		for (PassiveSkill s : getPasiveSkills()) {
+			if (s.getClass().equals(skill)) {
 				return s;
 			}
 		}
 		return null;
 	}
+
 	public Bonus findConditionById(String id) {
-		for(Bonus b: this.conditions) {
-			if(b.getId()!=null && b.getId().equals(id)) {
+		for (Bonus b : this.conditions) {
+			if (b.getId() != null && b.getId().equals(id)) {
 				return b;
 			}
 		}
 		return null;
+	}
+
+	public int getReductedDamage(int pureDamage) {
+		return (pureDamage - (int) (((double) pureDamage / 100d) * getCurrentStats().getDefensePercentage()));
+	}
+
+	public void damage(int damage) {
+		int attackedHealth = getCurrentStats().getRealHealth();
+		getCurrentStats().setHealth(attackedHealth - damage);
+	}
+
+	public int getResetSkillsAvailable() {
+		return resetSkillsAvailable;
+	}
+
+	public void setResetSkillsAvailable(int resetSkillsAvailable) {
+		this.resetSkillsAvailable = resetSkillsAvailable;
+	}
+	public void resetPassiveSkills() {
+		resetSkillsAvailable--;
+		this.skillPoints += this.learnedPassiveSkills.size();
+		this.learnedPassiveSkills.clear();
 	}
 }

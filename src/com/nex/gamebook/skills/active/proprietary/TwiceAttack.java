@@ -11,7 +11,7 @@ import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.active.ActiveSkill;
 
 public class TwiceAttack extends ActiveSkill {
-
+	public static final String ID = "twice_attack";
 	public TwiceAttack() {
 		super(NO_VALUE);
 	}
@@ -27,7 +27,7 @@ public class TwiceAttack extends ActiveSkill {
 	}
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat rm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat rm, boolean checkSummon) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked), callback.getEnemies());
 		ResultCombat result = combat.doNormalAttack(callback, attacker, attacked, false);
 		result.setSpecialAttack(this);
@@ -50,9 +50,4 @@ public class TwiceAttack extends ActiveSkill {
 		return NO_VALUE;
 	}
 
-
-	@Override
-	public int attemptsPerFight() {
-		return 1;
-	}
 }

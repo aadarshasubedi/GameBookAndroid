@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res/com.nex.gamebook"
     android:id="@+id/character_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -22,7 +23,8 @@
         android:layout_alignLeft="@+id/tableLayout1"
         android:layout_alignParentTop="true"
         android:text="@string/attributes" />
-
+	
+       
     <TableLayout
         android:id="@+id/tableLayout1"
         style="@style/section"
@@ -32,210 +34,233 @@
         android:layout_below="@+id/textView2"
         android:background="@drawable/_background_corners"
         android:padding="10dp" >
+ <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip" >
 
+            <com.nex.gamebook.util.TooltipImageView app:imageTooltip="@string/attr_health"
+                android:id="@+id/ico_health"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_hearth" />
+
+            <com.nex.gamebook.playground.TextProgressBar
+                android:id="@+id/p_health_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
         <TableRow
             android:id="@+id/tableRow0"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" >
+	
+            <com.nex.gamebook.util.TooltipImageView
+                android:id="@+id/ico_skillpower"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_skillpower"
+                app:imageTooltip="@string/attr_skill_power" />
 
-            <TextView
-                android:id="@+id/sel_l_health_d"
-                style="@style/attribute"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/attr_health" />
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/sel_attr_health_d"
-                style="@style/number"
+                <TextView
+                    android:id="@+id/skill_power"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <com.nex.gamebook.util.TooltipImageView
+                android:id="@+id/ico_attack"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_attack"
+                app:imageTooltip="@string/attr_attack" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/attr_value_zero" />
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
+                <TextView
+                    android:id="@+id/sel_attr_attack"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero" />
 
-            <TextView
-                android:id="@+id/sel_l_attack_d"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:text="@string/attr_attack" />
+                <TextView
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(" />
 
-            <TextView
-                android:id="@+id/sel_attr_attack_d"
-                style="@style/number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/attr_value_zero" />
+                <TextView
+                    android:id="@+id/sel_attr_baseDmg_d"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero" />
 
-            <TextView
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(" />
+                <TextView
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=")" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/sel_l_baseDmg_d"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=")" />
+           
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" >
 
-            <TextView
-                android:id="@+id/sel_l_skill_d"
-                style="@style/attribute"
+            <com.nex.gamebook.util.TooltipImageView
+                android:id="@+id/ico_skill"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_wrench"
+                app:imageTooltip="@string/attr_skill" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/attr_skill" />
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/sel_attr_skill_d"
-                style="@style/number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/attr_value_zero" />
+                <TextView
+                    android:id="@+id/sel_attr_skill"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView5"
+            <com.nex.gamebook.util.TooltipImageView
+                android:id="@+id/ico_defense"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_shield"
+                app:imageTooltip="@string/attr_defense" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/sel_l_defense_d"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:text="@string/attr_defense" />
+                <TextView
+                    android:id="@+id/sel_attr_defense"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero" />
 
-            <TextView
-                android:id="@+id/sel_attr_defense_d"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/attr_value_zero" />
+                <TextView
+                    android:id="@+id/textView13"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(" />
 
-            <TextView
-                android:id="@+id/textView9"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(" />
+                <TextView
+                    android:id="@+id/sel_l_def_perc"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero" />
 
-            <TextView
-                android:id="@+id/sel_l_def_perc_d"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
+                <TextView
+                    android:id="@+id/textView12"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%" />
 
-            <TextView
-                android:id="@+id/textView7"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="%" />
+                <TextView
+                    android:id="@+id/textView11"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=")" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView10"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=")" />
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/sel_l_luck_d"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_luck" />
-
-            <TextView
-                android:id="@+id/sel_attr_luck_d"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                android:id="@+id/textView6"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="%" />
-
-            <TextView
-                android:id="@+id/textView3"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:text="@string/attr_critical" />
-
-            <TextView
-                android:id="@+id/critical_d"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="100" />
-
-            <TextView
-                android:id="@+id/p"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="%" />
-        </TableRow>
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:gravity="center_vertical" >
 
-            <TextView
-                android:id="@+id/sel_l_skillpower_d"
-                style="@style/attribute"
+            <com.nex.gamebook.util.TooltipImageView
+                android:id="@+id/ico_luck"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_luck"
+                app:imageTooltip="@string/attr_luck" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dip"
-                android:text="@string/attr_skill_power" />
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/skill_power"
-                style="@style/number"
+                <TextView
+                    android:id="@+id/sel_attr_luck"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attr_value_zero" />
+
+                <TextView
+                    android:id="@+id/luck_perc"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%" />
+            </LinearLayout>
+
+            <com.nex.gamebook.util.TooltipImageView
+                android:id="@+id/ico_critical"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_critical"
+                app:imageTooltip="@string/attr_critical" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-        </LinearLayout>
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/critical"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100" />
+
+                <TextView
+                    android:id="@+id/p"
+                    style="@style/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%" />
+            </LinearLayout>
+        </TableRow>
     </TableLayout>
 
     <ScrollView

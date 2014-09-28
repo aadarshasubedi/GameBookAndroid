@@ -3,13 +3,13 @@ package com.nex.gamebook.skills.active;
 import android.content.Context;
 
 import com.nex.gamebook.R;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.CharacterType;
 import com.nex.gamebook.game.ResultCombat;
-import com.nex.gamebook.game.SkillMap;
-import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.ResultCombatText;
+import com.nex.gamebook.skills.active.proprietary.summon.SummonTank.TankSummon;
 
 public abstract class ActiveOvertimeSkill extends ActiveSkill {
 
@@ -24,18 +24,22 @@ public abstract class ActiveOvertimeSkill extends ActiveSkill {
 	}
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm, boolean checkSummon) {
 		Skill skill = getTargetSkill(attacker);
-		OvertimeSkill newSkill = new OvertimeSkill(skill, getOvertimeTurns());
+		OvertimeSkill newSkill = new OvertimeSkill(skill, getOvertimeTurns(attacker));
 		skill.setData(createOvertimeSkillProperties(), getName());
 		if (isCondition()) {
-			attacked.getOvertimeSkills().add(newSkill);
+			Character target = attacked;
+			if(target.getSummon() instanceof TankSummon && checkSummon)
+				target = target.getSummon();
+			target.getOvertimeSkills().add(newSkill);
+			newSkill.setRealTargetType(target.getType());
 		} else {
 			attacker.getOvertimeSkills().add(newSkill);
 		}
 		ResultCombat r = createBasicResult(0, attacker.getType(), resolveEnemy(attacker, attacked));
 		callback.logAttack(r);
-		return true;
+		return false;
 	}
 
 	public abstract Skill getTargetSkill(Character character);

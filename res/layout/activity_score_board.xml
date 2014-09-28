@@ -22,10 +22,11 @@
         android:id="@+id/scores"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
         android:divider="@android:color/transparent"
-  		android:dividerHeight="5sp"
-        android:layout_centerHorizontal="true" >
+        android:dividerHeight="5sp" >
 
     </ListView>
 

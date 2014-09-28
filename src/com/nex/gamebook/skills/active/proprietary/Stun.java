@@ -12,7 +12,7 @@ import com.nex.gamebook.skills.ResultCombatText;
 import com.nex.gamebook.skills.active.ActiveSkill;
 
 public class Stun extends ActiveSkill {
-
+	public static String ID = "stun";
 	public Stun() {
 		super(NO_VALUE);
 	}
@@ -43,7 +43,7 @@ public class Stun extends ActiveSkill {
 	}
 	
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm, boolean checkSummon) {
 		attacked.setCanAttack(false);
 //		attacked.setCanCastSkill(false);
 		ResultCombat c = createBasicResult(0, attacker.getType(), resolveEnemy(attacker, attacked));

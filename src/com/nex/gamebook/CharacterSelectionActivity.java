@@ -51,12 +51,14 @@ public class CharacterSelectionActivity extends BannerAdActivity {
 			final ViewFlipper flipper = (ViewFlipper) findViewById(R.id.viewSwitcher1);
 			final TextView title = (TextView) findViewById(R.id.textView1);
 			ImageView left = (ImageView) findViewById(R.id.imageView1);
+			left.setAlpha(0.5f);
 			ImageView right = (ImageView) findViewById(R.id.imageView2);
+			right.setAlpha(0.5f);
 			listener = new ViewFlipListener(left, right, flipper, title) {
 				@Override
 				public void viewChanged(View currentView) {
 					showTitle(currentView, title);
-				}
+				} 
 
 				@Override
 				public Context getContext() {
@@ -84,7 +86,7 @@ public class CharacterSelectionActivity extends BannerAdActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+//		overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
 	}
 
 	@Override

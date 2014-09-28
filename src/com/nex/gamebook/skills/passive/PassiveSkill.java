@@ -12,8 +12,11 @@ public abstract class PassiveSkill {
 	public abstract String getDescription(Context ctx, Character c);
 	public abstract int power(Character c);
 	
-	
 	public int boostPower(Character c, int defaultPower) {
+		return (int) boostPower(c, Float.valueOf(defaultPower));
+	}
+	
+	public float boostPower(Character c, float defaultPower) {
 		BoostPassiveSkill skill = (BoostPassiveSkill) c.findPassiveSkill(BoostPassiveSkill.class);
 		if(skill!=null){
 			defaultPower += ((double)defaultPower/100d) * skill.power(c);

@@ -58,11 +58,11 @@ public class SkillInfoDialog {
 			View powerRow = inflatedView.findViewById(R.id.power_row);
 			powerRow.setVisibility(View.GONE);
 		}
-		if(skill.getOvertimeTurns()>0) {
+		if(skill.getOvertimeTurns(applicator)>0) {
 			View durabilityRow = inflatedView.findViewById(R.id.skill_durability);
 			durabilityRow.setVisibility(View.VISIBLE);
 			TextView d = (TextView) durabilityRow.findViewById(R.id.overtimeskill_turns);
-			d.setText(String.valueOf(skill.getOvertimeTurns()));
+			d.setText(String.valueOf(skill.getOvertimeTurns(applicator)));
 		}
 		
 		TextView skillPower = (TextView) inflatedView.findViewById(R.id.skill_power);

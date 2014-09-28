@@ -23,7 +23,9 @@ public class DecreaseAttribute extends ActiveConditionalSkill {
 
 	@Override
 	public String getDescription(Context ctx, Character attacker) {
-		return ctx.getString(R.string.decrease_attribute, ctx.getString(type.getText()));
+		if(type.equals(StatType.HEALTH))
+			return ctx.getString(R.string.damage_attribute);
+		return ctx.getString(R.string.decrease_attribute, ctx.getString(type.getText()).toString());
 	}
 
 	@Override

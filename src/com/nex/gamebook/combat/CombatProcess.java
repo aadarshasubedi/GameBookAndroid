@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.nex.gamebook.R;
 import com.nex.gamebook.game.Bonus;
+import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Character;
 import com.nex.gamebook.game.Enemy;
-import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.game.Enemy.EnemyLevel;
 import com.nex.gamebook.game.Player;
 import com.nex.gamebook.game.ResultCombat;
@@ -35,10 +35,60 @@ public class CombatProcess {
 		this.otherEnemies = otherEnemies;
 	}
 
-	// public ResultCombat doNormalAttack(Character attacker, Character
-	// attacked, float modification, boolean allowLuck) {
-	// doNormalAttack(attacker, attacked, modification, true);
-	// }
+	public void fight(BattleLogCallback callback) {
+		Player player = (Player) callback.getCharacter();
+		player.getStatistics().addTurn();
+		callback.divide(++turn);
+		boolean enemyBegin = !player.hasLuck();
+		doOvertimeSkills(player, enemy, callback);
+		if (enemyBegin) {
+			if (!doSpecialAttack(enemy, player, callback, true)) {
+				doSpecialAttack(player, enemy, callback, false);
+			}
+			Skill playerSkill = player.getSelectedSkill();
+			Skill enemySkill = enemy.getSelectedSkill();
+			if (enemySkill != null && enemySkill.isTriggerOnEndOfRound()) {
+				doSkill(enemy, player, enemy, enemySkill, callback, null);
+			}
+			if (playerSkill != null && playerSkill.isTriggerOnEndOfRound()) {
+				doSkill(player, enemy, player, playerSkill, callback, null);
+			}
+		} else {
+			if (!doSpecialAttack(player, enemy, callback, true)) {
+				doSpecialAttack(enemy, player, callback, false);
+			}
+			Skill playerSkill = player.getSelectedSkill();
+			Skill enemySkill = enemy.getSelectedSkill();
+			if (playerSkill != null && playerSkill.isTriggerOnEndOfRound()) {
+				doSkill(player, enemy, player, playerSkill, callback, null);
+			}
+			if (enemySkill != null && enemySkill.isTriggerOnEndOfRound()) {
+				doSkill(enemy, player, enemy, enemySkill, callback, null);
+			}
+		}
+		doConditionEffects(player, enemy);
+		doSummons(player, enemy, callback);
+		if (enemy.isDefeated() || player.isDefeated()) {
+			player.cleanActiveSkillsAfterFightEnd();
+			long exp = enemy.getXp(player.getLevel());
+			if (player.isDefeated()) {
+				exp = 0;
+			}
+			player.setSelectedSkill(null);
+			if (!player.isDefeated()) {
+				player.getStatistics().addKilledEnemy();
+				if (enemy.getEnemyLevel().equals(EnemyLevel.BOSS)) {
+					player.getStatistics().addKilledBoss();
+				} else if (enemy.getEnemyLevel().equals(EnemyLevel.MINION)) {
+					player.getStatistics().addKilledMinion();
+				} else {
+					player.getStatistics().addKilledMob();
+				}
+			}
+			callback.fightEnd(exp);
+		}
+	}
+
 	public ResultCombat doNormalAttack(BattleLogCallback callback, Character attacker, Character attacked, float modification, boolean allowLuck) {
 		ResultCombat resultCombat = new ResultCombat();
 		resultCombat.setType(attacker.getType());
@@ -52,8 +102,7 @@ public class CombatProcess {
 		if (!resultCombat.isLuck()) {
 			resultCombat.setCritical(attacker.isCriticalChance());
 			int attack = attacker.getCurrentStats().getTotalPureDamage();
-			int defense = attacked.getCurrentStats().getDefensePercentage();
-			int totalDamage = (attack - (int) (((double) attack / 100d) * defense));
+			int totalDamage = attacked.getReductedDamage(attack);
 			totalDamage *= modification;
 			attacker.getStatistics().addAttackGivenDamage(totalDamage);
 			attacked.getStatistics().addAttackTakenDamage(totalDamage);
@@ -64,13 +113,17 @@ public class CombatProcess {
 				attacker.getStatistics().addCriticalHit();
 				double criticalMultiplier = attacker.hasLuck() ? 1 : 0.5;
 				resultCombat.setMultiply(criticalMultiplier);
-				totalDamage += totalDamage * criticalMultiplier;
+				totalDamage *= criticalMultiplier;
 				processPassiveWhenCriticalHit(callback, attacker, attacked);
 			}
 			processPassiveSkills(callback, attacker, totalDamage);
-			resultCombat.setDamage(totalDamage);
-			int attackedHealth = attacked.getCurrentStats().getRealHealth();
-			attacked.getCurrentStats().setHealth(attackedHealth - resultCombat.getDamage());
+			if(attacked.getSummon()!=null) {
+				damageSummon(attacked, attacked.getSummon().getReductedDamage(attack), callback);
+				resultCombat.setStrikeIsTaunted(true);
+			} else {
+				resultCombat.setDamage(totalDamage);
+				attacked.damage(resultCombat.getDamage());
+			}
 		} else {
 			attacker.getStatistics().addMissedAttack();
 			attacked.getStatistics().addDodgedAttack();
@@ -83,6 +136,15 @@ public class CombatProcess {
 		return resultCombat;
 	}
 
+	private void damageSummon(Character attacked, int totalDamage, BattleLogCallback log) {
+		int color = R.color.negative;
+		if(attacked instanceof Enemy)
+			color = R.color.positive;
+		log.logText(log.getContext().getString(R.string.summon_take, attacked.getSummon().getName(), totalDamage), color);
+		attacked.getSummon().damage(totalDamage);
+		checkSummonLive(attacked, log);
+	}
+	
 	private void processPassiveWhenCriticalHit(BattleLogCallback callback, Character attacker, Character attacked) {
 		AttackBuff askill = (AttackBuff) attacker.findPassiveSkill(AttackBuff.class);
 		if (askill != null) {
@@ -153,61 +215,11 @@ public class CombatProcess {
 		return doNormalAttack(callback, attacker, attacked, 1, allowLuck);
 	}
 
-	public void fight(BattleLogCallback callback) {
-		Player player = (Player) callback.getCharacter();
-		player.getStatistics().addTurn();
-		callback.divide(++turn);
-		boolean enemyBegin = !player.hasLuck();
-		doOvertimeSkills(player, enemy, callback);
-		if (enemyBegin) {
-			if (!doSpecialAttack(enemy, player, callback, true)) {
-				doSpecialAttack(player, enemy, callback, false);
-			}
-			Skill playerSkill = player.getSelectedSkill();
-			Skill enemySkill = enemy.getSelectedSkill();
-			if (enemySkill != null && enemySkill.isTriggerOnEndOfRound()) {
-				doSkill(enemy, player, enemy, enemySkill, callback, null);
-			}
-			if (playerSkill != null && playerSkill.isTriggerOnEndOfRound()) {
-				doSkill(player, enemy, player, playerSkill, callback, null);
-			}
-		} else {
-			if (!doSpecialAttack(player, enemy, callback, true)) {
-				doSpecialAttack(enemy, player, callback, false);
-			}
-			Skill playerSkill = player.getSelectedSkill();
-			Skill enemySkill = enemy.getSelectedSkill();
-			if (playerSkill != null && playerSkill.isTriggerOnEndOfRound()) {
-				doSkill(player, enemy, player, playerSkill, callback, null);
-			}
-			if (enemySkill != null && enemySkill.isTriggerOnEndOfRound()) {
-				doSkill(enemy, player, enemy, enemySkill, callback, null);
-			}
-		}
-		doConditionEffects(player, enemy);
-
-		if (enemy.isDefeated() || player.isDefeated()) {
-			player.cleanActiveSkillsAfterFightEnd();
-			long exp = enemy.getXp(player.getLevel());
-			if (player.isDefeated()) {
-				exp = 0;
-			}
-			player.setSelectedSkill(null);
-			if (!player.isDefeated()) {
-				player.getStatistics().addKilledEnemy();
-				if (enemy.getEnemyLevel().equals(EnemyLevel.BOSS)) {
-					player.getStatistics().addKilledBoss();
-				} else if (enemy.getEnemyLevel().equals(EnemyLevel.MINION)) {
-					player.getStatistics().addKilledMinion();
-				} else {
-					player.getStatistics().addKilledMob();
-				}
-			}
-			callback.fightEnd(exp);
-		}
-	}
-
 	private void doConditionEffects(Character c1, Character c2) {
+//		if(c1.getSummon()!=null)
+//			doConditionEffects(c1);
+//		if(c2.getSummon()!=null)
+//			doConditionEffects(c2);
 		doConditionEffects(c1);
 		doConditionEffects(c2);
 	}
@@ -224,11 +236,27 @@ public class CombatProcess {
 		c.getConditions().removeAll(releaseThese);
 	}
 
+	private void checkSummonLive(Character c, BattleLogCallback log) {
+		if(c.getSummon()!=null && c.getSummon().isDefeated()) {
+			log.logSummonDie( c.getSummon().getName());
+			 c.setSummon(null);
+		}
+	}
+	
 	private void doOvertimeSkills(Character attacker, Character attacked, BattleLogCallback callback) {
+		if(attacked.getSummon()!=null)
+			doOvertimeSkill(attacked.getSummon(), attacked, callback);
+		if(attacker.getSummon()!=null)
+			doOvertimeSkill(attacker.getSummon(), attacker, callback);
+		checkSummonLive(attacked, callback);
+		checkSummonLive(attacker, callback);
 		doOvertimeSkill(attacker, attacked, callback);
 		doOvertimeSkill(attacked, attacker, callback);
 	}
-
+	private void doSummons(Character attacker, Character attacked, BattleLogCallback callback) {
+		doSummon(attacker, attacked, callback);
+		doSummon(attacked, attacker, callback);
+	}
 	private void doOvertimeSkill(Character attacker, Character attacked, BattleLogCallback callback) {
 		List<OvertimeSkill> releaseThese = new ArrayList<>();
 		for (OvertimeSkill skill : attacker.getOvertimeSkills()) {
@@ -237,6 +265,12 @@ public class CombatProcess {
 				releaseThese.add(skill);
 		}
 		attacker.getOvertimeSkills().removeAll(releaseThese);
+		attacker.patchHealth();
+	}
+	private void doSummon(Character attacker, Character attacked, BattleLogCallback callback) {
+		if(attacker.getSummon()!=null) {
+			attacker.getSummon().execute(attacker, attacked, callback);
+		}
 		attacker.patchHealth();
 	}
 
@@ -261,12 +295,13 @@ public class CombatProcess {
 		}
 		boolean usedBeforeSkill = false;
 		boolean doAttack = true;
+		boolean processNextCharacter = true;
 		if (skill != null && (skill.isTriggerBeforeEnemyAttack() || skill.isTriggerBeforeEnemySpecialAttack())) {
 			if (attackerSkill != null && attackerSkill.isTriggerBeforeEnemySpecialAttack() && !skill.isTriggerBeforeEnemySpecialAttack()) {
-				doSkill(attacker, attacked, attacker, attackerSkill, callback, null);
+				doAttack = doSkill(attacker, attacked, attacker, attackerSkill, callback, null);
 				usedBeforeSkill = true;
 			}
-			doSkill(attacked, attacker, attacked, skill, callback, null);
+			processNextCharacter = doSkill(attacked, attacker, attacked, skill, callback, null);
 			if (attacker.isDefeated()) {
 				return true;
 			}
@@ -276,7 +311,7 @@ public class CombatProcess {
 			ResultCombat result = doNormalAttack(callback, attacker, attacked, true);
 			callback.logAttack(result);
 			if (skill != null && skill.isTriggerAfterEnemyAttack()) {
-				doSkill(attacked, attacker, attacked, skill, callback, result);
+				processNextCharacter = doSkill(attacked, attacker, attacked, skill, callback, result);
 				if (attacker.isDefeated()) {
 					return true;
 				}
@@ -285,30 +320,33 @@ public class CombatProcess {
 		} else {
 
 			if (!usedBeforeSkill && attackerSkill != null && !attackerSkill.isTriggerAfterEnemyAttack() && !attackerSkill.isTriggerBeforeEnemyAttack()) {
-				doSkill(attacker, attacked, attacker, attackerSkill, callback, null);
+				doAttack = doSkill(attacker, attacked, attacker, attackerSkill, callback, null);
 			}
 			if (doAttack) {
 				ResultCombat result = doNormalAttack(callback, attacker, attacked, true);
 				callback.logAttack(result);
 				if (skill != null && skill.isTriggerAfterEnemyAttack()) {
-					doSkill(attacked, attacker, attacked, skill, callback, result);
+					processNextCharacter = doSkill(attacked, attacker, attacked, skill, callback, result);
 					if (attacker.isDefeated()) {
 						return true;
 					}
 				}
 			}
 		}
-
-		return attacked.isDefeated();
+		
+		if(attacked.isDefeated())
+		return true;
+		return !processNextCharacter;
 	}
 
-	private void doSkill(Character attacker, Character attacked, Character skillOwner, Skill skill, BattleLogCallback callback, ResultCombat resultCombat) {
+	private boolean doSkill(Character attacker, Character attacked, Character skillOwner, Skill skill, BattleLogCallback callback, ResultCombat resultCombat) {
 		if (skillOwner.isCanCastSkill()) {
-			skill.doAttack(attacker, attacked, callback, resultCombat);
+			return skill.doAttack(attacker, attacked, callback, resultCombat);
 		} else {
 			logIfCannotCast(callback, skillOwner);
 			skillOwner.setCanCastSkill(true);
 			((ActiveSkill) skill).addCycle();
+			return false;
 		}
 	}
 

@@ -14,6 +14,7 @@
         android:layout_alignParentRight="true"
         style="@style/button"
         android:visibility="gone"
+        android:layout_marginTop="0dp"
         android:text="@string/dsc_default" />
 
     <ScrollView
@@ -21,7 +22,7 @@
         style="@style/section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/endGame_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"

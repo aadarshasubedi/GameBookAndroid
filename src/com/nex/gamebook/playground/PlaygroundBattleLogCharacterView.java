@@ -34,7 +34,9 @@ import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.game.StorySection;
 import com.nex.gamebook.skills.ResultCombatText;
+import com.nex.gamebook.skills.active.OvertimeSkill;
 import com.nex.gamebook.skills.active.Skill;
+import com.nex.gamebook.util.DialogBuilder;
 import com.nex.gamebook.util.PassiveSkillInfoDialogAnSelection;
 import com.nex.gamebook.util.PassiveSkillInfoDialogAnSelection.DismissCallBack;
 import com.nex.gamebook.util.SkillInfoDialog;
@@ -143,7 +145,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 	private void showEnemyPosition(ViewFlipper switcher, TextView enemyName, int total) {
 		Enemy enemy = (Enemy) switcher.getCurrentView().getTag();
 		int index = enemy.getIndex();
-		String name = enemy.getName() + " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().getString(R.string.level) + " " + enemy.getLevel();
+//		String name = enemy.getName() + " " + getContext().getResources().getString(enemy.getEnemyLevel().getCode()) + " - " + getContext().getString(R.string.level) + " " + enemy.getLevel();
 		// enemyName.setText(name + " ("+index + "/" + total+")");
 		enemyName.setText(index + "/" + total);
 	}
@@ -187,15 +189,13 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		level.setText(String.valueOf(_character.getLevel()));
 		progress.setProgress(_character.getXpToLevelPercentage());
 		masterView.findViewById(R.id.tableLayout1).invalidate();
-		TextView hots = (TextView) view.findViewById(R.id.player_hots);
-		hots.setText(String.valueOf(_character.getHots()));
-		TextView dots = (TextView) view.findViewById(R.id.player_dots);
-		dots.setText(String.valueOf(_character.getDots()));
-		TextView hotsLongest = (TextView) view.findViewById(R.id.player_longest_hot);
-		hotsLongest.setText(String.valueOf(_character.getLongestHot()));
-		TextView dotsLongest = (TextView) view.findViewById(R.id.player_longest_dot);
-		dotsLongest.setText(String.valueOf(_character.getLongestDot()));
-
+		
+		TextView hots = (TextView) view.findViewById(R.id.player_total_hots);
+		hots.setText(String.valueOf(getTotalHots(_character)));
+		TextView dots = (TextView) view.findViewById(R.id.player_total_dots);
+		dots.setText(String.valueOf(getTotalDots(_character)));
+		
+		
 		TextView buffs = (TextView) view.findViewById(R.id.player_buffs);
 		buffs.setText(String.valueOf(_character.getBuffs()));
 		TextView debuffs = (TextView) view.findViewById(R.id.player_debuffs);
@@ -206,20 +206,43 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		debuffsLongest.setText(String.valueOf(_character.getLongestDebuff()));
 
 	}
-
+	
+	
+	private int getTotalHots(Character c) {
+		int value = 0;
+		for (OvertimeSkill a : c.getOvertimeSkills()) {
+			if (!a.getTargetSkill().isCondition())
+				value += a.getDamage() * a.getRemainsTurns();
+		}
+		return value;
+	}
+	private int getTotalDots(Character c) {
+		int value = 0;
+		for (OvertimeSkill a : c.getOvertimeSkills()) {
+			if (a.getTargetSkill().isCondition())
+				value += a.getReducedDamage(c) * a.getRemainsTurns();
+		}
+		return value;
+	}
+	public String RESET_SKILLS = "resetSkills";
 	public void showPassiveSkills() {
 		SkillsSpinner skills = (SkillsSpinner) masterView.findViewById(R.id.passive_skills);
 		int skillPoints = _character.getSkillPoints();
-		List<String> availableSkills = new ArrayList<>();
+		List<String> passiveSkills = new ArrayList<>();
+		if(_character.getLearnedPassiveSkills().size()>0 && _character.getResetSkillsAvailable()>0)
+		passiveSkills.add(RESET_SKILLS);
+		List<String> availableSkills = new ArrayList<String>();
 		if (skillPoints > 0) {
-			availableSkills = SkillMap.getUnlearnedSkills(_character.getLearnedPassiveSkills());
+			availableSkills = SkillMap.getUnlearnedSkills(_character);
 		} else {
 			availableSkills = new ArrayList<>(_character.getLearnedPassiveSkills());
 		}
+		Collections.sort(availableSkills);
+		passiveSkills.addAll(availableSkills);
 		// if(availableSkills.isEmpty()) {
 		// availableSkills.add("none");
 		// }
-		skills.setAdapter(new PassiveSkillsAdapter(getContext(), availableSkills, skills));
+		skills.setAdapter(new PassiveSkillsAdapter(getContext(), passiveSkills, skills));
 	}
 
 	public void showAvailableSkills() {
@@ -240,6 +263,8 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		if (selected != null) {
 			int index = availableSkills.indexOf(selected);
 			skills.setSelection(index);
+		} else {
+			skills.setSelection(0);
 		}
 	}
 
@@ -272,19 +297,40 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(R.layout.spinner_dropdown_item, parent, false);
 			TextView name = (TextView) rowView.findViewById(R.id.name);
-			name.setText(SkillMap.getPassive(skill).getName(_character.getStory().getProperties()));
+			String text = "";
+			final boolean isReset = skill.equals(RESET_SKILLS);
+			if(isReset) {
+				text = getContext().getString(R.string.reset_skills, _character.getResetSkillsAvailable());
+			} else {
+				text = SkillMap.getPassive(skill).getName(_character.getStory().getProperties());
+			}
+			name.setText(text);
 			rowView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
 					// owner.onDetachedFromWindow();
-					PassiveSkillInfoDialogAnSelection dialog = new PassiveSkillInfoDialogAnSelection(context, _character, skill);
-					dialog.show(new DismissCallBack() {
-						@Override
-						public void dismiss() {
-							owner.onDetachedFromWindow();
-							showCurrentValues();
-						}
-					});
+					if(isReset) {
+						final DialogBuilder s = new DialogBuilder(getContext()).setText(R.string.reset_skills_prompt)
+						.setNegativeButton(R.string.no, null);
+						s.setPositiveButton(R.string.yes, new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								owner.onDetachedFromWindow();
+								_character.resetPassiveSkills();
+								showCurrentValues();
+								s.dismiss();
+							}
+						}).show();
+					} else {
+						PassiveSkillInfoDialogAnSelection dialog = new PassiveSkillInfoDialogAnSelection(context, _character, skill);
+						dialog.show(new DismissCallBack() {
+							@Override
+							public void dismiss() {
+								owner.onDetachedFromWindow();
+								showCurrentValues();
+							}
+						});
+					}
 				}
 			});
 			return rowView;
@@ -359,6 +405,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					@Override
 					public void onClick(View arg0) {
 						if(skill==null) {
+							_character.setSelectedSkill(null);
 							owner.onDetachedFromWindow();
 							owner.setSelection(position);
 							return ;
@@ -461,10 +508,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					final SkillsSpinner skills = (SkillsSpinner) rowView.findViewById(R.id.enemy_skills);
 
 					TextProgressBar bar = (TextProgressBar) rowView.findViewById(R.id.enemy_health_bar);
-					int healthPercentage = (int) (((double) cs.getHealth() / (double) s.getHealth()) * 100);
-					changeHealthProgressColor(bar, healthPercentage, enemy);
-					bar.setProgress(healthPercentage);
-					bar.setText(cs.getHealth() + "/" + s.getHealth());
+					changeHealthProgressColor(bar, enemy);
 					List<Skill> sk = new ArrayList<>();
 					sk.add(null);
 					sk.addAll(enemy.getActiveSkills());
@@ -474,15 +518,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					} else {
 						skills.setVisibility(View.GONE);
 					}
-					TextView hots = (TextView) rowView.findViewById(R.id.enemy_hots);
-					hots.setText(String.valueOf(enemy.getHots()));
-					TextView dots = (TextView) rowView.findViewById(R.id.enemy_dots);
-					dots.setText(String.valueOf(enemy.getDots()));
-
-					TextView hotsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_hot);
-					hotsLongest.setText(String.valueOf(enemy.getLongestHot()));
-					TextView dotsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_dot);
-					dotsLongest.setText(String.valueOf(enemy.getLongestDot()));
+					TextView hots = (TextView) rowView.findViewById(R.id.enemy_total_hots);
+					hots.setText(String.valueOf(getTotalHots(enemy)));
+					TextView dots = (TextView) rowView.findViewById(R.id.enemy_total_dots);
+					dots.setText(String.valueOf(getTotalDots(enemy)));
 
 					TextView buffs = (TextView) rowView.findViewById(R.id.enemy_buffs);
 					buffs.setText(String.valueOf(enemy.getBuffs()));
@@ -492,7 +531,13 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 					buffsLongest.setText(String.valueOf(enemy.getLongestBuff()));
 					TextView debuffsLongest = (TextView) rowView.findViewById(R.id.enemy_longest_debuff);
 					debuffsLongest.setText(String.valueOf(enemy.getLongestDebuff()));
-
+					if(enemy.getSummon()!=null) {
+						rowView.findViewById(R.id.enemy_summon).setVisibility(View.VISIBLE);
+						TextProgressBar summonHealth = (TextProgressBar) rowView.findViewById(R.id.summon_health_enemy);
+						changeHealthProgressColor(summonHealth, enemy.getSummon());
+					} else {
+						rowView.findViewById(R.id.enemy_summon).setVisibility(View.GONE);
+					}
 				}
 			};
 			changeableView.addView(rowView);
@@ -555,6 +600,10 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			addResultToLog(log, getContext().getString(R.string.level_increased, _character.getLevel()), getContext(), R.color.temporal);
 		}
 
+		public void logText(String text, int color) {
+			addResultToLog(log, text, getContext(), color);
+		}
+		
 		@Override
 		public void divide(int turn) {
 			String text = turn + "." + getContext().getString(R.string.turn);
@@ -586,6 +635,7 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 		}
 
 		private void logNormalAttack(ResultCombat resultCombat) {
+			if(resultCombat.isStrikeIsTaunted()) return;
 			int color = R.color.positive;
 			String text = "";
 			Context context = adapter.context;
@@ -668,6 +718,11 @@ public class PlaygroundBattleLogCharacterView extends AbstractFragment {
 			refresh();
 		}
 
+		@Override
+		public void logSummonDie(String summonName) {
+			addResultToLog(log, getContext().getString(R.string.summon_die, summonName), getContext(), R.color.condition);
+		}
+		
 	}
 
 	private void displayButtons() {

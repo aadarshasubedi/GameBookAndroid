@@ -320,6 +320,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 			@Override
 			public void onClick(View v) {
 				getPlayground().finish();
+				getPlayground().storeTime();
 				if (text == R.string.endGame_win) {
 					try {
 						GameBookUtils.getInstance().removeSavedGame(_character);
@@ -327,6 +328,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 						Intent intent = new Intent(v.getContext(), ScoreActivity.class);
 						Bundle b = new Bundle();
 						b.putString("fileName", fileName);
+						b.putBoolean("playground", true);
 						intent.putExtras(b);
 						v.getContext().startActivity(intent);
 						return;
@@ -369,6 +371,7 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 				nextSection.setUnreturnableSection(sectionId);
 			}
 			try {
+				getPlayground().storeTime();
 				_character.preSave();
 			} catch (Exception e) {
 				Log.e("GameSaving", "", e);
@@ -428,5 +431,15 @@ public class PlaygroundStoryView extends AbstractFragment implements BattleLogCa
 	@Override
 	public void logPassiveSkillsTriggered(String text) {
 		addResultToLog(text, getContext(), R.color.passive_skill_triggered);
+	}
+	@Override
+	public void logSummonDie(String summonName) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void logText(String text, int color) {
+		// TODO Auto-generated method stub
+		
 	}
 }

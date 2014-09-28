@@ -38,7 +38,7 @@ public abstract class ActiveCancelationSkill<E extends Cancelable> extends Activ
 	public abstract boolean isCancelPositive();
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm, boolean checkSummon) {
 		int totalcanceledSkills = getSumOfCanceledSkills(attacker);
 		Character character = resolveCharacterForApplyingOT(attacker, attacked);
 		int currentCanceled = 0;

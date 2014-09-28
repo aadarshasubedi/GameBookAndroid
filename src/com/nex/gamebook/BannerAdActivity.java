@@ -25,14 +25,18 @@ public abstract class BannerAdActivity extends Activity {
 	protected void loadAd() {
 		mAdView = (AdView) findViewById(R.id.banner_ad);
 		if(AdFactory.displayAds && mAdView!=null) {
-			mAdView.setVisibility(View.VISIBLE);
+			showAd();
 			mAdView.loadAd(new AdRequest.Builder().build());
 		} else {
-			mAdView.setVisibility(View.GONE);
+			hideAd();
 		}
 	}
-	
-	protected void unloadAd() {
+	protected void showAd() {
+		mAdView = (AdView) findViewById(R.id.banner_ad);
+		if(mAdView!=null)
+			mAdView.setVisibility(View.VISIBLE);
+	}
+	protected void hideAd() {
 		mAdView = (AdView) findViewById(R.id.banner_ad);
 		if(mAdView!=null)
 			mAdView.setVisibility(View.GONE);

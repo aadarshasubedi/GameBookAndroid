@@ -13,6 +13,7 @@ import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.CombatTextDispatcher;
 import com.nex.gamebook.skills.ResultCombatText;
+import com.nex.gamebook.skills.active.proprietary.summon.SummonTank.TankSummon;
 import com.nex.gamebook.skills.passive.CriticalSkills;
 
 public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
@@ -34,7 +35,9 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 	public Enemy resolveEnemy(Character attacker, Character attacked) {
 		if (attacker instanceof Enemy)
 			return (Enemy) attacker;
+		if(attacked instanceof Enemy)
 		return (Enemy) attacked;
+		return null;
 	}
 
 	@Override
@@ -51,6 +54,7 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 		result.setDamage(value);
 		result.setType(type);
 		result.setCritical(wasCritical);
+		if(enemy!=null)
 		result.setEnemyName(enemy.getName());
 		return result;
 	}
@@ -78,33 +82,42 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 	protected Bonus createReductedBonus(Character attacker, Character attacked) {
 		Bonus bonus = createSpecialAttack(isCondition() ? -1 : 1, getValue(attacker), getType());
 		if(isCondition()) {
-			//process reduction
-			int bonusValue = bonus.getValue();
-			int defense = attacked.getCurrentStats().getDefensePercentage();
-			int reduction = (int) Math.floor((((double) bonusValue / 100d) * defense));
-			int reducedDamage = (int) (bonusValue - reduction);
+			int reduction = getReduction(attacked, bonus.getValue());
 			attacked.getStatistics().addSkillReducedDamage(reduction);
 			attacker.getStatistics().addObtainedSkillReducedDamage(reduction);
-			bonus.setValue(reducedDamage);
+			bonus.setValue(getReductedDamage(attacked, bonus.getValue()));
 		} 
-		bonus.setTurns(getOvertimeTurns());
+		bonus.setTurns(getOvertimeTurns(attacker));
 		return bonus;
 	}
 	
 	
+	public int getReductedDamage(Character attacked, int pureDamage) {
+		return (int) (pureDamage - getReduction(attacked, pureDamage));
+	}
+	
+	public int getReduction(Character attacked, int damage) {
+		int defense = attacked.getCurrentStats().getDefensePercentage();
+		int reduction = (int) Math.floor((((double) damage / 100d) * defense));
+		return reduction;
+	}
 	
 	
 	@Override
-	public boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
+	public boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat, boolean checkSummon) {
 
 		if (!canUse())
 			return true;
 		addCycle();
 		attacker.getStatistics().addUsedSkill();
-		return doAttackOnce(attacker, attacked, callback, resultCombat);
+		return doAttackOnce(attacker, attacked, callback, resultCombat, checkSummon);
+	}
+	@Override
+	public boolean doAttack(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
+		return doAttack(attacker, attacked, callback, resultCombat, true);
 	}
 
-	public abstract boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm);
+	public abstract boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm, boolean checkSummon);
 
 
 	public int getResultValuePercentage(int value, int perc) {
@@ -178,7 +191,7 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 	}
 
 	@Override
-	public int getOvertimeTurns() {
+	public int getOvertimeTurns(Character character) {
 		return this.properties.getTurns();
 	}
 
@@ -200,6 +213,10 @@ public abstract class ActiveSkill implements Skill, CombatTextDispatcher {
 		return getValueBasedOnSkillPower(character);
 	}
 
+	public int getConstantValue() {
+		return constantValue;
+	}
+	
 	public int getValueBasedOnSkillPower(Character c) {
 		int power = c.getCurrentStats().getSpecialSkillPower();
 		double coeff = properties.getCoeff();

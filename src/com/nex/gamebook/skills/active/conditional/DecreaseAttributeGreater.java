@@ -24,11 +24,11 @@ public class DecreaseAttributeGreater extends DecreaseAttribute {
 	}
 	
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm, boolean checkSummon) {
 		Skill skill = createSkill(attacker, proprietarySkill);
 		skill.setData(properties, skillName);
-		skill.doAttack(attacker, attacked, callback, cm);
-		return super.doAttackOnce(attacker, attacked, callback, cm);
+		skill.doAttack(attacker, attacked, callback, cm, checkSummon);
+		return super.doAttackOnce(attacker, attacked, callback, cm, checkSummon);
 	}
 
 }

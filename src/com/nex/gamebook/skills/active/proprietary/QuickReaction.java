@@ -11,13 +11,13 @@ import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.active.ActiveSkill;
 
 public class QuickReaction extends ActiveSkill {
-
+	public static String ID = "quick_reaction";
 	public QuickReaction() {
 		super(NO_VALUE);
 	}
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat, boolean checkSummon) {
 		CombatProcess combat = new CombatProcess(resolveEnemy(attacker, attacked), callback.getEnemies());
 		ResultCombat result = combat.doNormalAttack(callback, attacker, attacked, this.getValue(attacker)/100f, false);
 		result.setSpecialAttack(this);
@@ -58,12 +58,4 @@ public class QuickReaction extends ActiveSkill {
 	public boolean isTriggerAfterEnemyAttack() {
 		return false;
 	}
-
-
-
-	@Override
-	public int attemptsPerFight() {
-		return 1;
-	}
-
 }

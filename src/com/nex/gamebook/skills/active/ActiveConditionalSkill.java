@@ -8,6 +8,8 @@ import com.nex.gamebook.game.ResultCombat;
 import com.nex.gamebook.game.SkillMap;
 import com.nex.gamebook.game.Stats;
 import com.nex.gamebook.playground.BattleLogCallback;
+import com.nex.gamebook.skills.active.proprietary.summon.SummonTank;
+import com.nex.gamebook.skills.active.proprietary.summon.SummonTank.TankSummon;
 
 public abstract class ActiveConditionalSkill extends ActiveSkill {
 
@@ -16,8 +18,10 @@ public abstract class ActiveConditionalSkill extends ActiveSkill {
 	}
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat cm, boolean checkSummon) {
 		Character applicationChar = resolveCharacterForApplication(attacked, attacker);
+		if(applicationChar.getSummon() instanceof TankSummon && checkSummon)
+			applicationChar = applicationChar.getSummon();
 		Bonus bonus = createReductedBonus(attacker, applicationChar);
 		if (!isPermanent()) {
 			applicationChar.getConditions().add(bonus);
@@ -35,7 +39,7 @@ public abstract class ActiveConditionalSkill extends ActiveSkill {
 		}
 		ResultCombat result = createBasicResult(bonus.getValue(), attacker.getType(), resolveEnemy(attacker, attacked));
 		callback.logAttack(result);
-		return true;
+		return false;
 	}
 
 	public abstract boolean isCondition();

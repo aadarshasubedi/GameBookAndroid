@@ -23,7 +23,9 @@ public class IncreaseAttribute extends ActiveConditionalSkill {
 
 	@Override
 	public String getDescription(Context ctx, Character attacker) {
-		return ctx.getString(R.string.increase_attribute, ctx.getString(type.getText()));
+		if(type.equals(StatType.HEALTH))
+			return ctx.getString(R.string.heal_attribute);
+		return ctx.getString(R.string.increase_attribute, ctx.getString(type.getText()).toLowerCase());
 	}
 
 	@Override

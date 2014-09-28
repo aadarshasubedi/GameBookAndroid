@@ -10,13 +10,13 @@ import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.active.ActiveSkill;
 
 public class ReflectDamage extends ActiveSkill {
-
+	public static final String ID = "reflect_damage";
 	public ReflectDamage() {
 		super(NO_VALUE);
 	}
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat, boolean checkSummon) {
 		int value = resultCombat.getDamage();
 		int percentage = getValue(attacker);
 		value = getResultValuePercentage(value, percentage);
@@ -60,9 +60,5 @@ public class ReflectDamage extends ActiveSkill {
 	@Override
 	public boolean isTriggerAfterEnemyAttack() {
 		return true;
-	}
-	@Override
-	public int attemptsPerFight() {
-		return 1;
 	}
 }

@@ -6,6 +6,7 @@ public class SerializationMetadata implements Serializable {
 	private static final long serialVersionUID = -1051986476253620055L;
 	private long time;
 	private String metaFile;
+	private String relativeMetaFile;
 	private String file;
 	private String story;
 	private int character;
@@ -57,6 +58,14 @@ public class SerializationMetadata implements Serializable {
 
 	public void setMetaFile(String metaFile) {
 		this.metaFile = metaFile;
+	}
+
+	public String getRelativeMetaFile() {
+		return relativeMetaFile;
+	}
+
+	public void setRelativeMetaFile(String relativeMetaFile) {
+		this.relativeMetaFile = relativeMetaFile;
 	}
 
 }

@@ -11,13 +11,13 @@ import com.nex.gamebook.playground.BattleLogCallback;
 import com.nex.gamebook.skills.active.ActiveSkill;
 
 public class LifeLeech extends ActiveSkill {
-
+	public static String ID = "life_leech";
 	public LifeLeech() {
 		super(NO_VALUE);
 	}
 
 	@Override
-	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat) {
+	public boolean doAttackOnce(Character attacker, Character attacked, BattleLogCallback callback, ResultCombat resultCombat, boolean checkSummon) {
 		int dmg = resultCombat.getDamage();
 		int leech = (int) ((float) dmg / 100f * this.getValue(attacker));
 		Bonus bonus = createSpecialAttack(1, leech, StatType.HEALTH);
@@ -69,9 +69,5 @@ public class LifeLeech extends ActiveSkill {
 	public boolean isCondition() {
 		return true;
 	}
-	
-	@Override
-	public int attemptsPerFight() {
-		return 1;
-	}
+
 }

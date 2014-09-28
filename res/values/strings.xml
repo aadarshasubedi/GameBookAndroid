@@ -36,7 +36,7 @@
     <string name="attr_skill_power">Síla schopností</string>
     <string name="base_skill_power">Základní síla dovednosti</string>
     <string name="power">Síla</string>
-    <string name="attr_critical">Krit.š.</string>
+    <string name="attr_critical">Šance na kritické zranění</string>
     <string name="dsc_default">Default</string>
     <string name="title_activity_story_selection">StorySelectionActivity</string>
     <string name="title_activity_playground">PlaygroundActivity</string>
@@ -64,8 +64,17 @@
     <string name="special_skill">Speciální dovednost</string>
     <string name="second_attack">(Druhý úder)</string>
     <string name="you_use">Používáš</string>
+    <string name="summon_cause">%1$s způsobuje zranění za %2$d.</string>
+    <string name="summon_defending">%1$s poskakuje radostí z obrany svého pána.</string>
+    <string name="summon_cause_critical">%1$s způsobuje kritické zranění za %2$d.</string>
+    <string name="you_summon_creature">Vyvoláváš %1$s.</string>
+    <string name="enemy_summon_creature">Nepřítel vyvolává %1$s.</string>
+    <string name="summon_die">%1$s zemřel.</string>
+    <string name="summon_take">%1$s dostává %2$d poškození.</string>
+    
     <string name="you_cause">Způsobuješ</string>
     <string name="overtime_works">účinkuje</string>
+    <string name="overtime_works_on_summon">účinkuje na pomocníkovi %1$s</string>
     <string name="enemy_use">používá</string>
     <string name="for_word">za</string>
     <string name="fight_aspect_health">(Zdraví)</string>
@@ -75,9 +84,9 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="log">Log</string>
-    <string name="close_book">Zavřít knihu</string>
-    <string name="close_book_when_fighting_description">Právě bojujete. \nOpravdu chcete zavřít knihu?</string>
-    <string name="close_book_description">Hra bude ukončena. V bojové sekci přijdete o stav bitvy. \nChcete pokračovat?</string>
+    <string name="close_book">Zavřít příběh</string>
+    <string name="close_book_when_fighting_description">Právě bojujete. \nOpravdu chcete zavřít příběh?</string>
+    <string name="close_book_description">Hra bude ukončena.\nHra se uloží na počátku této sekce, pokud máte sekci rozehranou, přejděte na další sekci jinak přijdete o změny v této sekci.\nChcete příběh opravdu ukončit?</string>
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="confirm">Potvrdit</string>
@@ -89,7 +98,7 @@
     <string name="continue_story">Pokračovat</string>
     <string name="begin_again">Začít znovu</string>
     <string name="score">Skóre</string>
-    <string name="mainPage">Hlavní nabídka</string>
+    <string name="close">Zavřít</string>
     <string name="guide">Příručka</string>
     <string name="drawer_open">Otevřít</string>
     <string name="drawer_close">Schovat</string>
@@ -134,69 +143,72 @@
     <string name="d">D:</string>
     <string name="hot">Hot:</string>
     <string name="dot">Dot:</string>
-    
     <string name="enemy_cancel_buff">Nepřítel ti zrušil buff.</string>
     <string name="enemy_cancel_debuff">Nepřítel si zrušil debuff.</string>
     <string name="enemy_cancel_hot">Nepřítel ti zrušil hot.</string>
     <string name="enemy_cancel_dot">Nepřítel si zrušil dot.</string>
-    
-   <string name="player_cancel_buff">Zrušil jsi nepříteli buff.</string>
-   <string name="player_cancel_debuff">Zrušil sis debuff.</string>
-   <string name="player_cancel_hot">Zrušil jsi nepříteli hot.</string>
-   <string name="player_cancel_dot">Zrušil sis dot.</string>
-    
-    
+    <string name="player_cancel_buff">Zrušil jsi nepříteli buff.</string>
+    <string name="player_cancel_debuff">Zrušil sis debuff.</string>
+    <string name="player_cancel_hot">Zrušil jsi nepříteli hot.</string>
+    <string name="player_cancel_dot">Zrušil sis dot.</string>
     <string name="you_applied">Aplikoval jsi %s.</string>
     <string name="enemy_applied">Nepřítel aplikoval %s.</string>
     <string name="you_cast">Používáš %s.</string>
     <string name="enemy_cast">Nepřítel používá %s.</string>
     <string name="you_cannot_attack">Nemůžeš útočit.</string>
     <string name="you_cannot_cast">Nepřítel vyblokoval tvoji schopnost.</string>
-    
     <string name="enemy_cannot_attack">Nepřítel nemůže útočit.</string>
     <string name="enemy_cannot_cast">Vyblokoval jsi schopnost nepřítele.</string>
     <string name="select_passive_skill">%d dov. bodů.</string>
+    <string name="passive_skils">Pasivní schopnosti</string>
+    <string name="active_skills">Aktivní schopnosti</string>
     <string name="learn_passive_skill">Naučit</string>
     <string name="critical_strike">Kritický úder</string>
-	<string name="passive_skill_triggered">Pasivní dovednost %1$s byla spuštěna.</string>
-	<string name="passive_skill_refreshed">Pasivní dovednost %1$s byla obnovena.</string>
-	
-	<string name="maxAttackDamageGiven">Nejvyšší poškození z útoku</string>
-	<string name="maxAttackDamageTaken">Nejvyšší obdržené poškození z útoku</string>
-	<string name="maxSkillDamageTaken">Nejvyšší obdržené poškození ze schopnosti</string>
-	<string name="maxSkillDamageGiven">Nejvyšší poškození ze schopnosti</string>
-	<string name="totalAttackDamageTaken">Celkem obrženého poškození z útoku</string>
-	<string name="totalAttackDamageGiven">Celkem darovaného poškození z útoku</string>
-	<string name="totalSkillDamageTaken">Celkem obrženého poškození ze schopností</string>
-	<string name="totalSkillDamageGiven">Celkem darovaného poškození ze schopností</string>
-	<string name="totalDamageTaken">Celkem obdrženého poškození</string>
-	<string name="totalDamageGiven">Celkem darovaného poškození</string>
-	<string name="totalHealthHealed">Celkem vyléčeno zdraví</string>
-	<string name="maxHealthHealed">Nejvyšší léčení</string>
-	<string name="totalDamageReduce">Celkem redukováno poškození</string>
-	<string name="totalAttackDamageReduce">Redukováno poškození z útoku</string>
-	<string name="totalSkillDamageReduce">Redukováno poškození ze schopností</string>
-	
-	<string name="totalObtainedDamageReduce">Celkem redukováno obdrženého poškození</string>
-	<string name="totalObtainedAttackDamageReduce">Redukováno obdrženého poškození z útoku</string>
-	<string name="totalObtainedSkillDamageReduce">Redukováno obdrženého poškození ze schopností</string>
-	
-	<string name="criticalHits">Kritických poškození</string>
-	<string name="obtainedCriticalHits">Obdržených kritických poškození</string>
-	<string name="usedSkills">Použitých dovedností</string>
-	<string name="sections">Celkem sekcí</string>
+    <string name="passive_skill_triggered">Pasivní dovednost %1$s byla spuštěna.</string>
+    <string name="passive_skill_refreshed">Pasivní dovednost %1$s byla obnovena.</string>
+    <string name="maxAttackDamageGiven">Nejvyšší poškození z útoku</string>
+    <string name="maxAttackDamageTaken">Nejvyšší obdržené poškození z útoku</string>
+    <string name="maxSkillDamageTaken">Nejvyšší obdržené poškození ze schopnosti</string>
+    <string name="maxSkillDamageGiven">Nejvyšší poškození ze schopnosti</string>
+    <string name="totalAttackDamageTaken">Celkem obrženého poškození z útoku</string>
+    <string name="totalAttackDamageGiven">Celkem darovaného poškození z útoku</string>
+    <string name="totalSkillDamageTaken">Celkem obrženého poškození ze schopností</string>
+    <string name="totalSkillDamageGiven">Celkem darovaného poškození ze schopností</string>
+    <string name="totalDamageTaken">Celkem obdrženého poškození</string>
+    <string name="totalDamageGiven">Celkem darovaného poškození</string>
+    <string name="totalHealthHealed">Celkem vyléčeno zdraví</string>
+    <string name="maxHealthHealed">Nejvyšší léčení</string>
+    <string name="totalDamageReduce">Celkem redukováno poškození</string>
+    <string name="totalAttackDamageReduce">Redukováno poškození z útoku</string>
+    <string name="totalSkillDamageReduce">Redukováno poškození ze schopností</string>
+    <string name="totalObtainedDamageReduce">Celkem redukováno obdrženého poškození</string>
+    <string name="totalObtainedAttackDamageReduce">Redukováno obdrženého poškození z útoku</string>
+    <string name="totalObtainedSkillDamageReduce">Redukováno obdrženého poškození ze schopností</string>
+    <string name="criticalHits">Kritických poškození</string>
+    <string name="obtainedCriticalHits">Obdržených kritických poškození</string>
+    <string name="usedSkills">Použitých dovedností</string>
+    <string name="sections">Celkem sekcí</string>
     <string name="visitedSections">Navštívených sekcí</string>
-	<string name="totalDodgedAttacks">Vyhnutí se útoku</string>
-	<string name="totalMissedAttacks">Minutých útoků</string>
-	<string name="totalKilledEnemies">Celkem zabitých nepřátel</string>
-	<string name="killedBosses">Zabitých bossů</string>
-	<string name="killedMinions">Zabitých minionů</string>
-	<string name="killedMobs">Zabitých obyčejných nepřátel</string>
-	<string name="totalTurns">Celkem kol v bojích</string>
-	<string name="totalBattles">Celkem vybojovaných bitev</string>
-	
-	<string name="loading">Nahrávám&#8230;</string>
-	<string name="saving">Ukládám&#8230;</string>
-	<string name="loading_message"></string>
-	<string name="use_skill">Použít</string>
+    <string name="totalDodgedAttacks">Vyhnutí se útoku</string>
+    <string name="totalMissedAttacks">Minutých útoků</string>
+    <string name="totalKilledEnemies">Celkem zabitých nepřátel</string>
+    <string name="killedBosses">Zabitých bossů</string>
+    <string name="killedMinions">Zabitých minionů</string>
+    <string name="killedMobs">Zabitých obyčejných nepřátel</string>
+    <string name="totalTurns">Celkem kol v bojích</string>
+    <string name="totalBattles">Celkem vybojovaných bitev</string>
+    <string name="loading">Načítám&#8230;</string>
+    <string name="saving">Ukládám&#8230;</string>
+    <string name="loading_message"></string>
+    <string name="use_skill">Použít</string>
+    <string name="close_app">Opravdu chcete zavřít aplikaci?</string>
+	<string name="timespent">Čas strávený ve hře</string>
+    <string name="reset_skills">Resetovat %1$dx</string>
+    <string name="reset_skills_prompt">Opravdu chcete resetovat pasivní dovednosti?</string>
+    <string name="summon_life">Zdraví pomocníka</string>
+    <string name="tooltip_dot">Celkem poškození v průběhu</string>
+    <string name="tooltip_hot">Celkem vyléčení v průběhu</string>
+    <string name="tooltip_buff">Pozitivní bonusy (počet / nejdelší strvání)</string>
+    <string name="tooltip_debuff">Negativní bonusy  (počet / nejdelší strvání)</string>
+    
 </resources>

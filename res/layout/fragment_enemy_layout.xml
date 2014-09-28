@@ -11,385 +11,414 @@
         android:layout_height="wrap_content"
         android:text="@string/dsc_default" />
 
-   <TableLayout
-       android:id="@+id/tableLayout1"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:background="@drawable/_background_corners"
-       android:padding="5dp" >
-		<LinearLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/_background_corners"
+        android:padding="5dp" android:orientation="vertical">
 
-               <com.nex.gamebook.playground.SkillsSpinner
-                   android:id="@+id/enemy_skills"
-                   style="@style/spinner_skills"
-                   android:layout_width="0dp"
-                   android:layout_marginLeft="5dp"
-                   android:layout_height="wrap_content"
-                   android:layout_marginBottom="1dp"
-                   android:layout_weight="1"
-                   android:divider="@android:color/transparent"
-                   android:dividerHeight="5sp"
-                   android:dropDownVerticalOffset="-50dp"
-                   android:popupBackground="@drawable/spinner"
-                   android:spinnerMode="dropdown" />
-
-               
-           </LinearLayout>
-       <LinearLayout
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" >
-
-           <TextView
-               style="@style/attribute"
-               android:id="@+id/textView1"
-               android:layout_marginRight="5dip"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/attr_health" />
-
-           <com.nex.gamebook.playground.TextProgressBar
-               android:id="@+id/enemy_health_bar"
-               style="?android:attr/progressBarStyleHorizontal"
-               android:layout_width="match_parent"
-               android:layout_marginTop="4dp"
-               android:layout_height="15dp" />
-
-       </LinearLayout>
-
-       <TableRow
-           android:id="@+id/tableRow0"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" >
-
-           <TextView
-               android:id="@+id/sel_l_skillpower_d"
-               style="@style/attribute"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginRight="5dip"
-               android:text="@string/attr_skill_power" />
-
-           <TextView
-               android:id="@+id/enemy_skill_power"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/attr_value_zero" />
-
-           <TextView
-               android:id="@+id/textView8"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-
-           <TextView
-               android:id="@+id/enemy_l_attack"
-               style="@style/attribute"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="10dip"
-               android:text="@string/attr_attack" />
-
-           <TextView
-               android:id="@+id/enemy_attr_attack"
-               style="@style/number"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="5dp"
-               android:text="@string/attr_value_zero" />
-            <TextView
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(" />
-
-            <TextView
-                android:id="@+id/enemy_sel_attr_baseDmg_d"
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=")" />
-       </TableRow>
-
-       <TableRow
-           android:id="@+id/tableRow3"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" >
-
-           <TextView
-               android:id="@+id/enemy_l_skill"
-               style="@style/attribute"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/attr_skill" />
-
-           <TextView
-               android:id="@+id/enemy_attr_skill"
-               style="@style/number"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="5dp"
-               android:text="@string/attr_value_zero" />
-
-           <TextView
-               android:id="@+id/textView5"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-
-           <TextView
-               android:id="@+id/enemy_l_defense"
-               style="@style/attribute"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="10dip"
-               android:text="@string/attr_defense" />
-
-           <TextView
-               android:id="@+id/enemy_attr_defense"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="5dp"
-               android:text="@string/attr_value_zero" />
-
-           <TextView
-               android:id="@+id/textView9"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="(" />
-
-           <TextView
-               android:id="@+id/enemy_l_def_perc"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/attr_value_zero" />
-
-           <TextView
-               android:id="@+id/textView7"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="%" />
-
-           <TextView
-               android:id="@+id/textView10"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text=")" />
-       </TableRow>
-
-       <TableRow
-           android:id="@+id/tableRow5"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" >
-
-           <TextView
-               android:id="@+id/enemy_l_luck"
-               style="@style/attribute"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/attr_luck" />
-
-           <TextView
-               android:id="@+id/enemy_attr_luck"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="5dp"
-               android:text="@string/attr_value_zero" />
-
-           <TextView
-               android:id="@+id/textView6"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="%" />
-
-           <TextView
-               android:id="@+id/textView15"
-               style="@style/attribute"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="10dip"
-               android:text="@string/attr_critical" />
-
-           <TextView
-               android:id="@+id/enemy_critical"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="100" />
-
-           <TextView
-               android:id="@+id/p"
-               style="@style/number"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="%" />
-       </TableRow>
-
-       <LinearLayout
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal" android:layout_marginBottom="5dip" android:gravity="left">
-
-           
-			<LinearLayout
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:gravity="left" >
-
-            <TextView
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hot"
-                android:textColor="@color/positive" />
-
-            <TextView
-                android:id="@+id/enemy_hots"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x" />
-            <TextView
-                android:id="@+id/enemy_longest_hot"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/attribute"
-                android:layout_marginLeft="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dot"
-                android:textColor="@color/positive" />
-
-            <TextView
-                android:id="@+id/enemy_dots"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-
-            <TextView
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x" />
-            <TextView
-                android:id="@+id/enemy_longest_dot"
-                style="@style/attribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/attr_value_zero" />
-        </LinearLayout>
         <LinearLayout
-				    android:layout_width="fill_parent"
-				    android:layout_height="wrap_content"
-				    android:gravity="right" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
-				    <TextView
-				        style="@style/attribute"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:text="@string/b"
-				        android:textColor="@color/positive" />
+            <com.nex.gamebook.playground.SkillsSpinner
+                android:id="@+id/enemy_skills"
+                style="@style/spinner_skills"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="5sp"
+                android:dropDownVerticalOffset="-50dp"
+                android:gravity="left"
+                android:popupBackground="@drawable/spinner"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
 
-				    <TextView
-				        android:id="@+id/enemy_buffs"
-				        style="@style/attribute"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:text="@string/attr_value_zero" />
+        <LinearLayout
+            android:id="@+id/enemy_summon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip" >
 
-				    <TextView
-				        style="@style/attribute"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:text="x" />
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_hearth_summon" />
 
-				    <TextView
-				        android:id="@+id/enemy_longest_buff"
-				        style="@style/attribute"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:text="@string/attr_value_zero" />
+            <com.nex.gamebook.playground.TextProgressBar
+                android:id="@+id/summon_health_enemy"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
 
-				    <TextView
-				        style="@style/attribute"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_marginLeft="5dp"
-				        android:text="@string/d"
-				        android:textColor="@color/positive" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip" >
 
-				    <TextView
-				        android:id="@+id/enemy_debuffs"
-				        style="@style/attribute"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:text="@string/attr_value_zero" />
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_hearth" />
 
-				    <TextView
-				        style="@style/attribute"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:text="x" />
+            <com.nex.gamebook.playground.TextProgressBar
+                android:id="@+id/enemy_health_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+		<LinearLayout 
+		    android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right" >
 
-				    <TextView
-				        android:id="@+id/enemy_longest_debuff"
-				        style="@style/attribute"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:text="@string/attr_value_zero" />
-				</LinearLayout>
-       </LinearLayout>
+            <TableRow
+                android:id="@+id/tableRow0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
 
-       <Button
-           android:id="@+id/fight"
-           style="@style/button"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_margin="0dp"
-           android:text="@string/button_fight" />
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_skillpower" />
 
-       <ScrollView
-           android:id="@+id/e_battleLogScrollView"
-           style="@style/spinner_skills"
-           android:layout_width="fill_parent"
-           android:layout_height="match_parent"
-           android:layout_marginTop="1dp"
-           android:background="@drawable/_background_corners"
-           android:padding="5dip"
-           android:visibility="gone" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
 
-           <LinearLayout
-               android:id="@+id/e_battle_log"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="vertical" >
-           </LinearLayout>
-       </ScrollView>
+                    <TextView
+                        android:id="@+id/enemy_skill_power"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
 
-   </TableLayout>
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_attack" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_attr_attack"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+
+                    <TextView
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(" />
+
+                    <TextView
+                        android:id="@+id/enemy_sel_attr_baseDmg_d"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+
+                    <TextView
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=")" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_hot" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_total_hots"
+                        style="@style/attribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_dot" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_total_dots"
+                        style="@style/attribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_wrench" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_attr_skill"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_shield" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_attr_defense"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(" />
+
+                    <TextView
+                        android:id="@+id/enemy_l_def_perc"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%" />
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=")" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_buff" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_buffs"
+                        style="@style/attribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+
+                    <TextView
+                        style="@style/attribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/" />
+
+                    <TextView
+                        android:id="@+id/enemy_longest_buff"
+                        style="@style/attribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView12"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_debuff" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_debuffs"
+                        style="@style/attribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+
+                    <TextView
+                        style="@style/attribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/" />
+
+                    <TextView
+                        android:id="@+id/enemy_longest_debuff"
+                        style="@style/attribute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_luck" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_attr_luck"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attr_value_zero" />
+
+                    <TextView
+                        android:id="@+id/luck_perc"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_critical" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/enemy_critical"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="100" />
+
+                    <TextView
+                        android:id="@+id/p"
+                        style="@style/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%" />
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+		 <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="vertical" >
+             <ImageButton
+            android:id="@+id/fight"
+           android:background="@drawable/image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_fight" />
+        </LinearLayout>
+       
+        </LinearLayout>
+    </LinearLayout>
+    <ScrollView
+        android:id="@+id/e_battleLogScrollView"
+        style="@style/spinner_skills"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/_background_corners"
+        android:padding="5dip"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/e_battle_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

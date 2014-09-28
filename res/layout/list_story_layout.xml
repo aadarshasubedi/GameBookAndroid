@@ -6,18 +6,17 @@
     android:orientation="vertical" >
 
 
-<LinearLayout
+	<LinearLayout
     	android:id="@+id/imagerounding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
            	android:orientation="vertical" android:background="@drawable/rounded_image" >
 
-                <ImageView
+                <ImageView	
                     android:id="@+id/story_image"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/zombie" >
+                    android:layout_height="wrap_content">
 
 			    </ImageView>
         </LinearLayout>

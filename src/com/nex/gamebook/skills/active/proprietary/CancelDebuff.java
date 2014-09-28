@@ -11,7 +11,7 @@ import com.nex.gamebook.game.CharacterType;
 import com.nex.gamebook.skills.active.ActiveCancelationSkill;
 
 public class CancelDebuff extends ActiveCancelationSkill<Bonus> {
-
+	public static String ID = "cancel_debuff";
 	@Override
 	public boolean isCancelPositive() {
 		return false;
