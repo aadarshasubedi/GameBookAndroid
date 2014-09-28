@@ -206,9 +206,9 @@
     <string name="reset_skills">Resetovat %1$dx</string>
     <string name="reset_skills_prompt">Opravdu chcete resetovat pasivní dovednosti?</string>
     <string name="summon_life">Zdraví pomocníka</string>
-    <string name="tooltip_dot">Celkem poškození v průběhu</string>
-    <string name="tooltip_hot">Celkem vyléčení v průběhu</string>
-    <string name="tooltip_buff">Pozitivní bonusy (počet / nejdelší strvání)</string>
-    <string name="tooltip_debuff">Negativní bonusy  (počet / nejdelší strvání)</string>
+    <string name="tooltip_hot">Celkem HOT (postupné léčení)</string>
+    <string name="tooltip_dot">Celkem DOT (postupné poškození)</string>
+    <string name="tooltip_buff">Pozitivní bonusy (počet / nejdelší trvání)</string>
+    <string name="tooltip_debuff">Negativní bonusy  (počet / nejdelší trvání)</string>
     
 </resources>
