@@ -46,6 +46,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 	private int SHOW_AD_AFTER_CHANGE_FRAGMENTS = 20;
 	private int fragmentsDisplayed = SHOW_AD_AFTER_CHANGE_FRAGMENTS;
 	private long startTime;
+
 	@Override
 	protected void onPreCreate(Bundle savedInstanceState) {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -72,7 +73,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 		@Override
 		protected void onPostExecute(Void result) {
 			// close the progress dialog
-//			progressDialog.dismiss();
+			// progressDialog.dismiss();
 			setContentView(R.layout.activity_playground);
 			try {
 				battleLog.clear();
@@ -158,7 +159,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 	}
 
 	public void changeToBattle(StorySection section) {
-//		unloadAd();
+		// unloadAd();
 		hideAd();
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		checkAndDisplayAd();
@@ -198,7 +199,8 @@ public class PlaygroundActivity extends BannerAdActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(PlaygroundActivity.this._character==null) return false;
+		if (PlaygroundActivity.this._character == null)
+			return false;
 		final boolean fighting = PlaygroundActivity.this._character.getCurrentSection().isFighting();
 		// Handle the back button
 		int text = R.string.close_book_description;
@@ -227,6 +229,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 		}
 
 	}
+
 	/**
 	 * Run this method before saving game or score for real time spent saving.
 	 */
@@ -234,7 +237,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 		_character.getStatistics().addTimeSpent(System.currentTimeMillis() - startTime);
 		startTime = System.currentTimeMillis();
 	}
-	
+
 	public class SaveGameTask extends AsyncTask<Void, Integer, Void> {
 
 		@Override
@@ -242,18 +245,30 @@ public class PlaygroundActivity extends BannerAdActivity {
 			_character.save();
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Void result) {
 			PlaygroundActivity.this.finish();
 		}
-		
+
 	}
-	
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		storeTime();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		this.startTime = System.currentTimeMillis();
+	}
+
 	void checkAndDisplayAd() {
 		if (fragmentsDisplayed % SHOW_AD_AFTER_CHANGE_FRAGMENTS == 0) {
 			fragmentsDisplayed = 0;
-//			AdFactory.loadDefaultInterstitialAd(this);
+			// AdFactory.loadDefaultInterstitialAd(this);
 		}
 		fragmentsDisplayed++;
 	}
