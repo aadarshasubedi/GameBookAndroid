@@ -32,14 +32,14 @@ public class ExperienceMap {
 			}
 			gainedxpcoeffs.put(i, gcoeff);
 			xpRequiredToNextLevel = prev + (long) (xpRequiredToNextLevel * xpcoeff);
-			double mobs = (xpRequiredToNextLevel - prev) / getTotalXp(EnemyLevel.CREATURE.getBaseXP(), i, i, Enemy.DEFAULT_COEFF);
-			double sections = (xpRequiredToNextLevel - prev) / getTotalXp(BASE_SECTION_XP, i, i, 1d);
+//			double mobs = (xpRequiredToNextLevel - prev) / getTotalXp(EnemyLevel.CREATURE.getBaseXP(), i, i, Enemy.DEFAULT_COEFF);
+//			double sections = (xpRequiredToNextLevel - prev) / getTotalXp(BASE_SECTION_XP, i, i, 1d);
 			
-			Log.i("Experience", xpRequiredToNextLevel + " at level " + i);
-			Log.i("Experience", gcoeff + " at level " + i);
-			Log.i("Experience", "mobs to level " + (mobs));
-			Log.i("Experience", "sections to level " + (sections));
-			Log.i("Experience", "----------");
+//			Log.i("Experience", xpRequiredToNextLevel + " at level " + i);
+//			Log.i("Experience", gcoeff + " at level " + i);
+//			Log.i("Experience", "mobs to level " + (mobs));
+//			Log.i("Experience", "sections to level " + (sections));
+//			Log.i("Experience", "----------");
 			experienceMap.put(i, xpRequiredToNextLevel);
 			prev = xpRequiredToNextLevel;
 			if (i == 1) {
@@ -70,6 +70,13 @@ public class ExperienceMap {
 	public long getGainedExperienceFromEnemy(Enemy enemy, int playerLevel) {
 		return getTotalXp(enemy.getEnemyLevel().getBaseXP(), enemy.getLevel(), playerLevel, enemy.getXpcoeff());
 	}
+	
+//	public static void main(String[] args) {
+//		ExperienceMap e = new ExperienceMap();
+//		e.init();
+//		System.out.println(e.getTotalXp(50, 1, 1, 0.15));
+//	}
+	
 	private long  getTotalXp(long basexp, int level, int playerlevel, double additionalCoeff) {
 		double coeff = gainedxpcoeffs.get(level);
 		long xp = (long) (((basexp + (basexp * level * coeff)) 
