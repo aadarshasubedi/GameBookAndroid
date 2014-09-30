@@ -93,7 +93,7 @@ public class StoryXmlParser {
 	private final String SKILL_POWER = "skillPower";
 
 	private final String LUCK_ASPECT = "luckAspect";
-
+	private final String ACTIVE_SKILL = "activeSkill";
 	private final String NAME = "name";
 	private final String DESCRIPTION = "description";
 	private final String ID = "id";
@@ -506,6 +506,7 @@ public class StoryXmlParser {
 				option.setText(optionNode.getAttribute(TEXT));
 				option.setSkill(getInteger(optionNode.getAttribute(SKILL)));
 				option.setLuckAspect(getBoolean(optionNode.getAttribute(LUCK_ASPECT)));
+				option.setActiveSkill(optionNode.getAttribute(ACTIVE_SKILL));
 				option.setStory(section.getStory());
 				section.getOptions().add(option);
 			}

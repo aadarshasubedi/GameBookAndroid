@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.nex.gamebook.game.Bonus.StatType;
 import com.nex.gamebook.playground.BattleLogCallback;
+import com.nex.gamebook.skills.active.Skill;
 import com.nex.gamebook.util.GameBookUtils;
 import com.nex.gamebook.util.SaveGameSectionState;
 import com.nex.gamebook.util.SaveGameState;
@@ -36,8 +37,23 @@ public class Player extends Character {
 		boolean both = option.isBothAspects();
 		boolean isLuck = (option.isLuckAspect() && hasLuck()) || option.isAlreadyDisplayed();
 		boolean hasSkill = option.getSkill() > 0 && getCurrentStats().getSkill() >= option.getSkill();
-
+		
 		option.setDisplayed(both ? isLuck && hasSkill : isLuck || hasSkill);
+	}
+
+	public boolean hasLearnedActiveSkill(String s) {
+		
+		return false;
+	}
+	public Skill getSkill(String skillId) {
+		if(skillId!=null)
+		for(Skill sk: getActiveSkills()){
+			if(sk.getProperties().getId().equals(skillId)) return sk;
+		}
+		return null;
+	}
+	public boolean hasLearnedPassiveSkill(String s) {
+		return false;
 	}
 
 	public String getName() {

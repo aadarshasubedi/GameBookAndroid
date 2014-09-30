@@ -9,6 +9,7 @@ public class StorySectionOption implements Serializable, Mergable {
 	private static final long serialVersionUID = -1471697440605117269L;
 	private int section;
 	private String text;
+	private String activeSkill;
 	private int skill;
 	private boolean luckAspect;
 	private boolean alreadyDisplayed;
@@ -16,6 +17,7 @@ public class StorySectionOption implements Serializable, Mergable {
 	private boolean disabled;
 	private boolean displayed;
 	private Story story;
+
 	public int getSection() {
 		return section;
 	}
@@ -95,5 +97,13 @@ public class StorySectionOption implements Serializable, Mergable {
 	public void setStory(Story story) {
 		this.story = story;
 	}
-	
+
+	public String getActiveSkill() {
+		return activeSkill;
+	}
+
+	public void setActiveSkill(String activeSkill) {
+		this.activeSkill = activeSkill;
+	}
+
 }

@@ -210,5 +210,6 @@
     <string name="tooltip_dot">Celkem DOT (postupné poškození)</string>
     <string name="tooltip_buff">Pozitivní bonusy (počet / nejdelší trvání)</string>
     <string name="tooltip_debuff">Negativní bonusy  (počet / nejdelší trvání)</string>
+    <string name="option_skill_use">Použiješ %1$s</string>
     
 </resources>
