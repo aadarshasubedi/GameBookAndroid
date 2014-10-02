@@ -98,6 +98,12 @@ public class PlaygroundActivity extends BannerAdActivity {
 
 	}
 
+	@Override
+	protected void onStop() {
+		_character.save();
+		super.onStop();
+	}
+
 	private void createListener() {
 		listener = new ViewFlipListener(left, right, flipper, title) {
 
@@ -158,8 +164,18 @@ public class PlaygroundActivity extends BannerAdActivity {
 		return storyFragment;
 	}
 
+	public void saveInBackground() {
+		new AsyncTask<Void, Integer, Void>() {
+			@Override
+			protected Void doInBackground(Void... params) {
+				_character.save();
+				return null;
+			}
+		}.execute();
+	}
+	
 	public void changeToBattle(StorySection section) {
-		_character.save();
+		saveInBackground();
 		// unloadAd();
 		hideAd();
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
