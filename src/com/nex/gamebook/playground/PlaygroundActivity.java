@@ -159,6 +159,7 @@ public class PlaygroundActivity extends BannerAdActivity {
 	}
 
 	public void changeToBattle(StorySection section) {
+		_character.save();
 		// unloadAd();
 		hideAd();
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
